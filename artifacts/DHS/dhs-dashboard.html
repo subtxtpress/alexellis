@@ -225,6 +225,11 @@
             line-height: 1.6;
         }
 
+        .system-card .capabilities ul {
+            padding-left: 1.5rem;
+            list-style-position: inside;
+        }
+
         .system-card .capabilities li {
             margin-bottom: 0.3rem;
         }
@@ -241,6 +246,154 @@
             border: 1px solid rgba(179, 157, 219, 0.25);
         }
 
+        .info-box {
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .info-box h4 {
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .info-box p {
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box ul {
+            margin: 0;
+            padding-left: 1.5rem;
+            list-style-position: inside;
+        }
+
+        .info-box li {
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box-purple {
+            background: #222;
+            border-left: 4px solid #B39DDB;
+        }
+
+        .info-box-purple h4 {
+            color: #e0e0e0;
+        }
+
+        .info-box-green {
+            background: #111;
+            border-left: 4px solid #6da781;
+        }
+
+        .info-box-green h4 {
+            color: #e0e0e0;
+        }
+
+        .info-box-red {
+            background: #111;
+            border-left: 4px solid #6da781;
+        }
+
+        .info-box-red h4 {
+            color: #e0e0e0;
+        }
+
+
+
+        .database-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .database-category {
+            background: #0d0d0d;
+            padding: 1rem;
+            padding-left: 1.5rem;
+            border-radius: 4px;
+        }
+
+        .database-category h5 {
+            color: #e0e0e0;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .database-category ul {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 0;
+            padding-left: 1.5rem;
+            list-style-position: inside;
+        }
+
+        .source-card {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            padding-left: 2rem;
+            border-radius: 8px;
+            border-left: 4px solid #9575CD;
+        }
+
+        .source-card h4 {
+            color: #B39DDB;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .source-card ul {
+            color: #e0e0e0;
+            line-height: 1.8;
+            margin: 0;
+            padding-left: 1.5rem;
+            list-style-position: inside;
+        }
+
+        .source-card li {
+            margin-bottom: 0.5rem;
+        }
+
+        .source-card a {
+            color: #9575CD;
+            text-decoration: none;
+        }
+
+        .source-card a:hover {
+            color: #B39DDB;
+            text-decoration: underline;
+        }
+
+        .source-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .case-study {
+            background: #111;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #9575CD;
+        }
+
+        .case-study h5 {
+            color: #e0e0e0;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .case-study .connection-item {
+            margin-bottom: 0.8rem;
+        }
+
         .connections {
             margin-top: 2rem;
             padding: 1.5rem;
@@ -250,19 +403,23 @@
         }
 
         .connections h4 {
-            color: #a0a0a0;
+            color: #e0e0e0;
             margin-bottom: 1rem;
             font-size: 1.1rem;
         }
 
         .connection-item {
-            display: flex;
-            align-items: center;
+            display: block;
             margin: 0.8rem 0;
             color: #d4d4d4;
             font-size: 0.9rem;
-            flex-wrap: wrap;
-            gap: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .connection-item .arrow {
+            color: #B39DDB;
+            margin-right: 0.5rem;
+            font-weight: bold;
         }
 
         .arrow {
@@ -398,7 +555,7 @@
         }
 
         .network-title {
-            color: #a0a0a0;
+            color: #e0e0e0;
             font-size: clamp(1.2rem, 4vw, 1.5rem);
             margin-bottom: 1.5rem;
             text-align: center;
@@ -565,6 +722,68 @@
 
             .arrow {
                 margin: 0 0.25rem;
+            }
+
+            .info-box {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .info-box h4 {
+                font-size: 1rem;
+            }
+
+            .case-study {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .case-study h5 {
+                font-size: 1rem;
+            }
+
+            .case-study .connection-item {
+                margin-bottom: 0.6rem;
+                font-size: 0.85rem;
+            }
+
+            .source-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .source-card {
+                padding: 1rem;
+                padding-left: 1.5rem;
+            }
+
+            .source-card h4 {
+                font-size: 1rem;
+            }
+
+            .source-card ul {
+                font-size: 0.9rem;
+                line-height: 1.6;
+                padding-left: 1.5rem;
+            }
+
+            .database-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .database-category {
+                padding: 0.75rem;
+                padding-left: 1.25rem;
+            }
+
+            .database-category h5 {
+                font-size: 0.9rem;
+            }
+
+            .database-category ul {
+                font-size: 0.85rem;
+                padding-left: 1.5rem;
             }
         }
 
@@ -1072,22 +1291,22 @@
                 </div>
             </div>
 
-            <div class="info-box" style="background: #222; border-left: 4px solid #B39DDB; padding: 1.5rem; margin-top: 2rem; border-radius: 4px;">
-                <h4 style="color: #a0a0a0; margin-bottom: 1rem;">The 28+ Databases Accessible Through IRS-NG</h4>
-                <p style="color: #e0e0e0; line-height: 1.6; margin-bottom: 1rem;">
+            <div class="info-box info-box-purple">
+                <h4>The 28+ Databases Accessible Through IRS-NG</h4>
+                <p style="color: #e0e0e0;">
                     According to leaked DHS documents, the Intelligence Reporting System - Next Generation gives federal agents simultaneous access to at least 28 different databases, plus DMV records, seized device data, and "certain law enforcement and/or intelligence data." This creates a unified surveillance apparatus where a single query can pull information from systems designed for completely different purposes:
                 </p>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-top: 1rem;">
-                    <div style="background: #0d0d0d; padding: 1rem; border-radius: 4px;">
-                        <h5 style="color: #e0e0e0; margin-bottom: 0.5rem; font-size: 0.95rem;">Terrorism & Watchlists</h5>
-                        <ul style="color: #a0a0a0; font-size: 0.9rem; line-height: 1.6; margin: 0; padding-left: 1.2rem;">
+                <div class="database-grid">
+                    <div class="database-category">
+                        <h5>Terrorism & Watchlists</h5>
+                        <ul>
                             <li>Terrorist Screening Dataset (TSDS)</li>
                             <li>Watchlist Service (WLS)</li>
                         </ul>
                     </div>
-                    <div style="background: #0d0d0d; padding: 1rem; border-radius: 4px;">
-                        <h5 style="color: #e0e0e0; margin-bottom: 0.5rem; font-size: 0.95rem;">Travel & Border Control</h5>
-                        <ul style="color: #a0a0a0; font-size: 0.9rem; line-height: 1.6; margin: 0; padding-left: 1.2rem;">
+                    <div class="database-category">
+                        <h5>Travel & Border Control</h5>
+                        <ul>
                             <li>Secure Flight Passenger Data (SFPD)</li>
                             <li>Automated Targeting System (ATS)</li>
                             <li>Arrival and Departure Info System (ADIS)</li>
@@ -1098,9 +1317,9 @@
                             <li>I-94 data</li>
                         </ul>
                     </div>
-                    <div style="background: #0d0d0d; padding: 1rem; border-radius: 4px;">
-                        <h5 style="color: #e0e0e0; margin-bottom: 0.5rem; font-size: 0.95rem;">Immigration & Students</h5>
-                        <ul style="color: #a0a0a0; font-size: 0.9rem; line-height: 1.6; margin: 0; padding-left: 1.2rem;">
+                    <div class="database-category">
+                        <h5>Immigration & Students</h5>
+                        <ul>
                             <li>Non-Immigrant Information System (NIIS)</li>
                             <li>Student and Exchange Visitor Program (SEVP)</li>
                             <li>Enforcement Integrated Database (EID)</li>
@@ -1109,47 +1328,47 @@
                             <li>Central Index System (CIS)</li>
                         </ul>
                     </div>
-                    <div style="background: #0d0d0d; padding: 1rem; border-radius: 4px;">
-                        <h5 style="color: #e0e0e0; margin-bottom: 0.5rem; font-size: 0.95rem;">Law Enforcement & Criminal Records</h5>
-                        <ul style="color: #a0a0a0; font-size: 0.9rem; line-height: 1.6; margin: 0; padding-left: 1.2rem;">
+                    <div class="database-category">
+                        <h5>Law Enforcement & Criminal Records</h5>
+                        <ul>
                             <li>National Crime Information Center (NCIC)</li>
                             <li>Interstate Identification Index (III)</li>
                             <li>Seized Asset and Case Tracking (SEACATS)</li>
                         </ul>
                     </div>
-                    <div style="background: #0d0d0d; padding: 1rem; border-radius: 4px;">
-                        <h5 style="color: #e0e0e0; margin-bottom: 0.5rem; font-size: 0.95rem;">Biometrics & Identity</h5>
-                        <ul style="color: #a0a0a0; font-size: 0.9rem; line-height: 1.6; margin: 0; padding-left: 1.2rem;">
+                    <div class="database-category">
+                        <h5>Biometrics & Identity</h5>
+                        <ul>
                             <li>Automated Biometric Identification System (IDENT)</li>
                             <li>Global Enrollment System (GES)</li>
                         </ul>
                     </div>
-                    <div style="background: #0d0d0d; padding: 1rem; border-radius: 4px;">
-                        <h5 style="color: #e0e0e0; margin-bottom: 0.5rem; font-size: 0.95rem;">Government Records</h5>
-                        <ul style="color: #a0a0a0; font-size: 0.9rem; line-height: 1.6; margin: 0; padding-left: 1.2rem;">
+                    <div class="database-category">
+                        <h5>Government Records</h5>
+                        <ul>
                             <li>Social Security Administration Death Master File</li>
                             <li>Consular Consolidated Database (CCD)</li>
                             <li>Electronic Questionnaires for Investigations (e-QIP)</li>
                         </ul>
                     </div>
-                    <div style="background: #0d0d0d; padding: 1rem; border-radius: 4px;">
-                        <h5 style="color: #e0e0e0; margin-bottom: 0.5rem; font-size: 0.95rem;">Commercial & Trade</h5>
-                        <ul style="color: #a0a0a0; font-size: 0.9rem; line-height: 1.6; margin: 0; padding-left: 1.2rem;">
+                    <div class="database-category">
+                        <h5>Commercial & Trade</h5>
+                        <ul>
                             <li>Automated Commercial Environment (ACE)</li>
                             <li>Automated Export System (AES)</li>
                             <li>Importer Security Filing & manifests</li>
                         </ul>
                     </div>
-                    <div style="background: #0d0d0d; padding: 1rem; border-radius: 4px;">
-                        <h5 style="color: #e0e0e0; margin-bottom: 0.5rem; font-size: 0.95rem;">Additional Access</h5>
-                        <ul style="color: #a0a0a0; font-size: 0.9rem; line-height: 1.6; margin: 0; padding-left: 1.2rem;">
+                    <div class="database-category">
+                        <h5>Additional Access</h5>
+                        <ul>
                             <li>DMV licenses and records</li>
                             <li>Data from seized/cloned devices</li>
                             <li>"Certain law enforcement/intelligence data"</li>
                         </ul>
                     </div>
                 </div>
-                <p style="color: #7cc193; line-height: 1.6; margin-top: 1rem; font-weight: 500;">
+                <p style="color: #6da781; line-height: 1.6; margin-top: 1rem; font-weight: 500;">
                     Result: A single domestic terrorism investigation can query travel history, criminal records, biometrics, visa status, school enrollment, seized assets, death records, and device data—all without a warrant.
                 </p>
             </div>
@@ -1374,9 +1593,9 @@
                     </div>
                 </div>
 
-                <div class="info-box" style="background: #111; border-left: 4px solid #7cc193; padding: 1rem; margin-top: 1.5rem; border-radius: 4px;">
-                    <h4 style="color: #a0a0a0; margin-bottom: 0.5rem;">Constitutional Concerns</h4>
-                    <p style="color: #e0e0e0; line-height: 1.6;">
+                <div class="info-box info-box-green">
+                    <h4>Constitutional Concerns</h4>
+                    <p style="color: #e0e0e0;">
                         These policies create a legal framework that circumvents traditional Fourth Amendment protections. By labeling activists as "domestic terrorists" under NSPM-7, the government claims authority for warrantless surveillance. The "Eliminating Silos" executive order mandates data sharing that was previously prohibited by agency-specific privacy laws. Together, they create a surveillance system that operates largely outside judicial oversight.
                     </p>
                 </div>
@@ -1387,12 +1606,12 @@
         <div class="layer">
             <h2 style="color: #e0e0e0; font-size: clamp(1.5rem, 4vw, 2rem); margin-bottom: 1rem;">From Data Collection to Targeting: Real Cases</h2>
             
-            <div class="info-box" style="background: #111; border-left: 4px solid #7cc193; padding: 1.5rem; margin-bottom: 2rem; border-radius: 4px;">
-                <h4 style="color: #a0a0a0; margin-bottom: 0.5rem;">The ITIN Paradox</h4>
-                <p style="color: #e0e0e0; line-height: 1.6; margin-bottom: 0.5rem;">
+            <div class="info-box info-box-green">
+                <h4>The ITIN Paradox</h4>
+                <p style="color: #e0e0e0;">
                     <strong>4.8 million undocumented immigrants</strong> hold Individual Taxpayer Identification Numbers (ITINs) and pay federal taxes annually—contributing an estimated <strong>$11.6 billion in state and local taxes</strong> per year. Despite paying into systems they cannot benefit from (Social Security, Medicare, most federal programs), their tax data is now being weaponized against them through the IRS-ICE data sharing agreement.
                 </p>
-                <p style="color: #a0a0a0; line-height: 1.6; font-size: 0.95rem;">
+                <p style="color: #a0a0a0;">
                     They pay taxes. They get no benefits. And now their tax records are used to deport them.
                 </p>
             </div>
@@ -1400,171 +1619,171 @@
             <div class="connections">
                 <h4 style="margin-bottom: 1.5rem;">How Palantir's Data Flows Lead to Targeting Americans</h4>
                 
-                <div style="background: #111; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
-                    <h5 style="color: #e0e0e0; margin-bottom: 1rem; font-size: 1.1rem;">Case Study: Chandler Patey &mdash; "Leader of Antifa"</h5>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                <div class="case-study">
+                    <h5>Case Study: Chandler Patey &mdash; "Leader of Antifa"</h5>
+                    <div class="connection-item">
                         <strong>Chandler Patey</strong>, 29, protests outside Portland ICE facility, lets protesters use his bathroom
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> Fox News (Laura Ingraham, Jesse Watters) calls his apartment an "Antifa safe house"
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> DHS agents scroll Twitter/TikTok for "open-source research"
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> IRS-NG entry created: "He is the leader of Antifa in Portland, OR"
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> Full dossier: DMV photo, SSN, address, phone number, passport
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> Flagged in 28+ federal databases through IRS-NG
                     </div>
-                    <div class="connection-item" style="color: #7cc193;">
-                        <span class="arrow">→</span> <strong>Result:</strong> Ordinary protester designated domestic terrorist based on cable news hysteria. No crime alleged.
+                    <div class="connection-item" style="color: #6da781;">
+                        <span class="arrow">→</span> <strong>Result:</strong>  Ordinary protester designated domestic terrorist based on cable news hysteria. No crime alleged.
                     </div>
                 </div>
 
-                <div style="background: #111; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
-                    <h5 style="color: #e0e0e0; margin-bottom: 1rem; font-size: 1.1rem;">Case Study: Dustin Ragsdale &mdash; The "Aggressive" Protester</h5>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                <div class="case-study">
+                    <h5>Case Study: Dustin Ragsdale &mdash; The "Aggressive" Protester</h5>
+                    <div class="connection-item">
                         <strong>Dustin Ragsdale</strong> holds pride flag, wears Batman sweatpants, uses megaphone at protests
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> Lives across street from ICE detention center
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> DHS "open-source research" notes he's "aggressive to counterprotesters"
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> IRS-NG entry: "Further research is currently being conducted on this individual"
                     </div>
-                    <div class="connection-item" style="color: #7cc193;">
-                        <span class="arrow">→</span> <strong>Result:</strong> Using free speech = federal surveillance file. No crime alleged.
+                    <div class="connection-item" style="color: #6da781;">
+                        <span class="arrow">→</span> <strong>Result:</strong>  Using free speech = federal surveillance file. No crime alleged.
                     </div>
                 </div>
 
-                <div style="background: #111; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
-                    <h5 style="color: #e0e0e0; margin-bottom: 1rem; font-size: 1.1rem;">Case Study: "Mossy Matriarch" &mdash; The Supply Coordinator</h5>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                <div class="case-study">
+                    <h5>Case Study: "Mossy Matriarch" &mdash; The Supply Coordinator</h5>
+                    <div class="connection-item">
                         <strong>"Mossy Matriarch"</strong>, 30, Washington state photographer and small business owner
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> Posts on social media asking people to donate protest supplies (water, first aid)
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> Provides PO Box address and school drop-off location
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> DHS labels her "social media influencer" and "iniuencer" [sic]
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> IRS-NG entry tracks her posts about delivering supplies to protesters
                     </div>
-                    <div class="connection-item" style="color: #7cc193;">
-                        <span class="arrow">→</span> <strong>Result:</strong> Mutual aid = domestic terrorism. No crime alleged.
+                    <div class="connection-item" style="color: #6da781;">
+                        <span class="arrow">→</span> <strong>Result:</strong>  Mutual aid = domestic terrorism. No crime alleged.
                     </div>
                 </div>
 
-                <div style="background: #111; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
+                <div class="case-study">
                     <h5 style="color: #e0e0e0; margin-bottom: 1.1rem; font-size: 1.1rem;">Case Study: Nicole Cleland & Alex Pretti &mdash; Immigration Court Monitors</h5>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <strong>Nicole Cleland</strong> and <strong>Alex Pretti</strong> attend immigration court hearings to monitor due process
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> NSPM-7 redefines "domestic terrorism" to include immigration advocacy
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> ICE agents enter them in IRS-NG / FALCON/ICM as "domestic terrorist" threats
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> Their names now trigger alerts in IDENT biometric database
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> Any encounter with law enforcement (traffic stop, airport, etc.) flags them
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> ICE agent directly tells court observer: "You're in our domestic terrorist database"
                     </div>
-                    <div class="connection-item" style="color: #7cc193;">
-                        <span class="arrow">→</span> <strong>Result:</strong> Constitutional right to observe courts = permanent surveillance
+                    <div class="connection-item" style="color: #6da781;">
+                        <span class="arrow">→</span> <strong>Result:</strong>  Constitutional right to observe courts = permanent surveillance
                     </div>
                 </div>
 
-                <div style="background: #111; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
-                    <h5 style="color: #e0e0e0; margin-bottom: 1rem; font-size: 1.1rem;">Case Study: Mississippi Worksite Raids (2019)</h5>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                <div class="case-study">
+                    <h5>Case Study: Mississippi Worksite Raids (2019)</h5>
+                    <div class="connection-item">
                         ICE analyzes W-2 and Social Security data through Palantir's FALCON system
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> Identifies "discrepancies" in employment records of immigrant workers
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> FALCON generates target lists and "confidence scores" for seven processing plants
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> ELITE maps optimal raid timing and agent deployment
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> August 7, 2019: Coordinated raids across Mississippi
                     </div>
-                    <div class="connection-item" style="color: #7cc193;">
-                        <span class="arrow">→</span> <strong>Result:</strong> 680 workers arrested; children left stranded at schools; families destroyed
+                    <div class="connection-item" style="color: #6da781;">
+                        <span class="arrow">→</span> <strong>Result:</strong>  680 workers arrested; children left stranded at schools; families destroyed
                     </div>
                 </div>
 
-                <div style="background: #111; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
-                    <h5 style="color: #e0e0e0; margin-bottom: 1rem; font-size: 1.1rem;">Case Study: ITIN Taxpayers (Ongoing)</h5>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                <div class="case-study">
+                    <h5>Case Study: ITIN Taxpayers (Ongoing)</h5>
+                    <div class="connection-item">
                         4.8 million undocumented immigrants file taxes annually using ITINs
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> January 2025: IRS-ICE data sharing agreement grants access to tax records
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> Palantir's ImmigrationOS ingests ITIN data, addresses, employer information
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> ELITE cross-references with other databases (Medicaid, DMV, utilities)
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> System generates "actionable intelligence" on taxpayers' locations and routines
                     </div>
-                    <div class="connection-item" style="color: #7cc193;">
-                        <span class="arrow">→</span> <strong>Result:</strong> Tax compliance = deportation roadmap (chilling effect on future tax filing)
+                    <div class="connection-item" style="color: #6da781;">
+                        <span class="arrow">→</span> <strong>Result:</strong>  Tax compliance = deportation roadmap (chilling effect on future tax filing)
                     </div>
                 </div>
 
-                <div style="background: #111; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
-                    <h5 style="color: #e0e0e0; margin-bottom: 1rem; font-size: 1.1rem;">Case Study: Medicaid Patients (2025-Present)</h5>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                <div class="case-study">
+                    <h5>Case Study: Medicaid Patients (2025-Present)</h5>
+                    <div class="connection-item">
                         80+ million Americans receive Medicaid, including children born to immigrant parents
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> June 2025: HHS orders transfer of Medicaid enrollment data to ICE
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> Data includes home addresses, family composition, immigration status
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> Palantir systems update ICM with healthcare-derived targeting data
                     </div>
-                    <div class="connection-item" style="margin-bottom: 0.8rem;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> Parents stop seeking medical care for children to avoid detection
                     </div>
-                    <div class="connection-item" style="color: #7cc193;">
-                        <span class="arrow">→</span> <strong>Result:</strong> Public health crisis as families avoid emergency rooms and prenatal care
+                    <div class="connection-item" style="color: #6da781;">
+                        <span class="arrow">→</span> <strong>Result:</strong>  Public health crisis as families avoid emergency rooms and prenatal care
                     </div>
                 </div>
 
             </div>
 
-            <div class="info-box" style="background: #111; border-left: 4px solid #7cc193; padding: 1.5rem; margin-top: 2rem; border-radius: 4px;">
-                <h4 style="color: #a0a0a0; margin-bottom: 0.5rem;">The Pattern</h4>
-                <p style="color: #e0e0e0; line-height: 1.6; margin-bottom: 1rem;">
+            <div class="info-box info-box-green">
+                <h4>The Pattern</h4>
+                <p style="color: #e0e0e0;">
                     Every case follows the same architecture: <strong>data collected for legitimate purposes</strong> (tax compliance, healthcare, court observation, mutual aid) → <strong>fed into Palantir's systems via IRS-NG</strong> → <strong>weaponized for surveillance and enforcement</strong> → <strong>constitutional rights chilled</strong>. 
                 </p>
-                <p style="color: #e0e0e0; line-height: 1.6;">
+                <p style="color: #e0e0e0;">
                     The "evidence" standard is dystopian: <strong>Fox News segments, random Twitter posts, and living near an ICE facility</strong> are treated as intelligence. DHS agents admit to "Alex Jones-level paranoia and wild leaps" in their analysis. The infrastructure doesn't just target "criminals"—it transforms ordinary civic participation into grounds for permanent federal surveillance.
                 </p>
             </div>
@@ -1688,31 +1907,31 @@
             <h2 style="color: #e0e0e0; font-size: clamp(1.5rem, 4vw, 2rem); margin-bottom: 1rem;">Sources &amp; References</h2>
             
             <div class="info-box" style="background: #111; border-left: 4px solid #B39DDB; padding: 1.5rem; margin-bottom: 2rem; border-radius: 4px;">
-                <p style="color: #e0e0e0; line-height: 1.6;">
+                <p style="color: #e0e0e0;">
                     This dashboard synthesizes reporting from investigative journalists, leaked government documents, federal contracts, and FOIA requests. All claims are sourced from publicly available documents or verified reporting.
                 </p>
             </div>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+            <div class="source-grid">
                 
                 <div style="background: #111; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
-                    <h4 style="color: #a0a0a0; margin-bottom: 1rem; font-size: 1.1rem;">Primary Investigations</h4>
-                    <ul style="color: #e0e0e0; line-height: 1.8; margin: 0; padding-left: 1.2rem;">
-                        <li style="margin-bottom: 0.5rem;">
+                    <h4>Primary Investigations</h4>
+                    <ul>
+                        <li>
                             <strong>Ken Klippenstein</strong> &mdash; "Feds Identify 'Leader of Antifa'" (Feb 2026)<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">Exposed IRS-NG system, 28 databases, Chandler Patey/Dustin Ragsdale/Mossy Matriarch cases</span><br/>
                             <a href="https://www.kenklippenstein.com/" target="_blank" style="color: #B39DDB;">kenklippenstein.com</a>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>Ken Klippenstein</strong> &mdash; "The Deportation Machine Comes Home" (Jan 2026)<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">Original secret watchlist investigation, Nicole Cleland case</span>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>404 Media</strong> &mdash; ELITE System Exposure (Jan 2026)<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">Revealed targeting algorithms and confidence scoring</span><br/>
                             <a href="https://www.404media.co/" target="_blank" style="color: #B39DDB;">404media.co</a>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>Alex Ellis/Subtxt Press</strong> &mdash; "The Deportation Machine Comes Home" (Jan 2026)<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">Comprehensive ICE surveillance infrastructure investigation</span><br/>
                             <a href="https://substack.com/@subtxtpress" target="_blank" style="color: #B39DDB;">substack.com/@subtxtpress</a>
@@ -1721,26 +1940,26 @@
                 </div>
 
                 <div style="background: #111; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
-                    <h4 style="color: #a0a0a0; margin-bottom: 1rem; font-size: 1.1rem;">Government Documents &amp; Contracts</h4>
-                    <ul style="color: #e0e0e0; line-height: 1.8; margin: 0; padding-left: 1.2rem;">
-                        <li style="margin-bottom: 0.5rem;">
+                    <h4>Government Documents &amp; Contracts</h4>
+                    <ul>
+                        <li>
                             <strong>ImmigrationOS Contract</strong> &mdash; 70CMSD24F00000213<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">$29.9M sole-source award to Palantir (April 2025)</span><br/>
                             <a href="https://sam.gov/" target="_blank" style="color: #B39DDB;">SAM.gov</a>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>HUD-GNMA Contract</strong> &mdash; 47QTCA24D004L-86615526F00002<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">$200K demonstration contract, modified 1 day after inauguration</span>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>DHS Privacy Impact Assessment</strong> &mdash; IRS-NG System<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">Details 28 database access, first week of Trump admin (2025)</span>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>NSPM-7</strong> &mdash; National Security Presidential Memorandum<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">Domestic terrorism redefinition (September 2025)</span>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>Executive Order</strong> &mdash; "Eliminating Information Silos"<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">Cross-agency data sharing mandate (March 2025)</span>
                         </li>
@@ -1748,21 +1967,21 @@
                 </div>
 
                 <div style="background: #111; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
-                    <h4 style="color: #a0a0a0; margin-bottom: 1rem; font-size: 1.1rem;">Historical Context &amp; Background</h4>
-                    <ul style="color: #e0e0e0; line-height: 1.8; margin: 0; padding-left: 1.2rem;">
-                        <li style="margin-bottom: 0.5rem;">
+                    <h4>Historical Context &amp; Background</h4>
+                    <ul>
+                        <li>
                             <strong>WikiLeaks Vault 7</strong> &mdash; CIA ExpressLane exposure (2017)<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">Biometric exfiltration tool, Joshua Schulte arrest</span>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>Mississippi Raids</strong> &mdash; ICE Operations (August 2019)<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">680 arrests using FALCON targeting</span>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>Migration 5 Alliance</strong> &mdash; Five Eyes Biometric Sharing<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">3,000 checks/year (2011) to 8M checks/year (2024)</span>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>Palantir Student Boycott</strong> &mdash; 1,200+ Students Pledge (2019)<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">Never Again Action campaign against ICE contracts</span>
                         </li>
@@ -1770,22 +1989,22 @@
                 </div>
 
                 <div style="background: #111; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
-                    <h4 style="color: #a0a0a0; margin-bottom: 1rem; font-size: 1.1rem;">Financial &amp; Accountability Reporting</h4>
-                    <ul style="color: #e0e0e0; line-height: 1.8; margin: 0; padding-left: 1.2rem;">
-                        <li style="margin-bottom: 0.5rem;">
+                    <h4>Financial &amp; Accountability Reporting</h4>
+                    <ul>
+                        <li>
                             <strong>POGO Investigation</strong> &mdash; Stephen Miller Palantir Stock (June 2025)<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">Conflict of interest disclosure analysis</span><br/>
                             <a href="https://www.pogo.org/" target="_blank" style="color: #B39DDB;">pogo.org</a>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>Peter Thiel Political Spending</strong><br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">$1.25M to Trump (2016), $15M for JD Vance Senate seat (2022)</span>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>Palantir Stock Performance</strong><br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">200% surge following Trump election (2024-2025)</span>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>In-Q-Tel Investment</strong> &mdash; CIA Venture Capital (2005)<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">Initial CIA funding of Palantir Technologies</span>
                         </li>
@@ -1793,21 +2012,21 @@
                 </div>
 
                 <div style="background: #111; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
-                    <h4 style="color: #a0a0a0; margin-bottom: 1rem; font-size: 1.1rem;">Policy &amp; Legal Framework</h4>
-                    <ul style="color: #e0e0e0; line-height: 1.8; margin: 0; padding-left: 1.2rem;">
-                        <li style="margin-bottom: 0.5rem;">
+                    <h4>Policy &amp; Legal Framework</h4>
+                    <ul>
+                        <li>
                             <strong>IRS-ICE Data Sharing Agreement</strong> (January 2025)<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">Tax records access, 4.8M ITIN holders affected</span>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>HHS Medicaid Data Order</strong> (June 2025)<br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">80M+ patient records transferred to ICE</span>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>Section 287(g) Agreements</strong><br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">Local law enforcement ICE deputization program</span>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>Secure Communities Program</strong><br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">Automatic fingerprint-to-immigration screening in jails</span>
                         </li>
@@ -1815,18 +2034,18 @@
                 </div>
 
                 <div style="background: #111; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
-                    <h4 style="color: #a0a0a0; margin-bottom: 1rem; font-size: 1.1rem;">Additional Resources</h4>
-                    <ul style="color: #e0e0e0; line-height: 1.8; margin: 0; padding-left: 1.2rem;">
-                        <li style="margin-bottom: 0.5rem;">
+                    <h4>Additional Resources</h4>
+                    <ul>
+                        <li>
                             <strong>Active FOIA Tracker</strong><br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">~15 ongoing requests across JCPD, MDOC, Treasury, DOJ, DHS, IRS, ICE, Minneapolis PD</span><br/>
                             <a href="https://docs.google.com/spreadsheets/d/103CKXPKrYh_mPyeVznY_5Ue87DJFk_nUhcNTQdgmHcQ/" target="_blank" style="color: #B39DDB;">View FOIA Tracker</a>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>Interactive Dashboards Archive</strong><br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">From Epstein's Amazon shipments to DHS surveillance infrastructure</span>
                         </li>
-                        <li style="margin-bottom: 0.5rem;">
+                        <li>
                             <strong>Subtxt Press Editorial Policies</strong><br/>
                             <span style="color: #a0a0a0; font-size: 0.9rem;">Source protection protocols, on/off the record ground rules</span>
                         </li>
@@ -1836,11 +2055,11 @@
             </div>
 
             <div class="info-box" style="background: #111; border-left: 4px solid #9575CD; padding: 1.5rem; margin-top: 2rem; border-radius: 4px;">
-                <h4 style="color: #B39DDB; margin-bottom: 0.5rem;">About This Dashboard</h4>
-                <p style="color: #e0e0e0; line-height: 1.6; margin-bottom: 0.5rem;">
+                <h4>About This Dashboard</h4>
+                <p style="color: #e0e0e0;">
                     Created by <strong>Alex Ellis/Subtxt Press</strong> as part of ongoing investigative reporting on surveillance infrastructure, extremism in law enforcement, and accountability failures. This dashboard is a living document updated as new information becomes available through FOIA requests, leaked documents, and verified reporting.
                 </p>
-                <p style="color: #a0a0a0; line-height: 1.6; font-size: 0.95rem;">
+                <p style="color: #a0a0a0;">
                     <strong>Contact:</strong> For tips, corrections, or additional documentation → <a href="https://substack.com/@subtxtpress" target="_blank" style="color: #B39DDB;">Subtxt Press</a>
                 </p>
             </div>
