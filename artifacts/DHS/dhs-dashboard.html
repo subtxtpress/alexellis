@@ -66,7 +66,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: #1a1a1a;
             padding: 1.5rem 1rem;
             text-align: center;
             border-bottom: 2px solid #9575CD;
@@ -96,7 +96,7 @@
         }
 
         .btn {
-            background: #16213e;
+            background: #111;
             color: #e0e0e0;
             border: 1px solid #9575CD;
             padding: 0.75rem 1rem;
@@ -192,7 +192,7 @@
         }
 
         .system-card {
-            background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+            background: #000;
             padding: 1.5rem;
             border-radius: 8px;
             border: 1px solid #2a2a3e;
@@ -246,7 +246,7 @@
             padding: 1.5rem;
             background: rgba(255, 255, 255, 0.02);
             border-radius: 8px;
-            border: 1px solid #333;
+            border: 1px solid #B39DDB;
         }
 
         .connections h4 {
@@ -273,7 +273,7 @@
         }
 
         .actors-section {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: #1a1a1a;
             padding: 1.5rem;
             border-radius: 8px;
             margin: 2rem 0;
@@ -331,7 +331,7 @@
         .timeline-item {
             position: relative;
             margin-bottom: 1.5rem;
-            background: #1a1a1a;
+            background: #111;
             padding: 1rem;
             border-radius: 8px;
             border-left: 3px solid #9575CD;
@@ -394,7 +394,7 @@
             padding: 1.5rem;
             border-radius: 8px;
             margin: 2rem 0;
-            border: 1px solid #2a2a3e;
+            border: 1px solid #B39DDB;
         }
 
         .network-title {
@@ -423,12 +423,12 @@
         }
 
         .network-node {
-            background: #16213e;
+            background: #111;
             padding: 0.8rem 1rem;
             border-radius: 6px;
             color: #d4d4d4;
             font-weight: 500;
-            border: 1px solid #444;
+            border: 1px solid #B39DDB;
             font-size: clamp(0.8rem, 2vw, 0.95rem);
             text-align: center;
             flex: 1;
@@ -621,6 +621,7 @@
         <button class="btn" onclick="showLayer('watchlist')">Watchlists</button>
         <button class="btn" onclick="showLayer('palantir')">Palantir Layer</button>
         <button class="btn" onclick="showLayer('field')">Field Tools</button>
+        <button class="btn" onclick="showLayer('policy')">Policy Framework</button>
         <button class="btn" onclick="showLayer('actors')">Key Players</button>
     </div>
 
@@ -897,7 +898,7 @@
                 </div>
 
                 <div class="system-card">
-                    <h3>BLUEKEY / SIENNA</h3>
+                    <h3>BLUEKEY/SIENNA</h3>
                     <div class="function">Metadata Aggregation</div>
                     <div class="capabilities">
                         <ul>
@@ -1133,6 +1134,143 @@
                 </div>
                 <div class="connection-item">
                     Field data <span class="arrow">→</span> Updates ICM/ImmigrationOS <span class="arrow">→</span> Feeds back into targeting
+                </div>
+            </div>
+        </div>
+
+        <!-- Policy & Legal Framework -->
+        <div class="layer" data-layer="policy">
+            <div class="layer-header">
+                <div class="layer-number">5</div>
+                <div class="layer-title">
+                    <h2>Policy & Legal Framework</h2>
+                    <p>Executive orders and directives that authorize the surveillance infrastructure</p>
+                </div>
+            </div>
+            <div class="layer-content" data-layer="policy">
+                <div class="systems-grid">
+                    <div class="system-card">
+                        <h3>NSPM-7: Domestic Terrorism</h3>
+                        <div class="function">Redefines Domestic Terrorism (September 2025)</div>
+                        <div class="capabilities">
+                            <ul>
+                                <li>Expands definition beyond violent acts to include "advocacy"</li>
+                                <li>Authorizes preemptive surveillance of individuals deemed threats</li>
+                                <li>Creates legal basis for watchlists targeting activists</li>
+                                <li>Enables financial surveillance through FinCEN collaboration</li>
+                                <li>DOJ implementation memo by AG Bondi (September 2025)</li>
+                            </ul>
+                        </div>
+                        <span class="tag">Trump Administration</span>
+                        <span class="tag">DOJ</span>
+                        <span class="tag">DHS</span>
+                    </div>
+
+                    <div class="system-card">
+                        <h3>"Eliminating Information Silos" EO</h3>
+                        <div class="function">Cross-Agency Data Sharing (March 2025)</div>
+                        <div class="capabilities">
+                            <ul>
+                                <li>Mandates data sharing across all federal agencies</li>
+                                <li>Removes restrictions on immigration-related data transfer</li>
+                                <li>Authorizes "mega API" development by DOGE</li>
+                                <li>Creates unified search across IRS, HHS, SSA, VA databases</li>
+                                <li>Legal basis for Medicaid-to-ICE data pipeline</li>
+                            </ul>
+                        </div>
+                        <span class="tag">Trump Administration</span>
+                        <span class="tag">DOGE</span>
+                    </div>
+
+                    <div class="system-card">
+                        <h3>IRS-ICE Data Sharing Agreement</h3>
+                        <div class="function">Financial Data Pipeline (January 2025)</div>
+                        <div class="capabilities">
+                            <ul>
+                                <li>Grants ICE access to tax records without warrants</li>
+                                <li>Includes ITIN holder data (millions of taxpayers)</li>
+                                <li>Enables employer raid targeting through W-2 analysis</li>
+                                <li>Circumvents traditional privacy protections</li>
+                                <li>Implemented immediately after inauguration</li>
+                            </ul>
+                        </div>
+                        <span class="tag">IRS</span>
+                        <span class="tag">ICE</span>
+                    </div>
+
+                    <div class="system-card">
+                        <h3>HHS Medicaid Data Order</h3>
+                        <div class="function">Healthcare Records Transfer (June 2025)</div>
+                        <div class="capabilities">
+                            <ul>
+                                <li>Requires transfer of Medicaid enrollment data to ICE</li>
+                                <li>Affects 80+ million patient records</li>
+                                <li>Includes immigration status, addresses, family composition</li>
+                                <li>Creates chilling effect on healthcare access</li>
+                                <li>No judicial oversight required</li>
+                            </ul>
+                        </div>
+                        <span class="tag">HHS</span>
+                        <span class="tag">ICE</span>
+                    </div>
+
+                    <div class="system-card">
+                        <h3>Section 287(g) Agreements</h3>
+                        <div class="function">Local Law Enforcement Integration</div>
+                        <div class="capabilities">
+                            <ul>
+                                <li>Deputizes local police as immigration agents</li>
+                                <li>Grants access to ICE databases (IDENT, ICM)</li>
+                                <li>Enables immigration checks during routine stops</li>
+                                <li>Creates pipeline from local jails to deportation</li>
+                                <li>Expanded dramatically under Trump 2.0</li>
+                            </ul>
+                        </div>
+                        <span class="tag">ICE</span>
+                        <span class="tag">Local Law Enforcement</span>
+                    </div>
+
+                    <div class="system-card">
+                        <h3>Secure Communities Program</h3>
+                        <div class="function">Jail-Based Screening</div>
+                        <div class="capabilities">
+                            <ul>
+                                <li>Automatically runs fingerprints against immigration databases</li>
+                                <li>Triggers ICE detainers in local jails</li>
+                                <li>Active in thousands of jurisdictions nationwide</li>
+                                <li>No probable cause required for immigration holds</li>
+                                <li>Feeds FALCON targeting algorithms</li>
+                            </ul>
+                        </div>
+                        <span class="tag">ICE</span>
+                        <span class="tag">FBI</span>
+                    </div>
+                </div>
+
+                <div class="connections">
+                    <h4>Policy Workflow: From Executive Order to Deportation</h4>
+                    <div class="connection-item">
+                        NSPM-7 signed <span class="arrow">→</span> Immigration court monitors labeled "domestic terrorists" <span class="arrow">→</span> Added to secret watchlists
+                    </div>
+                    <div class="connection-item">
+                        "Eliminating Silos" EO <span class="arrow">→</span> DOGE builds mega API <span class="arrow">→</span> Palantir integrates all databases
+                    </div>
+                    <div class="connection-item">
+                        IRS-ICE agreement <span class="arrow">→</span> W-2 data analyzed <span class="arrow">→</span> ELITE identifies worksite raid targets
+                    </div>
+                    <div class="connection-item">
+                        HHS Medicaid order <span class="arrow">→</span> Patient addresses extracted <span class="arrow">→</span> ICM updates target locations
+                    </div>
+                    <div class="connection-item">
+                        287(g) agreement <span class="arrow">→</span> Traffic stop <span class="arrow">→</span> IDENT fingerprint match <span class="arrow">→</span> ICE detainer
+                    </div>
+                </div>
+
+                <div class="info-box" style="background: #111; border-left: 4px solid #7cc193; padding: 1rem; margin-top: 1.5rem; border-radius: 4px;">
+                    <h4 style="color: #e0e0e0; margin-bottom: 0.5rem;">Constitutional Concerns</h4>
+                    <p style="color: #e0e0e0; line-height: 1.6;">
+                        These policies create a legal framework that circumvents traditional Fourth Amendment protections. By labeling activists as "domestic terrorists" under NSPM-7, the government claims authority for warrantless surveillance. The "Eliminating Silos" executive order mandates data sharing that was previously prohibited by agency-specific privacy laws. Together, they create a surveillance system that operates largely outside judicial oversight.
+                    </p>
                 </div>
             </div>
         </div>
