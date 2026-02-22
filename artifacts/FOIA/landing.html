@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FOIA.io — Public records, professionally managed.</title>
-  <meta name="description" content="Draft, track, and appeal FOIA requests — all in one place. Built for journalists, researchers, and anyone who needs answers from government agencies.">
+  <meta name="description" content="KDraft, track, and appeal FOIA requests — all in one place. Built for journalists, researchers, and anyone who needs answers from government agencies.">
   <meta name="robots" content="index, follow">
 
   <!-- Open Graph -->
@@ -867,11 +867,17 @@
 
       .step-body { flex: 1; }
 
+      /* Hero */
+      .hero-headline { font-size: clamp(1.85rem, 7vw, 2.4rem); }
+
       /* Features */
       .features-grid { grid-template-columns: 1fr; }
+      .feat-card { padding: 22px 20px; }
 
       /* Pricing */
       .pricing-grid { grid-template-columns: 1fr; }
+      .price-card { padding: 26px 22px; }
+      .price-amount { font-size: 2rem; }
 
       /* Footer */
       .footer-top {
@@ -886,11 +892,16 @@
 
     /* ─── Responsive — 480px ─────────────────────────────────────── */
     @media (max-width: 480px) {
-      .hero-headline { letter-spacing: -0.03em; }
+      .hero-headline { font-size: 1.85rem; letter-spacing: -0.03em; }
+      .hero-sub      { font-size: 0.97rem; }
       .hero-cta { flex-direction: column; align-items: stretch; }
       .hero-cta .btn { text-align: center; }
       .btn-lg { padding: 14px 20px; }
       .section { padding: 56px 0; }
+      .section-title { font-size: 1.5rem; }
+      .feat-card  { padding: 18px 16px; }
+      .price-card { padding: 22px 18px; }
+      .price-amount { font-size: 1.85rem; }
 
       .footer-top { grid-template-columns: 1fr; }
       .footer-bottom {
@@ -927,7 +938,7 @@
     <div class="hero-content">
       <div class="hero-eyebrow">
         <span class="hero-eyebrow-dot"></span>
-          <p style="text-transform:none;">FOIA.io IS OPERATING IN A CONTROLLED BETA PHASE.</p>
+          <p style="text-transform:none;">FOIA.io is in BETA</p>
       </div>
 
       <h1 class="hero-headline">
@@ -943,7 +954,7 @@
         <a href="#features" class="btn btn-ghost btn-lg">See how it works ↓</a>
       </div>
 
-      <p class="hero-trust">🔒 No credit card required &nbsp;·&nbsp; 3 Plans Available &nbsp;·&nbsp; Federal, State &amp; & Local Management</p>
+      <p class="hero-trust">🔒 No credit card required &nbsp;·&nbsp; 3 Plans Available &nbsp;·&nbsp; Federal, State &amp; Local Management</p>
     </div>
   </section>
 
