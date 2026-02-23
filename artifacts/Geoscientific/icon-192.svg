@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"  stop-color="#1e211c"/>
+      <stop offset="100%" stop-color="#0d0f0c"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="#3d5249" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#0d0f0c" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="bloom" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="192" height="192" rx="20" fill="url(#bg)"/>
+  <rect width="192" height="192" rx="20" fill="url(#glow)"/>
+
+  <!-- Grid -->
+  <pattern id="g" width="16" height="16" patternUnits="userSpaceOnUse">
+    <path d="M 16 0 L 0 0 0 16" fill="none" stroke="rgba(200,136,58,0.07)" stroke-width="0.5"/>
+  </pattern>
+  <rect width="192" height="192" rx="20" fill="url(#g)"/>
+
+  <!-- Topo rings -->
+  <circle cx="96" cy="96" r="88"  fill="none" stroke="rgba(200,136,58,0.07)" stroke-width="1"/>
+  <circle cx="96" cy="96" r="74"  fill="none" stroke="rgba(200,136,58,0.07)" stroke-width="1"/>
+  <circle cx="96" cy="96" r="60"  fill="none" stroke="rgba(200,136,58,0.06)" stroke-width="1"/>
+
+  <!-- Crosshairs -->
+  <line x1="96" y1="8"   x2="96"  y2="184" stroke="rgba(200,136,58,0.09)" stroke-width="0.8"/>
+  <line x1="8"  y1="96"  x2="184" y2="96"  stroke="rgba(200,136,58,0.09)" stroke-width="0.8"/>
+
+  <!-- Tick marks -->
+  <line x1="96" y1="12"  x2="96"  y2="30"  stroke="#c8883a" stroke-width="2.2" stroke-linecap="round" opacity="0.75"/>
+  <line x1="96" y1="162" x2="96"  y2="180" stroke="#c8883a" stroke-width="2.2" stroke-linecap="round" opacity="0.75"/>
+  <line x1="12" y1="96"  x2="30"  y2="96"  stroke="#c8883a" stroke-width="2.2" stroke-linecap="round" opacity="0.75"/>
+  <line x1="162" y1="96" x2="180" y2="96"  stroke="#c8883a" stroke-width="2.2" stroke-linecap="round" opacity="0.75"/>
+
+  <!-- Outer diamond -->
+  <polygon points="96,34 142,96 96,152 50,96"
+    fill="none" stroke="#c8883a" stroke-width="2" stroke-linejoin="round" filter="url(#bloom)"/>
+
+  <!-- Mid diamond -->
+  <polygon points="96,56 122,96 96,130 70,96"
+    fill="rgba(200,136,58,0.07)" stroke="rgba(200,136,58,0.4)" stroke-width="1.2" stroke-linejoin="round"/>
+
+  <!-- Inner diamond -->
+  <polygon points="96,72 110,96 96,114 82,96"
+    fill="rgba(200,136,58,0.16)" stroke="#c8883a" stroke-width="1.5" stroke-linejoin="round" filter="url(#bloom)"/>
+
+  <!-- Center -->
+  <circle cx="96" cy="96" r="9"   fill="rgba(200,136,58,0.22)" filter="url(#bloom)"/>
+  <circle cx="96" cy="96" r="5.5" fill="#c8883a"/>
+  <circle cx="96" cy="96" r="2.5" fill="#dfa55a"/>
+</svg>
