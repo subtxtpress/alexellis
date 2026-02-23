@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geoscientific Solutions — GIS Services for Local Government</title>
+  <meta name="description" content="Enterprise-grade GIS solutions tailored to Texas municipalities, counties, and special districts. Parcel mapping, utility GIS, emergency management, and more." />
+  <meta property="og:title" content="Geoscientific Solutions — GIS Services for Local Government" />
+  <meta property="og:description" content="Precision geographic information systems for Texas local governments. 18+ years, 120+ clients." />
+  <meta property="og:image" content="preview.svg" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="preview.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─────────────────────────────────────────
+       TOKENS & RESET
+    ───────────────────────────────────────── */
+    :root {
+      --ink:        #0d0f0c;
+      --ink-80:     #1a1d18;
+      --ink-60:     #272b24;
+      --parchment:  #f2ede4;
+      --parchment-d:#e8e0d2;
+      --ochre:      #c8883a;
+      --ochre-l:    #dfa55a;
+      --sage:       #3d5249;
+      --sage-l:     #4e6a5e;
+      --slate:      #7d8c82;
+      --slate-l:    #a3b4aa;
+      --cream:      #faf7f2;
+      --rule:       rgba(200, 136, 58, 0.22);
+      --rule-light: rgba(200, 136, 58, 0.10);
+
+      --ff-serif: 'Cormorant Garamond', Georgia, serif;
+      --ff-sans:  'DM Sans', system-ui, sans-serif;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background: var(--ink);
+      color: var(--parchment);
+      font-family: var(--ff-sans);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    img { display: block; max-width: 100%; }
+    a   { color: inherit; text-decoration: none; }
+
+    /* ─────────────────────────────────────────
+       TOPO BACKGROUND TEXTURE (SVG)
+    ───────────────────────────────────────── */
+    .topo-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800'%3E%3Cdefs%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008 0.006' numOctaves='6' seed='4'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='120'/%3E%3C/filter%3E%3C/defs%3E%3Ccircle cx='400' cy='400' r='380' fill='none' stroke='%23c8883a' stroke-width='1' filter='url(%23n)'/%3E%3Ccircle cx='400' cy='400' r='330' fill='none' stroke='%23c8883a' stroke-width='1' filter='url(%23n)'/%3E%3Ccircle cx='400' cy='400' r='280' fill='none' stroke='%23c8883a' stroke-width='1' filter='url(%23n)'/%3E%3Ccircle cx='400' cy='400' r='230' fill='none' stroke='%23c8883a' stroke-width='1' filter='url(%23n)'/%3E%3Ccircle cx='400' cy='400' r='180' fill='none' stroke='%23c8883a' stroke-width='1' filter='url(%23n)'/%3E%3Ccircle cx='400' cy='400' r='130' fill='none' stroke='%23c8883a' stroke-width='1' filter='url(%23n)'/%3E%3Ccircle cx='400' cy='400' r='80' fill='none' stroke='%23c8883a' stroke-width='1' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 800px 800px;
+    }
+
+    /* ─────────────────────────────────────────
+       NAV
+    ───────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 4rem;
+      border-bottom: 1px solid transparent;
+      transition: background 0.4s, border-color 0.4s, backdrop-filter 0.4s;
+    }
+
+    nav.scrolled {
+      background: rgba(13, 15, 12, 0.88);
+      border-color: var(--rule);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .nav-logo-primary {
+      font-family: var(--ff-serif);
+      font-size: 1.15rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: var(--parchment);
+      line-height: 1;
+    }
+
+    .nav-logo-sub {
+      font-family: var(--ff-sans);
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ochre);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--slate-l);
+    }
+
+    .nav-links a {
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--ochre-l); }
+
+    .nav-cta {
+      font-family: var(--ff-sans);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.65rem 1.5rem;
+      border: 1px solid var(--ochre);
+      color: var(--ochre);
+      transition: background 0.25s, color 0.25s;
+    }
+
+    .nav-cta:hover {
+      background: var(--ochre);
+      color: var(--ink);
+    }
+
+    /* ─────────────────────────────────────────
+       HERO
+    ───────────────────────────────────────── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100svh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 0 4rem;
+      padding-top: 8rem;
+      gap: 4rem;
+      overflow: hidden;
+    }
+
+    /* Radial glow behind text */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -10%;
+      left: -5%;
+      width: 55%;
+      height: 80%;
+      background: radial-gradient(ellipse at 30% 40%, rgba(61,82,73,0.35) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-text {
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ochre);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.9s var(--ease-out-expo) 0.2s forwards;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 2.5rem;
+      height: 1px;
+      background: var(--ochre);
+    }
+
+    .hero-headline {
+      font-family: var(--ff-serif);
+      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-weight: 300;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      color: var(--parchment);
+      margin-bottom: 1.75rem;
+      opacity: 0;
+      animation: fadeUp 1s var(--ease-out-expo) 0.4s forwards;
+    }
+
+    .hero-headline em {
+      font-style: italic;
+      color: var(--ochre-l);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--slate-l);
+      max-width: 38ch;
+      margin-bottom: 2.75rem;
+      opacity: 0;
+      animation: fadeUp 1s var(--ease-out-expo) 0.55s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+      opacity: 0;
+      animation: fadeUp 1s var(--ease-out-expo) 0.7s forwards;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--ochre);
+      color: var(--ink);
+      font-family: var(--ff-sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      transition: background 0.25s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--ochre-l);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary svg { transition: transform 0.2s; }
+    .btn-primary:hover svg { transform: translateX(3px); }
+
+    .btn-ghost {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--slate-l);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.2s;
+    }
+
+    .btn-ghost:hover { color: var(--parchment); }
+
+    /* ── Map visual ── */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      animation: fadeIn 1.4s var(--ease-out-expo) 0.8s forwards;
+    }
+
+    .map-frame {
+      position: relative;
+      width: 100%;
+      max-width: 520px;
+      aspect-ratio: 1;
+    }
+
+    .map-svg-wrap {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    /* Rotating outer ring */
+    .ring-spin {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1px dashed rgba(200,136,58,0.35);
+      animation: slowSpin 60s linear infinite;
+    }
+
+    .ring-spin-2 {
+      position: absolute;
+      inset: 8%;
+      border-radius: 50%;
+      border: 1px dashed rgba(200,136,58,0.2);
+      animation: slowSpin 90s linear infinite reverse;
+    }
+
+    @keyframes slowSpin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Pulsing dot */
+    .map-pulse {
+      position: absolute;
+      top: 38%;
+      left: 53%;
+      width: 10px;
+      height: 10px;
+      transform: translate(-50%,-50%);
+    }
+
+    .map-pulse-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--ochre);
+      border-radius: 50%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .map-pulse-ring {
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      border: 1px solid var(--ochre);
+      opacity: 0;
+      animation: pulse 2.5s ease-out infinite;
+    }
+
+    .map-pulse-ring:nth-child(3) {
+      animation-delay: 0.8s;
+    }
+
+    @keyframes pulse {
+      0%   { opacity: 0.7; transform: scale(0.5); }
+      100% { opacity: 0;   transform: scale(3); }
+    }
+
+    .map-card {
+      position: absolute;
+      bottom: 8%;
+      left: -8%;
+      background: var(--ink-60);
+      border: 1px solid var(--rule);
+      padding: 1rem 1.25rem;
+      min-width: 180px;
+    }
+
+    .map-card-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ochre);
+      margin-bottom: 0.35rem;
+    }
+
+    .map-card-value {
+      font-family: var(--ff-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--parchment);
+      line-height: 1;
+    }
+
+    .map-card-sub {
+      font-size: 0.65rem;
+      color: var(--slate);
+      margin-top: 0.2rem;
+    }
+
+    /* Hero stats strip */
+    .hero-stats {
+      position: absolute;
+      bottom: 3rem;
+      left: 4rem;
+      right: 4rem;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border-top: 1px solid var(--rule-light);
+      padding-top: 2rem;
+      z-index: 2;
+      opacity: 0;
+      animation: fadeUp 1s var(--ease-out-expo) 1.1s forwards;
+    }
+
+    .stat-item {
+      flex: 1;
+      padding-right: 2rem;
+      border-right: 1px solid var(--rule-light);
+    }
+
+    .stat-item:first-child { padding-left: 0; }
+    .stat-item:last-child  { border-right: none; padding-left: 2rem; padding-right: 0; }
+
+    .stat-number {
+      font-family: var(--ff-serif);
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--ochre-l);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--slate);
+      margin-top: 0.35rem;
+    }
+
+    /* ─────────────────────────────────────────
+       DIVIDER
+    ───────────────────────────────────────── */
+    .section-divider {
+      position: relative;
+      z-index: 1;
+      height: 1px;
+      background: var(--rule-light);
+      margin: 0 4rem;
+    }
+
+    /* ─────────────────────────────────────────
+       SERVICES
+    ───────────────────────────────────────── */
+    .services {
+      position: relative;
+      z-index: 1;
+      padding: 7rem 4rem;
+    }
+
+    .section-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: end;
+      margin-bottom: 4.5rem;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ochre);
+      margin-bottom: 1rem;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 1.5rem;
+      height: 1px;
+      background: var(--ochre);
+    }
+
+    .section-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--parchment);
+    }
+
+    .section-title em { font-style: italic; color: var(--ochre-l); }
+
+    .section-desc {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--slate-l);
+      align-self: end;
+    }
+
+    /* Service cards */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--rule-light);
+      border: 1px solid var(--rule-light);
+    }
+
+    .service-card {
+      background: var(--ink);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.35s;
+      cursor: default;
+    }
+
+    .service-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--ochre);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s var(--ease-out-expo);
+    }
+
+    .service-card:hover { background: var(--ink-60); }
+    .service-card:hover::after { transform: scaleX(1); }
+
+    .service-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--ochre);
+      opacity: 0.85;
+    }
+
+    .service-num {
+      font-family: var(--ff-serif);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      color: var(--slate);
+      margin-bottom: 1rem;
+    }
+
+    .service-name {
+      font-family: var(--ff-serif);
+      font-size: 1.35rem;
+      font-weight: 400;
+      color: var(--parchment);
+      margin-bottom: 0.85rem;
+      line-height: 1.2;
+    }
+
+    .service-desc {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: var(--slate-l);
+    }
+
+    /* ─────────────────────────────────────────
+       WHY US (DIFFERENTIATORS)
+    ───────────────────────────────────────── */
+    .why {
+      position: relative;
+      z-index: 1;
+      padding: 7rem 4rem;
+      background: var(--ink-80);
+      border-top: 1px solid var(--rule-light);
+      border-bottom: 1px solid var(--rule-light);
+      overflow: hidden;
+    }
+
+    /* Decorative corner coords */
+    .coord-mark {
+      position: absolute;
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      color: rgba(200,136,58,0.25);
+      font-family: var(--ff-sans);
+    }
+
+    .coord-mark.tl { top: 2rem; left: 4rem; }
+    .coord-mark.tr { top: 2rem; right: 4rem; }
+    .coord-mark.bl { bottom: 2rem; left: 4rem; }
+    .coord-mark.br { bottom: 2rem; right: 4rem; }
+
+    .why-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+
+    .why-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .why-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1.5rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--rule-light);
+      transition: padding-left 0.3s;
+    }
+
+    .why-item:first-child { border-top: 1px solid var(--rule-light); }
+
+    .why-item:hover { padding-left: 0.5rem; }
+
+    .why-item-num {
+      font-family: var(--ff-serif);
+      font-size: 1.8rem;
+      font-weight: 300;
+      color: rgba(200,136,58,0.3);
+      line-height: 1;
+      padding-top: 0.1rem;
+      transition: color 0.3s;
+    }
+
+    .why-item:hover .why-item-num { color: var(--ochre); }
+
+    .why-item-content {}
+
+    .why-item-title {
+      font-family: var(--ff-serif);
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--parchment);
+      margin-bottom: 0.5rem;
+    }
+
+    .why-item-desc {
+      font-size: 0.83rem;
+      line-height: 1.7;
+      color: var(--slate-l);
+    }
+
+    .why-aside {
+      position: relative;
+    }
+
+    .why-quote-block {
+      border-left: 2px solid var(--ochre);
+      padding: 2rem 2rem 2rem 2.5rem;
+      background: rgba(200,136,58,0.04);
+      margin-bottom: 2.5rem;
+    }
+
+    .why-quote {
+      font-family: var(--ff-serif);
+      font-size: 1.5rem;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--parchment);
+      margin-bottom: 1rem;
+    }
+
+    .why-quote-source {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ochre);
+    }
+
+    .why-cert-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .why-cert {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      font-size: 0.78rem;
+      color: var(--slate-l);
+      letter-spacing: 0.04em;
+    }
+
+    .why-cert-badge {
+      width: 1.5rem;
+      height: 1.5rem;
+      border: 1px solid var(--ochre);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--ochre);
+    }
+
+    /* ─────────────────────────────────────────
+       SECTORS (WHO WE SERVE)
+    ───────────────────────────────────────── */
+    .sectors {
+      position: relative;
+      z-index: 1;
+      padding: 7rem 4rem;
+    }
+
+    .sectors-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+
+    .sector-card {
+      border: 1px solid var(--rule-light);
+      padding: 2rem 1.75rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+
+    .sector-card:hover { border-color: var(--ochre); }
+
+    .sector-icon {
+      color: var(--ochre);
+      opacity: 0.7;
+      margin-bottom: 1.25rem;
+      transition: opacity 0.3s;
+    }
+
+    .sector-card:hover .sector-icon { opacity: 1; }
+
+    .sector-name {
+      font-family: var(--ff-serif);
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--parchment);
+      margin-bottom: 0.5rem;
+    }
+
+    .sector-desc {
+      font-size: 0.78rem;
+      line-height: 1.65;
+      color: var(--slate);
+    }
+
+    /* ─────────────────────────────────────────
+       PROCESS
+    ───────────────────────────────────────── */
+    .process {
+      position: relative;
+      z-index: 1;
+      padding: 7rem 4rem;
+      background: var(--ink-80);
+      border-top: 1px solid var(--rule-light);
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin-top: 4rem;
+      position: relative;
+    }
+
+    /* connector line */
+    .process-steps::before {
+      content: '';
+      position: absolute;
+      top: 1.75rem;
+      left: 12%;
+      right: 12%;
+      height: 1px;
+      background: var(--rule);
+      z-index: 0;
+    }
+
+    .process-step {
+      padding: 0 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-num-wrap {
+      width: 3.5rem;
+      height: 3.5rem;
+      border: 1px solid var(--rule);
+      background: var(--ink-80);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      position: relative;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .process-step:hover .step-num-wrap {
+      border-color: var(--ochre);
+      background: rgba(200,136,58,0.08);
+    }
+
+    .step-num {
+      font-family: var(--ff-serif);
+      font-size: 1rem;
+      color: var(--ochre);
+    }
+
+    .step-title {
+      font-family: var(--ff-serif);
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--parchment);
+      margin-bottom: 0.6rem;
+    }
+
+    .step-desc {
+      font-size: 0.8rem;
+      line-height: 1.65;
+      color: var(--slate);
+    }
+
+    /* ─────────────────────────────────────────
+       CTA
+    ───────────────────────────────────────── */
+    .cta-section {
+      position: relative;
+      z-index: 1;
+      padding: 8rem 4rem;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, rgba(61,82,73,0.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ochre);
+      margin-bottom: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .cta-eyebrow::before, .cta-eyebrow::after {
+      content: '';
+      display: block;
+      width: 2rem;
+      height: 1px;
+      background: var(--ochre);
+    }
+
+    .cta-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--parchment);
+      margin-bottom: 1.25rem;
+    }
+
+    .cta-title em { font-style: italic; color: var(--ochre-l); }
+
+    .cta-sub {
+      font-size: 1rem;
+      color: var(--slate-l);
+      max-width: 50ch;
+      margin: 0 auto 3rem;
+      line-height: 1.7;
+    }
+
+    .cta-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .btn-large {
+      padding: 1.15rem 2.75rem;
+      font-size: 0.78rem;
+    }
+
+    .cta-contact-info {
+      margin-top: 3.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--rule-light);
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.82rem;
+      color: var(--slate-l);
+    }
+
+    .contact-item svg { color: var(--ochre); flex-shrink: 0; }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    footer {
+      position: relative;
+      z-index: 1;
+      background: var(--ink-80);
+      border-top: 1px solid var(--rule-light);
+      padding: 3.5rem 4rem 2.5rem;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--rule-light);
+      margin-bottom: 2rem;
+    }
+
+    .footer-brand-name {
+      font-family: var(--ff-serif);
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--parchment);
+      margin-bottom: 0.25rem;
+    }
+
+    .footer-brand-sub {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ochre);
+      margin-bottom: 1rem;
+    }
+
+    .footer-tagline {
+      font-size: 0.8rem;
+      line-height: 1.65;
+      color: var(--slate);
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-col-title {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ochre);
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .footer-links a {
+      font-size: 0.82rem;
+      color: var(--slate-l);
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--parchment); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.68rem;
+      color: var(--slate);
+      letter-spacing: 0.06em;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+
+    .footer-bottom-links a {
+      color: var(--slate);
+      transition: color 0.2s;
+    }
+
+    .footer-bottom-links a:hover { color: var(--slate-l); }
+
+    /* ─────────────────────────────────────────
+       ANIMATIONS
+    ───────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+    .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ─────────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      nav                { padding: 1.25rem 2rem; }
+      .nav-links         { display: none; }
+      .hero              { grid-template-columns: 1fr; padding: 9rem 2rem 14rem; }
+      .hero-visual       { display: none; }
+      .hero-stats        { left: 2rem; right: 2rem; flex-wrap: wrap; gap: 1.5rem; }
+      .stat-item         { min-width: 120px; border-right: none; padding: 0; }
+      .section-header    { grid-template-columns: 1fr; gap: 1.5rem; }
+      .services          { padding: 5rem 2rem; }
+      .services-grid     { grid-template-columns: 1fr; }
+      .why               { padding: 5rem 2rem; }
+      .why-inner         { grid-template-columns: 1fr; gap: 3rem; }
+      .sectors           { padding: 5rem 2rem; }
+      .sectors-grid      { grid-template-columns: repeat(2, 1fr); }
+      .process           { padding: 5rem 2rem; }
+      .process-steps     { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .process-steps::before { display: none; }
+      .cta-section       { padding: 5rem 2rem; }
+      .cta-contact-info  { flex-direction: column; gap: 1.25rem; }
+      footer             { padding: 3rem 2rem 2rem; }
+      .footer-top        { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .section-divider   { margin: 0 2rem; }
+    }
+
+    @media (max-width: 640px) {
+      .sectors-grid    { grid-template-columns: 1fr; }
+      .process-steps   { grid-template-columns: 1fr; }
+      .footer-top      { grid-template-columns: 1fr; }
+      .hero-headline   { font-size: 2.4rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Topo texture overlay -->
+  <div class="topo-bg" aria-hidden="true"></div>
+
+  <!-- ═══════════════════════════════════════
+       NAV
+  ═══════════════════════════════════════ -->
+  <nav id="main-nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-logo">
+      <span class="nav-logo-primary">Geoscientific Solutions</span>
+      <span class="nav-logo-sub">GIS Consulting · Texas</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#why-us">About</a></li>
+      <li><a href="#sectors">Sectors</a></li>
+      <li><a href="#process">Process</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Schedule a Consultation</a>
+  </nav>
+
+  <!-- ═══════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════ -->
+  <section class="hero" aria-label="Hero">
+
+    <div class="hero-text">
+      <div class="hero-eyebrow">GIS Services for Local Government · Texas</div>
+
+      <h1 class="hero-headline">
+        Precision mapping<br />
+        for the<br />
+        <em>communities</em><br />
+        you serve.
+      </h1>
+
+      <p class="hero-sub">
+        We deliver enterprise-grade Geographic Information System solutions tailored to the unique operational, regulatory, and infrastructure needs of Texas municipalities and counties.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">
+          Begin a Project
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#services" class="btn-ghost">
+          Explore Services
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Hero map visual -->
+    <div class="hero-visual" aria-hidden="true">
+      <div class="map-frame">
+        <div class="ring-spin"></div>
+        <div class="ring-spin-2"></div>
+
+        <!-- SVG: Stylized Texas outline with grid overlay -->
+        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;position:relative;z-index:1;">
+          <defs>
+            <linearGradient id="mapGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#1a1d18;stop-opacity:1"/>
+              <stop offset="100%" style="stop-color:#0d0f0c;stop-opacity:1"/>
+            </linearGradient>
+            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(200,136,58,0.08)" stroke-width="0.5"/>
+            </pattern>
+            <filter id="glow">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          <!-- Background -->
+          <rect width="400" height="400" fill="url(#mapGrad)" rx="0"/>
+          <rect width="400" height="400" fill="url(#grid)"/>
+
+          <!-- Stylized Texas shape -->
+          <path d="
+            M 100 60
+            L 270 60
+            L 280 80
+            L 280 140
+            L 310 140
+            L 310 165
+            L 340 165
+            L 340 225
+            L 300 260
+            L 295 310
+            L 280 340
+            L 250 345
+            L 230 330
+            L 210 320
+            L 180 330
+            L 150 335
+            L 135 350
+            L 115 340
+            L 105 310
+            L 90 280
+            L 80 245
+            L 85 210
+            L 90 170
+            L 100 60
+            Z
+          "
+            fill="none"
+            stroke="rgba(200,136,58,0.5)"
+            stroke-width="1.5"
+            filter="url(#glow)"
+          />
+
+          <!-- Internal county-like grid lines -->
+          <line x1="100" y1="120" x2="310" y2="130" stroke="rgba(200,136,58,0.12)" stroke-width="0.5"/>
+          <line x1="95"  y1="185" x2="340" y2="175" stroke="rgba(200,136,58,0.12)" stroke-width="0.5"/>
+          <line x1="88"  y1="248" x2="310" y2="235" stroke="rgba(200,136,58,0.12)" stroke-width="0.5"/>
+          <line x1="150" y1="65"  x2="145" y2="335" stroke="rgba(200,136,58,0.10)" stroke-width="0.5"/>
+          <line x1="210" y1="62"  x2="205" y2="322" stroke="rgba(200,136,58,0.10)" stroke-width="0.5"/>
+          <line x1="265" y1="63"  x2="275" y2="275" stroke="rgba(200,136,58,0.10)" stroke-width="0.5"/>
+
+          <!-- Data points / cities -->
+          <circle cx="212" cy="185" r="3" fill="rgba(200,136,58,0.7)" filter="url(#glow)"/>
+          <text x="218" y="183" fill="rgba(200,136,58,0.6)" font-size="7" font-family="monospace">AUSTIN</text>
+          <circle cx="155" cy="255" r="2.5" fill="rgba(200,136,58,0.5)"/>
+          <text x="161" y="253" fill="rgba(200,136,58,0.5)" font-size="7" font-family="monospace">SAN ANTONIO</text>
+          <circle cx="248" cy="165" r="2.5" fill="rgba(200,136,58,0.5)"/>
+          <text x="254" y="163" fill="rgba(200,136,58,0.5)" font-size="7" font-family="monospace">WACO</text>
+
+          <!-- Coordinate labels -->
+          <text x="10" y="15"  fill="rgba(200,136,58,0.2)" font-size="7" font-family="monospace">30.2672° N</text>
+          <text x="10" y="395" fill="rgba(200,136,58,0.2)" font-size="7" font-family="monospace">97.7431° W</text>
+
+          <!-- Scan line animation -->
+          <rect x="0" y="0" width="400" height="2" fill="rgba(200,136,58,0.15)" opacity="0.6">
+            <animateTransform attributeName="transform" type="translate" from="0,0" to="0,400" dur="4s" repeatCount="indefinite"/>
+          </rect>
+        </svg>
+
+        <!-- Pulse marker -->
+        <div class="map-pulse">
+          <div class="map-pulse-dot"></div>
+          <div class="map-pulse-ring"></div>
+          <div class="map-pulse-ring"></div>
+        </div>
+
+        <!-- Data card -->
+        <div class="map-card">
+          <div class="map-card-label">Active Projects</div>
+          <div class="map-card-value">47</div>
+          <div class="map-card-sub">Texas municipalities · 2024</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats strip -->
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number">18+</div>
+        <div class="stat-label">Years in Texas GIS</div>
+      </div>
+      <div class="stat-item" style="padding-left:2rem;">
+        <div class="stat-number">120+</div>
+        <div class="stat-label">Government Clients</div>
+      </div>
+      <div class="stat-item" style="padding-left:2rem;">
+        <div class="stat-number">$2.4B</div>
+        <div class="stat-label">Infrastructure Mapped</div>
+      </div>
+      <div class="stat-item" style="padding-left:2rem;">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Texas-Based Team</div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SERVICES
+  ═══════════════════════════════════════ -->
+  <section id="services" class="services">
+
+    <div class="section-header reveal">
+      <div>
+        <div class="section-label">What We Do</div>
+        <h2 class="section-title">GIS capabilities built for<br /><em>local government</em> realities.</h2>
+      </div>
+      <p class="section-desc">
+        From parcel data management to emergency dispatch routing, our services are shaped by years of working directly with Texas city managers, county engineers, and public works directors.
+      </p>
+    </div>
+
+    <div class="services-grid">
+
+      <!-- Card 1 -->
+      <div class="service-card reveal">
+        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l9-4 9 4v13l-9 4-9-4V7z"/><path d="M12 3v18M3 7l9 4 9-4"/></svg>
+        <div class="service-num">01</div>
+        <h3 class="service-name">Parcel &amp; Land Records Mapping</h3>
+        <p class="service-desc">Authoritative parcel fabric creation, maintenance, and integration with your county appraisal district data. ESRI and open-standard compatible.</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="service-card reveal reveal-delay-1">
+        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+        <div class="service-num">02</div>
+        <h3 class="service-name">Utility &amp; Infrastructure GIS</h3>
+        <p class="service-desc">Digital inventory and spatial analysis of water, wastewater, stormwater, and transportation networks. Supports capital planning and federal reporting.</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="service-card reveal reveal-delay-2">
+        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+        <div class="service-num">03</div>
+        <h3 class="service-name">Emergency Management Mapping</h3>
+        <p class="service-desc">Pre-disaster planning layers, evacuation route modeling, and real-time situational awareness mapping for EOC operations.</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="service-card reveal reveal-delay-3">
+        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div class="service-num">04</div>
+        <h3 class="service-name">Zoning &amp; Planning Support</h3>
+        <p class="service-desc">Comprehensive zoning atlas creation, future land use mapping, subdivision plat processing, and public-facing web map portals for permitting.</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="service-card reveal reveal-delay-1">
+        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <div class="service-num">05</div>
+        <h3 class="service-name">Web GIS &amp; Public Portals</h3>
+        <p class="service-desc">ArcGIS Online and open-source web mapping solutions. Interactive public dashboards for citizen transparency, code enforcement, and grant reporting.</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="service-card reveal reveal-delay-2">
+        <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        <div class="service-num">06</div>
+        <h3 class="service-name">GIS Training &amp; Staff Support</h3>
+        <p class="service-desc">On-site and remote training programs for city staff, data quality audits, and ongoing managed GIS services for governments without dedicated analysts.</p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       WHY US
+  ═══════════════════════════════════════ -->
+  <section id="why-us" class="why">
+    <span class="coord-mark tl">30°16'N 097°44'W · Austin, TX</span>
+    <span class="coord-mark tr">Datum: NAD83 / Texas State Plane</span>
+    <span class="coord-mark bl">Projection: Lambert Conformal Conic</span>
+    <span class="coord-mark br">Scale: Variable · 1:1,200 to 1:500,000</span>
+
+    <div class="why-inner">
+
+      <div>
+        <div class="section-label reveal">Why Choose Us</div>
+        <h2 class="section-title reveal" style="margin-bottom:2.5rem;">We know Texas<br />government work<br /><em>from the inside.</em></h2>
+
+        <div class="why-list">
+          <div class="why-item reveal">
+            <div class="why-item-num">01</div>
+            <div class="why-item-content">
+              <h3 class="why-item-title">Deep Texas Municipal Experience</h3>
+              <p class="why-item-desc">Our principals have served as contracted GIS coordinators for Texas cities of 2,000 to 200,000 residents. We understand the constraints of small budgets, limited staff, and TCEQ compliance requirements.</p>
+            </div>
+          </div>
+          <div class="why-item reveal reveal-delay-1">
+            <div class="why-item-num">02</div>
+            <div class="why-item-content">
+              <h3 class="why-item-title">No Project Too Small</h3>
+              <p class="why-item-desc">National firms ignore rural counties and small cities. We specialize in them. Every client — from a 3,000-person town to a regional authority — receives principal-level attention.</p>
+            </div>
+          </div>
+          <div class="why-item reveal reveal-delay-2">
+            <div class="why-item-num">03</div>
+            <div class="why-item-content">
+              <h3 class="why-item-title">Deliverables That Survive Handoffs</h3>
+              <p class="why-item-desc">We build data structures, metadata standards, and documentation so your GIS assets remain usable when staff turns over or you change platforms. No proprietary lock-in.</p>
+            </div>
+          </div>
+          <div class="why-item reveal reveal-delay-3">
+            <div class="why-item-num">04</div>
+            <div class="why-item-content">
+              <h3 class="why-item-title">Grant &amp; FEMA Compliance Ready</h3>
+              <p class="why-item-desc">Extensive experience producing GIS deliverables that satisfy FEMA BRIC, TxDOT, and GLO grant requirements. We help you make the data work for funding, not just operations.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="why-aside reveal reveal-delay-2">
+        <div class="why-quote-block">
+          <p class="why-quote">"Working with small governments means understanding their real constraints — not just spatial data problems, but staff capacity, council timelines, and budget cycles."</p>
+          <div class="why-quote-source">— Principal Geoscientist, Geoscientific Solutions</div>
+        </div>
+
+        <div class="why-cert-list">
+          <div class="why-cert">
+            <div class="why-cert-badge">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            Esri ArcGIS Certified Professionals on Staff
+          </div>
+          <div class="why-cert">
+            <div class="why-cert-badge">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            GISP-Certified Geographic Information Scientists
+          </div>
+          <div class="why-cert">
+            <div class="why-cert-badge">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            Texas HUB Certified Vendor
+          </div>
+          <div class="why-cert">
+            <div class="why-cert-badge">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            TXMAS State Contract Holder (DIR-TSO-XXXX)
+          </div>
+          <div class="why-cert">
+            <div class="why-cert-badge">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            Member, Texas GIS Forum &amp; URISA-Texas
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       SECTORS
+  ═══════════════════════════════════════ -->
+  <section id="sectors" class="sectors">
+
+    <div class="reveal">
+      <div class="section-label">Who We Serve</div>
+      <h2 class="section-title">Government sectors<br />we know <em>deeply.</em></h2>
+    </div>
+
+    <div class="sectors-grid">
+
+      <div class="sector-card reveal">
+        <svg class="sector-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <h3 class="sector-name">Cities &amp; Municipalities</h3>
+        <p class="sector-desc">From Type-A general law cities to large home-rule municipalities. Planning departments, public works, code enforcement, and utility billing GIS.</p>
+      </div>
+
+      <div class="sector-card reveal reveal-delay-1">
+        <svg class="sector-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+        <h3 class="sector-name">County Governments</h3>
+        <p class="sector-desc">County appraisal districts, road &amp; bridge departments, sheriff's dispatch, and elections offices. Texas-specific CAD integration expertise.</p>
+      </div>
+
+      <div class="sector-card reveal reveal-delay-2">
+        <svg class="sector-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <h3 class="sector-name">Emergency Services Districts</h3>
+        <p class="sector-desc">ESD mapping, apparatus deployment planning, mutual aid boundary delineation, and NFIRS-compliant incident mapping for rural fire districts.</p>
+      </div>
+
+      <div class="sector-card reveal reveal-delay-3">
+        <svg class="sector-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <h3 class="sector-name">Special Purpose Districts</h3>
+        <p class="sector-desc">MUDs, PUDs, water supply corporations, drainage districts, and conservation districts. Boundary mapping, infrastructure inventory, and regulatory compliance layers.</p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       PROCESS
+  ═══════════════════════════════════════ -->
+  <section id="process" class="process">
+
+    <div class="section-header reveal">
+      <div>
+        <div class="section-label">How We Work</div>
+        <h2 class="section-title">A straightforward<br /><em>engagement process.</em></h2>
+      </div>
+      <p class="section-desc">
+        Government procurement has enough friction. We keep our process clear, documented, and adapted to public sector timelines — including sole-source justification support and cooperative contract availability.
+      </p>
+    </div>
+
+    <div class="process-steps">
+
+      <div class="process-step reveal">
+        <div class="step-num-wrap">
+          <span class="step-num">I</span>
+        </div>
+        <h3 class="step-title">Discovery &amp; Needs Assessment</h3>
+        <p class="step-desc">We meet with your team to understand current data holdings, staff capacity, software environment, and project goals. No charge for initial assessment.</p>
+      </div>
+
+      <div class="process-step reveal reveal-delay-1">
+        <div class="step-num-wrap">
+          <span class="step-num">II</span>
+        </div>
+        <h3 class="step-title">Scope &amp; Proposal</h3>
+        <p class="step-desc">A clear written scope of work with deliverables, schedule, and fixed or not-to-exceed fee. Formatted for council or commissioners court agenda packets.</p>
+      </div>
+
+      <div class="process-step reveal reveal-delay-2">
+        <div class="step-num-wrap">
+          <span class="step-num">III</span>
+        </div>
+        <h3 class="step-title">Execution &amp; Milestones</h3>
+        <p class="step-desc">Phased delivery with milestone check-ins and progress reporting. Your staff is kept informed — no black-box development cycles.</p>
+      </div>
+
+      <div class="process-step reveal reveal-delay-3">
+        <div class="step-num-wrap">
+          <span class="step-num">IV</span>
+        </div>
+        <h3 class="step-title">Delivery &amp; Knowledge Transfer</h3>
+        <p class="step-desc">Full data handoff, documentation, and staff training so your team owns and understands the GIS assets we build. Ongoing support available.</p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       CTA
+  ═══════════════════════════════════════ -->
+  <section id="contact" class="cta-section">
+
+    <div class="cta-eyebrow">Start a Conversation</div>
+    <h2 class="cta-title reveal">Ready to bring<br />precision GIS to your<br /><em>community?</em></h2>
+    <p class="cta-sub reveal reveal-delay-1">
+      Whether you have a defined project or just questions about what GIS could do for your department, we're glad to talk. Consultations are free and there's no obligation.
+    </p>
+
+    <div class="cta-actions reveal reveal-delay-2">
+      <a href="mailto:info@geoscientificsolutions.com" class="btn-primary btn-large">
+        Schedule a Free Consultation
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="tel:+15125550100" class="btn-ghost">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        (512) 555-0100
+      </a>
+    </div>
+
+    <div class="cta-contact-info reveal reveal-delay-3">
+      <div class="contact-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        1234 Congress Ave, Suite 400 · Austin, TX 78701
+      </div>
+      <div class="contact-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        info@geoscientificsolutions.com
+      </div>
+      <div class="contact-item">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Mon – Fri · 8:00 AM – 5:00 PM CT
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════ -->
+  <footer>
+    <div class="footer-top">
+
+      <div>
+        <div class="footer-brand-name">Geoscientific Solutions</div>
+        <div class="footer-brand-sub">GIS Consulting · Dallas, Texas</div>
+        <p class="footer-tagline">Delivering authoritative geographic information systems to local governments across the State of Texas since 2006.</p>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Services</div>
+        <ul class="footer-links">
+          <li><a href="#services">Parcel &amp; Land Records</a></li>
+          <li><a href="#services">Utility &amp; Infrastructure GIS</a></li>
+          <li><a href="#services">Emergency Management</a></li>
+          <li><a href="#services">Zoning &amp; Planning</a></li>
+          <li><a href="#services">Web GIS Portals</a></li>
+          <li><a href="#services">GIS Training</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Sectors</div>
+        <ul class="footer-links">
+          <li><a href="#sectors">Cities &amp; Municipalities</a></li>
+          <li><a href="#sectors">County Governments</a></li>
+          <li><a href="#sectors">Emergency Services</a></li>
+          <li><a href="#sectors">Special Districts</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <ul class="footer-links">
+          <li><a href="mailto:info@geoscientificsolutions.com">info@geoscientificsolutions.com</a></li>
+          <li><a href="tel:+15125550100">(555) 555-5555</a></li>
+          <li style="color:var(--slate);cursor:default;">1234 Main Street, Suite 500</li>
+          <li style="color:var(--slate);cursor:default;">Dallas, TX 78701</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2025 Geoscientific Solutions LLC. All rights reserved.</span>
+      <ul class="footer-bottom-links">
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Service</a></li>
+        <li><a href="#">Accessibility</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════
+       SCRIPTS
+  ═══════════════════════════════════════ -->
+  <script>
+    // ── Nav scroll state ──
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    // ── Scroll reveal ──
+    const revealEls = document.querySelectorAll('.reveal');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,252 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+
+    <!-- Fonts -->
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&amp;family=DM+Sans:wght@300;400;500&amp;display=swap');
+      .serif   { font-family: 'Cormorant Garamond', Georgia, serif; }
+      .sans    { font-family: 'DM Sans', system-ui, sans-serif; }
+    </style>
+
+    <!-- Background grid pattern -->
+    <pattern id="grid" width="22" height="22" patternUnits="userSpaceOnUse">
+      <path d="M 22 0 L 0 0 0 22" fill="none" stroke="rgba(200,136,58,0.07)" stroke-width="0.5"/>
+    </pattern>
+
+    <!-- Radial sage glow left -->
+    <radialGradient id="glowLeft" cx="25%" cy="45%" r="55%">
+      <stop offset="0%"   stop-color="#3d5249" stop-opacity="0.28"/>
+      <stop offset="100%" stop-color="#0d0f0c" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Subtle right vignette -->
+    <radialGradient id="glowRight" cx="78%" cy="48%" r="42%">
+      <stop offset="0%"   stop-color="#1a1d18" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#0d0f0c" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Map background grad -->
+    <linearGradient id="mapBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#1a1d18"/>
+      <stop offset="100%" stop-color="#0d0f0c"/>
+    </linearGradient>
+
+    <!-- Map grid -->
+    <pattern id="mapGrid" width="18" height="18" patternUnits="userSpaceOnUse">
+      <path d="M 18 0 L 0 0 0 18" fill="none" stroke="rgba(200,136,58,0.09)" stroke-width="0.5"/>
+    </pattern>
+
+    <!-- Glow filter for Texas outline -->
+    <filter id="outlineGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Clip: right panel -->
+    <clipPath id="rightClip">
+      <rect x="620" y="0" width="580" height="630"/>
+    </clipPath>
+
+    <!-- Clip: map frame circle -->
+    <clipPath id="mapCircle">
+      <circle cx="910" cy="315" r="230"/>
+    </clipPath>
+
+    <!-- Ochre dot glow -->
+    <filter id="dotGlow" x="-150%" y="-150%" width="400%" height="400%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Nav separator -->
+    <linearGradient id="navLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="rgba(200,136,58,0.0)"/>
+      <stop offset="30%"  stop-color="rgba(200,136,58,0.18)"/>
+      <stop offset="70%"  stop-color="rgba(200,136,58,0.18)"/>
+      <stop offset="100%" stop-color="rgba(200,136,58,0.0)"/>
+    </linearGradient>
+
+    <!-- Stats line -->
+    <linearGradient id="statsLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="rgba(200,136,58,0.0)"/>
+      <stop offset="20%"  stop-color="rgba(200,136,58,0.15)"/>
+      <stop offset="80%"  stop-color="rgba(200,136,58,0.15)"/>
+      <stop offset="100%" stop-color="rgba(200,136,58,0.0)"/>
+    </linearGradient>
+
+  </defs>
+
+  <!-- ── BACKGROUND ── -->
+  <rect width="1200" height="630" fill="#0d0f0c"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#glowLeft)"/>
+
+  <!-- ── TOPO RINGS (background atmosphere) ── -->
+  <g opacity="0.04">
+    <circle cx="200" cy="310" r="500" fill="none" stroke="#c8883a" stroke-width="1"/>
+    <circle cx="200" cy="310" r="430" fill="none" stroke="#c8883a" stroke-width="1"/>
+    <circle cx="200" cy="310" r="360" fill="none" stroke="#c8883a" stroke-width="1"/>
+    <circle cx="200" cy="310" r="290" fill="none" stroke="#c8883a" stroke-width="1"/>
+    <circle cx="200" cy="310" r="220" fill="none" stroke="#c8883a" stroke-width="1"/>
+    <circle cx="200" cy="310" r="150" fill="none" stroke="#c8883a" stroke-width="1"/>
+  </g>
+
+  <!-- ── VERTICAL DIVIDER ── -->
+  <line x1="640" y1="60" x2="640" y2="580" stroke="rgba(200,136,58,0.12)" stroke-width="1"/>
+
+  <!-- ══════════════════════════════
+       NAV BAR
+  ══════════════════════════════ -->
+  <rect x="0" y="0" width="1200" height="64" fill="rgba(13,15,12,0.7)"/>
+  <line x1="0" y1="64" x2="1200" y2="64" stroke="url(#navLine)" stroke-width="1"/>
+
+  <!-- Logo -->
+  <text x="64" y="35" class="serif" font-size="16" font-weight="400" fill="#f2ede4" letter-spacing="0.04em">Geoscientific Solutions</text>
+  <text x="64" y="52" class="sans"  font-size="8"  font-weight="400" fill="#c8883a" letter-spacing="0.22em">GIS CONSULTING · DALLAS, TEXAS</text>
+
+  <!-- Nav links -->
+  <text x="630" y="38" class="sans" font-size="9" font-weight="400" fill="#a3b4aa" letter-spacing="0.14em">SERVICES</text>
+  <text x="720" y="38" class="sans" font-size="9" font-weight="400" fill="#a3b4aa" letter-spacing="0.14em">ABOUT</text>
+  <text x="798" y="38" class="sans" font-size="9" font-weight="400" fill="#a3b4aa" letter-spacing="0.14em">SECTORS</text>
+  <text x="880" y="38" class="sans" font-size="9" font-weight="400" fill="#a3b4aa" letter-spacing="0.14em">PROCESS</text>
+
+  <!-- CTA button -->
+  <rect x="980" y="22" width="164" height="28" fill="none" stroke="#c8883a" stroke-width="1"/>
+  <text x="1062" y="40" class="sans" font-size="8" font-weight="500" fill="#c8883a" letter-spacing="0.13em" text-anchor="middle">SCHEDULE A CONSULTATION</text>
+
+  <!-- ══════════════════════════════
+       LEFT HERO TEXT
+  ══════════════════════════════ -->
+
+  <!-- Eyebrow -->
+  <line x1="64" y1="115" x2="104" y2="115" stroke="#c8883a" stroke-width="1"/>
+  <text x="112" y="119" class="sans" font-size="9" font-weight="400" fill="#c8883a" letter-spacing="0.22em">GIS SERVICES FOR LOCAL GOVERNMENT · TEXAS</text>
+
+  <!-- Main headline -->
+  <text x="64" y="170" class="serif" font-size="56" font-weight="300" fill="#f2ede4" letter-spacing="-0.01em">Precision mapping</text>
+  <text x="64" y="228" class="serif" font-size="56" font-weight="300" fill="#f2ede4" letter-spacing="-0.01em">for the</text>
+  <text x="64" y="286" class="serif" font-size="56" font-weight="300" fill="#dfa55a" letter-spacing="-0.01em" font-style="italic">communities</text>
+  <text x="64" y="344" class="serif" font-size="56" font-weight="300" fill="#f2ede4" letter-spacing="-0.01em">you serve.</text>
+
+  <!-- Subtext -->
+  <text x="64" y="385" class="sans" font-size="13" font-weight="300" fill="#a3b4aa">We deliver enterprise-grade Geographic Information System solutions</text>
+  <text x="64" y="403" class="sans" font-size="13" font-weight="300" fill="#a3b4aa">tailored to the unique operational, regulatory, and infrastructure</text>
+  <text x="64" y="421" class="sans" font-size="13" font-weight="300" fill="#a3b4aa">needs of Texas municipalities and counties.</text>
+
+  <!-- CTA buttons -->
+  <rect x="64" y="448" width="170" height="38" fill="#c8883a"/>
+  <text x="149" y="472" class="sans" font-size="9" font-weight="500" fill="#0d0f0c" letter-spacing="0.13em" text-anchor="middle">BEGIN A PROJECT →</text>
+
+  <text x="256" y="472" class="sans" font-size="9" font-weight="400" fill="#7d8c82" letter-spacing="0.12em">EXPLORE SERVICES ↓</text>
+
+  <!-- ── Stats strip ── -->
+  <line x1="64" y1="520" x2="580" y2="520" stroke="url(#statsLine)" stroke-width="1"/>
+
+  <!-- Stat 1 -->
+  <text x="64"  y="553" class="serif" font-size="28" font-weight="300" fill="#dfa55a">18+</text>
+  <text x="64"  y="569" class="sans"  font-size="8"  font-weight="400" fill="#7d8c82" letter-spacing="0.12em">YEARS IN TEXAS GIS</text>
+
+  <!-- Stat 2 -->
+  <line x1="190" y1="525" x2="190" y2="575" stroke="rgba(200,136,58,0.15)" stroke-width="1"/>
+  <text x="204" y="553" class="serif" font-size="28" font-weight="300" fill="#dfa55a">120+</text>
+  <text x="204" y="569" class="sans"  font-size="8"  font-weight="400" fill="#7d8c82" letter-spacing="0.12em">GOVERNMENT CLIENTS</text>
+
+  <!-- Stat 3 -->
+  <line x1="348" y1="525" x2="348" y2="575" stroke="rgba(200,136,58,0.15)" stroke-width="1"/>
+  <text x="362" y="553" class="serif" font-size="28" font-weight="300" fill="#dfa55a">$2.4B</text>
+  <text x="362" y="569" class="sans"  font-size="8"  font-weight="400" fill="#7d8c82" letter-spacing="0.12em">INFRASTRUCTURE MAPPED</text>
+
+  <!-- Stat 4 -->
+  <line x1="512" y1="525" x2="512" y2="575" stroke="rgba(200,136,58,0.15)" stroke-width="1"/>
+  <text x="526" y="553" class="serif" font-size="28" font-weight="300" fill="#dfa55a">100%</text>
+  <text x="526" y="569" class="sans"  font-size="8"  font-weight="400" fill="#7d8c82" letter-spacing="0.12em">TEXAS-BASED TEAM</text>
+
+  <!-- ══════════════════════════════
+       RIGHT — MAP VISUAL
+  ══════════════════════════════ -->
+
+  <!-- Map panel background -->
+  <rect x="660" y="70" width="500" height="510" rx="0" fill="url(#mapBg)" opacity="0.6"/>
+  <rect x="660" y="70" width="500" height="510" fill="url(#mapGrid)"/>
+
+  <!-- Outer dashed ring -->
+  <circle cx="910" cy="325" r="228" fill="none" stroke="rgba(200,136,58,0.28)" stroke-width="1" stroke-dasharray="4 5"/>
+  <!-- Inner dashed ring -->
+  <circle cx="910" cy="325" r="190" fill="none" stroke="rgba(200,136,58,0.16)" stroke-width="1" stroke-dasharray="3 6"/>
+
+  <!-- Texas stylized outline -->
+  <g transform="translate(770, 145) scale(0.82)" filter="url(#outlineGlow)">
+    <path d="
+      M 100 60
+      L 270 60
+      L 280 80
+      L 280 140
+      L 310 140
+      L 310 165
+      L 340 165
+      L 340 225
+      L 300 260
+      L 295 310
+      L 280 340
+      L 250 345
+      L 230 330
+      L 210 320
+      L 180 330
+      L 150 335
+      L 135 350
+      L 115 340
+      L 105 310
+      L 90 280
+      L 80 245
+      L 85 210
+      L 90 170
+      L 100 60
+      Z
+    "
+      fill="rgba(61,82,73,0.12)"
+      stroke="rgba(200,136,58,0.55)"
+      stroke-width="1.5"
+    />
+
+    <!-- Internal county grid lines -->
+    <line x1="100" y1="120" x2="310" y2="130" stroke="rgba(200,136,58,0.14)" stroke-width="0.6"/>
+    <line x1="95"  y1="185" x2="340" y2="175" stroke="rgba(200,136,58,0.14)" stroke-width="0.6"/>
+    <line x1="88"  y1="248" x2="310" y2="235" stroke="rgba(200,136,58,0.14)" stroke-width="0.6"/>
+    <line x1="150" y1="65"  x2="145" y2="335" stroke="rgba(200,136,58,0.12)" stroke-width="0.6"/>
+    <line x1="210" y1="62"  x2="205" y2="322" stroke="rgba(200,136,58,0.12)" stroke-width="0.6"/>
+    <line x1="265" y1="63"  x2="275" y2="275" stroke="rgba(200,136,58,0.12)" stroke-width="0.6"/>
+
+    <!-- City dots + labels -->
+    <circle cx="212" cy="185" r="3.5" fill="rgba(200,136,58,0.85)" filter="url(#dotGlow)"/>
+    <text x="220" y="183" font-family="monospace" font-size="7" fill="rgba(200,136,58,0.65)">DALLAS</text>
+    <circle cx="155" cy="255" r="2.5" fill="rgba(200,136,58,0.6)"/>
+    <text x="162" y="253" font-family="monospace" font-size="7" fill="rgba(200,136,58,0.5)">SAN ANTONIO</text>
+    <circle cx="248" cy="165" r="2.5" fill="rgba(200,136,58,0.55)"/>
+    <text x="255" y="163" font-family="monospace" font-size="7" fill="rgba(200,136,58,0.5)">WACO</text>
+  </g>
+
+  <!-- Pulsing location marker (simulated with concentric circles) -->
+  <circle cx="982" cy="308" r="18" fill="none" stroke="rgba(200,136,58,0.08)" stroke-width="1"/>
+  <circle cx="982" cy="308" r="11" fill="none" stroke="rgba(200,136,58,0.15)" stroke-width="1"/>
+  <circle cx="982" cy="308" r="5"  fill="#c8883a" opacity="0.9" filter="url(#dotGlow)"/>
+
+  <!-- Coordinate labels -->
+  <text x="672" y="88"  font-family="monospace" font-size="7.5" fill="rgba(200,136,58,0.22)">32.7767° N</text>
+  <text x="672" y="573" font-family="monospace" font-size="7.5" fill="rgba(200,136,58,0.22)">96.7970° W</text>
+  <text x="1100" y="88" font-family="monospace" font-size="7.5" fill="rgba(200,136,58,0.22)" text-anchor="end">NAD83</text>
+
+  <!-- Scan line (static representation) -->
+  <rect x="660" y="295" width="500" height="1.5" fill="rgba(200,136,58,0.08)"/>
+
+  <!-- Data card floating bottom-left of map -->
+  <rect x="670" y="490" width="180" height="72" fill="#1a1d18" stroke="rgba(200,136,58,0.22)" stroke-width="1"/>
+  <text x="682" y="511" class="sans" font-size="7.5" font-weight="400" fill="#c8883a" letter-spacing="0.18em">ACTIVE PROJECTS</text>
+  <text x="682" y="542" class="serif" font-size="32" font-weight="300" fill="#f2ede4">47</text>
+  <text x="682" y="556" class="sans" font-size="7.5" font-weight="300" fill="#7d8c82">Texas municipalities · 2024</text>
+
+  <!-- ══════════════════════════════
+       BRANDING CORNER MARK
+  ══════════════════════════════ -->
+  <text x="1148" y="620" class="sans" font-size="7" font-weight="300" fill="rgba(163,180,170,0.3)" text-anchor="end" letter-spacing="0.1em">GEOSCIENTIFIC SOLUTIONS · DALLAS, TX</text>
+
+</svg>
