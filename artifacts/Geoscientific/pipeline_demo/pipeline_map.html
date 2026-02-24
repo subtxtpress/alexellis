@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Permian Basin Pipeline Risk Viewer | Geoscientific Solutions</title>
+<link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet">
+<script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+  }
+
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+  }
+
+  /* ─── Header ─── */
+  #header {
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+    padding: 0 14px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    z-index: 10;
+    min-width: 0;
+  }
+
+  #header h1 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e6edf3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  #header h1 .sub {
+    font-size: 11px;
+    color: #8b949e;
+    font-weight: 400;
+  }
+
+  .wip-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    background: rgba(200, 136, 58, 0.12);
+    border: 1px solid rgba(200, 136, 58, 0.4);
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    color: #c8883a;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  .wip-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #c8883a;
+    animation: blink 1.6s ease-in-out infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  /* ─── Map ─── */
+  #map {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    position: relative;
+  }
+
+  /* ─── Overlay card ─── */
+  #wip-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(22, 27, 34, 0.96);
+    border: 1px solid rgba(200, 136, 58, 0.35);
+    border-radius: 10px;
+    padding: 36px 40px;
+    z-index: 20;
+    max-width: 420px;
+    width: calc(100% - 48px);
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  }
+
+  .overlay-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 20px;
+    border: 1px solid rgba(200,136,58,0.4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c8883a;
+  }
+
+  .overlay-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #c8883a;
+    margin-bottom: 10px;
+  }
+
+  .overlay-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #e6edf3;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+
+  .overlay-desc {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #8b949e;
+    margin-bottom: 24px;
+  }
+
+  .overlay-desc code {
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 12px;
+    color: #c8883a;
+    background: rgba(200,136,58,0.1);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  .overlay-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+
+  .stack-tag {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8b949e;
+    border: 1px solid #30363d;
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  .overlay-blocker {
+    font-size: 11px;
+    color: #6e7681;
+    border-top: 1px solid #21262d;
+    padding-top: 16px;
+    line-height: 1.6;
+  }
+
+  .overlay-blocker strong {
+    color: #8b949e;
+  }
+
+  .overlay-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 16px;
+    font-size: 11px;
+    color: #c8883a;
+    text-decoration: none;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: opacity 0.2s;
+  }
+
+  .overlay-back:hover { opacity: 0.7; }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div id="header">
+    <h1>Permian Basin Pipeline Risk Viewer <span class="sub">· Geoscientific Solutions · Ector County</span></h1>
+    <div class="wip-badge">
+      <span class="wip-dot"></span>
+      In Progress
+    </div>
+  </div>
+
+  <div id="map"></div>
+</div>
+
+<div id="wip-overlay">
+  <div class="overlay-icon">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 17l9-9 4 4 5-5"/><path d="M14 7h7v7"/>
+    </svg>
+  </div>
+
+  <div class="overlay-label">Demo · In Progress</div>
+  <div class="overlay-title">Pipeline × Flood Zone<br>Risk Viewer</div>
+
+  <p class="overlay-desc">
+    Oil and gas pipeline network overlaid on FEMA flood zones, with
+    <code>ST_Intersects</code> queries surfacing which pipeline segments
+    cross FEMA-designated flood zones. Click a pipeline to see operator,
+    type, and flood zone crossing count.
+  </p>
+
+  <div class="overlay-stack">
+    <span class="stack-tag">PostGIS</span>
+    <span class="stack-tag">ST_Intersects</span>
+    <span class="stack-tag">FEMA FIRM</span>
+    <span class="stack-tag">MapLibre GL</span>
+    <span class="stack-tag">Supabase</span>
+    <span class="stack-tag">Midstream Data</span>
+  </div>
+
+  <div class="overlay-blocker">
+    <strong>Currently blocked:</strong> sourcing a clean Permian Basin pipeline
+    dataset. Once resolved, this viewer will show operator name, pipeline type,
+    commodity, and flood zone crossing count per segment — the infrastructure
+    risk and regulatory liability picture in one view.
+  </div>
+
+  <a href="../index.html" class="overlay-back">
+    ← Back to Geoscientific Solutions
+  </a>
+</div>
+
+<script>
+const map = new maplibregl.Map({
+  container: 'map',
+  style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+  center: [-102.55, 31.86],
+  zoom: 8,
+  interactive: false
+});
+map.addControl(new maplibregl.NavigationControl(), 'top-left');
+window.addEventListener('load', () => setTimeout(() => map.resize(), 100));
+
+// Load flood zones as a faint background layer to show the underlying data
+map.on('load', async () => {
+  const SUPABASE_URL = 'https://ovxsolwdzxewxgggdfow.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_wcWXY0vOG6kvrbD5pyPN1g__BH5z-bf';
+
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/ector_flood_zones_geojson?select=*&limit=1000`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    const rows = await res.json();
+
+    const geojson = {
+      type: 'FeatureCollection',
+      features: rows.map(r => ({
+        type: 'Feature',
+        geometry: r.geometry,
+        properties: { fld_zone: r.fld_zone }
+      })).filter(f => f.geometry)
+    };
+
+    map.addSource('flood', { type: 'geojson', data: geojson });
+    map.addLayer({
+      id: 'flood-fill', type: 'fill', source: 'flood',
+      paint: {
+        'fill-color': [
+          'case',
+          ['==', ['get', 'fld_zone'], 'X'], '#fee090',
+          '#d73027'
+        ],
+        'fill-opacity': 0.18
+      }
+    });
+    map.addLayer({
+      id: 'flood-outline', type: 'line', source: 'flood',
+      paint: {
+        'line-color': [
+          'case',
+          ['==', ['get', 'fld_zone'], 'X'], '#fee090',
+          '#d73027'
+        ],
+        'line-width': 0.6,
+        'line-opacity': 0.5
+      }
+    });
+  } catch (e) {
+    // Silently fail — the overlay explains the status
+  }
+});
+</script>
+
+</body>
+</html>
