@@ -118,6 +118,7 @@
   /* ─── Mobile ─── */
   @media (max-width: 640px) {
     #search { width: 120px; }
+    #filter-bar { display: none; }
     #legend { display: none; }
     #info-panel { top: auto; bottom: 0; left: 0; right: 0; width: 100%; max-height: 60vh; border-radius: 12px 12px 0 0; border-bottom: none; padding-bottom: 24px; }
     #hint { bottom: 20px; font-size: 11px; }
@@ -227,6 +228,14 @@ const map = new maplibregl.Map({
   zoom: 11
 });
 map.addControl(new maplibregl.NavigationControl(), 'top-left');
+
+// Reliable resize: fires whenever the map container's dimensions actually change
+if (window.ResizeObserver) {
+  new ResizeObserver(() => map.resize()).observe(document.getElementById('map'));
+} else {
+  window.addEventListener('load', () => setTimeout(() => map.resize(), 100));
+  window.addEventListener('resize', () => map.resize());
+}
 
 document.getElementById('close-btn').addEventListener('click', () => {
   document.getElementById('info-panel').style.display = 'none';
