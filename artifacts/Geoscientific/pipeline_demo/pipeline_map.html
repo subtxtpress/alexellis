@@ -109,6 +109,7 @@
     width: calc(100% - 48px);
     text-align: center;
     box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    pointer-events: auto;
   }
 
   .overlay-icon {
@@ -258,14 +259,14 @@ const map = new maplibregl.Map({
   container: 'map',
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
   center: [-102.55, 31.86],
-  zoom: 8,
-  interactive: false
+  zoom: 8
 });
 map.addControl(new maplibregl.NavigationControl(), 'top-left');
 window.addEventListener('load', () => setTimeout(() => map.resize(), 100));
 
 // Load flood zones as a faint background layer to show the underlying data
 map.on('load', async () => {
+  map.resize();
   const SUPABASE_URL = 'https://ovxsolwdzxewxgggdfow.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_wcWXY0vOG6kvrbD5pyPN1g__BH5z-bf';
 
@@ -310,7 +311,7 @@ map.on('load', async () => {
       }
     });
   } catch (e) {
-    // Silently fail — the overlay explains the status
+    console.error('Pipeline viewer: flood zone fetch failed', e);
   }
 });
 </script>
