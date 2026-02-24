@@ -10,7 +10,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; width: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui, sans-serif; background: #0d1117; color: #e6edf3; }
 
-  #app { display: flex; flex-direction: column; height: 100vh; width: 100%; }
+  #app { display: flex; flex-direction: column; height: 100dvh; height: 100vh; width: 100%; }
 
   /* ─── Header ─── */
   #header {
@@ -294,7 +294,7 @@ function buildLegend(categories) {
   const rows = document.getElementById('legend-rows');
   // Deduplicate Surface Drainage
   const seen = new Set();
-  categories.filter(c => c && c !== 'Unknown').forEach(cat => {
+  categories.filter(c => c && c !== 'Unknown' && c !== 'null' && c !== 'Other').forEach(cat => {
     const label = CATEGORY_LABELS[cat] || cat;
     if (seen.has(label)) return;
     seen.add(label);
@@ -309,7 +309,7 @@ function buildFilterPills(categories) {
   const bar = document.getElementById('filter-bar');
   // Deduplicate Surface Drainage
   const seen = new Set(['ALL']);
-  categories.filter(c => c && c !== 'Unknown').forEach(cat => {
+  categories.filter(c => c && c !== 'Unknown' && c !== 'null' && c !== 'Other').forEach(cat => {
     const label = CATEGORY_LABELS[cat] || cat;
     if (seen.has(label)) return;
     seen.add(label);
