@@ -1,0 +1,5 @@
+.env
+*.env
+upload_parcels.py
+portfolio/node_modules/
+portfolio/.env

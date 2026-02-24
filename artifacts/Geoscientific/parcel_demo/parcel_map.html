@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Midland County Parcel Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #0d0f0c; color: #f2ede4; }
+    #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+    #title-bar {
+      position: absolute; top: 1rem; left: 1rem;
+      background: rgba(13,15,12,0.92);
+      border: 1px solid rgba(200,136,58,0.3);
+      padding: 0.75rem 1.25rem; z-index: 10;
+      max-width: calc(100vw - 2rem);
+    }
+    #title-bar h1 { font-size: 0.9rem; letter-spacing: 0.08em; color: #f2ede4; }
+    #title-bar p { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: #c8883a; margin-top: 0.2rem; }
+    #search-row { margin-top: 0.75rem; display: flex; gap: 0.5rem; }
+    #search-input {
+      flex: 1; min-width: 0;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(200,136,58,0.4);
+      color: #f2ede4; padding: 0.4rem 0.75rem; font-size: 0.75rem; outline: none;
+    }
+    #search-btn {
+      background: #c8883a; border: none; color: #0d0f0c;
+      padding: 0.4rem 0.75rem; font-size: 0.75rem; cursor: pointer; font-weight: 600;
+    }
+    #popup-info {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: rgba(13,15,12,0.95);
+      border-top: 1px solid rgba(200,136,58,0.3);
+      padding: 1rem 1.25rem; display: none; z-index: 10;
+    }
+    #popup-info h3 { color: #c8883a; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.6rem; }
+    #popup-info p { font-size: 0.8rem; color: #a3b4aa; margin-bottom: 0.25rem; }
+    #popup-info span { color: #f2ede4; }
+    #popup-close { position: absolute; top: 0.75rem; right: 1rem; background: none; border: none; color: #a3b4aa; font-size: 1.2rem; cursor: pointer; }
+    @media (min-width: 600px) {
+      #popup-info {
+        position: absolute; bottom: auto; top: 1rem; right: 1rem; left: auto;
+        max-width: 300px; border: 1px solid rgba(200,136,58,0.3);
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<div id="title-bar">
+  <h1>Midland County Parcel Viewer</h1>
+  <p>Geoscientific Solutions · 2025 Data</p>
+  <div id="search-row">
+    <input id="search-input" type="text" placeholder="Search owner name..." />
+    <button id="search-btn">GO</button>
+  </div>
+</div>
+<div id="popup-info">
+  <button id="popup-close">x</button>
+  <h3>Parcel Details</h3>
+  <p>Owner: <span id="p-owner"></span></p>
+  <p>Address: <span id="p-addr"></span></p>
+  <p>Land Value: <span id="p-land"></span></p>
+  <p>Market Value: <span id="p-mkt"></span></p>
+  <p>Year Built: <span id="p-yr"></span></p>
+  <p>Legal Desc: <span id="p-legal"></span></p>
+</div>
+<script>
+  const SUPABASE_URL = 'https://ovxsolwdzxewxgggdfow.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_wcWXY0vOG6kvrbD5pyPN1g__BH5z-bf';
+
+  const map = new maplibregl.Map({
+    container: 'map',
+    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+    center: [-102.0779, 31.9999], zoom: 10
+  });
+  map.addControl(new maplibregl.NavigationControl(), 'bottom-right');
+
+  async function fetchParcels(url) {
+    const res = await fetch(url, {
+      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY }
+    });
+    return res.json();
+  }
+
+  function buildFeatures(data) {
+    return data.map(row => ({
+      type: 'Feature',
+      geometry: row.geometry,
+      properties: {
+        owner: row.OWNER_NAME, address: row.SITUS_ADDR,
+        land_value: row.LAND_VALUE, mkt_value: row.MKT_VALUE,
+        year_built: row.YEAR_BUILT, legal: row.LEGAL_DESC
+      }
+    }));
+  }
+
+  map.on('load', async () => {
+    const data = await fetchParcels(
+      SUPABASE_URL + '/rest/v1/midland_parcels_geojson?select=OWNER_NAME,SITUS_ADDR,LAND_VALUE,MKT_VALUE,YEAR_BUILT,LEGAL_DESC,geometry&limit=5000'
+    );
+    map.addSource('parcels', {
+      type: 'geojson',
+      data: { type: 'FeatureCollection', features: buildFeatures(data) }
+    });
+    map.addLayer({ id: 'parcels-fill', type: 'fill', source: 'parcels',
+      paint: { 'fill-color': '#c8883a', 'fill-opacity': 0.15 } });
+    map.addLayer({ id: 'parcels-outline', type: 'line', source: 'parcels',
+      paint: { 'line-color': '#c8883a', 'line-width': 0.5, 'line-opacity': 0.6 } });
+
+    map.on('click', 'parcels-fill', function(e) {
+      var p = e.features[0].properties;
+      document.getElementById('p-owner').textContent = p.owner || '-';
+      document.getElementById('p-addr').textContent = p.address || '-';
+      document.getElementById('p-land').textContent = p.land_value ? '$' + Number(p.land_value).toLocaleString() : '-';
+      document.getElementById('p-mkt').textContent = p.mkt_value ? '$' + Number(p.mkt_value).toLocaleString() : '-';
+      document.getElementById('p-yr').textContent = p.year_built || '-';
+      document.getElementById('p-legal').textContent = p.legal || '-';
+      document.getElementById('popup-info').style.display = 'block';
+    });
+    map.on('mouseenter', 'parcels-fill', function() { map.getCanvas().style.cursor = 'pointer'; });
+    map.on('mouseleave', 'parcels-fill', function() { map.getCanvas().style.cursor = ''; });
+  });
+
+  async function searchOwner() {
+    var q = document.getElementById('search-input').value.trim();
+    if (!q) return;
+    var data = await fetchParcels(
+      SUPABASE_URL + '/rest/v1/midland_parcels_geojson?OWNER_NAME=ilike.*' + encodeURIComponent(q) + '*&select=OWNER_NAME,SITUS_ADDR,LAND_VALUE,MKT_VALUE,YEAR_BUILT,LEGAL_DESC,geometry&limit=500'
+    );
+    if (!data.length) { alert('No parcels found for: ' + q); return; }
+    var features = buildFeatures(data);
+    map.getSource('parcels').setData({ type: 'FeatureCollection', features: features });
+    var coords = [];
+    features.forEach(function(f) {
+      if (f.geometry.type === 'Polygon') {
+        f.geometry.coordinates[0].forEach(function(c) { coords.push(c); });
+      } else {
+        f.geometry.coordinates.forEach(function(ring) {
+          ring.forEach(function(c) { coords.push(c); });
+        });
+      }
+    });
+    var lngs = coords.map(function(c) { return c[0]; });
+    var lats = coords.map(function(c) { return c[1]; });
+    map.fitBounds([[Math.min.apply(null,lngs), Math.min.apply(null,lats)], [Math.max.apply(null,lngs), Math.max.apply(null,lats)]], { padding: 80 });
+  }
+
+  document.getElementById('search-btn').addEventListener('click', searchOwner);
+  document.getElementById('search-input').addEventListener('keydown', function(e) { if (e.key === 'Enter') searchOwner(); });
+  document.getElementById('popup-close').addEventListener('click', function() {
+    document.getElementById('popup-info').style.display = 'none';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ector County Flood Zone Viewer | Geoscientific Solutions</title>
+<link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet">
+<script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+  }
+
+  /* ─── Layout shell ─── */
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+  }
+
+  /* ─── Header ─── */
+  #header {
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+    padding: 0 14px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    z-index: 10;
+    min-width: 0;
+  }
+
+  #header h1 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e6edf3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+  #header h1 .sub {
+    font-size: 11px;
+    color: #8b949e;
+    font-weight: 400;
+  }
+
+  #controls {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  /* ─── Legend (desktop only) ─── */
+  #legend {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: #8b949e;
+    white-space: nowrap;
+  }
+  .legend-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ─── Toggle buttons ─── */
+  .toggle-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 9px;
+    border-radius: 5px;
+    border: 1px solid #30363d;
+    background: #21262d;
+    color: #8b949e;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .toggle-btn.active {
+    border-color: #58a6ff;
+    color: #e6edf3;
+    background: #161b22;
+  }
+  .toggle-btn .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  #alert-count {
+    font-size: 10px;
+    background: #da3633;
+    color: white;
+    border-radius: 10px;
+    padding: 1px 5px;
+    font-weight: 600;
+    display: none;
+  }
+
+  /* ─── Map ─── */
+  #map {
+    flex: 1;
+    min-height: 0; /* critical for flex children */
+    width: 100%;
+    position: relative;
+  }
+
+  /* ─── Info panel ─── */
+  #info-panel {
+    position: absolute;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    padding: 14px;
+    z-index: 20;
+    display: none;
+    overflow-y: auto;
+    /* Desktop: top-right */
+    top: 58px;
+    right: 12px;
+    width: 280px;
+    max-height: calc(100vh - 80px);
+  }
+  #info-panel h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e6edf3;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 8px;
+    padding-right: 20px;
+  }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 4px 0;
+    border-bottom: 1px solid #21262d;
+    gap: 8px;
+  }
+  .info-label { color: #8b949e; flex-shrink: 0; }
+  .info-value { color: #e6edf3; font-weight: 500; text-align: right; }
+  .info-desc { color: #c9d1d9; font-size: 11px; margin-top: 8px; line-height: 1.6; }
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  #close-btn {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: none;
+    border: none;
+    color: #8b949e;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 2px 4px;
+  }
+  #close-btn:hover { color: #e6edf3; }
+
+  /* ─── Loading toast ─── */
+  #loading {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 12px;
+    color: #8b949e;
+    z-index: 15;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  /* ─── Mobile overrides ─── */
+  @media (max-width: 640px) {
+    #legend { display: none; } /* hide legend text on mobile — colors speak for themselves */
+
+    .toggle-btn {
+      padding: 5px 8px;
+      font-size: 11px;
+    }
+
+    /* Info panel slides up from bottom on mobile */
+    #info-panel {
+      top: auto;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      border-radius: 12px 12px 0 0;
+      border-bottom: none;
+      max-height: 55vh;
+      padding-bottom: 24px; /* safe area breathing room */
+    }
+  }
+
+  /* ─── Safe area for notched phones ─── */
+  @supports (padding: env(safe-area-inset-bottom)) {
+    #info-panel {
+      padding-bottom: calc(14px + env(safe-area-inset-bottom));
+    }
+  }
+
+  /* ─── MapLibre attribution tweak ─── */
+  .maplibregl-ctrl-attrib { font-size: 9px !important; }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div id="header">
+    <h1>Ector County Flood &amp; Weather Viewer <span class="sub">· Geoscientific Solutions · Live Data</span></h1>
+    <div id="controls">
+      <div id="legend">
+        <div class="legend-item">
+          <div class="legend-swatch" style="background:#d73027;"></div><span>Zone A/AE</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch" style="background:#fee090; opacity:0.7;"></div><span>Zone X</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch" style="border: 2px dashed #ff7b00; background:transparent;"></div><span>NWS Alert</span>
+        </div>
+      </div>
+      <button class="toggle-btn active" id="btn-flood" onclick="toggleLayer('flood')">
+        <span class="dot" style="background:#d73027;"></span> FEMA Flood Zones
+      </button>
+      <button class="toggle-btn" id="btn-alerts" onclick="toggleLayer('alerts')">
+        <span class="dot" style="background:#ff7b00;"></span> NWS Live Alerts
+        <span id="alert-count"></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="map"></div>
+</div>
+
+<div id="info-panel">
+  <button id="close-btn">×</button>
+  <h3 id="panel-title">Details</h3>
+  <div id="info-content"></div>
+</div>
+
+<div id="loading">Loading flood zones…</div>
+
+<script>
+const SUPABASE_URL = 'https://ovxsolwdzxewxgggdfow.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_wcWXY0vOG6kvrbD5pyPN1g__BH5z-bf';
+const layerVisible = { flood: true, alerts: false };
+
+const map = new maplibregl.Map({
+  container: 'map',
+  style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+  center: [-102.55, 31.86],
+  zoom: 9
+});
+map.addControl(new maplibregl.NavigationControl(), 'top-left');
+
+// Force MapLibre to recalc size after fonts/layout settle
+window.addEventListener('load', () => setTimeout(() => map.resize(), 100));
+
+// ─── Helpers ───────────────────────────────────────────────
+function getZoneColor(zone) {
+  if (!zone) return '#4575b4';
+  if (zone.startsWith('A')) return '#d73027';
+  if (zone === 'X') return '#fee090';
+  return '#4575b4';
+}
+
+function getZoneLabel(zone) {
+  const labels = {
+    A:  'Zone A – 1% Annual Chance Flood',
+    AE: 'Zone AE – 1% Chance w/ BFE',
+    AH: 'Zone AH – Ponding',
+    AO: 'Zone AO – Sheet Flow',
+    X:  'Zone X – Moderate/Minimal Risk'
+  };
+  return labels[zone] || `Zone ${zone}`;
+}
+
+function getAlertColor(event) {
+  const e = (event || '').toLowerCase();
+  if (e.includes('warning'))  return '#ff4444';
+  if (e.includes('watch'))    return '#ff7b00';
+  if (e.includes('advisory')) return '#ffd700';
+  return '#4fc3f7';
+}
+
+// ─── Layer toggle ───────────────────────────────────────────
+function toggleLayer(name) {
+  layerVisible[name] = !layerVisible[name];
+  document.getElementById(`btn-${name}`).classList.toggle('active', layerVisible[name]);
+  const layers = name === 'flood'
+    ? ['flood-fill', 'flood-outline', 'flood-highlight']
+    : ['alerts-fill', 'alerts-outline'];
+  layers.forEach(id => {
+    if (map.getLayer(id))
+      map.setLayoutProperty(id, 'visibility', layerVisible[name] ? 'visible' : 'none');
+  });
+}
+
+// ─── Info panel ─────────────────────────────────────────────
+function showPanel(title, html) {
+  document.getElementById('panel-title').textContent = title;
+  document.getElementById('info-content').innerHTML = html;
+  document.getElementById('info-panel').style.display = 'block';
+}
+
+document.getElementById('close-btn').addEventListener('click', () => {
+  document.getElementById('info-panel').style.display = 'none';
+});
+
+// ─── Load flood zones ───────────────────────────────────────
+async function loadFloodZones() {
+  const res = await fetch(
+    `${SUPABASE_URL}/rest/v1/ector_flood_zones_geojson?select=*&limit=1000`,
+    { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+  );
+  const rows = await res.json();
+  document.getElementById('loading').textContent = `Rendering ${rows.length} flood zone polygons…`;
+
+  const geojson = {
+    type: 'FeatureCollection',
+    features: rows.map(r => ({
+      type: 'Feature',
+      geometry: r.geometry,
+      properties: {
+        fld_zone:   r.fld_zone,
+        zone_subty: r.zone_subty,
+        sfha_tf:    r.sfha_tf,
+        static_bfe: r.static_bfe,
+        dfirm_id:   r.dfirm_id,
+        color:      getZoneColor(r.fld_zone)
+      }
+    })).filter(f => f.geometry)
+  };
+
+  map.addSource('flood', { type: 'geojson', data: geojson, generateId: true });
+  map.addLayer({
+    id: 'flood-fill', type: 'fill', source: 'flood',
+    paint: {
+      'fill-color': ['get', 'color'],
+      'fill-opacity': ['case', ['==', ['get', 'fld_zone'], 'X'], 0.08, 0.55]
+    }
+  });
+  map.addLayer({
+    id: 'flood-outline', type: 'line', source: 'flood',
+    paint: { 'line-color': ['get', 'color'], 'line-width': 0.8, 'line-opacity': 0.9 }
+  });
+  map.addLayer({
+    id: 'flood-highlight', type: 'fill', source: 'flood',
+    paint: {
+      'fill-color': '#fff',
+      'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.15, 0]
+    }
+  });
+
+  document.getElementById('loading').style.display = 'none';
+
+  let hoveredId = null;
+  map.on('mousemove', 'flood-fill', e => {
+    map.getCanvas().style.cursor = 'pointer';
+    if (hoveredId !== null) map.setFeatureState({ source: 'flood', id: hoveredId }, { hover: false });
+    hoveredId = e.features[0].id;
+    map.setFeatureState({ source: 'flood', id: hoveredId }, { hover: true });
+  });
+  map.on('mouseleave', 'flood-fill', () => {
+    map.getCanvas().style.cursor = '';
+    if (hoveredId !== null) map.setFeatureState({ source: 'flood', id: hoveredId }, { hover: false });
+    hoveredId = null;
+  });
+
+  map.on('click', 'flood-fill', e => {
+    const p = e.features[0].properties;
+    const bfe = (p.static_bfe && p.static_bfe > -9000) ? `${p.static_bfe} ft NAVD88` : 'Not specified';
+    showPanel('Flood Zone Details', `
+      <div class="info-row"><span class="info-label">Zone</span><span class="info-value"><span class="badge" style="background:${p.color}22;color:${p.color};border:1px solid ${p.color}55">${p.fld_zone}</span></span></div>
+      <div class="info-row"><span class="info-label">Description</span><span class="info-value">${getZoneLabel(p.fld_zone)}</span></div>
+      <div class="info-row"><span class="info-label">Subtype</span><span class="info-value">${(p.zone_subty && p.zone_subty !== 'NaN') ? p.zone_subty : '—'}</span></div>
+      <div class="info-row"><span class="info-label">SFHA</span><span class="info-value">${p.sfha_tf === 'T' ? '✓ Yes' : '✗ No'}</span></div>
+      <div class="info-row"><span class="info-label">Base Flood Elev.</span><span class="info-value">${bfe}</span></div>
+      <div class="info-row"><span class="info-label">DFIRM Panel</span><span class="info-value">${p.dfirm_id}</span></div>
+    `);
+  });
+}
+
+// ─── Load NWS alerts ────────────────────────────────────────
+async function loadAlerts() {
+  try {
+    const res = await fetch('https://api.weather.gov/alerts/active?area=TX', {
+      headers: { 'User-Agent': 'GeoscientificSolutions/1.0' }
+    });
+    const data = await res.json();
+    const alerts = (data.features || []).filter(f => f.geometry);
+
+    const countEl = document.getElementById('alert-count');
+    countEl.textContent = data.features?.length || 0;
+    countEl.style.display = 'inline';
+
+    if (alerts.length === 0) return;
+
+    const geojson = {
+      type: 'FeatureCollection',
+      features: alerts.map(f => ({
+        type: 'Feature',
+        geometry: f.geometry,
+        properties: {
+          event:    f.properties.event,
+          headline: f.properties.headline,
+          description: f.properties.description,
+          severity: f.properties.severity,
+          urgency:  f.properties.urgency,
+          onset:    f.properties.onset,
+          expires:  f.properties.expires,
+          areaDesc: f.properties.areaDesc,
+          color:    getAlertColor(f.properties.event)
+        }
+      }))
+    };
+
+    map.addSource('alerts', { type: 'geojson', data: geojson });
+    map.addLayer({
+      id: 'alerts-fill', type: 'fill', source: 'alerts',
+      layout: { visibility: 'none' },
+      paint: { 'fill-color': ['get', 'color'], 'fill-opacity': 0.18 }
+    });
+    map.addLayer({
+      id: 'alerts-outline', type: 'line', source: 'alerts',
+      layout: { visibility: 'none' },
+      paint: { 'line-color': ['get', 'color'], 'line-width': 2.5, 'line-dasharray': [4, 2] }
+    });
+
+    map.on('click', 'alerts-fill', e => {
+      const p = e.features[0].properties;
+      const color = p.color;
+      const onset   = p.onset   ? new Date(p.onset).toLocaleString()   : '—';
+      const expires = p.expires ? new Date(p.expires).toLocaleString() : '—';
+      const desc = (p.description || '').substring(0, 400) + ((p.description || '').length > 400 ? '…' : '');
+      showPanel('NWS Weather Alert', `
+        <div class="info-row"><span class="info-label">Event</span><span class="info-value"><span class="badge" style="background:${color}33;color:${color};border:1px solid ${color}66">${p.event}</span></span></div>
+        <div class="info-row"><span class="info-label">Severity</span><span class="info-value">${p.severity || '—'}</span></div>
+        <div class="info-row"><span class="info-label">Urgency</span><span class="info-value">${p.urgency || '—'}</span></div>
+        <div class="info-row"><span class="info-label">Onset</span><span class="info-value">${onset}</span></div>
+        <div class="info-row"><span class="info-label">Expires</span><span class="info-value">${expires}</span></div>
+        <div class="info-row"><span class="info-label">Area</span><span class="info-value">${(p.areaDesc || '').substring(0, 80)}</span></div>
+        <p class="info-desc">${desc}</p>
+      `);
+    });
+    map.on('mouseenter', 'alerts-fill', () => map.getCanvas().style.cursor = 'pointer');
+    map.on('mouseleave', 'alerts-fill', () => map.getCanvas().style.cursor = '');
+  } catch (err) {
+    console.warn('NWS alerts fetch failed:', err);
+  }
+}
+
+// ─── Boot ───────────────────────────────────────────────────
+map.on('load', async () => {
+  await loadFloodZones();
+  await loadAlerts();
+});
+</script>
+</body>
+</html>
