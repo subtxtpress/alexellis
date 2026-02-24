@@ -8,22 +8,9 @@
 <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; width: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui, sans-serif; background: #0d1117; color: #e6edf3; }
 
-  html, body {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    background: #0d1117;
-    color: #e6edf3;
-  }
-
-  #app {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-  }
+  #app { display: flex; flex-direction: column; height: 100%; width: 100%; }
 
   /* ─── Header ─── */
   #header {
@@ -38,169 +25,92 @@
     z-index: 10;
     min-width: 0;
   }
-
   #header h1 {
-    font-size: 13px;
-    font-weight: 600;
-    color: #e6edf3;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex-shrink: 1;
-    min-width: 0;
+    font-size: 13px; font-weight: 600; color: #e6edf3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    flex-shrink: 1; min-width: 0;
   }
+  #header h1 .sub { font-size: 11px; color: #8b949e; font-weight: 400; }
 
-  #header h1 .sub {
-    font-size: 11px;
-    color: #8b949e;
-    font-weight: 400;
+  #controls { display: flex; gap: 6px; align-items: center; margin-left: auto; flex-shrink: 0; }
+
+  /* ─── Legend ─── */
+  #legend { display: flex; gap: 10px; align-items: center; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #8b949e; white-space: nowrap; }
+  .legend-swatch { width: 12px; height: 12px; border-radius: 2px; flex-shrink: 0; }
+
+  /* ─── Toggle buttons ─── */
+  .toggle-btn {
+    display: flex; align-items: center; gap: 5px;
+    padding: 4px 9px; border-radius: 5px;
+    border: 1px solid #30363d; background: #21262d; color: #8b949e;
+    font-size: 11px; cursor: pointer; transition: all 0.15s;
+    white-space: nowrap; flex-shrink: 0;
   }
+  .toggle-btn.active { border-color: #58a6ff; color: #e6edf3; background: #161b22; }
+  .toggle-btn .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
+  /* ─── WIP badge ─── */
   .wip-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
+    display: inline-flex; align-items: center; gap: 5px;
     padding: 3px 9px;
-    background: rgba(200, 136, 58, 0.12);
-    border: 1px solid rgba(200, 136, 58, 0.4);
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: 600;
-    color: #c8883a;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    flex-shrink: 0;
-    margin-left: auto;
+    background: rgba(200,136,58,0.12); border: 1px solid rgba(200,136,58,0.4);
+    border-radius: 4px; font-size: 10px; font-weight: 600;
+    color: #c8883a; letter-spacing: 0.08em; text-transform: uppercase; flex-shrink: 0;
   }
-
-  .wip-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #c8883a;
-    animation: blink 1.6s ease-in-out infinite;
-  }
-
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.2; }
-  }
+  .wip-dot { width: 6px; height: 6px; border-radius: 50%; background: #c8883a; animation: blink 1.6s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
   /* ─── Map ─── */
-  #map {
-    flex: 1;
-    min-height: 0;
-    width: 100%;
-    position: relative;
-  }
+  #map { flex: 1; min-height: 0; width: 100%; position: relative; }
 
-  /* ─── Overlay card ─── */
-  #wip-overlay {
+  /* ─── Info panel ─── */
+  #info-panel {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    background: rgba(22, 27, 34, 0.94);
-    border: 1px solid rgba(200, 136, 58, 0.35);
-    border-radius: 8px;
-    padding: 24px 24px 20px;
-    z-index: 20;
-    width: 300px;
-    text-align: left;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-    overflow-y: auto;
-    max-height: calc(100vh - 72px);
+    background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+    padding: 14px; z-index: 20; display: none; overflow-y: auto;
+    top: 12px; right: 12px; width: 280px; max-height: calc(100vh - 80px);
+  }
+  #info-panel h3 { font-size: 13px; font-weight: 600; color: #e6edf3; margin-bottom: 10px; border-bottom: 1px solid #30363d; padding-bottom: 8px; padding-right: 20px; }
+  .info-row { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; border-bottom: 1px solid #21262d; gap: 8px; }
+  .info-label { color: #8b949e; flex-shrink: 0; }
+  .info-value { color: #e6edf3; font-weight: 500; text-align: right; }
+  .info-desc { color: #c9d1d9; font-size: 11px; margin-top: 8px; line-height: 1.6; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  #close-btn { position: absolute; top: 10px; right: 10px; background: none; border: none; color: #8b949e; cursor: pointer; font-size: 18px; line-height: 1; padding: 2px 4px; }
+  #close-btn:hover { color: #e6edf3; }
+
+  /* ─── Pipeline coming-soon notice ─── */
+  #pipeline-notice {
+    position: absolute;
+    bottom: 28px; left: 50%; transform: translateX(-50%);
+    background: rgba(22,27,34,0.92); border: 1px solid rgba(200,136,58,0.35);
+    border-radius: 6px; padding: 8px 16px;
+    font-size: 11px; color: #8b949e; z-index: 15;
+    white-space: nowrap; pointer-events: none;
+    display: flex; align-items: center; gap: 8px;
+  }
+  #pipeline-notice .pipe-icon { color: #c8883a; font-size: 13px; }
+
+  /* ─── Loading ─── */
+  #loading {
+    position: absolute; bottom: 70px; left: 50%; transform: translateX(-50%);
+    background: #161b22; border: 1px solid #30363d; border-radius: 6px;
+    padding: 8px 16px; font-size: 12px; color: #8b949e;
+    z-index: 15; white-space: nowrap; pointer-events: none;
   }
 
+  /* ─── Mobile ─── */
   @media (max-width: 640px) {
-    #wip-overlay {
-      top: auto;
-      bottom: 0;
-      right: 0;
-      left: 0;
-      width: 100%;
-      border-radius: 12px 12px 0 0;
-      max-height: 55vh;
-      padding-bottom: 24px;
-    }
+    #legend { display: none; }
+    .toggle-btn { padding: 5px 8px; font-size: 11px; }
+    #info-panel { top: auto; bottom: 0; left: 0; right: 0; width: 100%; border-radius: 12px 12px 0 0; border-bottom: none; max-height: 55vh; padding-bottom: 24px; }
+    #pipeline-notice { bottom: 12px; font-size: 10px; padding: 6px 12px; max-width: calc(100% - 24px); white-space: normal; text-align: center; }
   }
-
-  .overlay-label {
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #c8883a;
-    margin-bottom: 6px;
+  @supports (padding: env(safe-area-inset-bottom)) {
+    #info-panel { padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
   }
-
-  .overlay-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: #e6edf3;
-    margin-bottom: 10px;
-    line-height: 1.3;
-    border-bottom: 1px solid #30363d;
-    padding-bottom: 10px;
-  }
-
-  .overlay-desc {
-    font-size: 12px;
-    line-height: 1.7;
-    color: #8b949e;
-    margin-bottom: 14px;
-  }
-
-  .overlay-desc code {
-    font-family: 'SFMono-Regular', Consolas, monospace;
-    font-size: 11px;
-    color: #c8883a;
-    background: rgba(200,136,58,0.1);
-    padding: 1px 4px;
-    border-radius: 3px;
-  }
-
-  .overlay-stack {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin-bottom: 14px;
-  }
-
-  .stack-tag {
-    font-size: 10px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: #8b949e;
-    border: 1px solid #30363d;
-    padding: 2px 7px;
-    border-radius: 3px;
-  }
-
-  .overlay-blocker {
-    font-size: 11px;
-    color: #6e7681;
-    border-top: 1px solid #21262d;
-    padding-top: 12px;
-    line-height: 1.65;
-  }
-
-  .overlay-blocker strong {
-    color: #8b949e;
-  }
-
-  .overlay-back {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 12px;
-    font-size: 11px;
-    color: #c8883a;
-    text-decoration: none;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    transition: opacity 0.2s;
-  }
-
-  .overlay-back:hover { opacity: 0.7; }
+  .maplibregl-ctrl-attrib { font-size: 9px !important; }
 </style>
 </head>
 <body>
@@ -208,108 +118,176 @@
 <div id="app">
   <div id="header">
     <h1>Permian Basin Pipeline Risk Viewer <span class="sub">· Geoscientific Solutions · Ector County</span></h1>
-    <div class="wip-badge">
-      <span class="wip-dot"></span>
-      In Progress
+    <div id="controls">
+      <div id="legend">
+        <div class="legend-item">
+          <div class="legend-swatch" style="background:#d73027;"></div><span>Zone A / AE</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch" style="background:#fee090;opacity:0.8;"></div><span>Zone X</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-swatch" style="background:#c8883a;opacity:0.5;border:1px dashed #c8883a;"></div><span>Pipeline (pending)</span>
+        </div>
+      </div>
+      <button class="toggle-btn active" id="btn-flood" onclick="toggleFlood()">
+        <span class="dot" style="background:#d73027;"></span> FEMA Flood Zones
+      </button>
+      <div class="wip-badge">
+        <span class="wip-dot"></span> Pipeline Layer · In Progress
+      </div>
     </div>
   </div>
 
   <div id="map"></div>
 </div>
 
-<div id="wip-overlay">
-  <div class="overlay-label">Demo · In Progress</div>
-  <div class="overlay-title">Pipeline × Flood Zone Risk Viewer</div>
-
-  <p class="overlay-desc">
-    Oil and gas pipeline network overlaid on FEMA flood zones, with
-    <code>ST_Intersects</code> queries surfacing which pipeline segments
-    cross FEMA-designated flood zones. Click a pipeline to see operator,
-    type, and flood zone crossing count.
-  </p>
-
-  <div class="overlay-stack">
-    <span class="stack-tag">PostGIS</span>
-    <span class="stack-tag">ST_Intersects</span>
-    <span class="stack-tag">FEMA FIRM</span>
-    <span class="stack-tag">MapLibre GL</span>
-    <span class="stack-tag">Supabase</span>
-    <span class="stack-tag">Midstream Data</span>
-  </div>
-
-  <div class="overlay-blocker">
-    <strong>Currently blocked:</strong> sourcing a clean Permian Basin pipeline
-    dataset. Once resolved, this viewer will show operator name, pipeline type,
-    commodity, and flood zone crossing count per segment — the infrastructure
-    risk and regulatory liability picture in one view.
-  </div>
-
-  <a href="../index.html" class="overlay-back">
-    ← Back to Geoscientific Solutions
-  </a>
+<!-- Click-to-inspect panel -->
+<div id="info-panel">
+  <button id="close-btn">×</button>
+  <h3 id="panel-title">Flood Zone Details</h3>
+  <div id="info-content"></div>
 </div>
 
+<!-- Persistent pipeline notice -->
+<div id="pipeline-notice">
+  <span class="pipe-icon">⌁</span>
+  Pipeline network layer pending dataset — click any flood zone to explore FEMA data
+</div>
+
+<div id="loading">Loading flood zones…</div>
+
 <script>
+const SUPABASE_URL = 'https://ovxsolwdzxewxgggdfow.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_wcWXY0vOG6kvrbD5pyPN1g__BH5z-bf';
+let floodVisible = true;
+
 const map = new maplibregl.Map({
   container: 'map',
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
   center: [-102.55, 31.86],
-  zoom: 8
+  zoom: 9
 });
 map.addControl(new maplibregl.NavigationControl(), 'top-left');
 window.addEventListener('load', () => setTimeout(() => map.resize(), 100));
 
-// Load flood zones as a faint background layer to show the underlying data
+function getZoneColor(zone) {
+  if (!zone) return '#4575b4';
+  if (zone.startsWith('A')) return '#d73027';
+  if (zone === 'X') return '#fee090';
+  return '#4575b4';
+}
+
+function getZoneLabel(zone) {
+  const labels = {
+    A:  'Zone A – 1% Annual Chance Flood',
+    AE: 'Zone AE – 1% Annual Chance w/ Base Flood Elevation',
+    AH: 'Zone AH – Ponding',
+    AO: 'Zone AO – Sheet Flow',
+    X:  'Zone X – Moderate / Minimal Risk'
+  };
+  return labels[zone] || `Zone ${zone}`;
+}
+
+function toggleFlood() {
+  floodVisible = !floodVisible;
+  document.getElementById('btn-flood').classList.toggle('active', floodVisible);
+  ['flood-fill','flood-outline','flood-highlight'].forEach(id => {
+    if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', floodVisible ? 'visible' : 'none');
+  });
+}
+
+function showPanel(title, html) {
+  document.getElementById('panel-title').textContent = title;
+  document.getElementById('info-content').innerHTML = html;
+  document.getElementById('info-panel').style.display = 'block';
+}
+
+document.getElementById('close-btn').addEventListener('click', () => {
+  document.getElementById('info-panel').style.display = 'none';
+});
+
 map.on('load', async () => {
   map.resize();
-  const SUPABASE_URL = 'https://ovxsolwdzxewxgggdfow.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_wcWXY0vOG6kvrbD5pyPN1g__BH5z-bf';
-
   try {
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/ector_flood_zones_geojson?select=*&limit=1000`,
       { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
     );
     const rows = await res.json();
+    document.getElementById('loading').textContent = `Rendering ${rows.length} flood zone polygons…`;
 
     const geojson = {
       type: 'FeatureCollection',
       features: rows.map(r => ({
         type: 'Feature',
         geometry: r.geometry,
-        properties: { fld_zone: r.fld_zone }
+        properties: {
+          fld_zone:   r.fld_zone,
+          zone_subty: r.zone_subty,
+          sfha_tf:    r.sfha_tf,
+          static_bfe: r.static_bfe,
+          dfirm_id:   r.dfirm_id,
+          color:      getZoneColor(r.fld_zone)
+        }
       })).filter(f => f.geometry)
     };
 
-    map.addSource('flood', { type: 'geojson', data: geojson });
+    map.addSource('flood', { type: 'geojson', data: geojson, generateId: true });
     map.addLayer({
       id: 'flood-fill', type: 'fill', source: 'flood',
       paint: {
-        'fill-color': [
-          'case',
-          ['==', ['get', 'fld_zone'], 'X'], '#fee090',
-          '#d73027'
-        ],
-        'fill-opacity': 0.18
+        'fill-color': ['get', 'color'],
+        'fill-opacity': ['case', ['==', ['get', 'fld_zone'], 'X'], 0.08, 0.5]
       }
     });
     map.addLayer({
       id: 'flood-outline', type: 'line', source: 'flood',
+      paint: { 'line-color': ['get', 'color'], 'line-width': 0.8, 'line-opacity': 0.9 }
+    });
+    map.addLayer({
+      id: 'flood-highlight', type: 'fill', source: 'flood',
       paint: {
-        'line-color': [
-          'case',
-          ['==', ['get', 'fld_zone'], 'X'], '#fee090',
-          '#d73027'
-        ],
-        'line-width': 0.6,
-        'line-opacity': 0.5
+        'fill-color': '#fff',
+        'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.15, 0]
       }
     });
+
+    document.getElementById('loading').style.display = 'none';
+
+    let hoveredId = null;
+    map.on('mousemove', 'flood-fill', e => {
+      map.getCanvas().style.cursor = 'pointer';
+      if (hoveredId !== null) map.setFeatureState({ source: 'flood', id: hoveredId }, { hover: false });
+      hoveredId = e.features[0].id;
+      map.setFeatureState({ source: 'flood', id: hoveredId }, { hover: true });
+    });
+    map.on('mouseleave', 'flood-fill', () => {
+      map.getCanvas().style.cursor = '';
+      if (hoveredId !== null) map.setFeatureState({ source: 'flood', id: hoveredId }, { hover: false });
+      hoveredId = null;
+    });
+
+    map.on('click', 'flood-fill', e => {
+      const p = e.features[0].properties;
+      const bfe = (p.static_bfe && p.static_bfe > -9000) ? `${p.static_bfe} ft NAVD88` : 'Not specified';
+      const color = p.color;
+      showPanel('Flood Zone Details', `
+        <div class="info-row"><span class="info-label">Zone</span><span class="info-value"><span class="badge" style="background:${color}22;color:${color};border:1px solid ${color}55">${p.fld_zone}</span></span></div>
+        <div class="info-row"><span class="info-label">Description</span><span class="info-value">${getZoneLabel(p.fld_zone)}</span></div>
+        <div class="info-row"><span class="info-label">Subtype</span><span class="info-value">${(p.zone_subty && p.zone_subty !== 'NaN') ? p.zone_subty : '—'}</span></div>
+        <div class="info-row"><span class="info-label">SFHA</span><span class="info-value">${p.sfha_tf === 'T' ? '✓ Yes' : '✗ No'}</span></div>
+        <div class="info-row"><span class="info-label">Base Flood Elev.</span><span class="info-value">${bfe}</span></div>
+        <div class="info-row"><span class="info-label">DFIRM Panel</span><span class="info-value">${p.dfirm_id}</span></div>
+        <p class="info-desc">Pipeline crossing analysis will identify which segments from the Permian Basin network intersect this flood zone, surfacing operator name, pipeline type, and regulatory liability exposure.</p>
+      `);
+    });
+
   } catch (e) {
     console.error('Pipeline viewer: flood zone fetch failed', e);
+    document.getElementById('loading').textContent = 'Failed to load flood zones.';
   }
 });
 </script>
-
 </body>
 </html>
