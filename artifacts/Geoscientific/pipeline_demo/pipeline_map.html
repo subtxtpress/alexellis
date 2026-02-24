@@ -55,7 +55,7 @@
   /* ─── Map ─── */
   #map { flex: 1; min-height: 0; width: 100%; position: relative; }
 
-  /* ─── Sidebar: pipeline status ─── */
+  /* ─── Sidebar: pipeline status (desktop) ─── */
   #sidebar {
     position: absolute;
     top: 12px; left: 54px;
@@ -83,6 +83,21 @@
   .plyr-status { font-size: 9px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 6px; border-radius: 3px; flex-shrink: 0; }
   .plyr-status--live { background: rgba(31,111,235,0.15); color: #58a6ff; border: 1px solid rgba(88,166,255,0.3); }
   .plyr-status--pending { background: rgba(200,136,58,0.1); color: #c8883a; border: 1px solid rgba(200,136,58,0.3); }
+
+  /* ─── Mobile status bar (replaces sidebar on small screens) ─── */
+  #status-bar {
+    display: none;
+    background: #161b22; border-bottom: 1px solid #30363d;
+    padding: 0 12px; height: 34px; flex-shrink: 0;
+    align-items: center; gap: 10px; overflow-x: auto;
+  }
+  .sbar-step { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .sbar-num { width: 16px; height: 16px; border-radius: 50%; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .sbar-num--live { background: #1f6feb; color: #fff; }
+  .sbar-num--pending { background: #30363d; color: #8b949e; }
+  .sbar-label { font-size: 10px; color: #8b949e; }
+  .sbar-label strong { color: #e6edf3; font-weight: 600; }
+  .sbar-sep { color: #30363d; font-size: 12px; flex-shrink: 0; }
 
   /* ─── Info panel (right, on click) ─── */
   #info-panel {
@@ -119,8 +134,10 @@
   /* ─── Mobile ─── */
   @media (max-width: 640px) {
     .layer-pill .label { display: none; }
-    #sidebar { width: 200px; left: 50px; top: 8px; }
+    #sidebar { display: none; }
+    #status-bar { display: flex; }
     #info-panel { top: auto; bottom: 0; left: 0; right: 0; width: 100%; border-radius: 12px 12px 0 0; border-bottom: none; max-height: 60vh; padding-bottom: 24px; }
+    #loading { bottom: 16px; font-size: 11px; }
   }
   @supports (padding: env(safe-area-inset-bottom)) {
     #info-panel { padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
@@ -142,6 +159,24 @@
         <span class="dot"></span>
         <span class="label">Pipeline Network</span>
       </div>
+    </div>
+  </div>
+
+  <!-- Mobile status bar (hidden on desktop, shown on mobile instead of sidebar) -->
+  <div id="status-bar">
+    <div class="sbar-step">
+      <div class="sbar-num sbar-num--live">1</div>
+      <div class="sbar-label"><strong>Flood Zones</strong> · Live</div>
+    </div>
+    <span class="sbar-sep">›</span>
+    <div class="sbar-step">
+      <div class="sbar-num sbar-num--pending">2</div>
+      <div class="sbar-label">Pipeline Network · Pending</div>
+    </div>
+    <span class="sbar-sep">›</span>
+    <div class="sbar-step">
+      <div class="sbar-num sbar-num--pending">3</div>
+      <div class="sbar-label">Crossing Analysis · Pending</div>
     </div>
   </div>
 
