@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Odessa Zoning Atlas | Geoscientific Solutions</title>
+<link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet">
+<script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; width: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui, sans-serif; background: #0d1117; color: #e6edf3; }
+
+  #app { display: flex; flex-direction: column; height: 100vh; width: 100%; }
+
+  /* ─── Header ─── */
+  #header {
+    background: #161b22; border-bottom: 1px solid #30363d;
+    padding: 0 14px; height: 48px; flex-shrink: 0;
+    display: flex; align-items: center; gap: 10px; z-index: 10; min-width: 0;
+  }
+  #header h1 {
+    font-size: 13px; font-weight: 600; color: #e6edf3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    flex-shrink: 1; min-width: 0;
+  }
+  #header h1 .sub { font-size: 11px; color: #8b949e; font-weight: 400; }
+  #controls { display: flex; gap: 6px; align-items: center; margin-left: auto; flex-shrink: 0; }
+
+  /* ─── Search box ─── */
+  #search-wrap { position: relative; flex-shrink: 0; }
+  #search {
+    background: #0d1117; border: 1px solid #30363d; border-radius: 5px;
+    color: #e6edf3; font-size: 11px; padding: 4px 28px 4px 9px;
+    width: 160px; outline: none; transition: border-color 0.15s;
+  }
+  #search:focus { border-color: #58a6ff; }
+  #search::placeholder { color: #484f58; }
+  #search-clear {
+    position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: #484f58; cursor: pointer;
+    font-size: 14px; line-height: 1; display: none; padding: 0;
+  }
+  #search-clear.visible { display: block; color: #8b949e; }
+
+  /* ─── Filter pills ─── */
+  #filter-bar {
+    background: #161b22; border-bottom: 1px solid #30363d;
+    padding: 0 12px; height: 36px; flex-shrink: 0;
+    display: flex; align-items: center; gap: 6px; overflow-x: auto;
+  }
+  #filter-bar::-webkit-scrollbar { height: 0; }
+  .filter-label { font-size: 10px; color: #484f58; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; flex-shrink: 0; }
+  .fpill {
+    display: flex; align-items: center; gap: 4px;
+    padding: 3px 9px; border-radius: 12px; border: 1px solid #30363d;
+    background: #0d1117; color: #8b949e; font-size: 10px; font-weight: 600;
+    cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    transition: all 0.15s; letter-spacing: 0.03em;
+  }
+  .fpill .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .fpill.active { background: #161b22; color: #e6edf3; }
+  .fpill.all-pill.active { border-color: #58a6ff; color: #58a6ff; }
+
+  /* ─── Map ─── */
+  #map-wrap { flex: 1; position: relative; overflow: hidden; }
+  #map { position: absolute; inset: 0; }
+
+  /* ─── Legend (desktop, bottom-left) ─── */
+  #legend {
+    position: absolute; bottom: 28px; left: 12px;
+    background: rgba(22,27,34,0.95); border: 1px solid #30363d; border-radius: 8px;
+    padding: 10px 12px; z-index: 20; min-width: 160px; max-width: 200px;
+  }
+  #legend h4 { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #8b949e; margin-bottom: 7px; }
+  .leg-row { display: flex; align-items: center; gap: 7px; font-size: 10px; color: #8b949e; padding: 2px 0; }
+  .leg-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+  /* ─── Info panel ─── */
+  #info-panel {
+    position: absolute; top: 12px; right: 12px; width: 268px;
+    max-height: calc(100% - 24px);
+    background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+    padding: 14px; z-index: 20; display: none; overflow-y: auto;
+  }
+  #info-panel h3 { font-size: 12px; font-weight: 600; color: #8b949e; margin-bottom: 4px; letter-spacing: 0.06em; text-transform: uppercase; padding-right: 20px; }
+  #info-panel h4 { font-size: 14px; font-weight: 700; color: #e6edf3; margin-bottom: 10px; border-bottom: 1px solid #30363d; padding-bottom: 8px; }
+  .info-row { display: flex; justify-content: space-between; font-size: 12px; padding: 4px 0; border-bottom: 1px solid #21262d; gap: 8px; }
+  .info-label { color: #8b949e; flex-shrink: 0; }
+  .info-value { color: #e6edf3; font-weight: 500; text-align: right; }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .info-notes { margin-top: 8px; font-size: 11px; color: #8b949e; line-height: 1.5; font-style: italic; }
+  #close-btn { position: absolute; top: 10px; right: 10px; background: none; border: none; color: #8b949e; cursor: pointer; font-size: 18px; line-height: 1; padding: 2px 4px; }
+  #close-btn:hover { color: #e6edf3; }
+
+  /* ─── Hint toast ─── */
+  #hint {
+    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+    background: rgba(22,27,34,0.95); border: 1px solid #388bfd66;
+    border-radius: 20px; padding: 7px 16px;
+    font-size: 12px; color: #e6edf3; z-index: 25;
+    white-space: nowrap; pointer-events: none;
+    animation: fadeInUp 0.4s ease, fadeOut 0.5s ease 4s forwards;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+
+  /* ─── Loading ─── */
+  #loading {
+    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+    background: #161b22; border: 1px solid #30363d; border-radius: 6px;
+    padding: 8px 16px; font-size: 12px; color: #8b949e;
+    z-index: 15; white-space: nowrap; pointer-events: none;
+  }
+
+  /* ─── Mobile ─── */
+  @media (max-width: 640px) {
+    #search { width: 120px; }
+    #legend { display: none; }
+    #info-panel { top: auto; bottom: 0; left: 0; right: 0; width: 100%; max-height: 60vh; border-radius: 12px 12px 0 0; border-bottom: none; padding-bottom: 24px; }
+    #hint { bottom: 20px; font-size: 11px; }
+    #loading { bottom: 20px; }
+  }
+  @supports (padding: env(safe-area-inset-bottom)) {
+    #info-panel { padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
+  }
+  .maplibregl-ctrl-attrib { font-size: 9px !important; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="header">
+    <h1>Odessa Zoning Atlas <span class="sub">· City of Odessa, TX · 1,000 districts</span></h1>
+    <div id="controls">
+      <div id="search-wrap">
+        <input id="search" type="text" placeholder="Search zone or description…" autocomplete="off">
+        <button id="search-clear" title="Clear">×</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="filter-bar">
+    <span class="filter-label">Filter</span>
+    <button class="fpill all-pill active" data-cat="ALL" onclick="setFilter('ALL', this)">
+      <span class="dot" style="background:#58a6ff"></span> All
+    </button>
+  </div>
+
+  <div id="map-wrap">
+    <div id="map"></div>
+
+    <div id="legend">
+      <h4>Zone Category</h4>
+      <div id="legend-rows"></div>
+    </div>
+
+    <div id="info-panel">
+      <button id="close-btn">×</button>
+      <h3 id="panel-category"></h3>
+      <h4 id="panel-title"></h4>
+      <div id="info-content"></div>
+    </div>
+
+    <div id="loading">Loading zoning districts…</div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://ovxsolwdzxewxgggdfow.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_wcWXY0vOG6kvrbD5pyPN1g__BH5z-bf';
+
+// Category → color mapping
+const CAT_COLORS = {
+  'Residential':          '#4393c3',
+  'Multi-Family':         '#74add1',
+  'GeneralResidential':   '#abd9e9',
+  'Retail':               '#f46d43',
+  'Commercial':           '#fdae61',
+  'CentralBusiness':      '#e31a1c',
+  'Industrial':           '#878787',
+  'Office':               '#a6d96a',
+  'NeighborhoodServices': '#fee08b',
+  'DrillSite':            '#c8883a',
+  'FutureDevelopment':    '#9e9ac8',
+  'MedicalCenter':        '#d4b9da',
+  'University':           '#41b6c4',
+  'SurfaceDrainage':      '#225ea8',
+  'Surface Drainage':     '#225ea8',
+  'Other':                '#636363',
+  'Unknown':              '#636363',
+};
+
+const CATEGORY_LABELS = {
+  'Residential':          'Residential',
+  'Multi-Family':         'Multi-Family',
+  'GeneralResidential':   'General Residential',
+  'Retail':               'Retail',
+  'Commercial':           'Commercial',
+  'CentralBusiness':      'Central Business',
+  'Industrial':           'Industrial',
+  'Office':               'Office',
+  'NeighborhoodServices': 'Neighborhood Services',
+  'DrillSite':            'Drill Site Overlay',
+  'FutureDevelopment':    'Future Development',
+  'MedicalCenter':        'Medical Center',
+  'University':           'University',
+  'SurfaceDrainage':      'Surface Drainage',
+  'Surface Drainage':     'Surface Drainage',
+  'Other':                'Other',
+};
+
+function catColor(cat) {
+  return CAT_COLORS[cat] || '#636363';
+}
+
+let allFeatures = [];
+let activeFilter = 'ALL';
+let searchTerm = '';
+let hoveredId = null;
+
+const map = new maplibregl.Map({
+  container: 'map',
+  style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+  center: [-102.365, 31.845],
+  zoom: 11
+});
+map.addControl(new maplibregl.NavigationControl(), 'top-left');
+
+document.getElementById('close-btn').addEventListener('click', () => {
+  document.getElementById('info-panel').style.display = 'none';
+});
+
+// Search
+const searchEl = document.getElementById('search');
+const clearBtn = document.getElementById('search-clear');
+searchEl.addEventListener('input', () => {
+  searchTerm = searchEl.value.trim().toLowerCase();
+  clearBtn.classList.toggle('visible', searchTerm.length > 0);
+  applyFilters();
+});
+clearBtn.addEventListener('click', () => {
+  searchEl.value = '';
+  searchTerm = '';
+  clearBtn.classList.remove('visible');
+  applyFilters();
+});
+
+function setFilter(cat, el) {
+  activeFilter = cat;
+  document.querySelectorAll('.fpill').forEach(b => {
+    b.classList.toggle('active', b.dataset.cat === cat);
+    const dot = b.querySelector('.dot');
+    if (b.dataset.cat === cat && cat !== 'ALL') {
+      b.style.borderColor = catColor(cat) + '99';
+      b.style.color = catColor(cat);
+      if (dot) dot.style.background = catColor(cat);
+    } else if (b.dataset.cat === 'ALL' && cat === 'ALL') {
+      b.style.borderColor = '#58a6ff';
+      b.style.color = '#58a6ff';
+    } else {
+      b.style.borderColor = '';
+      b.style.color = '';
+    }
+  });
+  applyFilters();
+}
+
+function applyFilters() {
+  if (!map.getSource('zoning')) return;
+  const filtered = allFeatures.filter(f => {
+    const p = f.properties;
+    const catMatch = activeFilter === 'ALL' || p.zonecategory === activeFilter;
+    const searchMatch = !searchTerm ||
+      (p.zoneclass || '').toLowerCase().includes(searchTerm) ||
+      (p.zonedesc || '').toLowerCase().includes(searchTerm) ||
+      (p.zonecategory || '').toLowerCase().includes(searchTerm);
+    return catMatch && searchMatch;
+  });
+  map.getSource('zoning').setData({ type: 'FeatureCollection', features: filtered });
+}
+
+function buildLegend(categories) {
+  const rows = document.getElementById('legend-rows');
+  // Deduplicate Surface Drainage
+  const seen = new Set();
+  categories.filter(c => c && c !== 'Unknown').forEach(cat => {
+    const label = CATEGORY_LABELS[cat] || cat;
+    if (seen.has(label)) return;
+    seen.add(label);
+    const div = document.createElement('div');
+    div.className = 'leg-row';
+    div.innerHTML = `<div class="leg-swatch" style="background:${catColor(cat)}"></div><span>${label}</span>`;
+    rows.appendChild(div);
+  });
+}
+
+function buildFilterPills(categories) {
+  const bar = document.getElementById('filter-bar');
+  // Deduplicate Surface Drainage
+  const seen = new Set(['ALL']);
+  categories.filter(c => c && c !== 'Unknown').forEach(cat => {
+    const label = CATEGORY_LABELS[cat] || cat;
+    if (seen.has(label)) return;
+    seen.add(label);
+    const btn = document.createElement('button');
+    btn.className = 'fpill';
+    btn.dataset.cat = cat;
+    btn.innerHTML = `<span class="dot" style="background:${catColor(cat)}66"></span> ${label}`;
+    btn.addEventListener('click', () => setFilter(cat, btn));
+    bar.appendChild(btn);
+  });
+}
+
+function showHint() {
+  const el = document.createElement('div');
+  el.id = 'hint';
+  el.textContent = 'Tap any district to inspect zoning details';
+  document.getElementById('map-wrap').appendChild(el);
+  setTimeout(() => el.remove(), 4600);
+}
+
+map.on('load', async () => {
+  map.resize();
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/odessa_zoning_geojson?select=*&limit=1000`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+    );
+    const rows = await res.json();
+    document.getElementById('loading').textContent = `Rendering ${rows.length} zoning districts…`;
+
+    allFeatures = rows
+      .filter(r => r.geometry)
+      .map((r, i) => ({
+        type: 'Feature',
+        id: i,
+        geometry: r.geometry,
+        properties: {
+          id: r.id,
+          zoneclass: r.zoneclass,
+          zonedesc: (r.zonedesc || '').trim(),
+          zonecategory: r.zonecategory,
+          height: r.height,
+          baseelev: r.baseelev,
+          notes: r.notes,
+          color: catColor(r.zonecategory)
+        }
+      }));
+
+    const geojson = { type: 'FeatureCollection', features: allFeatures };
+
+    // Gather sorted categories by count
+    const catCount = {};
+    allFeatures.forEach(f => {
+      const c = f.properties.zonecategory;
+      catCount[c] = (catCount[c] || 0) + 1;
+    });
+    const sortedCats = Object.entries(catCount)
+      .sort((a, b) => b[1] - a[1])
+      .map(e => e[0]);
+
+    buildLegend(sortedCats);
+    buildFilterPills(sortedCats);
+
+    map.addSource('zoning', { type: 'geojson', data: geojson, generateId: false });
+    map.addLayer({
+      id: 'zone-fill', type: 'fill', source: 'zoning',
+      paint: {
+        'fill-color': ['get', 'color'],
+        'fill-opacity': 0.55
+      }
+    });
+    map.addLayer({
+      id: 'zone-outline', type: 'line', source: 'zoning',
+      paint: { 'line-color': ['get', 'color'], 'line-width': 0.6, 'line-opacity': 0.8 }
+    });
+    map.addLayer({
+      id: 'zone-highlight', type: 'fill', source: 'zoning',
+      paint: {
+        'fill-color': '#fff',
+        'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.15, 0]
+      }
+    });
+
+    document.getElementById('loading').style.display = 'none';
+    showHint();
+
+    // Hover
+    map.on('mousemove', 'zone-fill', e => {
+      map.getCanvas().style.cursor = 'pointer';
+      const fid = e.features[0].id;
+      if (hoveredId !== null && hoveredId !== fid) {
+        map.setFeatureState({ source: 'zoning', id: hoveredId }, { hover: false });
+      }
+      hoveredId = fid;
+      map.setFeatureState({ source: 'zoning', id: fid }, { hover: true });
+    });
+    map.on('mouseleave', 'zone-fill', () => {
+      map.getCanvas().style.cursor = '';
+      if (hoveredId !== null) map.setFeatureState({ source: 'zoning', id: hoveredId }, { hover: false });
+      hoveredId = null;
+    });
+
+    // Click
+    map.on('click', 'zone-fill', e => {
+      const p = e.features[0].properties;
+      const color = p.color;
+      const label = CATEGORY_LABELS[p.zonecategory] || p.zonecategory || '—';
+
+      document.getElementById('panel-category').textContent = label;
+      document.getElementById('panel-title').textContent = p.zonedesc || p.zoneclass || '—';
+      document.getElementById('info-content').innerHTML = `
+        <div class="info-row">
+          <span class="info-label">Zone Code</span>
+          <span class="info-value"><span class="badge" style="background:${color}22;color:${color};border:1px solid ${color}66">${p.zoneclass || '—'}</span></span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Category</span>
+          <span class="info-value">${label}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Max Height</span>
+          <span class="info-value">${p.height ? p.height + ' ft' : '—'}</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Base Elevation</span>
+          <span class="info-value">${p.baseelev ? p.baseelev + ' ft' : '—'}</span>
+        </div>
+        ${p.notes && p.notes !== 'null' ? `<p class="info-notes">${p.notes}</p>` : ''}
+      `;
+      document.getElementById('info-panel').style.display = 'block';
+    });
+
+  } catch (err) {
+    console.error('Zoning viewer error:', err);
+    document.getElementById('loading').textContent = 'Failed to load zoning data.';
+  }
+});
+</script>
+</body>
+</html>
