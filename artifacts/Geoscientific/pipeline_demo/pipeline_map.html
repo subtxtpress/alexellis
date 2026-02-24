@@ -10,20 +10,14 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; width: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui, sans-serif; background: #0d1117; color: #e6edf3; }
 
-  #app { display: flex; flex-direction: column; height: 100%; width: 100%; }
+  /* Full-height column layout */
+  #app { display: flex; flex-direction: column; height: 100vh; width: 100%; }
 
   /* ─── Header ─── */
   #header {
-    background: #161b22;
-    border-bottom: 1px solid #30363d;
-    padding: 0 14px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-    z-index: 10;
-    min-width: 0;
+    background: #161b22; border-bottom: 1px solid #30363d;
+    padding: 0 14px; height: 48px; flex-shrink: 0;
+    display: flex; align-items: center; gap: 10px; z-index: 10; min-width: 0;
   }
   #header h1 {
     font-size: 13px; font-weight: 600; color: #e6edf3;
@@ -31,46 +25,54 @@
     flex-shrink: 1; min-width: 0;
   }
   #header h1 .sub { font-size: 11px; color: #8b949e; font-weight: 400; }
-
   #controls { display: flex; gap: 6px; align-items: center; margin-left: auto; flex-shrink: 0; }
 
   /* ─── Layer pills ─── */
   .layer-pill {
     display: flex; align-items: center; gap: 5px;
-    padding: 3px 9px; border-radius: 5px;
-    border: 1px solid #30363d; font-size: 10px; font-weight: 600;
-    letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; flex-shrink: 0;
+    padding: 3px 9px; border-radius: 5px; border: 1px solid #30363d;
+    font-size: 10px; font-weight: 600; letter-spacing: 0.05em;
+    text-transform: uppercase; white-space: nowrap; flex-shrink: 0;
   }
   .layer-pill .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
   .layer-pill--active { border-color: #388bfd55; background: #161b22; color: #8b949e; cursor: pointer; transition: all 0.15s; }
   .layer-pill--active:hover { border-color: #58a6ff; color: #e6edf3; }
   .layer-pill--active.on { border-color: #58a6ff; color: #e6edf3; background: #0d1117; }
-  .layer-pill--pending {
-    background: rgba(200,136,58,0.08); border-color: rgba(200,136,58,0.4);
-    color: #c8883a;
-  }
+  .layer-pill--pending { background: rgba(200,136,58,0.08); border-color: rgba(200,136,58,0.4); color: #c8883a; }
   .layer-pill--pending .dot { background: #c8883a; animation: blink 1.6s ease-in-out infinite; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
-  /* ─── Map ─── */
-  #map { flex: 1; min-height: 0; height: 0; width: 100%; position: relative; }
+  /* ─── Mobile status bar ─── */
+  #status-bar {
+    display: none; background: #161b22; border-bottom: 1px solid #30363d;
+    padding: 0 12px; height: 34px; flex-shrink: 0;
+    align-items: center; gap: 10px; overflow-x: auto;
+  }
+  .sbar-step { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .sbar-num { width: 16px; height: 16px; border-radius: 50%; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .sbar-num--live { background: #1f6feb; color: #fff; }
+  .sbar-num--pending { background: #30363d; color: #8b949e; }
+  .sbar-label { font-size: 10px; color: #8b949e; }
+  .sbar-label strong { color: #e6edf3; font-weight: 600; }
+  .sbar-sep { color: #30363d; font-size: 12px; flex-shrink: 0; }
 
-  /* ─── Sidebar: pipeline status (desktop) ─── */
+  /* ─── Map area: fills remaining height ─── */
+  #map-wrap { flex: 1; position: relative; overflow: hidden; }
+  #map { position: absolute; inset: 0; }
+
+  /* ─── Sidebar (desktop, floats over map) ─── */
   #sidebar {
-    position: absolute;
-    top: 12px; left: 54px;
-    width: 240px;
+    position: absolute; top: 12px; left: 54px; width: 240px;
     background: #161b22; border: 1px solid #30363d; border-radius: 8px;
     z-index: 20; overflow: hidden;
   }
   #sidebar-header {
-    padding: 10px 12px 8px;
-    border-bottom: 1px solid #30363d;
+    padding: 10px 12px 8px; border-bottom: 1px solid #30363d;
     display: flex; align-items: center; gap: 8px;
   }
   #sidebar-header .icon { font-size: 16px; }
   #sidebar-header h2 { font-size: 12px; font-weight: 600; color: #e6edf3; }
-  #sidebar-header .stage { font-size: 10px; color: #8b949e; font-weight: 400; }
+  #sidebar-header .stage { font-size: 10px; color: #8b949e; }
   #pipeline-layers { padding: 8px 12px 10px; }
   .plyr { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 1px solid #21262d; }
   .plyr:last-child { border-bottom: none; }
@@ -84,27 +86,32 @@
   .plyr-status--live { background: rgba(31,111,235,0.15); color: #58a6ff; border: 1px solid rgba(88,166,255,0.3); }
   .plyr-status--pending { background: rgba(200,136,58,0.1); color: #c8883a; border: 1px solid rgba(200,136,58,0.3); }
 
-  /* ─── Mobile status bar (replaces sidebar on small screens) ─── */
-  #status-bar {
-    display: none;
-    background: #161b22; border-bottom: 1px solid #30363d;
-    padding: 0 12px; height: 34px; flex-shrink: 0;
-    align-items: center; gap: 10px; overflow-x: auto;
+  /* ─── Click hint toast ─── */
+  #hint {
+    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+    background: rgba(22,27,34,0.95); border: 1px solid #388bfd66;
+    border-radius: 20px; padding: 7px 16px;
+    font-size: 12px; color: #e6edf3; z-index: 25;
+    display: flex; align-items: center; gap: 8px;
+    white-space: nowrap; pointer-events: none;
+    animation: fadeInUp 0.4s ease, fadeOut 0.5s ease 4s forwards;
   }
-  .sbar-step { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
-  .sbar-num { width: 16px; height: 16px; border-radius: 50%; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .sbar-num--live { background: #1f6feb; color: #fff; }
-  .sbar-num--pending { background: #30363d; color: #8b949e; }
-  .sbar-label { font-size: 10px; color: #8b949e; }
-  .sbar-label strong { color: #e6edf3; font-weight: 600; }
-  .sbar-sep { color: #30363d; font-size: 12px; flex-shrink: 0; }
+  #hint .cursor { font-size: 14px; }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+  }
 
-  /* ─── Info panel (right, on click) ─── */
+  /* ─── Info panel ─── */
   #info-panel {
-    position: absolute;
+    position: absolute; top: 12px; right: 12px; width: 268px;
+    max-height: calc(100% - 24px);
     background: #161b22; border: 1px solid #30363d; border-radius: 8px;
     padding: 14px; z-index: 20; display: none; overflow-y: auto;
-    top: 12px; right: 12px; width: 268px; max-height: calc(100vh - 80px);
   }
   #info-panel h3 { font-size: 12px; font-weight: 600; color: #8b949e; margin-bottom: 6px; letter-spacing: 0.06em; text-transform: uppercase; padding-right: 20px; }
   #info-panel h4 { font-size: 13px; font-weight: 700; color: #e6edf3; margin-bottom: 10px; border-bottom: 1px solid #30363d; padding-bottom: 8px; }
@@ -115,17 +122,15 @@
   #close-btn { position: absolute; top: 10px; right: 10px; background: none; border: none; color: #8b949e; cursor: pointer; font-size: 18px; line-height: 1; padding: 2px 4px; }
   #close-btn:hover { color: #e6edf3; }
 
-  /* Pipeline crossing preview section */
+  /* Pipeline crossing section inside panel */
   .crossing-section { margin-top: 10px; padding: 10px; background: #0d1117; border-radius: 6px; border: 1px solid #21262d; }
   .crossing-title { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #c8883a; margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
   .crossing-title .dot { width: 6px; height: 6px; border-radius: 50%; background: #c8883a; animation: blink 1.6s ease-in-out infinite; }
-  .crossing-row { font-size: 11px; color: #8b949e; padding: 3px 0; display: flex; align-items: center; gap: 6px; }
-  .crossing-row .icon { color: #30363d; }
-  .crossing-row.pending { color: #484f58; font-style: italic; }
+  .crossing-row { font-size: 11px; color: #484f58; padding: 3px 0; font-style: italic; }
 
   /* ─── Loading ─── */
   #loading {
-    position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
     background: #161b22; border: 1px solid #30363d; border-radius: 6px;
     padding: 8px 16px; font-size: 12px; color: #8b949e;
     z-index: 15; white-space: nowrap; pointer-events: none;
@@ -136,8 +141,9 @@
     .layer-pill .label { display: none; }
     #sidebar { display: none; }
     #status-bar { display: flex; }
-    #info-panel { top: auto; bottom: 0; left: 0; right: 0; width: 100%; border-radius: 12px 12px 0 0; border-bottom: none; max-height: 60vh; padding-bottom: 24px; }
-    #loading { bottom: 16px; font-size: 11px; }
+    #info-panel { top: auto; bottom: 0; left: 0; right: 0; width: 100%; max-height: 60vh; border-radius: 12px 12px 0 0; border-bottom: none; padding-bottom: 24px; }
+    #hint { bottom: 20px; font-size: 11px; }
+    #loading { bottom: 20px; font-size: 11px; }
   }
   @supports (padding: env(safe-area-inset-bottom)) {
     #info-panel { padding-bottom: calc(14px + env(safe-area-inset-bottom)); }
@@ -162,7 +168,7 @@
     </div>
   </div>
 
-  <!-- Mobile status bar (hidden on desktop, shown on mobile instead of sidebar) -->
+  <!-- Mobile status bar -->
   <div id="status-bar">
     <div class="sbar-step">
       <div class="sbar-num sbar-num--live">1</div>
@@ -180,55 +186,59 @@
     </div>
   </div>
 
-  <div id="map"></div>
-</div>
+  <!-- Map fills remaining height via #map-wrap -->
+  <div id="map-wrap">
+    <div id="map"></div>
 
-<!-- Left sidebar: pipeline analysis layers -->
-<div id="sidebar">
-  <div id="sidebar-header">
-    <span class="icon">⚠</span>
-    <div>
-      <h2>Pipeline Risk Analysis</h2>
-      <div class="stage">Layer status</div>
+    <!-- Sidebar floats inside map-wrap so it's positioned relative to the map area -->
+    <div id="sidebar">
+      <div id="sidebar-header">
+        <span class="icon">⚠</span>
+        <div>
+          <h2>Pipeline Risk Analysis</h2>
+          <div class="stage">Layer status</div>
+        </div>
+      </div>
+      <div id="pipeline-layers">
+        <div class="plyr">
+          <div class="plyr-num plyr-num--live">1</div>
+          <div class="plyr-info">
+            <div class="plyr-name">FEMA Flood Hazard Zones</div>
+            <div class="plyr-desc">Ector County, TX</div>
+          </div>
+          <div class="plyr-status plyr-status--live">Live</div>
+        </div>
+        <div class="plyr">
+          <div class="plyr-num plyr-num--pending">2</div>
+          <div class="plyr-info">
+            <div class="plyr-name">Pipeline Network</div>
+            <div class="plyr-desc">Permian Basin operators</div>
+          </div>
+          <div class="plyr-status plyr-status--pending">Pending</div>
+        </div>
+        <div class="plyr">
+          <div class="plyr-num plyr-num--pending">3</div>
+          <div class="plyr-info">
+            <div class="plyr-name">Crossing Analysis</div>
+            <div class="plyr-desc">ST_Intersects · risk scoring</div>
+          </div>
+          <div class="plyr-status plyr-status--pending">Pending</div>
+        </div>
+      </div>
     </div>
+
+    <!-- Info panel -->
+    <div id="info-panel">
+      <button id="close-btn">×</button>
+      <h3>Flood Hazard Zone</h3>
+      <h4 id="panel-title"></h4>
+      <div id="info-content"></div>
+    </div>
+
+    <!-- Loading indicator -->
+    <div id="loading">Loading flood hazard zones…</div>
   </div>
-  <div id="pipeline-layers">
-    <div class="plyr">
-      <div class="plyr-num plyr-num--live">1</div>
-      <div class="plyr-info">
-        <div class="plyr-name">FEMA Flood Hazard Zones</div>
-        <div class="plyr-desc">Ector County · click to inspect</div>
-      </div>
-      <div class="plyr-status plyr-status--live">Live</div>
-    </div>
-    <div class="plyr">
-      <div class="plyr-num plyr-num--pending">2</div>
-      <div class="plyr-info">
-        <div class="plyr-name">Pipeline Network</div>
-        <div class="plyr-desc">Permian Basin operators</div>
-      </div>
-      <div class="plyr-status plyr-status--pending">Pending</div>
-    </div>
-    <div class="plyr">
-      <div class="plyr-num plyr-num--pending">3</div>
-      <div class="plyr-info">
-        <div class="plyr-name">Crossing Analysis</div>
-        <div class="plyr-desc">ST_Intersects · risk scoring</div>
-      </div>
-      <div class="plyr-status plyr-status--pending">Pending</div>
-    </div>
-  </div>
 </div>
-
-<!-- Right panel: click details -->
-<div id="info-panel">
-  <button id="close-btn">×</button>
-  <h3>Flood Hazard Zone</h3>
-  <h4 id="panel-title"></h4>
-  <div id="info-content"></div>
-</div>
-
-<div id="loading">Loading flood hazard zones…</div>
 
 <script>
 const SUPABASE_URL = 'https://ovxsolwdzxewxgggdfow.supabase.co';
@@ -242,15 +252,6 @@ const map = new maplibregl.Map({
   zoom: 9
 });
 map.addControl(new maplibregl.NavigationControl(), 'top-left');
-
-// Reliable resize: observe the map container so MapLibre repaints whenever its size changes
-const mapEl = document.getElementById('map');
-if (window.ResizeObserver) {
-  new ResizeObserver(() => map.resize()).observe(mapEl);
-} else {
-  window.addEventListener('load', () => setTimeout(() => map.resize(), 100));
-  window.addEventListener('resize', () => map.resize());
-}
 
 function getZoneColor(zone) {
   if (!zone) return '#4575b4';
@@ -273,13 +274,9 @@ function getZoneLabel(zone) {
 function getRiskContext(zone) {
   if (!zone) return null;
   if (zone.startsWith('A')) return {
-    level: 'HIGH',
-    color: '#d73027',
     note: 'Pipelines crossing SFHA zones face mandatory flood insurance exposure and PHMSA-reportable incident risk. ST_Intersects crossing analysis will flag operator name, pipeline type, and diameter for each segment in this zone.'
   };
   if (zone === 'X') return {
-    level: 'MODERATE',
-    color: '#e6a817',
     note: 'Zone X segments have lower flood frequency but are still included in crossing analysis for complete operator liability mapping across the Permian Basin network.'
   };
   return null;
@@ -287,8 +284,7 @@ function getRiskContext(zone) {
 
 function toggleFlood() {
   floodVisible = !floodVisible;
-  const btn = document.getElementById('btn-flood');
-  btn.classList.toggle('on', floodVisible);
+  document.getElementById('btn-flood').classList.toggle('on', floodVisible);
   ['flood-fill','flood-outline','flood-highlight'].forEach(id => {
     if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', floodVisible ? 'visible' : 'none');
   });
@@ -297,6 +293,14 @@ function toggleFlood() {
 document.getElementById('close-btn').addEventListener('click', () => {
   document.getElementById('info-panel').style.display = 'none';
 });
+
+function showHint() {
+  const el = document.createElement('div');
+  el.id = 'hint';
+  el.innerHTML = '<span class="cursor">👆</span> Tap a flood zone to see pipeline crossing data';
+  document.getElementById('map-wrap').appendChild(el);
+  setTimeout(() => el.remove(), 4600);
+}
 
 map.on('load', async () => {
   map.resize();
@@ -307,7 +311,10 @@ map.on('load', async () => {
     );
     const rows = await res.json();
     document.getElementById('loading').textContent = `Loaded ${rows.length} flood hazard polygons`;
-    setTimeout(() => { document.getElementById('loading').style.display = 'none'; }, 2000);
+    setTimeout(() => {
+      document.getElementById('loading').style.display = 'none';
+      showHint();
+    }, 1200);
 
     const geojson = {
       type: 'FeatureCollection',
@@ -365,7 +372,6 @@ map.on('load', async () => {
       const risk = getRiskContext(p.fld_zone);
 
       document.getElementById('panel-title').textContent = getZoneLabel(p.fld_zone);
-
       document.getElementById('info-content').innerHTML = `
         <div class="info-row">
           <span class="info-label">Zone</span>
@@ -375,27 +381,22 @@ map.on('load', async () => {
         <div class="info-row"><span class="info-label">Base Flood Elev.</span><span class="info-value">${bfe}</span></div>
         <div class="info-row"><span class="info-label">Subtype</span><span class="info-value">${(p.zone_subty && p.zone_subty !== 'NaN') ? p.zone_subty : '—'}</span></div>
         <div class="info-row"><span class="info-label">DFIRM Panel</span><span class="info-value">${p.dfirm_id}</span></div>
-
         ${risk ? `
         <div class="crossing-section">
-          <div class="crossing-title">
-            <span class="dot"></span>
-            Pipeline Crossing Analysis
-          </div>
-          <div class="crossing-row pending">⏳ Awaiting pipeline dataset…</div>
-          <div class="crossing-row pending">· Operator name &amp; contact</div>
-          <div class="crossing-row pending">· Pipeline type &amp; diameter</div>
-          <div class="crossing-row pending">· PHMSA reportable risk flag</div>
-          <div class="crossing-row pending">· Regulatory liability exposure</div>
+          <div class="crossing-title"><span class="dot"></span>Pipeline Crossing Analysis</div>
+          <div class="crossing-row">⏳ Awaiting pipeline dataset…</div>
+          <div class="crossing-row">· Operator name &amp; contact</div>
+          <div class="crossing-row">· Pipeline type &amp; diameter</div>
+          <div class="crossing-row">· PHMSA reportable risk flag</div>
+          <div class="crossing-row">· Regulatory liability exposure</div>
           <div style="margin-top:8px;font-size:10px;color:#484f58;line-height:1.5;">${risk.note}</div>
         </div>` : ''}
       `;
-
       document.getElementById('info-panel').style.display = 'block';
     });
 
   } catch (err) {
-    console.error('Pipeline viewer: flood zone fetch failed', err);
+    console.error('Pipeline viewer error:', err);
     document.getElementById('loading').textContent = 'Failed to load flood zones.';
   }
 });
