@@ -96,8 +96,7 @@
     white-space: nowrap; pointer-events: none;
     animation: fadeInUp 0.4s ease, fadeOut 0.5s ease 4s forwards;
   }
-  #hint .cursor { font-size: 14px; }
-  @keyframes fadeInUp {
+@keyframes fadeInUp {
     from { opacity: 0; transform: translateX(-50%) translateY(8px); }
     to   { opacity: 1; transform: translateX(-50%) translateY(0); }
   }
@@ -297,7 +296,7 @@ document.getElementById('close-btn').addEventListener('click', () => {
 function showHint() {
   const el = document.createElement('div');
   el.id = 'hint';
-  el.innerHTML = '<span class="cursor">👆</span> Tap a flood zone to see pipeline crossing data';
+  el.innerHTML = 'Tap any flood zone to inspect pipeline crossing data';
   document.getElementById('map-wrap').appendChild(el);
   setTimeout(() => el.remove(), 4600);
 }
