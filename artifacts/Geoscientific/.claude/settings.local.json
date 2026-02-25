@@ -12,7 +12,14 @@
       "Bash(curl:*)",
       "Bash(/Users/home/Documents/sites/home/artifacts/geoscientific/index.html:*)",
       "Bash(git checkout:*)",
-      "Bash(/Users/home/Documents/sites/home/artifacts/Geoscientific/pipeline_demo/pipeline_map.html:*)"
+      "Bash(/Users/home/Documents/sites/home/artifacts/Geoscientific/pipeline_demo/pipeline_map.html:*)",
+      "WebFetch(domain:ecgis-ectorcounty.hub.arcgis.com)",
+      "WebFetch(domain:geoint-ogis.hub.arcgis.com)",
+      "WebFetch(domain:www.odessa-tx.gov)",
+      "WebFetch(domain:geoint2.odessa-tx.gov)",
+      "WebFetch(domain:data.tnris.org)",
+      "WebFetch(domain:newtools.cira.state.tx.us)",
+      "WebFetch(domain:hub.arcgis.com)"
     ]
   }
 }
