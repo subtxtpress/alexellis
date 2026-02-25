@@ -523,12 +523,16 @@
       padding: 7rem 4rem;
     }
 
+
     .section-header {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 4rem;
       align-items: end;
       margin-bottom: 4.5rem;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .section-label {
@@ -574,6 +578,8 @@
       gap: 1px;
       background: var(--rule-light);
       border: 1px solid var(--rule-light);
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .service-card {
@@ -663,6 +669,8 @@
       grid-template-columns: 1fr 1fr;
       gap: 6rem;
       align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .why-list {
@@ -780,6 +788,9 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 1.5rem;
       margin-top: 3.5rem;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .sector-card {
@@ -832,6 +843,9 @@
       gap: 0;
       margin-top: 4rem;
       position: relative;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     /* connector line */
@@ -907,6 +921,9 @@
       background: var(--rule-light);
       border: 1px solid var(--rule-light);
       margin-top: 3.5rem;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .demo-card {
@@ -1298,6 +1315,16 @@
     .reveal-delay-3 { transition-delay: 0.3s; }
     .reveal-delay-4 { transition-delay: 0.4s; }
     .reveal-delay-5 { transition-delay: 0.5s; }
+
+    /* ─────────────────────────────────────────
+       LARGE VIEWPORT CAP
+    ───────────────────────────────────────── */
+    @media (min-width: 1300px) {
+      .hero    { padding-left: calc((100vw - 1200px) / 2); padding-right: calc((100vw - 1200px) / 2); }
+      .services, .sectors, .process, .demos, .why, .cta-section { padding-left: calc((100vw - 1200px) / 2); padding-right: calc((100vw - 1200px) / 2); }
+      nav      { padding-left: calc((100vw - 1200px) / 2); padding-right: calc((100vw - 1200px) / 2); }
+      footer   { padding-left: calc((100vw - 1200px) / 2); padding-right: calc((100vw - 1200px) / 2); }
+    }
 
     /* ─────────────────────────────────────────
        RESPONSIVE
