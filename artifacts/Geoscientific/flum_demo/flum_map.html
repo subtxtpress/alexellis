@@ -292,9 +292,92 @@
     white-space: nowrap;
   }
 
+  /* ── Mobile legend sheet ── */
+  #legend-toggle {
+    display: none;
+  }
+  #mobile-legend {
+    display: none;
+  }
+
   @media (max-width: 640px) {
     #legend { display: none; }
-    #info-panel { width: calc(100vw - 20px); right: 10px; bottom: 10px; }
+    #info-panel { width: calc(100vw - 20px); right: 10px; bottom: 72px; }
+
+    /* Toggle button — bottom right */
+    #legend-toggle {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      position: absolute;
+      bottom: 14px; right: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      z-index: 25;
+      box-shadow: 0 2px 10px rgba(0,0,0,.5);
+    }
+    #legend-toggle:hover { border-color: var(--accent); }
+    #legend-toggle .swatch-strip {
+      display: flex;
+      gap: 2px;
+    }
+    #legend-toggle .swatch-dot {
+      width: 8px; height: 8px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* Slide-up sheet */
+    #mobile-legend {
+      display: block;
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-radius: 14px 14px 0 0;
+      padding: 12px 16px 24px;
+      z-index: 24;
+      transform: translateY(100%);
+      transition: transform .28s cubic-bezier(.4,0,.2,1);
+      max-height: 55vh;
+      overflow-y: auto;
+    }
+    #mobile-legend.open {
+      transform: translateY(0);
+    }
+    #mobile-legend-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    #mobile-legend-title span {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    #mobile-legend-close {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 18px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+    }
+    #mobile-legend .legend-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 12px;
+    }
   }
 
   /* ── Hint toast ── */
@@ -380,6 +463,24 @@
       <div id="legend-title">Land Use Class</div>
       <!-- Rows injected by JS -->
     </div>
+
+    <!-- Mobile: legend toggle button -->
+    <button id="legend-toggle">
+      <div class="swatch-strip" id="toggle-swatches"></div>
+      Map Key
+    </button>
+
+    <!-- Mobile: slide-up legend sheet -->
+    <div id="mobile-legend">
+      <div id="mobile-legend-title">
+        <span>Land Use Classes</span>
+        <button id="mobile-legend-close">×</button>
+      </div>
+      <div class="legend-grid" id="mobile-legend-grid">
+        <!-- Rows injected by JS -->
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -653,8 +754,11 @@ function buildLegend(rows) {
     seen.add(c);
   });
 
+  const classes = [...seen].sort();
+
+  // Desktop legend
   const legend = document.getElementById('legend');
-  [...seen].sort().forEach(cls => {
+  classes.forEach(cls => {
     const row = document.createElement('div');
     row.className = 'legend-row';
     row.dataset.cls = cls;
@@ -665,7 +769,37 @@ function buildLegend(rows) {
     row.addEventListener('click', () => toggleFilter(cls));
     legend.appendChild(row);
   });
+
+  // Mobile legend grid
+  const grid = document.getElementById('mobile-legend-grid');
+  classes.forEach(cls => {
+    const row = document.createElement('div');
+    row.className = 'legend-row';
+    row.dataset.cls = cls;
+    row.innerHTML = `
+      <div class="legend-swatch" style="background:${getColor(cls)}"></div>
+      <div class="legend-label">${cls}</div>
+    `;
+    grid.appendChild(row);
+  });
+
+  // Populate swatch strip on toggle button (first 6 colors)
+  const strip = document.getElementById('toggle-swatches');
+  classes.slice(0, 6).forEach(cls => {
+    const dot = document.createElement('div');
+    dot.className = 'swatch-dot';
+    dot.style.background = getColor(cls);
+    strip.appendChild(dot);
+  });
 }
+
+// ── Mobile legend toggle ──────────────────────────────────
+document.getElementById('legend-toggle').addEventListener('click', () => {
+  document.getElementById('mobile-legend').classList.toggle('open');
+});
+document.getElementById('mobile-legend-close').addEventListener('click', () => {
+  document.getElementById('mobile-legend').classList.remove('open');
+});
 
 // ── Search ───────────────────────────────────────────────
 document.getElementById('search').addEventListener('input', e => {
@@ -700,6 +834,8 @@ map.on('click', 'flum-fill', e => {
 });
 
 function showInfoPanel(p) {
+  // Close mobile legend sheet if open
+  document.getElementById('mobile-legend').classList.remove('open');
   const cls   = p.class_name || '—';
   const color = getColor(cls);
   const rdg   = p.rdg_flum  || '—';
