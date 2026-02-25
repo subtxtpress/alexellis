@@ -1312,8 +1312,10 @@
       .process-steps     { grid-template-columns: 1fr 1fr; gap: 2rem; }
       .process-steps::before { display: none; }
       .cta-section       { padding: 5rem 2rem; }
-      .cta-contact-info  { flex-direction: column; align-items: center; gap: 1.25rem; }
-      .contact-item      { justify-content: center; }
+      .cta-contact-info  { flex-direction: column; align-items: center; gap: 0; padding-top: 2rem; margin-top: 2rem; }
+      .contact-item      { justify-content: center; font-size: 0.75rem; padding: 0.45rem 0; border-bottom: 1px solid var(--rule-light); width: 100%; max-width: 280px; }
+      .contact-item:first-child { border-top: 1px solid var(--rule-light); }
+      .contact-item svg  { width: 13px; height: 13px; }
       footer             { padding: 3rem 2rem 2rem; }
       .footer-top        { grid-template-columns: 1fr 1fr; gap: 2rem; }
       .section-divider   { margin: 0 2rem; }
