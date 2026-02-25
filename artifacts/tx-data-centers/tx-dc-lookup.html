@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>TX Data Centers — Address Lookup Queue</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0a0a0a; color: #e5e5e5; font-family: 'DM Mono', monospace; font-size: 13px; padding: 24px; }
+  h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 28px; font-weight: 800; color: #D4A843; margin-bottom: 4px; }
+  .meta { color: #666; font-size: 11px; margin-bottom: 24px; }
+  .section { margin-bottom: 32px; }
+  .section-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 14px; letter-spacing: 0.08em; color: #888; text-transform: uppercase; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid #222; }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; color: #555; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 10px; border-bottom: 1px solid #1a1a1a; }
+  td { padding: 10px; border-bottom: 1px solid #111; vertical-align: top; }
+  tr:hover td { background: #111; }
+  .facility { color: #e5e5e5; font-weight: bold; font-size: 12px; }
+  .entity { color: #aaa; font-size: 11px; margin-top: 2px; }
+  .links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  a { color: #D4A843; text-decoration: none; font-size: 11px; padding: 3px 8px; border: 1px solid #3a3010; border-radius: 3px; white-space: nowrap; }
+  a:hover { background: #1a1500; }
+  .note { color: #666; font-size: 11px; font-style: italic; }
+  .status { font-size: 10px; padding: 2px 6px; border-radius: 2px; }
+  .status.done { background: #0d2b0d; color: #4caf50; }
+  .status.pending { background: #1a1500; color: #D4A843; }
+  .status.hard { background: #2b0d0d; color: #f44336; }
+  input[type=text] { background: #111; border: 1px solid #333; color: #e5e5e5; padding: 4px 8px; font-family: monospace; font-size: 12px; width: 100%; border-radius: 3px; }
+  input[type=text]:focus { outline: none; border-color: #D4A843; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=DM+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<h1>Address Lookup Queue</h1>
+<div class="meta">TX Data Centers investigation · Facilities with no confirmed address · Update TSV when found</div>
+
+<!-- EASY WINS -->
+<div class="section">
+  <div class="section-title">Easy wins — known entities, just need the address</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Facility</th>
+        <th>Key Entity</th>
+        <th>Search Links</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="facility">ALE61 / ALE62 Data Centers</div><div class="entity">own: Amazon Data Services Inc.</div></td>
+        <td>Amazon AWS San Antonio</td>
+        <td class="links">
+          <a href="https://www.datacentermap.com/usa/texas/san-antonio/" target="_blank">DCMap SA</a>
+          <a href="https://baxtel.com/data-centers/amazon/san-antonio" target="_blank">Baxtel</a>
+        </td>
+        <td class="note">ALE60 is 7400 Potranco — ALE61/62 likely same campus or nearby. Check AWS SA cluster.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Austin Data Center 2 LLC</div><div class="entity">occ: Design, LLC (Google)</div></td>
+        <td>Google Austin</td>
+        <td class="links">
+          <a href="https://www.datacentermap.com/usa/texas/austin/" target="_blank">DCMap Austin</a>
+          <a href="https://baxtel.com/data-centers/google/austin" target="_blank">Baxtel</a>
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS → "Austin Data Center 2"</a>
+        </td>
+        <td class="note">Google has Austin presence. Owner LLC may have registered address.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">DFW 37</div><div class="entity">occ: LinkedIn Corporation · own: Digital Garland Campbell LP</div></td>
+        <td>LinkedIn Garland</td>
+        <td class="links">
+          <a href="https://www.datacentermap.com/usa/texas/garland/" target="_blank">DCMap Garland</a>
+          <a href="https://baxtel.com/search?q=linkedin+garland" target="_blank">Baxtel</a>
+        </td>
+        <td class="note">LinkedIn Richardson DC is 900 W Campbell Rd. DFW37 is a newer Garland facility — different address.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Digital Garland</div><div class="entity">occ: Wells Fargo · own: DDI Garland LLC</div></td>
+        <td>DDI Garland / Wells Fargo</td>
+        <td class="links">
+          <a href="https://www.datacentermap.com/usa/texas/garland/" target="_blank">DCMap Garland</a>
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS → "DDI Garland"</a>
+        </td>
+        <td class="note">DDI = Digital Developments Inc. Wells Fargo occupies colocation space.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Lewisville DFW38</div><div class="entity">occ: Wells Fargo · own: DDI Lewisville LLC</div></td>
+        <td>DDI Lewisville</td>
+        <td class="links">
+          <a href="https://www.datacentermap.com/usa/texas/lewisville/" target="_blank">DCMap Lewisville</a>
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS → "DDI Lewisville"</a>
+        </td>
+        <td class="note">Same DDI pattern as Garland. Wells Fargo occupant.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">LinkedIn Richardson Texas Data Center</div><div class="entity">own: Collins Technology Park Partners</div></td>
+        <td>LinkedIn Richardson</td>
+        <td class="links">
+          <a href="https://www.datacentermap.com/usa/texas/richardson/" target="_blank">DCMap Richardson</a>
+          <a href="https://baxtel.com/search?q=linkedin+richardson" target="_blank">Baxtel</a>
+        </td>
+        <td class="note">Likely 900 W Campbell Rd, Richardson, TX 75080 — Collins Tech Park.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Microsoft Corporation (expired 12/2023)</div><div class="entity">own/occ: Microsoft Corporation</div></td>
+        <td>Microsoft — earliest TX registration</td>
+        <td class="links">
+          <a href="https://baxtel.com/data-centers/microsoft/san-antonio" target="_blank">Baxtel MSFT SA</a>
+          <a href="https://www.datacentermap.com/usa/texas/san-antonio/" target="_blank">DCMap SA</a>
+        </td>
+        <td class="note">Registered 12/1/2013, expired 12/1/2023. Likely earliest SA campus — 15000 Lambda Dr area.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">NADC</div><div class="entity">own: Microsoft · occ: Chevron USA · op: McKinstry</div></td>
+        <td>Microsoft-owned, Chevron-occupied</td>
+        <td class="links">
+          <a href="https://baxtel.com/search?q=chevron+san+antonio+data+center" target="_blank">Baxtel</a>
+          <a href="https://www.datacentermap.com/usa/texas/san-antonio/" target="_blank">DCMap SA</a>
+        </td>
+        <td class="note">Only oil & gas occupant in the dataset. NADC = North American Data Center? Likely Lambda Dr cluster.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">San Antonio Data Center III</div><div class="entity">own: CyrusOne · occ: Microsoft</div></td>
+        <td>CyrusOne SAT3</td>
+        <td class="links">
+          <a href="https://baxtel.com/data-centers/cyrusone/san-antonio" target="_blank">Baxtel CyrusOne SA</a>
+          <a href="https://www.datacentermap.com/usa/texas/san-antonio/" target="_blank">DCMap SA</a>
+        </td>
+        <td class="note">SAT2 confirmed 9554 Westover Hills Blvd. SAT3 may be 9554 same campus or separate building.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">SDC DFW VIII, L.P.</div><div class="entity">occ: Google LLC · op includes Design LLC</div></td>
+        <td>Google DFW / Stream Data Centers</td>
+        <td class="links">
+          <a href="https://baxtel.com/search?q=google+dallas+data+center" target="_blank">Baxtel Google DFW</a>
+          <a href="https://www.datacentermap.com/usa/texas/dallas/" target="_blank">DCMap Dallas</a>
+        </td>
+        <td class="note">SDC = Stream Data Centers. Google occupant. Check Stream DFW portfolio.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">SDC SATB1</div><div class="entity">occ: Microsoft · own: SDC SA III LP</div></td>
+        <td>Stream Data Centers San Antonio</td>
+        <td class="links">
+          <a href="https://baxtel.com/search?q=stream+data+centers+san+antonio" target="_blank">Baxtel</a>
+          <a href="https://www.datacentermap.com/usa/texas/san-antonio/" target="_blank">DCMap SA</a>
+        </td>
+        <td class="note">SDC SA = Stream Data Centers San Antonio. Microsoft occupant.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">State Farm Richardson Data Center</div><div class="entity">own: JDM III SF Dallas DC LLC · occ: State Farm</div></td>
+        <td>State Farm Richardson TX</td>
+        <td class="links">
+          <a href="https://baxtel.com/search?q=state+farm+richardson+data+center" target="_blank">Baxtel</a>
+          <a href="https://www.datacentermap.com/usa/texas/richardson/" target="_blank">DCMap Richardson</a>
+        </td>
+        <td class="note">JDM = third-party landlord. State Farm has large Richardson TX presence.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">TX11 Data Center</div><div class="entity">own: Vantage Data Centers TX11 · occ: Microsoft</div></td>
+        <td>Vantage TX11 San Antonio</td>
+        <td class="links">
+          <a href="https://baxtel.com/search?q=vantage+data+centers+san+antonio" target="_blank">Baxtel</a>
+          <a href="https://www.datacentermap.com/usa/texas/san-antonio/" target="_blank">DCMap SA</a>
+        </td>
+        <td class="note">TX21/TX22 confirmed at 5207 Rogers Rd. TX11 may be same campus or earlier building.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">QTS Irving DC3</div><div class="entity">occ: Microsoft · own: QTS Irving DC3 LLC</div></td>
+        <td>QTS Irving</td>
+        <td class="links">
+          <a href="https://baxtel.com/search?q=qts+irving" target="_blank">Baxtel</a>
+          <a href="https://www.datacentermap.com/usa/texas/irving/" target="_blank">DCMap Irving</a>
+        </td>
+        <td class="note">QTS (Quality Technology Services) has Irving TX campus. Microsoft occupant.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Switch AUS 4</div><div class="entity">own: Switch LTD · occ: Coreweave</div></td>
+        <td>Switch Austin</td>
+        <td class="links">
+          <a href="https://baxtel.com/search?q=switch+austin+data+center" target="_blank">Baxtel</a>
+          <a href="https://www.datacentermap.com/usa/texas/austin/" target="_blank">DCMap Austin</a>
+        </td>
+        <td class="note">Switch (now part of DigitalBridge) has Austin campus. AUS 4 = 4th building.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">SDC - Austin Tandem Data Center</div><div class="entity">own: SDC Austin LLC · occ: Cirrascale Cloud</div></td>
+        <td>Stream Data Centers Austin</td>
+        <td class="links">
+          <a href="https://baxtel.com/search?q=stream+data+centers+austin" target="_blank">Baxtel</a>
+          <a href="https://www.datacentermap.com/usa/texas/austin/" target="_blank">DCMap Austin</a>
+        </td>
+        <td class="note">Cirrascale = GPU cloud provider. SDC Austin = Stream Data Centers Austin campus.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- TX SOS LOOKUPS -->
+<div class="section">
+  <div class="section-title">TX SOS required — obscure LLCs, no public footprint</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Facility</th>
+        <th>LLC to Search</th>
+        <th>TX SOS Link</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="facility">Bastrop Project One</div><div class="entity">own/occ: Ocean Blockchain LLC</div></td>
+        <td>Ocean Blockchain LLC</td>
+        <td class="links">
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS Search</a>
+          <a href="https://opencorporates.com/companies?q=ocean+blockchain&jurisdiction_code=us_tx" target="_blank">OpenCorporates</a>
+        </td>
+        <td class="note">Bastrop County. Registered agent address may point to facility location.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Canadian Breaks Data Center</div><div class="entity">own: Zephyr Infrastructure LLC · occ: American Bitcoin</div></td>
+        <td>Zephyr Infrastructure LLC</td>
+        <td class="links">
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS Search</a>
+          <a href="https://opencorporates.com/companies?q=zephyr+infrastructure&jurisdiction_code=us_tx" target="_blank">OpenCorporates</a>
+        </td>
+        <td class="note">"Canadian Breaks" = area in TX Panhandle near Canadian, TX (Hemphill County).</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Cedarvale, Barslow/Pyote TX Data Center</div><div class="entity">own: Ionic Digital Cedarvale LLC</div></td>
+        <td>Ionic Digital Cedarvale LLC</td>
+        <td class="links">
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS Search</a>
+          <a href="https://opencorporates.com/companies?q=ionic+digital+cedarvale&jurisdiction_code=us_tx" target="_blank">OpenCorporates</a>
+        </td>
+        <td class="note">Cedarvale = unincorporated community near Pyote, Ward County.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Cipher Black Pearl LLC Data Center</div><div class="entity">own/occ: Cipher Black Pearl LLC</div></td>
+        <td>Cipher Black Pearl LLC</td>
+        <td class="links">
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS Search</a>
+          <a href="https://opencorporates.com/companies?q=cipher+black+pearl&jurisdiction_code=us_tx" target="_blank">OpenCorporates</a>
+        </td>
+        <td class="note">Cipher Mining subsidiary. Check Cipher 10-K filings for TX facility locations.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Cipher Mining Technologies - Odessa Site</div><div class="entity">own/occ: Cipher Mining Technologies Inc.</div></td>
+        <td>Cipher Mining Technologies Inc.</td>
+        <td class="links">
+          <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=cipher+mining&CIK=&type=10-K&dateb=&owner=include&count=10" target="_blank">SEC EDGAR</a>
+          <a href="https://opencorporates.com/companies?q=cipher+mining+technologies&jurisdiction_code=us_tx" target="_blank">OpenCorporates</a>
+        </td>
+        <td class="note">Public company (CIFR). 10-K should list Odessa facility address.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Dory Creek LLC Data Center</div><div class="entity">own: Bitdeer Inc. · occ/op: Dory Creek LLC</div></td>
+        <td>Dory Creek LLC</td>
+        <td class="links">
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS Search</a>
+          <a href="https://opencorporates.com/companies?q=dory+creek&jurisdiction_code=us_tx" target="_blank">OpenCorporates</a>
+        </td>
+        <td class="note">Bitdeer (Singapore-listed) subsidiary. Check Bitdeer annual report for TX facility.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Fort Blocks LLC Data Center</div><div class="entity">own/occ: Fort Blocks LLC</div></td>
+        <td>Fort Blocks LLC</td>
+        <td class="links">
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS Search</a>
+          <a href="https://opencorporates.com/companies?q=fort+blocks&jurisdiction_code=us_tx" target="_blank">OpenCorporates</a>
+        </td>
+        <td class="note">Crypto entity. Registered 2022. Registered agent address likely = facility.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Fort Haskell Data Center</div><div class="entity">own/occ: Fort Haskell LLC</div></td>
+        <td>Fort Haskell LLC</td>
+        <td class="links">
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS Search</a>
+          <a href="https://opencorporates.com/companies?q=fort+haskell&jurisdiction_code=us_tx" target="_blank">OpenCorporates</a>
+        </td>
+        <td class="note">"Fort Haskell" suggests Haskell County, TX. Crypto mining.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Hackberry Data Center</div><div class="entity">own: Silver Basin Digital Infrastructure · occ: American Bitcoin</div></td>
+        <td>Silver Basin Digital Infrastructure LLC</td>
+        <td class="links">
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS Search</a>
+          <a href="https://opencorporates.com/companies?q=silver+basin+digital&jurisdiction_code=us_tx" target="_blank">OpenCorporates</a>
+        </td>
+        <td class="note">American Bitcoin = formerly Hut 8 subsidiary. "Hackberry" = small TX community, check Parker/Wise County.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">HELO1 DC</div><div class="entity">own: Galaxy Helios I · occ: CoreWeave</div></td>
+        <td>Galaxy Helios I</td>
+        <td class="links">
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS Search</a>
+          <a href="https://opencorporates.com/companies?q=galaxy+helios&jurisdiction_code=us_tx" target="_blank">OpenCorporates</a>
+        </td>
+        <td class="note">Galaxy Digital subsidiary. HELO1 = Galaxy Helios 1. Check Galaxy Digital filings.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Independence Data Center</div><div class="entity">occ/op: Core42 Holding US LLC (UAE G42)</div></td>
+        <td>Core42 Holding US LLC</td>
+        <td class="links">
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS Search</a>
+          <a href="https://opencorporates.com/companies?q=core42&jurisdiction_code=us_tx" target="_blank">OpenCorporates</a>
+        </td>
+        <td class="note">UAE sovereign wealth vehicle (G42). High national security interest. Owner field blank — unknown landlord.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Lancium Fort Stockton Clean Campus</div><div class="entity">own/occ: Lancium LLC</div></td>
+        <td>Lancium LLC</td>
+        <td class="links">
+          <a href="https://www.datacentermap.com/usa/texas/fort-stockton/" target="_blank">DCMap Fort Stockton</a>
+          <a href="https://baxtel.com/search?q=lancium+fort+stockton" target="_blank">Baxtel</a>
+        </td>
+        <td class="note">Pecos County. Poolside DC nearby is FM 1053. Lancium Fort Stockton may share that road.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Lonestar Taproot LLC - Pyote</div><div class="entity">own/occ: Lonestar Dream Inc.</div></td>
+        <td>Lonestar Dream Inc.</td>
+        <td class="links">
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS Search</a>
+          <a href="https://opencorporates.com/companies?q=lonestar+dream&jurisdiction_code=us_tx" target="_blank">OpenCorporates</a>
+        </td>
+        <td class="note">Pyote = Ward County. Cedarvale DC also near Pyote — same area. Both registered 02/15/2022.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Lonestar Taproot LLC - Tarbush</div><div class="entity">own/occ: Lonestar Dream Inc.</div></td>
+        <td>Lonestar Dream Inc. (same as above)</td>
+        <td class="links">
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS Search</a>
+          <a href="https://opencorporates.com/companies?q=lonestar+taproot&jurisdiction_code=us_tx" target="_blank">OpenCorporates</a>
+        </td>
+        <td class="note">Tarbush = plant species common to Chihuahuan Desert. Likely also Ward/Reeves County area.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Temple Green Data Center</div><div class="entity">own: Temple Green Data LLC · occ: Rhodium Renewables</div></td>
+        <td>Temple Green Data LLC</td>
+        <td class="links">
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS Search</a>
+          <a href="https://opencorporates.com/companies?q=rhodium+renewables&jurisdiction_code=us_tx" target="_blank">OpenCorporates TX → Rhodium</a>
+        </td>
+        <td class="note">Temple, Bell County. Rhodium Renewables = crypto miner. Check Polmer LLC address (also Temple) — same area.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">USBTC Pecos Data Center</div><div class="entity">own/occ: U.S. Data Lone Star Inc.</div></td>
+        <td>U.S. Data Lone Star Inc.</td>
+        <td class="links">
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS Search</a>
+          <a href="https://opencorporates.com/companies?q=us+data+lone+star&jurisdiction_code=us_tx" target="_blank">OpenCorporates</a>
+        </td>
+        <td class="note">USBTC = US Bitcoin Corp. Pecos County. Likely near Fort Stockton like Poolside DC.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">West Texas Data Center</div><div class="entity">own/occ: WTDM OZB LLC · op: TNDS US Corp</div></td>
+        <td>WTDM OZB LLC</td>
+        <td class="links">
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS Search</a>
+          <a href="https://opencorporates.com/companies?q=wtdm+ozb&jurisdiction_code=us_tx" target="_blank">OpenCorporates</a>
+          <a href="https://opencorporates.com/companies?q=tnds+us+corp&jurisdiction_code=us_tx" target="_blank">OpenCorporates → TNDS</a>
+        </td>
+        <td class="note">OZB may indicate Opportunity Zone Bond structure. TNDS = unknown operator. High priority for TX SOS.</td>
+      </tr>
+      <tr>
+        <td><div class="facility">Hockley Data Center (Large)</div><div class="entity">own/occ: SF HOUH LLC</div></td>
+        <td>SF HOUH LLC</td>
+        <td class="links">
+          <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">TX SOS Search</a>
+          <a href="https://opencorporates.com/companies?q=sf+houh&jurisdiction_code=us_tx" target="_blank">OpenCorporates</a>
+        </td>
+        <td class="note">Same entity as Cutten DC (SF HOUC). SF = Sabey? Both Houston area. Hockley = Harris County near Cypress.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- TX SOS HOW-TO -->
+<div class="section">
+  <div class="section-title">How to use TX SOS</div>
+  <p style="color:#888; font-size:12px; line-height:1.8;">
+    Go to <a href="https://www.sos.state.tx.us/corp/sosda/index.shtml" target="_blank">sos.state.tx.us → SOSDirect</a> → 
+    Search by Entity Name → enter the LLC name → click the entity → look at <strong>Registered Agent</strong> address and <strong>Principal Office</strong> address. 
+    The principal office address is often the actual facility location for single-purpose LLCs.
+    If the address is a registered agent service (CT Corporation, Capitol Services, etc.), try the <strong>filing documents</strong> tab — the original Certificate of Formation sometimes lists the physical address.
+  </p>
+</div>
+
+</body>
+</html>

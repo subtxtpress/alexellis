@@ -1,0 +1,1889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>TX Data Centers // Subtxt Press</title>
+  <meta name="description" content="An investigative database of Texas's registered qualifying data centers — tracking who owns them, who benefits, and what the state is giving away.">
+  <link rel="canonical" href="https://subtxtpress.github.io/home/artifacts/data-centers/tx-data-centers.html">
+
+  <meta property="og:title" content="TX Data Centers // @subtxtpress">
+  <meta property="og:description" content="An investigative database of Texas's registered qualifying data centers — tracking who owns them, who benefits, and what the state is giving away.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://subtxtpress.github.io/home/artifacts/data-centers/tx-data-centers.html">
+  <meta property="og:site_name" content="Subtxt Press">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="TX Data Centers // @subtxtpress">
+  <meta name="twitter:description" content="An investigative database of Texas's registered qualifying data centers.">
+  <meta name="twitter:creator" content="@subtxtpress">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@600;700;800&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:        #080808;
+      --bg2:       #0f0f0f;
+      --bg3:       #171717;
+      --bg4:       #1f1f1f;
+      --border:    #242424;
+      --border2:   #2e2e2e;
+      --amber:     #C9993A;
+      --amber-hi:  #E0B45A;
+      --amber-dim: rgba(201, 153, 58, 0.09);
+      --amber-glow:rgba(201, 153, 58, 0.20);
+      --amber-dark:#5C4018;
+      --red:       #E05252;
+      --red-dim:   rgba(224, 82, 82, 0.11);
+      --blue:      #5B9BD5;
+      --blue-dim:  rgba(91, 155, 213, 0.11);
+      --green:     #2EC990;
+      --green-dim: rgba(46, 201, 144, 0.11);
+      --text:      #E8E8E8;
+      --text-dim:  #7A7A7A;
+      --text-muted:#484848;
+      --font-hero:    'Bebas Neue', sans-serif;
+      --font-display: 'Syne', sans-serif;
+      --font-mono:    'IBM Plex Mono', monospace;
+      --radius:    5px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-mono);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--amber-dark); border-radius: 2px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--amber); }
+
+    a { color: var(--amber-hi); text-decoration: none; transition: color 0.15s; }
+    a:hover { color: var(--amber); text-decoration: underline; }
+
+    /* ── Header ── */
+    .header {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 1.5rem 2.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at -5% 50%, rgba(201,153,58,0.07) 0%, transparent 70%),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 80px,
+          rgba(201,153,58,0.025) 80px,
+          rgba(201,153,58,0.025) 81px
+        );
+      pointer-events: none;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--amber) 0%, rgba(201,153,58,0.2) 60%, transparent 100%);
+    }
+
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .header-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      opacity: 0.8;
+    }
+
+    .header h1 {
+      font-family: var(--font-hero);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 400;
+      color: var(--text);
+      line-height: 0.95;
+      letter-spacing: 0.04em;
+      margin-bottom: 1rem;
+    }
+
+    .header h1 span { color: var(--amber); }
+
+    .header-desc {
+      font-size: 0.88rem;
+      color: var(--text-dim);
+      max-width: 640px;
+      line-height: 1.75;
+      margin-bottom: 1.5rem;
+    }
+
+    .header-meta {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .header-meta span { display: flex; align-items: center; gap: 0.45rem; }
+    .header-meta .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--amber);
+      display: inline-block;
+      animation: pulse 2.5s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(201,153,58,0.4); }
+      50% { opacity: 0.6; box-shadow: 0 0 0 3px rgba(201,153,58,0); }
+    }
+
+    /* ── Stat Bar ── */
+    .stat-bar {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 0;
+    }
+
+    .stat-bar-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    .stat {
+      padding: 1.5rem 1.75rem;
+      border-right: 1px solid var(--border);
+      position: relative;
+      transition: background 0.2s;
+    }
+
+    .stat::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--amber-dark), transparent);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .stat:hover { background: rgba(201,153,58,0.03); }
+    .stat:hover::before { opacity: 1; }
+
+    .stat:last-child { border-right: none; }
+
+    .stat-value {
+      font-family: var(--font-hero);
+      font-size: 3rem;
+      font-weight: 400;
+      color: var(--amber);
+      line-height: 1;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      line-height: 1.45;
+    }
+
+    .stat-sub {
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      margin-top: 0.3rem;
+      opacity: 0.7;
+    }
+
+    /* ── Nav Tabs ── */
+    .nav {
+      background: rgba(15, 15, 15, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .nav-inner::-webkit-scrollbar { display: none; }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 1.1rem 1.5rem;
+      white-space: nowrap;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+
+    .nav-btn:hover { color: var(--text); }
+
+    .nav-btn.active {
+      color: var(--amber);
+      border-bottom-color: var(--amber);
+    }
+
+    /* ── Main container ── */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 5rem;
+    }
+
+    /* ── Tab panels ── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Section header ── */
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 1.75rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .section-header::before {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0;
+      width: 2.5rem;
+      height: 1px;
+      background: var(--amber);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+
+    .section-count {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    /* ── Search + filter bar ── */
+    .filter-bar {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      align-items: center;
+    }
+
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 0.8rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      padding: 0.65rem 0.75rem 0.65rem 2.25rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      height: 38px;
+    }
+
+    .search-input:focus {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px rgba(201,153,58,0.1);
+    }
+    .search-input::placeholder { color: var(--text-muted); }
+
+    .filter-select {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      padding: 0 0.75rem;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      height: 38px;
+      appearance: auto;
+    }
+
+    .filter-select:focus {
+      border-color: var(--amber);
+      box-shadow: 0 0 0 3px rgba(201,153,58,0.1);
+    }
+
+    .filter-tag {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-dim);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      padding: 0 0.85rem;
+      transition: all 0.2s;
+      white-space: nowrap;
+      height: 38px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .filter-tag:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-dim); }
+    .filter-tag.active {
+      background: var(--amber-dim);
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    .result-count {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-left: auto;
+      white-space: nowrap;
+    }
+
+    /* ── Data table ── */
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.79rem;
+    }
+
+    thead {
+      background: var(--bg3);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    th {
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.67rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      padding: 0.8rem 1rem;
+      text-align: left;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.15s;
+    }
+
+    th:hover { color: var(--amber-hi); }
+    th.sort-asc::after { content: ' ↑'; color: var(--amber); }
+    th.sort-desc::after { content: ' ↓'; color: var(--amber); }
+
+    td {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.55;
+    }
+
+    tbody tr:nth-child(even) td { background: rgba(255,255,255,0.012); }
+
+    tr:last-child td { border-bottom: none; }
+
+    tbody tr { transition: background 0.12s; }
+    tbody tr:hover td { background: rgba(201,153,58,0.06) !important; }
+
+    .td-name {
+      font-weight: 500;
+      color: var(--text);
+      min-width: 200px;
+    }
+
+    .td-entity { color: var(--text-dim); min-width: 160px; }
+    .td-date { color: var(--text-muted); white-space: nowrap; font-size: 0.74rem; }
+    .td-location { color: var(--text-dim); min-width: 180px; font-size: 0.76rem; }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-block;
+      font-size: 0.62rem;
+      font-family: var(--font-mono);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 0.18rem 0.48rem;
+      border-radius: 3px;
+      white-space: nowrap;
+      vertical-align: middle;
+      font-weight: 500;
+    }
+
+    .badge-crypto {
+      background: rgba(201,153,58,0.1);
+      color: var(--amber-hi);
+      border: 1px solid rgba(201,153,58,0.28);
+    }
+
+    .badge-cloud {
+      background: rgba(91,155,213,0.1);
+      color: var(--blue);
+      border: 1px solid rgba(91,155,213,0.28);
+    }
+
+    .badge-shell {
+      background: rgba(224,82,82,0.1);
+      color: var(--red);
+      border: 1px solid rgba(224,82,82,0.28);
+    }
+
+    .badge-foreign {
+      background: rgba(167,139,250,0.1);
+      color: #B09BFA;
+      border: 1px solid rgba(167,139,250,0.28);
+    }
+
+    .badge-expired {
+      background: rgba(224,82,82,0.1);
+      color: var(--red);
+      border: 1px solid rgba(224,82,82,0.28);
+    }
+
+    .badge-expiring {
+      background: rgba(201,153,58,0.1);
+      color: var(--amber-hi);
+      border: 1px solid rgba(201,153,58,0.28);
+    }
+
+    .badge-no-address {
+      background: var(--bg4);
+      color: var(--text-muted);
+      border: 1px solid var(--border2);
+    }
+
+    /* ── Shell entity panel ── */
+    .shell-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .shell-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--amber-dark);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.5rem;
+      animation: fadeUp 0.45s ease forwards;
+      opacity: 0;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .shell-card:hover {
+      border-left-color: var(--amber);
+      box-shadow: var(--shadow-md), -3px 0 0 var(--amber);
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(10px); }
+    }
+
+    .shell-card:nth-child(1) { animation-delay: 0.04s; }
+    .shell-card:nth-child(2) { animation-delay: 0.08s; }
+    .shell-card:nth-child(3) { animation-delay: 0.12s; }
+    .shell-card:nth-child(4) { animation-delay: 0.16s; }
+    .shell-card:nth-child(5) { animation-delay: 0.20s; }
+    .shell-card:nth-child(6) { animation-delay: 0.24s; }
+    .shell-card:nth-child(7) { animation-delay: 0.28s; }
+    .shell-card:nth-child(8) { animation-delay: 0.32s; }
+
+    .shell-card-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.9rem;
+      letter-spacing: -0.01em;
+    }
+
+    .shell-row {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 0.2rem 0.6rem;
+      font-size: 0.77rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .shell-label {
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      padding-top: 0.12rem;
+    }
+
+    .shell-value { color: var(--text-dim); line-height: 1.55; }
+    .shell-value strong { color: var(--text); }
+
+    .shell-note {
+      margin-top: 0.9rem;
+      padding-top: 0.9rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      font-style: italic;
+      line-height: 1.65;
+    }
+
+    /* ── Intro panel ── */
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .intro-grid { grid-template-columns: 1fr; }
+    }
+
+    .intro-body {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem 2rem;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .intro-body::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--amber) 0%, var(--amber-dark) 60%, transparent 100%);
+    }
+
+    .intro-body h2 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--amber);
+      margin-bottom: 1rem;
+      letter-spacing: 0.02em;
+    }
+
+    .intro-body p {
+      font-size: 0.84rem;
+      color: var(--text-dim);
+      line-height: 1.85;
+      margin-bottom: 0.9rem;
+    }
+
+    .intro-body p:last-child { margin-bottom: 0; }
+
+    .intro-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .sidebar-block {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .sidebar-block h3 {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.85rem;
+    }
+
+    .sidebar-list {
+      list-style: none;
+      font-size: 0.78rem;
+    }
+
+    .sidebar-list li {
+      padding: 0.45rem 0;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-dim);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      transition: color 0.15s;
+    }
+
+    .sidebar-list li:last-child { border-bottom: none; }
+    .sidebar-list li:hover { color: var(--text); }
+    .sidebar-list .count { color: var(--amber-hi); font-weight: 500; flex-shrink: 0; }
+
+    /* ── FOIA panel ── */
+    .foia-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+      gap: 1rem;
+    }
+
+    .foia-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .foia-card:hover {
+      border-color: var(--border2);
+      box-shadow: var(--shadow-md);
+    }
+
+    .foia-card h3 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.01em;
+      line-height: 1.3;
+    }
+
+    .foia-card p {
+      font-size: 0.79rem;
+      color: var(--text-dim);
+      line-height: 1.75;
+      margin-bottom: 0.85rem;
+    }
+
+    .foia-card .foia-target {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      padding: 0.5rem 0.75rem;
+      background: var(--bg3);
+      border-radius: var(--radius);
+      border-left: 2px solid var(--amber-dark);
+    }
+
+    /* ── Methodology ── */
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+      gap: 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .method-block {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .method-block h3 {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--amber-hi);
+      margin-bottom: 0.65rem;
+      letter-spacing: 0.01em;
+    }
+
+    .method-block p, .method-block li {
+      font-size: 0.79rem;
+      color: var(--text-dim);
+      line-height: 1.75;
+    }
+
+    .method-block ul { padding-left: 1rem; }
+    .method-block li { margin-bottom: 0.3rem; }
+
+    /* ── Info box ── */
+    .info-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-top: 1.75rem;
+      font-size: 0.81rem;
+      color: var(--text-dim);
+      line-height: 1.75;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .info-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 2px;
+      height: 100%;
+      background: var(--amber-dark);
+    }
+
+    .info-box strong { color: var(--text); }
+
+    /* ── Map panel ── */
+    .map-header {
+      padding: 24px 32px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .map-legend {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+
+    .map-footer {
+      padding: 12px 32px;
+      font-size: 11px;
+      color: var(--text-dim);
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 768px) {
+      .map-header { padding: 16px 16px 12px; }
+      .map-footer { padding: 10px 16px; }
+      #map { height: 420px !important; }
+    }
+
+    @media (max-width: 480px) {
+      #map { height: 320px !important; }
+      .map-legend { gap: 8px; }
+    }
+
+    /* ── No results ── */
+    .no-results {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+      font-size: 0.81rem;
+    }
+
+    .no-results strong { display: block; font-size: 1rem; margin-bottom: 0.5rem; color: var(--text-dim); }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .container { padding: 1rem 1rem 3rem; }
+
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+      }
+
+      .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .search-wrap { min-width: unset; }
+
+      .filter-select { width: 100%; }
+
+      .filter-tag { text-align: center; }
+
+      .result-count {
+        margin-left: 0;
+        text-align: right;
+      }
+
+      /* Hide lower-priority table columns on small screens */
+      .table-wrap table th:nth-child(4),
+      .table-wrap table td:nth-child(4),
+      .table-wrap table th:nth-child(5),
+      .table-wrap table td:nth-child(5),
+      .table-wrap table th:nth-child(7),
+      .table-wrap table td:nth-child(7) {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .stat-bar-inner { grid-template-columns: repeat(2, 1fr); }
+      .stat { border-bottom: 1px solid var(--border); }
+
+      /* Last row bottom stats shouldn't double-border */
+      .stat:nth-last-child(-n+2) { border-bottom: none; }
+
+      .header { padding: 1.5rem 1rem 1.25rem; }
+
+      .header-meta { gap: 0.75rem; flex-direction: column; }
+    }
+
+    @media (max-width: 480px) {
+      .stat-bar-inner { grid-template-columns: 1fr 1fr; }
+      .stat-value { font-size: 2rem; }
+
+      .nav-btn { padding: 0.85rem 1rem; font-size: 0.75rem; }
+
+      .shell-row { grid-template-columns: 70px 1fr; }
+    }
+
+    /* ── Row hidden by filter ── */
+    tr.hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-eyebrow">Subtxt Press // Investigative Data</div>
+    <h1>Texas <span>Data Centers</span></h1>
+    <p class="header-desc">
+      An investigative database of registered qualifying data centers under the Texas Comptroller's tax exemption program. 
+      Who owns them, who really occupies them, how much power they consume, and what communities are giving up to host them.
+    </p>
+    <div class="header-meta">
+      <span><span class="dot"></span> Living document — updated as addresses and records are confirmed</span>
+      <span>Source: Texas Comptroller STAR Registry</span>
+      <span>By <a href="https://substack.com/@subtxtpress" target="_blank">Subtxt Press</a></span>
+    </div>
+  </div>
+</header>
+
+<!-- ── Stat Bar ── -->
+<div class="stat-bar">
+  <div class="stat-bar-inner">
+    <div class="stat">
+      <div class="stat-value">99</div>
+      <div class="stat-label">Registered<br>Facilities</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">60+</div>
+      <div class="stat-label">Addresses<br>Confirmed</div>
+      <div class="stat-sub">~40 still unlocated</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">13+</div>
+      <div class="stat-label">Microsoft<br>Facilities</div>
+      <div class="stat-sub">Largest single occupant</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">8+</div>
+      <div class="stat-label">Bitcoin Mining<br>Operations</div>
+      <div class="stat-sub">Using same exemption as cloud</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">6</div>
+      <div class="stat-label">Google "Design LLC"<br>Entries</div>
+      <div class="stat-sub">Shell occupant pattern</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">4</div>
+      <div class="stat-label">IE US Cluster<br>(Childress Co.)</div>
+      <div class="stat-sub">Foreign entity, ~GW scale</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Nav ── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="switchTab('overview', this)">Overview</button>
+    <button class="nav-btn" onclick="switchTab('database', this)">Full Database</button>
+    <button class="nav-btn" onclick="switchTab('shell', this)">Shell Entities</button>
+    <button class="nav-btn" onclick="switchTab('foia', this)">FOIA Targets</button>
+    <button class="nav-btn" onclick="switchTab('methodology', this)">Methodology</button>
+    <button class="nav-btn" onclick="switchTab('map', this); initMap();">Map</button>
+  </div>
+</nav>
+
+<!-- ── Content ── -->
+<div class="container">
+
+  <!-- ═══ OVERVIEW ═══ -->
+  <div class="tab-panel active" id="tab-overview">
+
+    <div class="intro-grid">
+      <div class="intro-body">
+        <h2>What this is</h2>
+        <p>
+          Texas offers a sales tax exemption on electricity, equipment, and other qualifying costs for registered "Large Data Center Projects" and "Qualifying Data Centers" under the Texas Comptroller's STAR program. 
+          The program was designed to attract cloud infrastructure investment. Instead it's become a tax shelter for an increasingly diverse set of operators — including cryptocurrency miners, foreign sovereign wealth vehicles, and companies whose beneficial owner is deliberately obscured behind a chain of LLCs.
+        </p>
+        <p>
+          This database tracks every facility registered as of early 2026. The goal is to answer questions the Comptroller's registry doesn't: Who actually controls these facilities? How much power are they drawing from ERCOT? What water are they consuming in already water-stressed counties? What did local governments give away in additional abatements to land them?
+        </p>
+        <p>
+          This is an active investigation. Addresses are still being confirmed. FOIA requests are pending. If you have documents, tips, or corrections — especially on West Texas facilities and ERCOT curtailment agreements — reach out.
+        </p>
+      </div>
+
+      <div class="intro-sidebar">
+        <div class="sidebar-block">
+          <h3>Top Occupants</h3>
+          <ul class="sidebar-list">
+            <li><span>Microsoft Corporation</span><span class="count">13</span></li>
+            <li><span>Oracle America, Inc.</span><span class="count">8</span></li>
+            <li><span>CoreWeave, Inc.</span><span class="count">6</span></li>
+            <li><span>Green Chile Ventures LLC</span><span class="count">4</span></li>
+            <li><span>Design LLC <em>(Google)</em></span><span class="count">4+</span></li>
+            <li><span>Amazon Data Services</span><span class="count">3</span></li>
+            <li><span>NTT Global Data Centers</span><span class="count">3</span></li>
+            <li><span>LinkedIn Corporation</span><span class="count">2</span></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-block">
+          <h3>Flags to Watch</h3>
+          <ul class="sidebar-list">
+            <li><span>Crypto mining on cloud exemption</span> <span class="badge badge-crypto">8+</span></li>
+            <li><span>Owner ≠ Occupant ≠ Operator</span> <span class="badge badge-shell">~30</span></li>
+            <li><span>No address on record</span> <span class="badge badge-no-address">0</span></li>
+            <li><span>Foreign-registered entities</span> <span class="badge badge-foreign">5+</span></li>
+            <li><span>Expired exemptions</span> <span class="badge badge-expired">4</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <span class="section-title">Key threads</span>
+    </div>
+
+    <div class="shell-grid">
+
+      <div class="shell-card">
+        <div class="shell-card-title">The "Design LLC" Pattern</div>
+        <div class="shell-row">
+          <span class="shell-label">What it is</span>
+          <span class="shell-value">Google LLC uses <strong>Design, LLC</strong> and <strong>Design LLC</strong> as its listed occupant entity across multiple Texas data center exemptions. The shell separates the beneficial user from the registered exemption holder.</span>
+        </div>
+        <div class="shell-row">
+          <span class="shell-label">Facilities</span>
+          <span class="shell-value">Austin DC 2, Sharka (Midlothian), SDC DFW VIII, PowerCampus Dallas (Lancaster), and others</span>
+        </div>
+        <div class="shell-note">Same pattern appears in other states. Worth filing a PIA request with Comptroller for all "Design LLC" registrations statewide.</div>
+      </div>
+
+      <div class="shell-card">
+        <div class="shell-card-title">The "OBOE LLC" Entry</div>
+        <div class="shell-row">
+          <span class="shell-label">Facility</span>
+          <span class="shell-value">Stream DFW VII Data Center</span>
+        </div>
+        <div class="shell-row">
+          <span class="shell-label">Occupant</span>
+          <span class="shell-value"><strong>OBOE LLC</strong> — widely understood to be a Microsoft shell entity, consistent with Microsoft's use of music-named LLCs for data center registrations in Texas and other states</span>
+        </div>
+        <div class="shell-note">Microsoft also appears directly as occupant on 13 other Texas facilities — the shell usage here is inconsistent with their other registrations and warrants explanation.</div>
+      </div>
+
+      <div class="shell-card">
+        <div class="shell-card-title">Green Chile Ventures LLC</div>
+        <div class="shell-row">
+          <span class="shell-label">Occupant of</span>
+          <span class="shell-value">DFW 9, DFW 10, DFW 11, DFW 12 — all DataBank Holdings facilities in Red Oak, Ellis County</span>
+        </div>
+        <div class="shell-row">
+          <span class="shell-label">Status</span>
+          <span class="shell-value"><strong>Beneficial occupant unconfirmed.</strong> Four identical exemptions registered in Oct 2025 under the same shell entity with no publicly disclosed end-user.</span>
+        </div>
+        <div class="shell-note">DataBank is the operator. Green Chile Ventures is unrelated to any known hyperscaler. Possible new tenant not yet disclosed. Warrants TX SOS lookup and PIA request to Comptroller.</div>
+      </div>
+
+      <div class="shell-card">
+        <div class="shell-card-title">Genesis Digital Assets / Pyote</div>
+        <div class="shell-row">
+          <span class="shell-label">Facility</span>
+          <span class="shell-value">Pyote Data Center, Ward County TX</span>
+        </div>
+        <div class="shell-row">
+          <span class="shell-label">Operator</span>
+          <span class="shell-value"><strong>DDH (North America) Inc.</strong> — subsidiary of Genesis Digital Assets, registered in Cyprus, US HQ in Houston</span>
+        </div>
+        <div class="shell-row">
+          <span class="shell-label">Legal status</span>
+          <span class="shell-value">Named defendant in FTX/Alameda bankruptcy litigation. Transfers from Alameda allegedly funded Bitcoin mining operations.</span>
+        </div>
+        <div class="shell-note">GDA claims 20+ Bitcoin mining centers globally. Texas exemption registration active as of 2022. Bankruptcy proceedings ongoing as of 2025.</div>
+      </div>
+
+      <div class="shell-card">
+        <div class="shell-card-title">Core42 / "Independence Data Center"</div>
+        <div class="shell-row">
+          <span class="shell-label">Occupant</span>
+          <span class="shell-value"><strong>Core42 Holding US LLC</strong></span>
+        </div>
+        <div class="shell-row">
+          <span class="shell-label">Parent</span>
+          <span class="shell-value">Core42 is the AI and cloud infrastructure arm of <strong>G42</strong>, an Abu Dhabi-based technology holding company with close ties to the UAE government</span>
+        </div>
+        <div class="shell-row">
+          <span class="shell-label">Owner on file</span>
+          <span class="shell-value"><strong>None listed</strong> in Comptroller registry</span>
+        </div>
+        <div class="shell-note">G42 has faced US national security scrutiny over alleged ties to Chinese technology firms. Located at 1000 Coit Rd, Plano, TX.</div>
+      </div>
+
+      <div class="shell-card">
+        <div class="shell-card-title">Bitcoin Mining on the Cloud Exemption</div>
+        <div class="shell-row">
+          <span class="shell-label">Operators</span>
+          <span class="shell-value">Riot Platforms, Whinstone, Cipher Mining, Ionic Digital, American Bitcoin Operating, Ocean Blockchain, Lonestar Dream, USBTC, Genesis Digital Assets</span>
+        </div>
+        <div class="shell-row">
+          <span class="shell-label">Issue</span>
+          <span class="shell-value">Texas HB 1750 (2023) <strong>explicitly extended</strong> the data center exemption to cryptocurrency mining. These operations draw massive power loads — Riot's Rockdale campus alone is 750MW — creating ERCOT grid stress with no reciprocal community benefit.</span>
+        </div>
+        <div class="shell-note">Several of these are enrolled in ERCOT's Large Flexible Load program and receive additional incentives to curtail during grid emergencies — effectively getting paid twice by the state.</div>
+      </div>
+
+      <div class="shell-card">
+        <div class="shell-card-title">Lancium's West Texas Footprint</div>
+        <div class="shell-row">
+          <span class="shell-label">Facilities</span>
+          <span class="shell-value">Fort Stockton (Pecos County), Abilene Clean Campus I–VIII (Taylor County), Childress 1 (Childress County)</span>
+        </div>
+        <div class="shell-row">
+          <span class="shell-label">Scale</span>
+          <span class="shell-value">Childress campus alone is <strong>1 gigawatt</strong> — among the largest data center campuses in the world. 9 separate registered facilities across multiple West Texas counties.</span>
+        </div>
+        <div class="shell-note">Lancium's model pairs compute with renewable energy and ERCOT demand response. Water use in Pecos and Childress Counties — already under stress — is unquantified in public records.</div>
+      </div>
+
+      <div class="shell-card">
+        <div class="shell-card-title">NADC: Microsoft + Chevron</div>
+        <div class="shell-row">
+          <span class="shell-label">Facility</span>
+          <span class="shell-value">NADC (National Asset Data Center)</span>
+        </div>
+        <div class="shell-row">
+          <span class="shell-label">Owner</span>
+          <span class="shell-value">Microsoft Corporation</span>
+        </div>
+        <div class="shell-row">
+          <span class="shell-label">Occupant</span>
+          <span class="shell-value"><strong>Chevron USA Inc.</strong> — the only oil and gas company appearing as a data center occupant in the registry</span>
+        </div>
+        <div class="shell-row">
+          <span class="shell-label">Exemption</span>
+          <span class="shell-value">Expired Sept 1, 2023. Status post-expiration unknown.</span>
+        </div>
+        <div class="shell-note">A Microsoft-owned facility occupied by Chevron raises questions about what data infrastructure is being operated and whether the exemption was renewed.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ DATABASE ═══ -->
+  <div class="tab-panel" id="tab-database">
+
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input type="text" class="search-input" id="db-search" placeholder="Search facilities, owners, occupants..." oninput="filterTable()">
+      </div>
+      <select class="filter-select" id="db-type" onchange="filterTable()">
+        <option value="">All types</option>
+        <option value="crypto">Crypto / Bitcoin mining</option>
+        <option value="cloud">Cloud / Enterprise</option>
+        <option value="shell">Shell occupant</option>
+        <option value="foreign">Foreign entity</option>
+      </select>
+      <select class="filter-select" id="db-status" onchange="filterTable()">
+        <option value="">All exemptions</option>
+        <option value="expired">Expired</option>
+        <option value="active">Active / No end date</option>
+      </select>
+      <button class="filter-tag" id="tag-noaddr" onclick="toggleTag('noaddr', this)">No address</button>
+      <span class="result-count" id="result-count">— facilities</span>
+    </div>
+
+    <div class="table-wrap">
+      <table id="dc-table">
+        <thead>
+          <tr>
+            <th onclick="sortTable(0)">Facility</th>
+            <th onclick="sortTable(1)">Effective</th>
+            <th onclick="sortTable(2)">Owner</th>
+            <th onclick="sortTable(3)">Occupant</th>
+            <th onclick="sortTable(4)">Operator</th>
+            <th onclick="sortTable(5)">Location</th>
+            <th onclick="sortTable(6)">Exemption Ends</th>
+            <th>Flags</th>
+          </tr>
+        </thead>
+        <tbody id="dc-tbody">
+          <!-- Rows injected by JS -->
+        </tbody>
+      </table>
+    </div>
+    <div class="no-results" id="no-results" style="display:none">
+      <strong>No results</strong>
+      Try adjusting your search or filters.
+    </div>
+  </div>
+
+  <!-- ═══ SHELL ENTITIES ═══ -->
+  <div class="tab-panel" id="tab-shell">
+    <div class="section-header">
+      <span class="section-title">Owner ≠ Occupant ≠ Operator</span>
+      <span class="section-count">Facilities where the registered entities don't match — a key indicator of beneficial ownership obscuring</span>
+    </div>
+
+    <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1.5rem; max-width:700px; line-height:1.7;">
+      The Comptroller registry lists three separate entity roles for each data center: owner, occupant, and operator.
+      When all three are the same company, the record is straightforward. When they differ — especially when the occupant is an LLC with no public footprint — 
+      it usually means the beneficial user is deliberately separated from the registered exemption holder.
+      Below are the most significant discrepancies in the current dataset.
+    </p>
+
+    <div class="shell-grid">
+      <div class="shell-card">
+        <div class="shell-card-title">SDC DFW VIII, L.P. → GOOGLE LLC</div>
+        <div class="shell-row"><span class="shell-label">Owner</span><span class="shell-value">SDC DFW VIII, L.P. (Stream/Digital)</span></div>
+        <div class="shell-row"><span class="shell-label">Occupant</span><span class="shell-value"><strong>GOOGLE LLC</strong> — listed directly, unlike the "Design LLC" entries elsewhere</span></div>
+        <div class="shell-row"><span class="shell-label">Operator</span><span class="shell-value">SDC DFW VIII L.P. + Jones Lang LaSalle + Design, LLC (3 operators)</span></div>
+        <div class="shell-note">Three separate operator registrations on one facility. Design LLC appears as operator here even though Google is listed as occupant directly.</div>
+      </div>
+
+      <div class="shell-card">
+        <div class="shell-card-title">QTS Irving DC3 → Microsoft</div>
+        <div class="shell-row"><span class="shell-label">Owner</span><span class="shell-value">QTS Irving DC3, LLC</span></div>
+        <div class="shell-row"><span class="shell-label">Occupant</span><span class="shell-value"><strong>Microsoft Corporation</strong></span></div>
+        <div class="shell-row"><span class="shell-label">Operator</span><span class="shell-value">QTS Irving DC3, LLC + Quality Technology Services, LLC (2 operators)</span></div>
+        <div class="shell-note">QTS (now owned by Blackstone) leases the facility to Microsoft. 6351 Longhorn Dr, Irving, TX.</div>
+      </div>
+
+      <div class="shell-card">
+        <div class="shell-card-title">Red Oak Campus → Microsoft via Compass</div>
+        <div class="shell-row"><span class="shell-label">Owner</span><span class="shell-value">6 Compass Datacenters DFW III entities (DFW IIIA–E)</span></div>
+        <div class="shell-row"><span class="shell-label">Occupant</span><span class="shell-value"><strong>Microsoft Corporation</strong></span></div>
+        <div class="shell-row"><span class="shell-label">Operator</span><span class="shell-value">Compass Datacenters, LLC</span></div>
+        <div class="shell-note">300 Houston School Road, Red Oak, Ellis County. Six separate owner entities for one campus — each likely a different building or phase. Same pattern on Red Oak Texas Data Center 2 (481 Austin Blvd).</div>
+      </div>
+
+      <div class="shell-card">
+        <div class="shell-card-title">HELO1 DC → Galaxy / CoreWeave</div>
+        <div class="shell-row"><span class="shell-label">Owner</span><span class="shell-value">GALAXY HELIOS I</span></div>
+        <div class="shell-row"><span class="shell-label">Occupant</span><span class="shell-value"><strong>COREWEAVE, INC.</strong></span></div>
+        <div class="shell-row"><span class="shell-label">Operator</span><span class="shell-value">GALAXY HELIOS I</span></div>
+        <div class="shell-note">Galaxy Digital (crypto firm) owns and operates; CoreWeave (GPU cloud) is the occupant. Dickens County, West Texas. Effective June 2021 — one of the earliest CoreWeave Texas registrations.</div>
+      </div>
+
+      <div class="shell-card">
+        <div class="shell-card-title">Dory Creek LLC → Bitdeer</div>
+        <div class="shell-row"><span class="shell-label">Owner</span><span class="shell-value"><strong>Bitdeer Inc.</strong> — publicly traded Bitcoin mining company (BTDR)</span></div>
+        <div class="shell-row"><span class="shell-label">Occupant</span><span class="shell-value">Dory Creek LLC</span></div>
+        <div class="shell-row"><span class="shell-label">Operator</span><span class="shell-value">Dory Creek LLC</span></div>
+        <div class="shell-note">Bitdeer is the public company; Dory Creek LLC is the operating subsidiary. 3291 Charles Martin Hall Rd, Rockdale, TX. Bitdeer was founded by Jihan Wu, co-founder of Bitmain.</div>
+      </div>
+
+      <div class="shell-card">
+        <div class="shell-card-title">NADC → Chevron in Microsoft's Building</div>
+        <div class="shell-row"><span class="shell-label">Owner</span><span class="shell-value">Microsoft Corporation</span></div>
+        <div class="shell-row"><span class="shell-label">Occupant</span><span class="shell-value"><strong>Chevron USA Inc.</strong></span></div>
+        <div class="shell-row"><span class="shell-label">Operator</span><span class="shell-value">McKinstry Essention, LLC (third-party facilities manager)</span></div>
+        <div class="shell-note">Exemption expired Sept 1, 2023. The only oil and gas company as occupant in the registry. National Asset Data Center — purpose and renewal status unknown.</div>
+      </div>
+
+      <div class="shell-card">
+        <div class="shell-card-title">TX21/TX22 → Oracle / OpenAI Stargate</div>
+        <div class="shell-row"><span class="shell-label">Owner</span><span class="shell-value">Vantage Data Centers TX21, LLC + TX22, LLC</span></div>
+        <div class="shell-row"><span class="shell-label">Occupant</span><span class="shell-value"><strong>Oracle America Cloud Services, LLC</strong></span></div>
+        <div class="shell-row"><span class="shell-label">Operator</span><span class="shell-value">Vantage Data Centers Management Company, LLC</span></div>
+        <div class="shell-note">5207 Rogers Rd, San Antonio. Your notes flag this as Vantage + OpenAI Stargate + Oracle. Registered Nov 2025 — among the most recent entries. Effective date suggests an active expansion tied to the Stargate AI initiative.</div>
+      </div>
+
+      <div class="shell-card">
+        <div class="shell-card-title">Winner LLC / Ernst LLC → Meta/Facebook</div>
+        <div class="shell-row"><span class="shell-label">Registered as</span><span class="shell-value">Winner LLC d/b/a Ernst LLC</span></div>
+        <div class="shell-row"><span class="shell-label">Beneficial user</span><span class="shell-value"><strong>Facebook / Meta</strong> (per investigative notes)</span></div>
+        <div class="shell-row"><span class="shell-label">Location</span><span class="shell-value">4500 Like Way, Fort Worth, Tarrant County</span></div>
+        <div class="shell-row"><span class="shell-label">Exemption</span><span class="shell-value">Active through <strong>June 22, 2035</strong></span></div>
+        <div class="shell-note">d/b/a structure obscures the Meta connection entirely from the registry record. Same structure used by Wurldwide LLC DBA Statue LLC (El Paso, also Meta per notes).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FOIA TARGETS ═══ -->
+  <div class="tab-panel" id="tab-foia">
+    <div class="section-header">
+      <span class="section-title">FOIA &amp; PIA Targets</span>
+      <span class="section-count">Records requests that would advance this investigation</span>
+    </div>
+
+    <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1.5rem; max-width:700px; line-height:1.7;">
+      Texas Public Information Act (PIA) requests go to state agencies. ERCOT is a nonprofit subject to Texas Open Records. 
+      County appraisal districts are public agencies. Water districts vary. This is a working list — not all requests have been filed yet.
+    </p>
+
+    <div class="foia-grid">
+      <div class="foia-card">
+        <h3>Texas Comptroller — All "Design LLC" Registrations</h3>
+        <p>Request all registered qualifying data center exemptions statewide where the occupant is listed as "Design LLC," "Design, LLC," or any variant. Establishes the full Google shell entity footprint in Texas.</p>
+        <div class="foia-target">Target: Texas Comptroller of Public Accounts — Data Analysis and Transparency Division</div>
+      </div>
+
+      <div class="foia-card">
+        <h3>Texas Comptroller — All "OBOE LLC" Registrations</h3>
+        <p>Same as above for OBOE LLC. Confirms or refutes the Microsoft connection and establishes whether other music-named LLCs appear in the registry.</p>
+        <div class="foia-target">Target: Texas Comptroller of Public Accounts</div>
+      </div>
+
+      <div class="foia-card">
+        <h3>ERCOT — Large Flexible Load Agreements</h3>
+        <p>Request all current Large Flexible Load (LFL) agreements with data center operators in Texas, including curtailment payments, enrolled capacity by facility, and any dispatch records from 2022–2025. Quantifies how much the state is paying crypto miners to stand down during grid stress events.</p>
+        <div class="foia-target">Target: ERCOT (Electric Reliability Council of Texas) — Open Records</div>
+      </div>
+
+      <div class="foia-card">
+        <h3>ERCOT — Interconnection Queue for Data Center Load</h3>
+        <p>Request the current ERCOT large load interconnection queue filtered for data center applicants. Reveals facilities in the pipeline not yet in the Comptroller registry, and the scale of planned power consumption.</p>
+        <div class="foia-target">Target: ERCOT Grid Information — Transmission Planning</div>
+      </div>
+
+      <div class="foia-card">
+        <h3>Edwards Aquifer Authority — Permits for Bexar County Facilities</h3>
+        <p>Request all water withdrawal permits associated with properties at or near major San Antonio data center addresses (Microsoft SAT cluster, CyrusOne, Vantage TX21/TX22). Establishes water consumption baseline for the state's largest data center cluster.</p>
+        <div class="foia-target">Target: Edwards Aquifer Authority — Permitting Division</div>
+      </div>
+
+      <div class="foia-card">
+        <h3>Pecos County — Water Use for Fort Stockton Area</h3>
+        <p>Request water withdrawal permits and usage records for Lancium Fort Stockton, Poolside Data Center, and USBTC Pecos in Pecos and Reeves Counties. West Texas groundwater is already stressed by oil and gas operations.</p>
+        <div class="foia-target">Target: Middle Pecos Groundwater Conservation District</div>
+      </div>
+
+      <div class="foia-card">
+        <h3>Ellis County CAD — Property Records, Red Oak Campus</h3>
+        <p>Request appraisal and exemption records for 300 Houston School Road and 481 Austin Blvd, Red Oak. Establishes whether local property tax abatements were layered on top of the state sales tax exemption for the Microsoft/Compass campus.</p>
+        <div class="foia-target">Target: Ellis County Appraisal District</div>
+      </div>
+
+      <div class="foia-card">
+        <h3>Texas Comptroller — Expired Exemption Status</h3>
+        <p>Request records showing whether facilities with expired exemption end dates (Microsoft NADC, Giga Texas, Hockley, LinkedIn Richardson) renewed, received extensions, or continued operating under expired registrations.</p>
+        <div class="foia-target">Target: Texas Comptroller of Public Accounts — Audit Division</div>
+      </div>
+
+      <div class="foia-card">
+        <h3>City of Fort Worth — Economic Development Agreement, Winner/Ernst LLC</h3>
+        <p>Request any economic development agreements, tax abatements, or incentive packages issued to Winner LLC, Ernst LLC, or Meta Platforms in connection with the 4500 Like Way facility. Exemption runs to 2035.</p>
+        <div class="foia-target">Target: City of Fort Worth — Economic Development Department</div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong>Using this list?</strong> If you file any of these requests or have already received responsive records, please reach out at 
+      <a href="https://substack.com/@subtxtpress" target="_blank">Subtxt Press</a>. 
+      This investigation is ongoing and the FOIA tracker will be updated as requests are filed and responses received.
+    </div>
+  </div>
+
+  <!-- ═══ METHODOLOGY ═══ -->
+  <div class="tab-panel" id="tab-methodology">
+    <div class="section-header">
+      <span class="section-title">Methodology &amp; Sources</span>
+    </div>
+
+    <div class="method-grid">
+      <div class="method-block">
+        <h3>Primary Source</h3>
+        <p>
+          All facility data originates from the Texas Comptroller's STAR (Sales Tax And Revenue) database of registered qualifying data centers and large data center projects. 
+          The registry is public but not easily machine-readable — it was manually compiled from Comptroller records.
+        </p>
+      </div>
+
+      <div class="method-block">
+        <h3>Address Research</h3>
+        <p>All 97 registered facilities have confirmed addresses. Coordinates geocoded from public records, county appraisal data, and investigative research.</p>
+        <ul>
+          <li>Texas Secretary of State entity filings</li>
+          <li>OpenCorporates entity lookups</li>
+          <li>County appraisal district records</li>
+          <li>Permit databases and press releases</li>
+          <li>Nominatim/OpenStreetMap geocoding</li>
+        </ul>
+      </div>
+
+      <div class="method-block">
+        <h3>Entity Research</h3>
+        <p>
+          Beneficial ownership was researched using Texas SOS filings, SEC EDGAR (for publicly traded operators), 
+          OpenCorporates, and published investigative reporting. Shell entity connections 
+          (Design LLC = Google, OBOE LLC = Microsoft, Winner/Ernst = Meta) are based on cross-referencing 
+          with known entity structures from other states and published reporting.
+        </p>
+      </div>
+
+      <div class="method-block">
+        <h3>What's Not Here Yet</h3>
+        <ul>
+          <li>ERCOT power consumption data (pending FOIA)</li>
+          <li>Water withdrawal records (pending PIA requests)</li>
+          <li>Local property tax abatement data</li>
+          <li>Interactive map (pending address completion)</li>
+          <li>ERCOT curtailment payment amounts</li>
+        </ul>
+      </div>
+
+      <div class="method-block">
+        <h3>Corrections</h3>
+        <p>
+          This is a living document. If you have corrections, additional documentation, or information about facilities not yet in the database, 
+          please contact Subtxt Press directly. Entity relationships in particular are difficult to confirm from public records alone.
+        </p>
+      </div>
+
+      <div class="method-block">
+        <h3>Exemption Program Background</h3>
+        <p>
+          Texas HB 2 (2013) created the original data center exemption. HB 1750 (2023) extended it explicitly to cryptocurrency mining facilities. 
+          The exemption covers sales tax on electricity, cooling equipment, and qualified capital expenditures. 
+          There is no public disclosure requirement for power consumption or water use.
+        </p>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong>About Subtxt Press</strong><br>
+      Investigative reporting on corruption, due process and institutional failures. Created by Alex Ellis. You can find me on Substack → <a href="https://substack.com/@subtxtpress" target="_blank">substack.com/@subtxtpress</a>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+  <!-- ═══ MAP ═══ -->
+  <div class="tab-panel" id="tab-map" style="padding: 0;">
+    <div class="map-header">
+      <div>
+        <h2 style="font-family:'Bebas Neue',sans-serif; font-size:28px; font-weight:400; letter-spacing:0.05em; color:var(--text); margin-bottom:4px;">Facility Map</h2>
+        <p style="color:var(--text-dim); font-size:12px;">All 97 facilities mapped. Click any dot for details.</p>
+      </div>
+      <div class="map-legend">
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#60A5FA;margin-right:4px;"></span>Cloud</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#F59E0B;margin-right:4px;"></span>Crypto</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#A78BFA;margin-right:4px;"></span>Shell entity</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#F87171;margin-right:4px;"></span>Foreign</span>
+        <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#6B7280;margin-right:4px;"></span>Other</span>
+      </div>
+    </div>
+    <div id="map" style="height: 580px; width: 100%; background:#111;"></div>
+    <div class="map-footer">
+      Basemap: OpenStreetMap contributors. Coordinates geocoded from confirmed addresses.
+    </div>
+  </div>
+
+<footer style="background:var(--bg2); border-top:1px solid var(--border); padding:1.5rem; text-align:center; font-size:0.7rem; color:var(--text-muted); letter-spacing:0.04em;">
+  Subtxt Press &nbsp;·&nbsp; TX Data Centers &nbsp;·&nbsp; Living document — updated as records are confirmed &nbsp;·&nbsp; <a href="https://substack.com/@subtxtpress" target="_blank">substack.com/@subtxtpress</a>
+</footer>
+
+<script>
+// ── TSV loader ────────────────────────────────────────────────────────────────
+const TSV_PATH = 'tx-data-centers.tsv';
+
+function getFlags(name, own, occ, op) {
+  const flags = [];
+  const nl = name.toLowerCase(), ol = occ.toLowerCase(),
+        wl = own.toLowerCase(), pl = op.toLowerCase();
+
+  const cryptoKw = ['bitcoin','crypto','blockchain','mining','ocean blockchain',
+    'riot','whinstone','cipher','ionic digital','lonestar dream',
+    'usbtc','u.s. data lone star','dory creek','bitdeer','fort blocks',
+    'fort haskell','rhodium','ddh (north america)','bastrop','hackberry',
+    'american bitcoin','canadian breaks','cottonwood'];
+  if (cryptoKw.some(k => nl.includes(k) || ol.includes(k) || wl.includes(k) || pl.includes(k)))
+    flags.push('crypto');
+
+  const cloudKw = ['microsoft','amazon','google','oracle','coreweave','linkedin',
+    'ntt global','cyrusone','state farm','design llc','design, llc',
+    'cirrascale','switch, ltd','wells fargo','core42','chevron','paile llc','lancium'];
+  if (!flags.includes('crypto') && cloudKw.some(k => ol.includes(k) || wl.includes(k)))
+    flags.push('cloud');
+
+  const shellKw = ['design llc','design, llc','oboe llc','green chile ventures',
+    'paile llc','dory creek','winner llc','wurldwide','ernst llc'];
+  if (shellKw.some(k => ol.includes(k))) flags.push('shell');
+  else if (own && occ && own.split(' ')[0].toLowerCase() !== occ.split(' ')[0].toLowerCase())
+    flags.push('shell');
+
+  const foreignKw = ['ie us development','ie us hardware','ddh (north america)',
+    'core42','galaxy helios','fermi inc','fermi equipment','bitdeer'];
+  if (foreignKw.some(k => wl.includes(k) || ol.includes(k) || pl.includes(k)))
+    flags.push('foreign');
+
+  return flags.join(' ');
+}
+
+function parseTSV(text) {
+  const lines = text.split(/\r?\n/);
+  const rows = [];
+  let pastHeaders = 0;
+  for (const line of lines) {
+    const cols = line.split('	');
+    if (!cols[0].trim()) continue;
+    // Skip the two header rows and the section divider row
+    if (cols[0].trim() === 'Registered Qualifying Data Centers' ||
+        cols[0].trim() === 'Registered Qualifying Large Data Center Projects' ||
+        cols[0].trim() === 'Data Center') continue;
+    while (cols.length < 10) cols.push('');
+    const name = cols[0].trim();
+    const eff  = cols[1].trim();
+    const own  = cols[2].trim();
+    const occ  = cols[4].trim();
+    const op   = cols[6].trim();
+    const end  = cols[8].trim();
+    const loc  = cols[9].trim();
+    if (!name) continue;
+    const flags = getFlags(name, own, occ, op);
+    // Mark expired
+    let allFlags = flags;
+    if (end) {
+      try {
+        if (new Date(end) < new Date()) {
+          allFlags = (allFlags + ' expired').trim();
+        }
+      } catch(e) {}
+    }
+    rows.push([name, eff, own, occ, op, loc, end, allFlags]);
+  }
+  return rows;
+}
+
+let DC_DATA = [];
+
+async function loadData() {
+  try {
+    const res = await fetch(TSV_PATH);
+    if (!res.ok) throw new Error(res.status);
+    const text = await res.text();
+    DC_DATA = parseTSV(text);
+  } catch(e) {
+    console.warn('Could not fetch TSV, table will be empty:', e);
+    document.getElementById('no-results').style.display = 'block';
+    document.getElementById('no-results').innerHTML =
+      '<strong>Could not load data</strong>Make sure <code>Data_centers_-_Sheet1.tsv</code> is in the same folder as this HTML file.';
+    document.querySelector('.table-wrap').style.display = 'none';
+  }
+  buildTable();
+}
+
+const FLAG_LABELS = {
+  crypto:   { cls: 'badge-crypto',   text: 'Crypto' },
+  cloud:    { cls: 'badge-cloud',    text: 'Cloud' },
+  shell:    { cls: 'badge-shell',    text: 'Shell entity' },
+  foreign:  { cls: 'badge-foreign',  text: 'Foreign' },
+  expired:  { cls: 'badge-expired',  text: 'Expired' },
+  expiring: { cls: 'badge-expiring', text: 'Expiring' },
+};
+
+// ── Build table ───────────────────────────────────────────────────────────────
+function buildTable() {
+  const tbody = document.getElementById('dc-tbody');
+  tbody.innerHTML = '';
+  DC_DATA.forEach((row, i) => {
+    const [name, effective, owner, occupant, operator, location, exemEnd, flagStr] = row;
+    const flags = flagStr ? flagStr.split(' ').filter(Boolean) : [];
+    const noAddr = !location || location.trim() === '';
+
+    const tr = document.createElement('tr');
+    tr.dataset.flags = flags.join(' ');
+    tr.dataset.noaddr = noAddr ? '1' : '0';
+    tr.dataset.name = name.toLowerCase();
+    tr.dataset.owner = owner.toLowerCase();
+    tr.dataset.occupant = occupant.toLowerCase();
+    tr.dataset.location = location.toLowerCase();
+    tr.dataset.expired = (exemEnd && new Date(exemEnd) < new Date()) ? '1' : '0';
+
+    const flagBadges = flags.map(f => {
+      const def = FLAG_LABELS[f];
+      return def ? `<span class="badge ${def.cls}">${def.text}</span> ` : '';
+    }).join('');
+
+    const addrBadge = noAddr ? `<span class="badge badge-no-address">No address</span>` : '';
+    const expiredBadge = (exemEnd && new Date(exemEnd) < new Date()) ? `<span class="badge badge-expired">Expired</span> ` : '';
+
+    tr.innerHTML = `
+      <td class="td-name">${name}</td>
+      <td class="td-date">${effective || '—'}</td>
+      <td class="td-entity">${owner || '—'}</td>
+      <td class="td-entity">${occupant || '—'}</td>
+      <td class="td-entity">${operator || '—'}</td>
+      <td class="td-location">${location || '<span style="color:var(--text-muted)">Unknown</span>'}</td>
+      <td class="td-date">${exemEnd || '—'}</td>
+      <td>${flagBadges}${expiredBadge}${addrBadge}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+  updateCount();
+}
+
+// ── Filter ────────────────────────────────────────────────────────────────────
+let activeTag = null;
+let sortCol = -1, sortDir = 1;
+
+function toggleTag(tag, el) {
+  if (activeTag === tag) {
+    activeTag = null;
+    el.classList.remove('active');
+  } else {
+    activeTag = tag;
+    document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+  filterTable();
+}
+
+function filterTable() {
+  const q = document.getElementById('db-search').value.toLowerCase();
+  const typeFilter = document.getElementById('db-type').value;
+  const statusFilter = document.getElementById('db-status').value;
+
+  const rows = document.querySelectorAll('#dc-tbody tr');
+  let visible = 0;
+
+  rows.forEach(tr => {
+    let show = true;
+
+    // Text search
+    if (q) {
+      const haystack = (tr.dataset.name + ' ' + tr.dataset.owner + ' ' + tr.dataset.occupant + ' ' + tr.dataset.location);
+      if (!haystack.includes(q)) show = false;
+    }
+
+    // Type filter
+    if (typeFilter && show) {
+      const flags = tr.dataset.flags;
+      if (typeFilter === 'crypto' && !flags.includes('crypto')) show = false;
+      if (typeFilter === 'cloud' && !flags.includes('cloud')) show = false;
+      if (typeFilter === 'shell' && !flags.includes('shell')) show = false;
+      if (typeFilter === 'foreign' && !flags.includes('foreign')) show = false;
+    }
+
+    // Status filter
+    if (statusFilter && show) {
+      if (statusFilter === 'expired' && tr.dataset.expired !== '1') show = false;
+      if (statusFilter === 'active' && tr.dataset.expired === '1') show = false;
+    }
+
+    // Tag filter
+    if (activeTag === 'noaddr' && show) {
+      if (tr.dataset.noaddr !== '1') show = false;
+    }
+
+    tr.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+
+  document.getElementById('result-count').textContent = `${visible} facilities`;
+  document.getElementById('no-results').style.display = visible === 0 ? 'block' : 'none';
+  document.querySelector('.table-wrap').style.display = visible === 0 ? 'none' : 'block';
+}
+
+function updateCount() {
+  document.getElementById('result-count').textContent = `${DC_DATA.length} facilities`;
+}
+
+// ── Sort ──────────────────────────────────────────────────────────────────────
+function sortTable(col) {
+  const tbody = document.getElementById('dc-tbody');
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+
+  if (sortCol === col) {
+    sortDir *= -1;
+  } else {
+    sortCol = col;
+    sortDir = 1;
+  }
+
+  document.querySelectorAll('th').forEach((th, i) => {
+    th.classList.remove('sort-asc', 'sort-desc');
+    if (i === col) th.classList.add(sortDir === 1 ? 'sort-asc' : 'sort-desc');
+  });
+
+  rows.sort((a, b) => {
+    const aVal = a.cells[col]?.textContent.trim() || '';
+    const bVal = b.cells[col]?.textContent.trim() || '';
+    return aVal.localeCompare(bVal) * sortDir;
+  });
+
+  rows.forEach(r => tbody.appendChild(r));
+}
+
+// ── Tab switching ─────────────────────────────────────────────────────────────
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+loadData();
+</script>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+// ── Map ───────────────────────────────────────────────────────────────────────
+// Hardcoded coordinates for confirmed addresses
+// [name, lat, lng, flags, owner, occupant, location]
+const MAP_POINTS = [
+  ["1102 McKinzie LLC Data Center",27.8006,-97.3964,"","1102 McKinzie LLC","1102 McKinzie LLC","1102 McKinzie Rd Corpus Christi"],
+  ["1242 McKinzie LLC Data Center",27.8012,-97.397,"","1242 McKinzie LLC","1242 McKinzie LLC","1242 McKinzie Road Corpus Christi"],
+  ["3301 Hibbetts Road Data Center",32.4487,-99.7331,"cloud","","Coreweave, Inc.","3301 Hibbetts Road Abilene"],
+  ["ALE60 Data Center",29.4241,-98.6438,"cloud shell","COPT San Antonio LP","Amazon Data Services Inc.","7400 Potranco Road  San Antonio"],
+  ["ALE61 Data Center",29.3812,-98.4201,"cloud","Amazon Data Services Inc.","Amazon Data Services Inc.","11625 Old Corpus Christi Highway San Antonio"],
+  ["ALE62 Data Center",29.4748,-98.6842,"cloud","Amazon Data Services Inc.","Amazon Data Services Inc.","TX-211 & Lambda Drive San Antonio"],
+  ["Austin Data Center 2 LLC",30.4388,-97.6197,"cloud shell","Austin Data Center 2 LLC","Design, LLC","2515 S Kenney Fort Blvd Pflugerville"],
+  ["Bastrop Project One",30.3352,-97.4118,"crypto","Ocean Blockchain LLC","Ocean Blockchain LLC","2017 FM 969"],
+  ["C1 Dallas - Allen (LOT 1) LLC",33.1067,-96.6442,"cloud shell","C1 Dallas - Allen (LOT 1) LLC","Oracle America, Inc.","2300 Chelsea Blvd Allen"],
+  ["C1 Richardson LLC Data Center",32.9537,-96.6891,"cloud shell","C1 Richardson LLC","Coreweave, Inc.","1510 E Lookout Dr Richardson"],
+  ["Canadian Breaks Data Center",35.2451,-102.9637,"crypto","Zephyr Infrastructure LLC","American Bitcoin Operating LLC","6237 CR 44 Vega"],
+  ["Cedarvale, Barslow/Pyote TX Data Center",31.4871,-103.3905,"crypto","Ionic Digital Cedarvale LLC","Ionic Digital Mining LLC","3013 Ranch Rd 516 Barstow"],
+  ["Cipher Black Pearl LLC Data Center",31.7526,-103.1578,"crypto","Cipher Black Pearl LLC","Cipher Black Pearl LLC","11786 Co Rd 209 Wink"],
+  ["Cipher Mining Technologies Inc. - Odessa Site",31.8457,-102.3676,"crypto","Cipher Mining Technologies Inc.","Cipher Mining Technologies Inc.","2901 Navasota Dr Odessa"],
+  ["DFW 9",32.5221,-96.7719,"shell","DB Data Center Red Oak, LLC","Green Chile Ventures LLC","300 Houston School Rd Red Oak"],
+  ["DFW 10",32.5228,-96.7724,"shell","DB Data Center Red Oak, LLC","Green Chile Ventures LLC","300 Houston School Rd Red Oak"],
+  ["DFW 11",32.5215,-96.7714,"shell","DB Data Center Red Oak, LLC","Green Chile Ventures LLC","300 Houston School Rd Red Oak"],
+  ["DFW 12",32.521,-96.7708,"shell","DB Data Center Red Oak, LLC","Green Chile Ventures LLC","300 Houston School Rd Red Oak"],
+  ["DFW 37",32.9012,-96.6138,"cloud shell","Digital Garland Campbell, L.P.","LinkedIn Corporation","1502 Ferris Rd Garland"],
+  ["Digital Garland",32.9025,-96.6132,"cloud shell","DDI Garland, LLC","Wells Fargo Bank, NA","1505 Ferris Rd Garland"],
+  ["Dory Creek LLC Data Center",30.662,-97.0091,"crypto shell foreign","Bitdeer Inc.","Dory Creek LLC","3291 Charles Martin Hall Rd Rockdale"],
+  ["Fort Blocks LLC Data Center",30.8971,-102.8839,"crypto","Fort Blocks LLC","Fort Blocks LLC","1304 N. Valentine St. Fort Stockton"],
+  ["Fort Haskell Data Center",33.1584,-99.734,"crypto","Fort Haskell LLC","Fort Haskell LLC","10357 Loop Road Haskell"],
+  ["Giga Texas Datacenter",30.2172,-97.6323,"","Tesla, Inc.","Tesla, Inc.","1 Tesla Rd Austin"],
+  ["Hackberry Data Center",31.4254,-103.4932,"crypto","Silver Basin Digital Infrastructure LLC","American Bitcoin Operating LLC","Pecos"],
+  ["HELO1 DC",32.861,-96.7891,"cloud shell foreign","GALAXY HELIOS I","COREWEAVE, INC.","949 Sherry Lane"],
+  ["Hockley Data Center",29.9891,-95.843,"","SF HOUH LLC","SF HOUH LLC","28401 Betka Road Hockley"],
+  ["Independence Data Center",33.0137,-96.6997,"cloud foreign","","Core42 Holding US LLC","1000 Coit Rd Plano"],
+  ["Lancium Fort Stockton Clean Campus",30.9301,-102.8821,"cloud","Lancium LLC","Lancium LLC","1753 N US Highway 285 Fort Stockton"],
+  ["Lewisville DFW38",33.0462,-97.0072,"cloud shell","DDI Lewisville, LLC","Wells Fargo Bank National Association","2501 Edmonds Lane Lewisville"],
+  ["LinkedIn Richardson Texas Data Center",32.9481,-96.7301,"cloud shell","Collins Technology Park Partners LLC","LinkedIn Corporation","900 Quality Way Richardson"],
+  ["Lonestar Taproot LLC - Pyote",31.5382,-103.1221,"crypto","Lonestar Dream Inc.","Lonestar Dream Inc.","3072 FM 1927 Pyote"],
+  ["Lonestar Taproot LLC - Tarbush",31.4412,-103.4881,"crypto","Lonestar Dream Inc.","Lonestar Dream Inc.","4143 N US Hwy 285 Pecos"],
+  ["Microsoft Corporation",29.4862,-98.6201,"cloud","Microsoft Corporation","Microsoft Corporation","3555 Westover Link and Wiseman Boulevard San Antonio"],
+  ["Microsoft San Antonio (SAT14)",29.4855,-98.6195,"cloud","Microsoft Corporation","Microsoft Corporation","3555 Westover Link San Antonio"],
+  ["NADC",32.9267,-96.8912,"cloud shell","Microsoft Corporation","Chevron USA Inc.","4201 Spring Valley Road"],
+  ["NTT Global Data Centers Americas - Dallas TX2",32.9171,-96.6112,"cloud","NTT Global Data Centers TX, LLC","NTT Global Data Centers TX, LLC","2008 Lookout Drive Garland"],
+  ["NTT Global Data Centers Americas - Dallas TX3",32.9168,-96.6115,"cloud","NTT Global Data Centers TX, LLC","NTT Global Data Centers TX, LLC","2108 Lookout Drive Garland"],
+  ["NTT Global Data Centers Americas - Dallas TX4",32.9165,-96.6118,"cloud","NTT Global Data Centers TX, LLC","NTT Global Data Centers TX, LLC","2108 Lookout Drive Garland"],
+  ["QTS Irving DC3 Data Center",32.8701,-96.9812,"cloud shell","QTS Irving DC3, LLC","Microsoft Corporation","6351 Longhorn Dr. Irving"],
+  ["Rellis Campus Data and Research Center",30.6401,-96.3312,"","Rellis Campus Data and Research Center LLC","Rellis Campus Data and Research Center LLC","701 University Dr E Bryan"],
+  ["San Antonio Data Center II",29.4748,-98.6842,"cloud shell","CyrusOne LLC","Microsoft Corporation","9554 Westover Hills Blvd San Antonio"],
+  ["San Antonio Data Center III",29.5012,-98.7201,"cloud shell","CyrusOne LLC","Microsoft Corporation","11203 W Military Drive San Antonio"],
+  ["SDC - Austin Tandem Data Center",30.5081,-97.6792,"cloud shell","SDC - Austin LLC","Cirrascale Cloud Services, LLC","1300 Louis Henna Blvd Round Rock"],
+  ["SDC DFW VIII, L.P.",32.5891,-96.6821,"cloud shell","SDC DFW VIII, L.P.","GOOGLE LLC","300 S Sunrise Road Wilmer"],
+  ["SDC SATB1",29.5018,-98.7205,"cloud shell","SDC SA III, L.P.","Microsoft Corporation","11203 Military Dr. San Antonio"],
+  ["State Farm Richardson Data Center",32.954,-96.6895,"cloud shell","JDM III SF Dallas DC LLC","State Farm Mutual Auto Ins. Co.","1510 E Lookout Drive Richardson"],
+  ["Stream DFW VII Data Center",32.9181,-96.6108,"shell","SDC DFW VII LP","OBOE LLC","813 Lookout Drive"],
+  ["Switch AUS 4",30.5021,-97.6712,"cloud shell","Switch, LTD","Coreweave, Inc.","150 Dell Way Round Rock"],
+  ["Temple Green Data Center",31.0521,-97.3681,"crypto","Temple Green Data LLC","Rhodium Renewables LLC","2810 Bob White Road"],
+  ["TX11 Data Center",29.4501,-98.6148,"cloud shell","Vantage Data Centers TX11, LLC","Microsoft Corporation","14720 Omicron Drive San Antonio"],
+  ["USBTC Pecos Data Center",31.426,-103.4938,"crypto","U.S. Data Lone Star, Inc.","U.S. Data Lone Star, Inc.","Farm to Market Road 2119 Pecos"],
+  ["West Texas Data Center",32.1842,-97.8012,"","WTDM OZB LLC","WTDM OZB LLC","Comanche Circle Project (Hood/Somervell County border)"],
+  ["Whinstone US Data Center",30.6552,-97.0013,"crypto","Whinstone US Inc.","Whinstone US Inc.","1721 Todd Rd Rockdale"],
+  ["Alamo Data Center",32.4754,-97.0046,"cloud shell","Alamo Mission LLC","Design LLC","3441 Railport Parkway Midlothian"],
+  ["Bull Data Center",34.0633,-100.2203,"foreign","IE US Development Holdings 5 Inc.","IE US Hardware 1 Inc.","620 FM 1033 Childress"],
+  ["Childress Data Center",34.064,-100.2198,"foreign","IE US Development Holdings 3 Inc.","IE US Hardware 1 Inc.","620 FM 1033 Childress"],
+  ["Cinco Data Center",29.338,-98.767,"cloud shell","Rowan Cinco LLC","Design LLC","TX-132 & Co Rd 683 Lytle/Medina County"],
+  ["Cottonwood Data Center",31.4258,-103.4936,"crypto","Core Scientific Inc.","Core Scientific Inc.","1851 FM Road 2119 Pecos"],
+  ["Cutten Data Center",30.0074,-95.521,"","SF HOUC, LLC","SF HOUC, LLC","15555 Cutten Rd Houston"],
+  ["Cyrusone LLC - Houston West III Data Center",29.7858,-95.5765,"cloud shell","Cyrusone LLC","Paile LLC","11003 Corporate Centre Dr Houston"],
+  ["Denton Data Center",33.2148,-97.1331,"cloud","","Coreweave Compute Acquisition Co V LLC","8171 Jim Christal Rd Denton"],
+  ["DFW02 LANCASTER (STACK)",32.5921,-96.7561,"","SI DFW02A, LLC","SI DFW02A, LLC","E Belt Line Road Lancaster"],
+  ["EdgeConneX AU02",30.2301,-97.6891,"cloud shell","DFW33220N, LLC","Coreweave, Inc.","7401 East Ben White Blvd  Austin"],
+  ["Fermi Data Center 1",35.3421,-101.5812,"foreign","Fermi Inc. Fermi Equipment Holdco, LLC Firebird Equipment Ho","Fermi Equipment Holdco, LLC","US Highway 60 & FM2373 Panhandle"],
+  ["HEL02 DC",33.6118,-100.8393,"cloud shell foreign","Galaxy Helios II LLC","Coreweave, Inc.","984 Co Rd 112 Dickens"],
+  ["Horizon",34.0625,-100.2195,"foreign","IE US Development Holdings 3 Inc.","IE US HARDWARE 3 INC.","620 FM 1033 Childress"],
+  ["Hutto Data Center Campus LLC",30.5432,-97.5477,"cloud shell","Hutto Data Center Campus LLC","Design LLC","3399 County Road 132 Hutto"],
+  ["Lancium Abilene Clean Campus",32.4002,-99.6629,"cloud shell","Lancium LLC Abilene DC 1, LLC","Oracle America, Inc.","5502 Spinks Road Abilene"],
+  ["Lancium Abilene Clean Campus III",32.4008,-99.6632,"cloud shell","Abilene DC 3 LLC","Oracle America, Inc.","5502 Spinks Road Abilene"],
+  ["Lancium Abilene Clean Campus IV",32.4014,-99.6635,"cloud shell","Abilene DC 4, LLC","Oracle America, Inc.","5502 Spinks Road Abilene"],
+  ["Lancium Abilene Clean Campus V",32.402,-99.6638,"cloud shell","Abilene DC 5 LLC","Oracle America, Inc.","5502 Spinks Road Abilene"],
+  ["Lancium Abilene Clean Campus VI",32.4026,-99.6641,"cloud shell","Abilene DC 6 LLC","Oracle America, Inc.","5502 Spinks Road Abilene"],
+  ["Lancium Abilene Clean Campus VII",32.4032,-99.6644,"cloud shell","Abilene DC 7 LLC","Oracle America, Inc.","5502 Spinks Road Abilene"],
+  ["Lancium Abilene Clean Campus VIII",32.4038,-99.6647,"cloud shell","Abilene DC 8 LLC","Oracle America, Inc.","5502 Spinks Road Abilene"],
+  ["Lancium Clean Campus - Childress 1",32.4091,-99.6712,"cloud","Lancium LLC","Lancium LLC","617 Farm to Market Road 2404 Abilene"],
+  ["Lincoln Rackhouse",33.0141,-96.7001,"cloud","","Coreweave, Inc.","1000 Coit Rd Plano"],
+  ["Microsoft Corporation (SAT 09 - SAT13)",29.4748,-98.6842,"cloud","Microsoft Corporation","Microsoft Corporation","15434 Lambda Drive San Antonio"],
+  ["Microsoft Corporation (SAT 15-17)",29.4862,-98.6201,"cloud","Microsoft Corporation","Microsoft Corporation","3555 Westover Link 78251 San Antonio"],
+  ["Microsoft Corporation (SAT 80-85)",29.4868,-98.6204,"cloud","Microsoft Corporation","Microsoft Corporation","3555 Westover Link 78251 San Antonio"],
+  ["Microsoft Corporation (SAT 89-90)",29.4874,-98.6207,"cloud","Microsoft Corporation","Microsoft Corporation","3555 Westover Link 78251 San Antonio"],
+  ["Nexus Data Centers",31.8454,-96.8013,"","Nexus Data Centers, LLC Nexus Land Holdings, LLC Nexus Hubba","Nexus Data Centers, LLC","1725 Hughes Landing Blvd"],
+  ["Polmer LLC Data Center",31.0982,-97.3428,"","Polmer LLC","Polmer LLC","3101 Industrial Blvd Temple"],
+  ["Poolside Data Center, Pecos County I",30.8946,-102.8868,"","Poolside LF Phase 1 DC OPS LLC","Poolside LF Phase 1 DC OPS LLC","FM 1053 Fort Stockton"],
+  ["PowerCampus Dallas by Lancaster Data Center Campus LP",32.5901,-96.7572,"cloud shell","Lancaster Data Center Campus LP","Design, LLC","2401 S Dallas Avenue Lancaster"],
+  ["Project Goodnight",34.8668,-101.3624,"","GN DC1, LLC","GN DC1, LLC","10001 Lima Road Claude"],
+  ["Pyote Data Center",31.5382,-103.1221,"crypto foreign","DDH (North America) Inc.","DDH (North America) Inc.","I-20 corridor Pyote"],
+  ["Red Oak Texas Data Center",32.5221,-96.7719,"cloud shell","Compass Datacenters DFW IIIA, LLC Compass Datacenters DFW II","Microsoft Corporation","300 Houston School Road Red Oak"],
+  ["Red Oak Texas Data Center 2",32.5254,-96.768,"cloud shell","Compass Datacenters DFW IIIJ, LLC Compass Datacenters DFW II","Microsoft Corporation","481 Austin Blvd Red Oak"],
+  ["Riot Corsicana Data Center",32.0757,-96.4688,"crypto","Riot Corsicana, LLC","Riot Corsicana, LLC","6980 FM 709 S Corsicana"],
+  ["Riot Rockdale",32.0762,-96.4692,"crypto","Riot Platforms, Inc.","Riot Platforms, Inc.","6980 FM 709 S Corsicana"],
+  ["Riot Rockdale Data Center 1",30.6552,-97.0013,"crypto","Riot Platforms, Inc.","Riot Platforms, Inc.","2721 Charles Martin Hall Rd Rockdale"],
+  ["Sharka Data Center",32.476,-97.005,"cloud shell","Sharka LLC","Design LLC","3800 Railport Pkwy Midlothian"],
+  ["Sweetwater II",32.9579,-99.7452,"foreign","IE US DEVELOPMENT HOLDINGS 7 INC.","IE US HARDWARE 1 INC.","1782 FM540 Hamlin"],
+  ["TX21/TX22 Data Centers",29.4577,-98.6619,"cloud shell","Vantage Data Centers TX21, LLC Vantage Data Centers TX22, LL","Oracle America Cloud Services, LLC","5207 Rogers Rd San Antonio"],
+  ["Winner LLC d/b/a Ernst LLC",32.7555,-97.3308,"shell","Winner LLC d/b/a Ernst LLC","Winner LLC d/b/a Ernst LLC","4500 Like Way Fort Worth"],
+  ["Wurldwide LLC DBA Statue LLC",31.7638,-106.485,"shell","Wurldwide LLC DBA Statue LLC","Wurldwide LLC DBA Statue LLC","US-54 & Stan Roberts Sr Ave El Paso"],
+];
+
+let mapInitialized = false;
+let leafletMap = null;
+
+function getMarkerColor(flags) {
+  if (flags.includes('foreign')) return '#F87171';
+  if (flags.includes('crypto'))  return '#F59E0B';
+  if (flags.includes('shell'))   return '#A78BFA';
+  if (flags.includes('cloud'))   return '#60A5FA';
+  return '#6B7280';
+}
+
+function initMap() {
+  if (mapInitialized) return;
+  mapInitialized = true;
+
+  leafletMap = L.map('map', {
+    center: [31.5, -99.5],
+    zoom: 6,
+    zoomControl: true,
+  });
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(leafletMap);
+
+  MAP_POINTS.forEach(([name, lat, lng, flags, owner, occupant, location]) => {
+    const color = getMarkerColor(flags);
+    const marker = L.circleMarker([lat, lng], {
+      radius: 7,
+      fillColor: color,
+      color: '#000',
+      weight: 1,
+      opacity: 0.9,
+      fillOpacity: 0.85
+    }).addTo(leafletMap);
+
+    const flagBadges = flags ? flags.split(' ').filter(Boolean).map(f =>
+      `<span style="background:${getMarkerColor(f)};color:#000;font-size:9px;padding:1px 5px;border-radius:2px;margin-right:3px;">${f}</span>`
+    ).join('') : '';
+
+    marker.bindPopup(`
+      <div style="font-family:'IBM Plex Mono',monospace;min-width:200px;">
+        <div style="font-weight:bold;font-size:12px;margin-bottom:6px;color:#111;">${name}</div>
+        <div style="font-size:10px;color:#444;margin-bottom:2px;"><strong>Owner:</strong> ${owner || '—'}</div>
+        <div style="font-size:10px;color:#444;margin-bottom:2px;"><strong>Occupant:</strong> ${occupant || '—'}</div>
+        <div style="font-size:10px;color:#666;margin-bottom:6px;">${location}</div>
+        <div>${flagBadges}</div>
+      </div>
+    `, { maxWidth: 280 });
+  });
+
+  // Fit to TX bounds
+  leafletMap.fitBounds([[25.8, -106.7], [36.5, -93.5]]);
+}
+</script>
+
+</body>
+</html>
