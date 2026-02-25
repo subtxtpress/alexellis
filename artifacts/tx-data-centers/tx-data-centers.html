@@ -957,9 +957,9 @@
       <div class="stat-label">Registered<br>Facilities</div>
     </div>
     <div class="stat">
-      <div class="stat-value">99</div>
+      <div class="stat-value">92</div>
       <div class="stat-label">Addresses<br>Confirmed</div>
-      <div class="stat-sub">All facilities located</div>
+      <div class="stat-sub">7 unresolved (suite/road-level)</div>
     </div>
     <div class="stat">
       <div class="stat-value">14</div>
@@ -1013,7 +1013,7 @@
           This database tracks every facility registered as of early 2026. The goal is to answer questions the Comptroller's registry doesn't: Who actually controls these facilities? How much power are they drawing from ERCOT? What water are they consuming in already water-stressed counties? What did local governments give away in additional abatements to land them?
         </p>
         <p>
-          This is an active investigation. Addresses are still being confirmed. FOIA requests are pending. If you have documents, tips, or corrections — especially on West Texas facilities and ERCOT curtailment agreements — reach out.
+          This is an active investigation. 92 of 99 facility addresses have been confirmed — 7 remain unresolved (suite addresses that appear to be registered agent offices, and road-level locations without street numbers). FOIA requests are pending. If you have documents, tips, or corrections — especially on West Texas facilities and ERCOT curtailment agreements — reach out.
         </p>
       </div>
 
@@ -1021,11 +1021,11 @@
         <div class="sidebar-block">
           <h3>Top Occupants</h3>
           <ul class="sidebar-list">
-            <li><span>Microsoft Corporation</span><span class="count">13</span></li>
+            <li><span>Microsoft Corporation</span><span class="count">14</span></li>
             <li><span>Oracle America, Inc.</span><span class="count">8</span></li>
             <li><span>CoreWeave, Inc.</span><span class="count">6</span></li>
+            <li><span>Design LLC <em>(Google)</em></span><span class="count">6</span></li>
             <li><span>Green Chile Ventures LLC</span><span class="count">4</span></li>
-            <li><span>Design LLC <em>(Google)</em></span><span class="count">4+</span></li>
             <li><span>Amazon Data Services</span><span class="count">3</span></li>
             <li><span>NTT Global Data Centers</span><span class="count">3</span></li>
             <li><span>LinkedIn Corporation</span><span class="count">2</span></li>
@@ -1035,9 +1035,9 @@
         <div class="sidebar-block">
           <h3>Flags to Watch</h3>
           <ul class="sidebar-list">
-            <li><span>Crypto mining on cloud exemption</span> <span class="badge badge-crypto">8+</span></li>
+            <li><span>Crypto mining on cloud exemption</span> <span class="badge badge-crypto">19</span></li>
             <li><span>Owner ≠ Occupant ≠ Operator</span> <span class="badge badge-shell">~30</span></li>
-            <li><span>No address on record</span> <span class="badge badge-no-address">0</span></li>
+            <li><span>Address unresolved (suite/road-level)</span> <span class="badge badge-no-address">7</span></li>
             <li><span>Foreign-registered entities</span> <span class="badge badge-foreign">5+</span></li>
             <li><span>Expired exemptions</span> <span class="badge badge-expired">4</span></li>
           </ul>
@@ -1128,7 +1128,7 @@
         <div class="shell-card-title">Bitcoin Mining on the Cloud Exemption</div>
         <div class="shell-row">
           <span class="shell-label">Operators</span>
-          <span class="shell-value">Riot Platforms, Whinstone, Cipher Mining, Ionic Digital, American Bitcoin Operating, Ocean Blockchain, Lonestar Dream, USBTC, Genesis Digital Assets</span>
+          <span class="shell-value">Riot Platforms (3), Whinstone, Cipher Mining (2), Ionic Digital, American Bitcoin Operating (2), Ocean Blockchain, Lonestar Dream (2), USBTC, Genesis Digital Assets, Rhodium Renewables, Bitdeer/Dory Creek, Fort Blocks, Fort Haskell, Core Scientific (Cottonwood), Temple Green</span>
         </div>
         <div class="shell-row">
           <span class="shell-label">Issue</span>
@@ -1169,6 +1169,40 @@
           <span class="shell-value">Expired Sept 1, 2023. Status post-expiration unknown.</span>
         </div>
         <div class="shell-note">A Microsoft-owned facility occupied by Chevron raises questions about what data infrastructure is being operated and whether the exemption was renewed.</div>
+      </div>
+
+      <div class="shell-card">
+        <div class="shell-card-title">The IE US Cluster — Near-Gigawatt Foreign Footprint</div>
+        <div class="shell-row">
+          <span class="shell-label">Facilities</span>
+          <span class="shell-value">Bull, Childress, and Horizon (all 620 FM 1033, Childress County) + Sweetwater II (Fisher County) — 4 registered facilities under multiple numbered Development Holdings and Hardware entities</span>
+        </div>
+        <div class="shell-row">
+          <span class="shell-label">Ownership</span>
+          <span class="shell-value"><strong>IE US Development Holdings</strong> and <strong>IE US Hardware</strong> entities — US subsidiaries of a Spanish-registered parent. Beneficial ownership upstream of the Spanish parent is unconfirmed.</span>
+        </div>
+        <div class="shell-row">
+          <span class="shell-label">Scale</span>
+          <span class="shell-value">Childress campus reported at near-gigawatt capacity — comparable in scale to Lancium's Childress 1. Registrations span 2022–2025, suggesting active expansion.</span>
+        </div>
+        <div class="shell-note">A foreign-registered entity operating at this scale with numbered shell subsidiaries and no disclosed beneficial owner is a significant accountability gap. Childress County CAD and City of Childress records are the primary FOIA targets.</div>
+      </div>
+
+      <div class="shell-card">
+        <div class="shell-card-title">Meta's Shell Pattern — Fort Worth &amp; El Paso</div>
+        <div class="shell-row">
+          <span class="shell-label">Entities</span>
+          <span class="shell-value"><strong>Winner LLC d/b/a Ernst LLC</strong> (Fort Worth, Tarrant County) and <strong>Wurldwide LLC DBA Statue LLC</strong> (El Paso) — both linked to Meta Platforms through published reporting and cross-state entity research</span>
+        </div>
+        <div class="shell-row">
+          <span class="shell-label">Winner / Ernst</span>
+          <span class="shell-value">Registered 2015, exemption runs to 2035 — a 20-year window. Address: 4500 Like Way, Fort Worth.</span>
+        </div>
+        <div class="shell-row">
+          <span class="shell-label">Wurldwide / Statue</span>
+          <span class="shell-value">Registered Sept 2025. Address unresolved — intersection only (US-54 &amp; Stan Roberts Sr Ave, El Paso).</span>
+        </div>
+        <div class="shell-note">Meta does not appear directly anywhere in the Texas registry. Both entities use the same double-DBA structure (LLC doing business as a second LLC) seen in Meta's data center registrations in other states. Physical location of the El Paso facility is unconfirmed.</div>
       </div>
 
     </div>
@@ -1320,14 +1354,20 @@
     <div class="foia-grid">
       <div class="foia-card">
         <h3>Texas Comptroller — All "Design LLC" Registrations</h3>
-        <p>Request all registered qualifying data center exemptions statewide where the occupant is listed as "Design LLC," "Design, LLC," or any variant. Establishes the full Google shell entity footprint in Texas.</p>
+        <p>Request all registered qualifying data center exemptions statewide where the occupant is listed as "Design LLC," "Design, LLC," or any variant. Establishes the full Google shell entity footprint in Texas. We've confirmed 6 in this dataset — a statewide PIA would reveal if there are more.</p>
         <div class="foia-target">Target: Texas Comptroller of Public Accounts — Data Analysis and Transparency Division</div>
       </div>
 
       <div class="foia-card">
         <h3>Texas Comptroller — All "OBOE LLC" Registrations</h3>
-        <p>Same as above for OBOE LLC. Confirms or refutes the Microsoft connection and establishes whether other music-named LLCs appear in the registry.</p>
+        <p>Same as above for OBOE LLC. Confirms or refutes the Microsoft connection and establishes whether other music-named LLCs appear in the registry (e.g. Cello, Viola, Flute). One registration confirmed in Texas; national pattern suggests this is deliberate.</p>
         <div class="foia-target">Target: Texas Comptroller of Public Accounts</div>
+      </div>
+
+      <div class="foia-card">
+        <h3>Texas Comptroller — "Green Chile Ventures LLC" Beneficial Ownership</h3>
+        <p>Four identical exemptions were registered in Oct 2025 under Green Chile Ventures LLC as occupant of DataBank's Red Oak facilities (DFW 9–12). No public end-user has been disclosed. Request all application materials, correspondence, and entity documentation submitted in connection with these four registrations.</p>
+        <div class="foia-target">Target: Texas Comptroller of Public Accounts — and TX Secretary of State for entity filing</div>
       </div>
 
       <div class="foia-card">
@@ -1349,8 +1389,8 @@
       </div>
 
       <div class="foia-card">
-        <h3>Pecos County — Water Use for Fort Stockton Area</h3>
-        <p>Request water withdrawal permits and usage records for Lancium Fort Stockton, Poolside Data Center, and USBTC Pecos in Pecos and Reeves Counties. West Texas groundwater is already stressed by oil and gas operations.</p>
+        <h3>Pecos &amp; Reeves Counties — Water Use, West Texas Crypto Cluster</h3>
+        <p>Request water withdrawal permits and usage records for Lancium Fort Stockton, Poolside Data Center, USBTC Pecos, Lonestar Taproot (Tarbush), Hackberry, and Cottonwood Data Centers. Multiple operations concentrated in an already water-stressed basin with no public disclosure requirement.</p>
         <div class="foia-target">Target: Middle Pecos Groundwater Conservation District</div>
       </div>
 
@@ -1362,14 +1402,20 @@
 
       <div class="foia-card">
         <h3>Texas Comptroller — Expired Exemption Status</h3>
-        <p>Request records showing whether facilities with expired exemption end dates (Microsoft NADC, Giga Texas, Hockley, LinkedIn Richardson) renewed, received extensions, or continued operating under expired registrations.</p>
+        <p>Request records showing whether facilities with confirmed expired exemption end dates — Microsoft NADC (expired 9/1/2023), Microsoft Corporation SAT original (expired 12/1/2023), Giga Texas (expired 4/9/2024), and Hockley Data Center (expired 8/19/2024) — renewed, received extensions, or continued operating under expired registrations.</p>
         <div class="foia-target">Target: Texas Comptroller of Public Accounts — Audit Division</div>
       </div>
 
       <div class="foia-card">
+        <h3>Childress County — IE US Cluster Entity Documentation</h3>
+        <p>Four facilities in Childress and Fisher Counties are owned and occupied by IE US Development Holdings and IE US Hardware entities — Spanish-registered subsidiaries operating at near-gigawatt scale. Request all permit, appraisal, and economic development records. Cross-reference with any local abatement agreements the county or city of Childress may have executed.</p>
+        <div class="foia-target">Target: Childress County Appraisal District + City of Childress Economic Development</div>
+      </div>
+
+      <div class="foia-card">
         <h3>City of Fort Worth — Economic Development Agreement, Winner/Ernst LLC</h3>
-        <p>Request any economic development agreements, tax abatements, or incentive packages issued to Winner LLC, Ernst LLC, or Meta Platforms in connection with the 4500 Like Way facility. Exemption runs to 2035.</p>
-        <div class="foia-target">Target: City of Fort Worth — Economic Development Department</div>
+        <p>Request any economic development agreements, tax abatements, or incentive packages issued to Winner LLC, Ernst LLC, or Meta Platforms in connection with the 4500 Like Way facility. Exemption runs to 2035. Same structure used by Wurldwide LLC DBA Statue LLC in El Paso — request parallel records from City of El Paso.</p>
+        <div class="foia-target">Target: City of Fort Worth — Economic Development Department; City of El Paso — Economic Development</div>
       </div>
     </div>
 
@@ -1392,12 +1438,23 @@
         <p>
           All facility data originates from the Texas Comptroller's STAR (Sales Tax And Revenue) database of registered qualifying data centers and large data center projects. 
           The registry is public but not easily machine-readable — it was manually compiled from Comptroller records.
+          Two facilities — Giga Texas (Tesla) and Hockley Data Center (SF HOUH LLC) — each have two registry entries: an expired registration immediately followed by a same-day renewal. The Comptroller retains both records. These are counted as 99 registry entries but 97 unique facilities.
         </p>
       </div>
 
       <div class="method-block">
         <h3>Address Research</h3>
-        <p>All 97 registered facilities have confirmed addresses. Coordinates geocoded from public records, county appraisal data, and investigative research.</p>
+        <p>92 of 99 registered facilities have confirmed physical addresses. Coordinates geocoded from public records, county appraisal data, and investigative research. Seven addresses remain unresolved:</p>
+        <ul>
+          <li><strong>HELO1 DC</strong> — 949 Sherry Lane, Suite 1610, Dallas: registered agent office suite, not a data hall</li>
+          <li><strong>NADC</strong> — 4201 Spring Valley Road, Suite 250, Farmers Branch: Suite 250 suggests registered office, not a data hall</li>
+          <li><strong>Nexus Data Centers</strong> — 1725 Hughes Landing Blvd, 11th Floor, Spring: commercial office address, not a data hall</li>
+          <li><strong>Pyote Data Center</strong> — "I-20 corridor Pyote, TX": road corridor only, no street number</li>
+          <li><strong>USBTC Pecos Data Center</strong> — Farm to Market Road 2119, Pecos: road-level only, no street number</li>
+          <li><strong>Poolside Data Center (Pecos County I)</strong> — FM 1053, Fort Stockton: road-level only, no street number</li>
+          <li><strong>Wurldwide LLC DBA Statue LLC</strong> — US-54 &amp; Stan Roberts Sr Ave, El Paso: intersection only, no street number</li>
+        </ul>
+        <p style="margin-top:0.75rem;">Address sources used for confirmed facilities:</p>
         <ul>
           <li>Texas Secretary of State entity filings</li>
           <li>OpenCorporates entity lookups</li>
@@ -1412,18 +1469,20 @@
         <p>
           Beneficial ownership was researched using Texas SOS filings, SEC EDGAR (for publicly traded operators), 
           OpenCorporates, and published investigative reporting. Shell entity connections 
-          (Design LLC = Google, OBOE LLC = Microsoft, Winner/Ernst = Meta) are based on cross-referencing 
-          with known entity structures from other states and published reporting.
+          (Design LLC = Google, OBOE LLC = Microsoft, Winner/Ernst LLC = Meta, Wurldwide/Statue LLC = Meta) are based on cross-referencing 
+          with known entity structures from other states and published reporting. Green Chile Ventures LLC beneficial ownership remains unconfirmed.
         </p>
       </div>
 
       <div class="method-block">
         <h3>What's Not Here Yet</h3>
         <ul>
+          <li>Physical addresses for 7 facilities (HELO1, NADC, Nexus, Pyote, USBTC Pecos, Poolside, Wurldwide/Statue)</li>
           <li>ERCOT power consumption data (pending FOIA)</li>
           <li>Water withdrawal records (pending PIA requests)</li>
           <li>Local property tax abatement data</li>
           <li>ERCOT curtailment payment amounts</li>
+          <li>Green Chile Ventures LLC — beneficial occupant unconfirmed</li>
         </ul>
       </div>
 
@@ -1458,7 +1517,7 @@
     <div class="map-header">
       <div>
         <h2 style="font-family:'Bebas Neue',sans-serif; font-size:28px; font-weight:400; letter-spacing:0.05em; color:var(--text); margin-bottom:4px;">Facility Map</h2>
-        <p style="color:var(--text-dim); font-size:12px;">All 97 facilities mapped. Click any dot for details.</p>
+        <p style="color:var(--text-dim); font-size:12px;">97 unique facilities mapped. Giga Texas and Hockley each have two registry entries — an expired registration and a same-day renewal — mapped once each.</p>
       </div>
       <div class="map-legend">
         <span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#60A5FA;margin-right:4px;"></span>Cloud</span>
@@ -1562,7 +1621,7 @@ async function loadData() {
     console.warn('Could not fetch TSV, table will be empty:', e);
     document.getElementById('no-results').style.display = 'block';
     document.getElementById('no-results').innerHTML =
-      '<strong>Could not load data</strong>Make sure <code>Data_centers_-_Sheet1.tsv</code> is in the same folder as this HTML file.';
+      '<strong>Could not load data</strong>Make sure <code>tx-data-centers.tsv</code> is in the same folder as this HTML file.';
     document.querySelector('.table-wrap').style.display = 'none';
   }
   buildTable();
