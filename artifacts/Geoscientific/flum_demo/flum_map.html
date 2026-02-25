@@ -244,12 +244,23 @@
     background: rgba(22,27,34,.92);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 10px 12px;
+    padding: 10px 12px 4px;
     z-index: 20;
-    max-height: 260px;
+    max-height: min(340px, calc(100dvh - 160px));
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
+  }
+  /* Fade-out at bottom to hint at scroll */
+  #legend::after {
+    content: '';
+    display: block;
+    position: sticky;
+    bottom: 0;
+    height: 18px;
+    background: linear-gradient(to bottom, transparent, rgba(22,27,34,.92));
+    pointer-events: none;
+    margin: 0 -12px;
   }
   #legend-title {
     font-size: 10px;
@@ -563,7 +574,7 @@ function buildFilterPills(rows) {
   const counts = {};
   rows.forEach(r => {
     const c = r.class_name;
-    if (!c || c === 'null' || c === 'Unknown' || c === 'Other') return;
+    if (!c || !c.trim() || c === 'null' || c === 'Unknown' || c === 'Other') return;
     counts[c] = (counts[c] || 0) + 1;
   });
 
@@ -638,7 +649,7 @@ function buildLegend(rows) {
   const seen = new Set();
   rows.forEach(r => {
     const c = r.class_name;
-    if (!c || c === 'null' || c === 'Unknown' || c === 'Other') return;
+    if (!c || !c.trim() || c === 'null' || c === 'Unknown' || c === 'Other') return;
     seen.add(c);
   });
 
