@@ -75,8 +75,9 @@
     .tos-section p { font-size: 0.88rem; line-height: 1.85; color: var(--slate-l); max-width: 68ch; margin-bottom: 1rem; }
     .tos-section p:last-child { margin-bottom: 0; }
     .tos-section p strong { color: var(--parchment); font-weight: 500; }
-    .tos-section ul, .tos-section ol { margin: 0.75rem 0 1rem 1.25rem; max-width: 66ch; }
-    .tos-section li { font-size: 0.88rem; line-height: 1.85; color: var(--slate-l); margin-bottom: 0.4rem; }
+    .tos-section ul, .tos-section ol { list-style: none; margin: 0.75rem 0 1rem 0; max-width: 66ch; }
+    .tos-section li { font-size: 0.88rem; line-height: 1.85; color: var(--slate-l); margin-bottom: 0.4rem; padding-left: 1.25rem; position: relative; }
+    .tos-section li::before { content: '—'; position: absolute; left: 0; color: var(--ochre); font-size: 0.75rem; top: 0.28em; line-height: 1; }
     .tos-section li strong { color: var(--parchment); font-weight: 500; }
     .tos-callout { margin: 1.5rem 0; padding: 1.25rem 1.5rem; border-left: 2px solid var(--ochre); background: rgba(200, 136, 58, 0.06); max-width: 68ch; }
     .tos-callout p { margin-bottom: 0 !important; color: var(--parchment-d) !important; font-size: 0.85rem !important; }

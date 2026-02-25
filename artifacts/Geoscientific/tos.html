@@ -306,7 +306,8 @@
     }
 
     .tos-section ul, .tos-section ol {
-      margin: 0.75rem 0 1rem 1.25rem;
+      list-style: none;
+      margin: 0.75rem 0 1rem 0;
       max-width: 66ch;
     }
 
@@ -315,6 +316,18 @@
       line-height: 1.85;
       color: var(--slate-l);
       margin-bottom: 0.4rem;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+
+    .tos-section li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--ochre);
+      font-size: 0.75rem;
+      top: 0.28em;
+      line-height: 1;
     }
 
     .tos-section li strong {
