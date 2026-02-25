@@ -1149,25 +1149,15 @@
       font-size: 0.78rem;
     }
 
-    .cta-contact-info {
-      margin-top: 3.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 3rem;
-      padding-top: 3rem;
+    .cta-meta {
+      margin-top: 2.5rem;
+      padding-top: 2rem;
       border-top: 1px solid var(--rule-light);
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      color: var(--slate);
+      line-height: 1.8;
     }
-
-    .contact-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-size: 0.82rem;
-      color: var(--slate-l);
-    }
-
-    .contact-item svg { color: var(--ochre); flex-shrink: 0; }
 
     /* ─────────────────────────────────────────
        FOOTER
@@ -1314,9 +1304,6 @@
       .cta-section       { padding: 4rem 2rem; }
       .cta-title         { font-size: 2.4rem; }
       .cta-sub           { font-size: 0.9rem; margin-bottom: 2rem; }
-      .cta-contact-info  { flex-direction: column; align-items: center; gap: 0.35rem; margin-top: 2rem; padding-top: 1.5rem; }
-      .contact-item      { font-size: 0.78rem; gap: 0.4rem; }
-      .contact-item svg  { display: none; }
       footer             { padding: 3rem 2rem 2rem; }
       .footer-top        { grid-template-columns: 1fr 1fr; gap: 2rem; }
       .section-divider   { margin: 0 2rem; }
@@ -2204,20 +2191,9 @@
       </a>
     </div>
 
-    <div class="cta-contact-info reveal reveal-delay-3">
-      <div class="contact-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        Dallas · Fort Worth · TX
-      </div>
-      <div class="contact-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-        gw@geoscientific.org
-      </div>
-      <div class="contact-item">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        Mon – Fri · 8:00 AM – 5:00 PM CT
-      </div>
-    </div>
+    <p class="cta-meta reveal reveal-delay-3">
+      Dallas · Fort Worth · TX &nbsp;·&nbsp; gw@geoscientific.org &nbsp;·&nbsp; Mon – Fri · 8 AM – 5 PM CT
+    </p>
 
   </section>
 
