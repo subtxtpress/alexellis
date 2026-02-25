@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Midland TX · Future Land Use Map</title>
+<link href="https://unpkg.com/maplibre-gl@4.1.3/dist/maplibre-gl.css" rel="stylesheet">
+<script src="https://unpkg.com/maplibre-gl@4.1.3/dist/maplibre-gl.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #0d1117;
+    --surface: #161b22;
+    --border:  #30363d;
+    --text:    #e6edf3;
+    --muted:   #8b949e;
+    --accent:  #58a6ff;
+  }
+
+  html, body {
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+  }
+
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    height: 100vh;
+    width: 100%;
+  }
+
+  /* ── Header ── */
+  #header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+    height: 46px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    z-index: 10;
+  }
+  #header h1 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  #header .subtitle {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+  #header .badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 10px;
+    background: #1a3a1a;
+    color: #3fb950;
+    border: 1px solid #238636;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  #search-wrap {
+    position: relative;
+    flex: 0 0 200px;
+  }
+  #search {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 8px 4px 26px;
+    color: var(--text);
+    font-size: 12px;
+    outline: none;
+  }
+  #search:focus { border-color: var(--accent); }
+  #search::placeholder { color: var(--muted); }
+  #search-icon {
+    position: absolute;
+    left: 7px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 12px;
+    pointer-events: none;
+  }
+
+  /* ── Filter bar ── */
+  #filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 14px;
+    height: 38px;
+    flex-shrink: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  #filter-bar::-webkit-scrollbar { display: none; }
+  .filter-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .pill {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: opacity .15s, border-color .15s;
+    user-select: none;
+  }
+  .pill:hover { opacity: .85; }
+  .pill.active { border-color: rgba(255,255,255,.55); }
+  .pill.inactive { opacity: .35; }
+
+  @media (max-width: 640px) {
+    #filter-bar { display: none; }
+    #search-wrap { flex: 1 1 auto; }
+  }
+
+  /* ── Map wrap ── */
+  #map-wrap {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+  #map {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* ── Loading overlay ── */
+  #loading {
+    position: absolute;
+    inset: 0;
+    background: rgba(13,17,23,.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    z-index: 100;
+    transition: opacity .4s;
+  }
+  #loading.hidden { opacity: 0; pointer-events: none; }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading p { font-size: 13px; color: var(--muted); }
+  #loading strong { font-size: 13px; color: var(--text); }
+
+  /* ── Info panel ── */
+  #info-panel {
+    position: absolute;
+    bottom: 28px; right: 10px;
+    width: 260px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    z-index: 20;
+    display: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,.5);
+  }
+  #info-panel.visible { display: block; }
+  #info-close {
+    position: absolute;
+    top: 8px; right: 10px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+  }
+  #info-close:hover { color: var(--text); }
+  .info-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    letter-spacing: .02em;
+  }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 5px 0;
+    border-top: 1px solid var(--border);
+    gap: 8px;
+  }
+  .info-key {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    white-space: nowrap;
+  }
+  .info-val {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    text-align: right;
+  }
+  .info-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin: 10px 0 4px;
+  }
+
+  /* ── Legend ── */
+  #legend {
+    position: absolute;
+    bottom: 28px; left: 10px;
+    background: rgba(22,27,34,.92);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    z-index: 20;
+    max-height: 260px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  #legend-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: 7px;
+  }
+  .legend-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity .15s;
+  }
+  .legend-row.inactive { opacity: .35; }
+  .legend-swatch {
+    width: 12px; height: 12px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,.15);
+  }
+  .legend-label {
+    font-size: 11px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 640px) {
+    #legend { display: none; }
+    #info-panel { width: calc(100vw - 20px); right: 10px; bottom: 10px; }
+  }
+
+  /* ── Hint toast ── */
+  #hint {
+    position: absolute;
+    top: 12px; left: 50%;
+    transform: translateX(-50%);
+    background: rgba(22,27,34,.95);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 7px 16px;
+    font-size: 12px;
+    color: var(--text);
+    z-index: 30;
+    white-space: nowrap;
+    animation: fadeInUp .4s ease forwards, fadeOut .5s ease 4.1s forwards;
+    pointer-events: none;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  @keyframes fadeOut {
+    to { opacity: 0; }
+  }
+
+  /* ── MapLibre overrides ── */
+  .maplibregl-ctrl-attrib { font-size: 9px !important; }
+  .maplibregl-popup-content {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+  .maplibregl-popup-tip { display: none; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="header">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <rect width="22" height="22" rx="5" fill="#1a2d1a"/>
+      <rect x="3" y="3" width="7" height="7" rx="1" fill="#3fb950" opacity=".9"/>
+      <rect x="12" y="3" width="7" height="7" rx="1" fill="#f78166" opacity=".9"/>
+      <rect x="3" y="12" width="7" height="7" rx="1" fill="#58a6ff" opacity=".9"/>
+      <rect x="12" y="12" width="7" height="7" rx="1" fill="#e3b341" opacity=".9"/>
+    </svg>
+    <div>
+      <div id="header-title">
+        <h1>Future Land Use Map</h1>
+      </div>
+      <div class="subtitle">City of Midland, TX · 6,219 districts</div>
+    </div>
+    <div id="search-wrap">
+      <span id="search-icon">⌕</span>
+      <input id="search" type="text" placeholder="Search land use…" autocomplete="off">
+    </div>
+    <span class="badge">LIVE DATA</span>
+  </div>
+
+  <div id="filter-bar">
+    <span class="filter-label">Filter:</span>
+    <!-- Pills injected by JS -->
+  </div>
+
+  <div id="map-wrap">
+    <div id="map"></div>
+
+    <div id="loading">
+      <div class="spinner"></div>
+      <strong>Loading land use data…</strong>
+      <p>Fetching 6,219 parcels from Supabase</p>
+    </div>
+
+    <div id="info-panel">
+      <button id="info-close">×</button>
+      <!-- Content injected by JS -->
+    </div>
+
+    <div id="legend">
+      <div id="legend-title">Land Use Class</div>
+      <!-- Rows injected by JS -->
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Config ──────────────────────────────────────────────
+const SUPABASE_URL  = 'https://ovxsolwdzxewxgggdfow.supabase.co';
+const SUPABASE_KEY  = 'sb_publishable_wcWXY0vOG6kvrbD5pyPN1g__BH5z-bf';
+const VIEW_NAME     = 'midland_flum_geojson';
+
+// ── Color map by land use class ──────────────────────────
+const CLASS_COLORS = {
+  'Urban Residential - Low (UR-L)':     '#4a90d9',
+  'Urban Residential - Medium (UR-M)':  '#2d6fa8',
+  'Urban Residential - High (UR-H)':    '#1a4d82',
+  'Urban Residential - Large Lot':      '#6baed6',
+  'Urban - Low (U-L)':                  '#74c476',
+  'Urban - Medium (U-M)':               '#41ab5d',
+  'Urban - Medium NC (U-M NC)':         '#2d8c4e',
+  'Urban - High (U-H)':                 '#006d2c',
+  'Community Commercial (CC)':          '#f4a261',
+  'Regional Commercial (RC)':           '#e76f51',
+  'Business Park (BP)':                 '#9b59b6',
+  'Employment Reserve (ER)':            '#c39bd3',
+  'General Industrial (GI)':            '#95a5a6',
+  'Park/Open Space':                    '#52b788',
+  'Civic/Institutional':                '#e3b341',
+  'School/University':                  '#f1c40f',
+  'Village Center':                     '#e74c3c',
+  'Future Planning Area':               '#bdc3c7',
+  'default':                            '#4a5568',
+};
+
+function getColor(cls) {
+  return CLASS_COLORS[cls] || CLASS_COLORS['default'];
+}
+
+// ── State ────────────────────────────────────────────────
+let allFeatures = [];
+let activeFilters = new Set();
+let searchQuery  = '';
+
+// ── Map init ─────────────────────────────────────────────
+const map = new maplibregl.Map({
+  container: 'map',
+  style: {
+    version: 8,
+    sources: {
+      'carto-dark': {
+        type: 'raster',
+        tiles: ['https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png'],
+        tileSize: 256,
+        attribution: '© CARTO © OpenStreetMap',
+        maxzoom: 19,
+      }
+    },
+    layers: [{ id: 'bg', type: 'raster', source: 'carto-dark' }]
+  },
+  center: [-102.079, 31.997],
+  zoom: 11,
+  maxZoom: 18,
+});
+
+map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+
+if (window.ResizeObserver) {
+  new ResizeObserver(() => map.resize()).observe(document.getElementById('map'));
+}
+
+// ── Data loading ──────────────────────────────────────────
+async function loadFLUM() {
+  const PAGE = 1000;
+  let offset = 0;
+  let total  = null;
+  const features = [];
+
+  while (true) {
+    const url = `${SUPABASE_URL}/rest/v1/${VIEW_NAME}?select=*&limit=${PAGE}&offset=${offset}`;
+    const res = await fetch(url, {
+      headers: {
+        'apikey':        SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Range-Unit':    'items',
+        'Prefer':        'count=exact',
+      }
+    });
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+
+    const contentRange = res.headers.get('content-range');
+    if (contentRange && total === null) {
+      const m = contentRange.match(/\/(\d+)/);
+      if (m) total = parseInt(m[1]);
+    }
+
+    const rows = await res.json();
+    features.push(...rows);
+    offset += PAGE;
+
+    const p = document.querySelector('#loading p');
+    if (p) p.textContent = `Loaded ${features.length}${total ? ' / ' + total : ''} districts…`;
+
+    if (rows.length < PAGE) break;
+    if (total !== null && features.length >= total) break;
+  }
+
+  return features;
+}
+
+map.on('load', async () => {
+  try {
+    const rows = await loadFLUM();
+    allFeatures = rows;
+
+    const geojson = {
+      type: 'FeatureCollection',
+      features: rows.map(r => ({
+        type: 'Feature',
+        geometry: r.geometry,
+        properties: {
+          id:        r.id,
+          class_name: r.class_name,
+          rdg_flum:  r.rdg_flum,
+          subfield:  r.subfield,
+          objectid:  r.objectid,
+        }
+      })).filter(f => f.geometry)
+    };
+
+    map.addSource('flum', { type: 'geojson', data: geojson });
+
+    // Fill layer
+    map.addLayer({
+      id: 'flum-fill',
+      type: 'fill',
+      source: 'flum',
+      paint: {
+        'fill-color': buildColorExpression(),
+        'fill-opacity': 0.62,
+      }
+    });
+
+    // Outline layer
+    map.addLayer({
+      id: 'flum-outline',
+      type: 'line',
+      source: 'flum',
+      paint: {
+        'line-color': '#ffffff',
+        'line-opacity': 0.12,
+        'line-width': 0.5,
+      }
+    });
+
+    // Highlight layer
+    map.addLayer({
+      id: 'flum-highlight',
+      type: 'fill',
+      source: 'flum',
+      paint: {
+        'fill-color': '#ffffff',
+        'fill-opacity': ['case', ['boolean', ['feature-state', 'hover'], false], 0.15, 0]
+      }
+    });
+
+    buildFilterPills(rows);
+    buildLegend(rows);
+    hideLoading();
+    showHint();
+
+  } catch (err) {
+    console.error('FLUM load error:', err);
+    const el = document.getElementById('loading');
+    el.querySelector('strong').textContent = 'Failed to load data';
+    el.querySelector('p').textContent = err.message;
+    el.querySelector('.spinner').style.display = 'none';
+  }
+});
+
+// ── Color expression ──────────────────────────────────────
+function buildColorExpression() {
+  const expr = ['match', ['get', 'class_name']];
+  for (const [cls, color] of Object.entries(CLASS_COLORS)) {
+    if (cls === 'default') continue;
+    expr.push(cls, color);
+  }
+  expr.push(CLASS_COLORS['default']);
+  return expr;
+}
+
+// ── Filter pills ──────────────────────────────────────────
+function buildFilterPills(rows) {
+  const counts = {};
+  rows.forEach(r => {
+    const c = r.class_name;
+    if (!c || c === 'null' || c === 'Unknown' || c === 'Other') return;
+    counts[c] = (counts[c] || 0) + 1;
+  });
+
+  const bar = document.getElementById('filter-bar');
+  const classes = Object.keys(counts).sort();
+
+  classes.forEach(cls => {
+    const pill = document.createElement('button');
+    pill.className = 'pill active';
+    pill.textContent = `${cls} (${counts[cls]})`;
+    pill.style.background = getColor(cls) + '33';
+    pill.style.borderColor = getColor(cls) + '88';
+    pill.style.color = getColor(cls);
+    pill.dataset.cls = cls;
+    pill.addEventListener('click', () => toggleFilter(cls));
+    bar.appendChild(pill);
+  });
+}
+
+function toggleFilter(cls) {
+  if (activeFilters.has(cls)) {
+    activeFilters.delete(cls);
+  } else {
+    activeFilters.add(cls);
+  }
+  updateVisibility();
+}
+
+function updateVisibility() {
+  const hasFilters = activeFilters.size > 0;
+  const hasSearch  = searchQuery.trim().length > 0;
+
+  document.querySelectorAll('.pill').forEach(p => {
+    const active = !hasFilters || activeFilters.has(p.dataset.cls);
+    p.classList.toggle('active', active);
+    p.classList.toggle('inactive', !active);
+  });
+
+  document.querySelectorAll('.legend-row').forEach(r => {
+    const active = !hasFilters || activeFilters.has(r.dataset.cls);
+    r.classList.toggle('inactive', !active);
+  });
+
+  if (!map.getLayer('flum-fill')) return;
+
+  const filterExpr = buildMapFilter(hasFilters, hasSearch);
+  map.setFilter('flum-fill',      filterExpr);
+  map.setFilter('flum-outline',   filterExpr);
+  map.setFilter('flum-highlight', filterExpr);
+}
+
+function buildMapFilter(hasFilters, hasSearch) {
+  const conditions = ['all'];
+
+  if (hasFilters) {
+    conditions.push(['in', ['get', 'class_name'], ['literal', [...activeFilters]]]);
+  }
+  if (hasSearch) {
+    const q = searchQuery.trim().toLowerCase();
+    conditions.push([
+      'any',
+      ['>', ['index-of', q, ['downcase', ['coalesce', ['get', 'class_name'], '']]], -1],
+      ['>', ['index-of', q, ['downcase', ['coalesce', ['get', 'rdg_flum'],   '']]], -1],
+    ]);
+  }
+
+  return conditions.length > 1 ? conditions : null;
+}
+
+// ── Legend ───────────────────────────────────────────────
+function buildLegend(rows) {
+  const seen = new Set();
+  rows.forEach(r => {
+    const c = r.class_name;
+    if (!c || c === 'null' || c === 'Unknown' || c === 'Other') return;
+    seen.add(c);
+  });
+
+  const legend = document.getElementById('legend');
+  [...seen].sort().forEach(cls => {
+    const row = document.createElement('div');
+    row.className = 'legend-row';
+    row.dataset.cls = cls;
+    row.innerHTML = `
+      <div class="legend-swatch" style="background:${getColor(cls)}"></div>
+      <div class="legend-label">${cls}</div>
+    `;
+    row.addEventListener('click', () => toggleFilter(cls));
+    legend.appendChild(row);
+  });
+}
+
+// ── Search ───────────────────────────────────────────────
+document.getElementById('search').addEventListener('input', e => {
+  searchQuery = e.target.value;
+  updateVisibility();
+});
+
+// ── Click to inspect ─────────────────────────────────────
+let hoveredId = null;
+
+map.on('mousemove', 'flum-fill', e => {
+  map.getCanvas().style.cursor = 'pointer';
+  const id = e.features[0].id;
+  if (hoveredId !== null && hoveredId !== id) {
+    map.setFeatureState({ source: 'flum', id: hoveredId }, { hover: false });
+  }
+  hoveredId = id;
+  map.setFeatureState({ source: 'flum', id: id }, { hover: true });
+});
+
+map.on('mouseleave', 'flum-fill', () => {
+  map.getCanvas().style.cursor = '';
+  if (hoveredId !== null) {
+    map.setFeatureState({ source: 'flum', id: hoveredId }, { hover: false });
+    hoveredId = null;
+  }
+});
+
+map.on('click', 'flum-fill', e => {
+  const p = e.features[0].properties;
+  showInfoPanel(p);
+});
+
+function showInfoPanel(p) {
+  const cls   = p.class_name || '—';
+  const color = getColor(cls);
+  const rdg   = p.rdg_flum  || '—';
+  const sub   = p.subfield  || '—';
+  const oid   = p.objectid  || '—';
+
+  const panel = document.getElementById('info-panel');
+  panel.innerHTML = `
+    <button id="info-close">×</button>
+    <div class="info-badge" style="background:${color}22; color:${color}; border:1px solid ${color}55;">
+      FLUM District
+    </div>
+    <div class="info-section-title">Land Use Classification</div>
+    <div class="info-row">
+      <span class="info-key">Class</span>
+      <span class="info-val">${cls}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">RDG FLUM Code</span>
+      <span class="info-val">${rdg}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">Subfield</span>
+      <span class="info-val">${sub}</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">Object ID</span>
+      <span class="info-val">${oid}</span>
+    </div>
+  `;
+  panel.classList.add('visible');
+
+  document.getElementById('info-close').addEventListener('click', () => {
+    panel.classList.remove('visible');
+  });
+}
+
+// ── Helpers ───────────────────────────────────────────────
+function hideLoading() {
+  const el = document.getElementById('loading');
+  el.classList.add('hidden');
+  setTimeout(() => el.remove(), 500);
+}
+
+function showHint() {
+  const h = document.createElement('div');
+  h.id = 'hint';
+  h.textContent = 'Tap any district to inspect land use data';
+  document.getElementById('map-wrap').appendChild(h);
+  setTimeout(() => h.remove(), 4600);
+}
+</script>
+</body>
+</html>

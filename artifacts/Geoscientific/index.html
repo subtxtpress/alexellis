@@ -1992,6 +1992,91 @@
         </div>
       </div>
 
+      <!-- Demo 5: Midland Future Land Use Map -->
+      <div class="demo-card reveal reveal-delay-4">
+        <div class="demo-card-preview">
+          <div class="demo-preview-placeholder">
+            <svg viewBox="0 0 400 200" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="200" fill="#111418"/>
+              <pattern id="pg5" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(88,166,255,0.05)" stroke-width="0.5"/>
+              </pattern>
+              <rect width="400" height="200" fill="url(#pg5)"/>
+
+              <!-- Large residential zones (blue spectrum) -->
+              <rect x="20"  y="20"  width="90" height="55" fill="rgba(74,144,217,0.38)" stroke="rgba(74,144,217,0.75)" stroke-width="0.8"/>
+              <rect x="20"  y="79"  width="90" height="50" fill="rgba(45,111,168,0.35)" stroke="rgba(45,111,168,0.7)"  stroke-width="0.8"/>
+              <rect x="115" y="20"  width="65" height="85" fill="rgba(107,174,214,0.32)" stroke="rgba(107,174,214,0.65)" stroke-width="0.8"/>
+              <rect x="20"  y="133" width="90" height="42" fill="rgba(74,144,217,0.28)" stroke="rgba(74,144,217,0.55)" stroke-width="0.8"/>
+              <rect x="115" y="109" width="65" height="66" fill="rgba(45,111,168,0.28)" stroke="rgba(45,111,168,0.55)" stroke-width="0.8"/>
+
+              <!-- Commercial zones (orange) -->
+              <rect x="185" y="20"  width="55" height="40" fill="rgba(244,162,97,0.38)" stroke="rgba(244,162,97,0.78)" stroke-width="0.8"/>
+              <rect x="185" y="109" width="55" height="42" fill="rgba(231,111,81,0.35)" stroke="rgba(231,111,81,0.7)"  stroke-width="0.8"/>
+
+              <!-- Business Park / Employment (purple) -->
+              <rect x="245" y="20"  width="70" height="55" fill="rgba(155,89,182,0.32)" stroke="rgba(155,89,182,0.65)" stroke-width="0.8"/>
+              <rect x="245" y="109" width="70" height="42" fill="rgba(195,155,211,0.3)"  stroke="rgba(195,155,211,0.6)"  stroke-width="0.8"/>
+
+              <!-- Industrial (grey) -->
+              <rect x="320" y="20"  width="65" height="85" fill="rgba(149,165,166,0.3)" stroke="rgba(149,165,166,0.6)"  stroke-width="0.8"/>
+              <rect x="320" y="109" width="65" height="66" fill="rgba(127,140,141,0.25)" stroke="rgba(127,140,141,0.5)"  stroke-width="0.8"/>
+
+              <!-- Park / Open Space (green) -->
+              <rect x="185" y="64"  width="55" height="41" fill="rgba(82,183,136,0.35)" stroke="rgba(82,183,136,0.72)" stroke-width="0.8"/>
+
+              <!-- Roads -->
+              <line x1="18"  y1="107" x2="387" y2="107" stroke="rgba(88,166,255,0.18)" stroke-width="1.8"/>
+              <line x1="183" y1="18"  x2="183" y2="177" stroke="rgba(88,166,255,0.14)" stroke-width="1.5"/>
+              <line x1="243" y1="18"  x2="243" y2="177" stroke="rgba(88,166,255,0.14)" stroke-width="1.5"/>
+              <line x1="318" y1="18"  x2="318" y2="177" stroke="rgba(88,166,255,0.14)" stroke-width="1.5"/>
+
+              <!-- Highlighted click district -->
+              <rect x="185" y="20" width="55" height="40" fill="rgba(244,162,97,0.18)" stroke="rgba(244,162,97,1)" stroke-width="2"/>
+              <circle cx="212" cy="40" r="3.5" fill="#f4a261"/>
+
+              <!-- Land use labels -->
+              <text x="65"  y="51"  fill="rgba(74,144,217,0.95)"  font-size="6.5" font-family="monospace" text-anchor="middle">UR-L</text>
+              <text x="65"  y="108" fill="rgba(45,111,168,0.95)"  font-size="6.5" font-family="monospace" text-anchor="middle">UR-M</text>
+              <text x="147" y="66"  fill="rgba(107,174,214,0.9)"  font-size="6.5" font-family="monospace" text-anchor="middle">UR-LL</text>
+              <text x="212" y="44"  fill="rgba(244,162,97,1)"     font-size="7"   font-family="monospace" text-anchor="middle" font-weight="bold">CC</text>
+              <text x="212" y="88"  fill="rgba(82,183,136,0.95)"  font-size="6.5" font-family="monospace" text-anchor="middle">PARK</text>
+              <text x="280" y="51"  fill="rgba(155,89,182,0.9)"   font-size="6.5" font-family="monospace" text-anchor="middle">BP</text>
+              <text x="352" y="62"  fill="rgba(149,165,166,0.9)"  font-size="6.5" font-family="monospace" text-anchor="middle">GI</text>
+
+              <!-- Legend strip -->
+              <rect x="20"  y="162" width="8" height="7" fill="rgba(74,144,217,0.65)"  stroke="none"/>
+              <text x="31"  y="170" fill="rgba(88,166,255,0.45)" font-size="5.5" font-family="monospace">RESIDENTIAL</text>
+              <rect x="102" y="162" width="8" height="7" fill="rgba(244,162,97,0.65)"  stroke="none"/>
+              <text x="113" y="170" fill="rgba(88,166,255,0.45)" font-size="5.5" font-family="monospace">COMMERCIAL</text>
+              <rect x="188" y="162" width="8" height="7" fill="rgba(155,89,182,0.65)"  stroke="none"/>
+              <text x="199" y="170" fill="rgba(88,166,255,0.45)" font-size="5.5" font-family="monospace">EMPLOYMENT</text>
+              <rect x="274" y="162" width="8" height="7" fill="rgba(149,165,166,0.6)"  stroke="none"/>
+              <text x="285" y="170" fill="rgba(88,166,255,0.45)" font-size="5.5" font-family="monospace">INDUSTRIAL</text>
+
+              <!-- Title -->
+              <text x="10" y="12" fill="rgba(88,166,255,0.22)" font-size="6" font-family="monospace">CITY OF MIDLAND · FUTURE LAND USE · 6,219 DISTRICTS</text>
+            </svg>
+          </div>
+          <span class="demo-badge demo-badge--live">Live</span>
+        </div>
+        <div class="demo-card-body">
+          <div class="demo-card-type">Long-Range Planning Support</div>
+          <h3 class="demo-card-title">Midland Future Land Use Map</h3>
+          <p class="demo-card-county">City of Midland, TX · 6,219 Districts</p>
+          <p class="demo-card-desc">Midland's adopted Future Land Use Map — all 6,219 polygons across 19 land use categories including Urban Residential Low/Medium/High, Community Commercial, Business Park, Employment Reserve, General Industrial, and Park/Open Space. Filter by class, search by name, and click any district for full classification detail.</p>
+          <div class="demo-card-tech">
+            <span class="demo-tech-tag">MapLibre GL</span>
+            <span class="demo-tech-tag">Supabase</span>
+            <span class="demo-tech-tag">PostGIS</span>
+            <span class="demo-tech-tag">ArcGIS REST</span>
+          </div>
+          <a href="flum_demo/flum_map.html" target="_blank" rel="noopener noreferrer" class="demo-card-action">
+            Open Viewer ↗
+          </a>
+        </div>
+      </div>
+
     </div>
 
   </section>
