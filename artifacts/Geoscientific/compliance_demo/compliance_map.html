@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ector County · Environmental Compliance Viewer</title>
+<link href="https://unpkg.com/maplibre-gl@4.1.3/dist/maplibre-gl.css" rel="stylesheet">
+<script src="https://unpkg.com/maplibre-gl@4.1.3/dist/maplibre-gl.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #0d1117;
+    --surface: #161b22;
+    --border:  #30363d;
+    --text:    #e6edf3;
+    --muted:   #8b949e;
+    --accent:  #58a6ff;
+    --warn:    #f85149;
+    --caution: #e3b341;
+    --clear:   #3fb950;
+  }
+
+  html, body {
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+  }
+
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    height: 100vh;
+    width: 100%;
+  }
+
+  /* ── Header ── */
+  #header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 14px;
+    height: 46px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    z-index: 10;
+  }
+  #header h1 { font-size: 14px; font-weight: 600; white-space: nowrap; }
+  #header .subtitle { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  #header .badge {
+    font-size: 10px; font-weight: 700;
+    padding: 2px 7px; border-radius: 10px;
+    background: #1a3a1a; color: var(--clear);
+    border: 1px solid #238636;
+    margin-left: auto; white-space: nowrap;
+  }
+
+  /* ── Layer toggles bar ── */
+  #toggle-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 14px;
+    height: 38px;
+    flex-shrink: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  #toggle-bar::-webkit-scrollbar { display: none; }
+  .toggle-label {
+    font-size: 10px; font-weight: 600;
+    color: var(--muted); text-transform: uppercase;
+    letter-spacing: .05em; white-space: nowrap; flex-shrink: 0;
+  }
+  .layer-btn {
+    display: flex; align-items: center; gap: 5px;
+    padding: 3px 10px; border-radius: 12px;
+    font-size: 11px; font-weight: 500;
+    cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    border: 1px solid transparent;
+    transition: opacity .15s, border-color .15s;
+    user-select: none; background: none;
+    color: var(--text);
+  }
+  .layer-btn .dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .layer-btn.off { opacity: .35; }
+  .layer-btn.on  { border-color: rgba(255,255,255,.3); opacity: 1; }
+
+  /* ── Map wrap ── */
+  #map-wrap { flex: 1; position: relative; overflow: hidden; }
+  #map      { position: absolute; inset: 0; }
+
+  /* ── Loading ── */
+  #loading {
+    position: absolute; inset: 0;
+    background: rgba(13,17,23,.85);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 12px; z-index: 100; transition: opacity .4s;
+  }
+  #loading.hidden { opacity: 0; pointer-events: none; }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading p      { font-size: 13px; color: var(--muted); }
+  #loading strong { font-size: 13px; color: var(--text); }
+
+  /* ── Info panel ── */
+  #info-panel {
+    position: absolute;
+    bottom: 28px; right: 10px;
+    width: 270px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    z-index: 20;
+    display: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,.5);
+  }
+  #info-panel.visible { display: block; }
+  #info-close {
+    position: absolute; top: 8px; right: 10px;
+    background: none; border: none;
+    color: var(--muted); cursor: pointer; font-size: 16px;
+  }
+  #info-close:hover { color: var(--text); }
+
+  .info-site-name {
+    font-size: 13px; font-weight: 600;
+    color: var(--text); margin-bottom: 4px;
+    padding-right: 20px;
+  }
+  .info-site-type {
+    font-size: 11px; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .05em;
+    margin-bottom: 10px;
+  }
+  .info-row {
+    display: flex; justify-content: space-between;
+    align-items: baseline; padding: 5px 0;
+    border-top: 1px solid var(--border); gap: 8px;
+  }
+  .info-key  { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; white-space: nowrap; }
+  .info-val  { font-size: 12px; font-weight: 500; color: var(--text); text-align: right; }
+  .info-val.loading-dist { color: var(--muted); font-style: italic; }
+
+  /* Compliance flag */
+  .compliance-flag {
+    margin-top: 10px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 12px; font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .compliance-flag.warning { background: rgba(248,81,73,.15); color: var(--warn);    border: 1px solid rgba(248,81,73,.3); }
+  .compliance-flag.caution { background: rgba(227,179,65,.15); color: var(--caution); border: 1px solid rgba(227,179,65,.3); }
+  .compliance-flag.clear   { background: rgba(63,185,80,.15);  color: var(--clear);   border: 1px solid rgba(63,185,80,.3); }
+  .flag-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .flag-dot.warning { background: var(--warn); }
+  .flag-dot.caution { background: var(--caution); }
+  .flag-dot.clear   { background: var(--clear); }
+
+  /* Pipeline detail in panel */
+  .pipeline-detail {
+    font-size: 11px; color: var(--muted);
+    margin-top: 6px; line-height: 1.5;
+  }
+
+  /* ── Legend ── */
+  #legend {
+    position: absolute; bottom: 28px; left: 10px;
+    background: rgba(22,27,34,.92);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 12px;
+    z-index: 20;
+  }
+  #legend-title {
+    font-size: 10px; font-weight: 700; color: var(--muted);
+    text-transform: uppercase; letter-spacing: .08em; margin-bottom: 7px;
+  }
+  .legend-row {
+    display: flex; align-items: center;
+    gap: 7px; margin-bottom: 4px;
+  }
+  .legend-line {
+    width: 18px; height: 3px; border-radius: 2px; flex-shrink: 0;
+  }
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,.2);
+  }
+  .legend-label { font-size: 11px; color: var(--text); }
+  .legend-divider { height: 1px; background: var(--border); margin: 5px 0; }
+
+  /* ── Hint toast ── */
+  #hint {
+    position: absolute; top: 12px; left: 50%;
+    transform: translateX(-50%);
+    background: rgba(22,27,34,.95);
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 7px 16px; font-size: 12px; color: var(--text);
+    z-index: 30; white-space: nowrap;
+    animation: fadeInUp .4s ease forwards, fadeOut .5s ease 4.1s forwards;
+    pointer-events: none;
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  @keyframes fadeOut { to { opacity: 0; } }
+
+  @media (max-width: 640px) {
+    #header .subtitle { display: none; }
+    #legend { display: none; }
+    #info-panel { width: calc(100vw - 20px); right: 10px; bottom: 10px; }
+  }
+
+  .maplibregl-ctrl-attrib { font-size: 9px !important; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div id="header">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+      <rect width="22" height="22" rx="5" fill="#1a1a2e"/>
+      <circle cx="11" cy="11" r="5" fill="none" stroke="#f85149" stroke-width="1.5" stroke-dasharray="2 1.5"/>
+      <circle cx="11" cy="11" r="2" fill="#f85149"/>
+      <line x1="4" y1="11" x2="18" y2="11" stroke="#e3b341" stroke-width="1" opacity=".6"/>
+    </svg>
+    <div>
+      <h1>Environmental Compliance</h1>
+      <div class="subtitle">Ector County, TX · Buffer Analysis</div>
+    </div>
+    <span class="badge">LIVE DATA</span>
+  </div>
+
+  <div id="toggle-bar">
+    <span class="toggle-label">Layers:</span>
+    <button class="layer-btn on" id="btn-pipelines" data-layer="pipelines">
+      <span class="dot" style="background:#f97316"></span> Pipelines
+    </button>
+    <button class="layer-btn on" id="btn-schools" data-layer="schools">
+      <span class="dot" style="background:#facc15"></span> Schools
+    </button>
+    <button class="layer-btn on" id="btn-hospitals" data-layer="hospitals">
+      <span class="dot" style="background:#f87171"></span> Hospitals
+    </button>
+    <button class="layer-btn on" id="btn-parks" data-layer="parks">
+      <span class="dot" style="background:#4ade80"></span> Parks
+    </button>
+  </div>
+
+  <div id="map-wrap">
+    <div id="map"></div>
+
+    <div id="loading">
+      <div class="spinner"></div>
+      <strong>Loading compliance data…</strong>
+      <p>Fetching pipelines and sensitive sites</p>
+    </div>
+
+    <div id="info-panel">
+      <button id="info-close">×</button>
+      <p style="color:var(--muted);font-size:12px">Click a site marker to inspect</p>
+    </div>
+
+    <div id="legend">
+      <div id="legend-title">Map Legend</div>
+      <div class="legend-row"><div class="legend-line" style="background:#f97316"></div><div class="legend-label">Natural Gas Pipeline</div></div>
+      <div class="legend-row"><div class="legend-line" style="background:#60a5fa"></div><div class="legend-label">Crude Oil Pipeline</div></div>
+      <div class="legend-row"><div class="legend-line" style="background:#c084fc"></div><div class="legend-label">HVL / Other Pipeline</div></div>
+      <div class="legend-divider"></div>
+      <div class="legend-row"><div class="legend-dot" style="background:#facc15"></div><div class="legend-label">School</div></div>
+      <div class="legend-row"><div class="legend-dot" style="background:#f87171"></div><div class="legend-label">Hospital / Medical</div></div>
+      <div class="legend-row"><div class="legend-dot" style="background:#4ade80"></div><div class="legend-label">Park / Recreation</div></div>
+      <div class="legend-divider"></div>
+      <div class="legend-row"><div class="flag-dot warning"></div><div class="legend-label" style="color:var(--warn)">Within 500 ft — Warning</div></div>
+      <div class="legend-row"><div class="flag-dot caution"></div><div class="legend-label" style="color:var(--caution)">500–1000 ft — Caution</div></div>
+      <div class="legend-row"><div class="flag-dot clear"></div><div class="legend-label" style="color:var(--clear)">Beyond 1000 ft — Clear</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Config ──────────────────────────────────────────────
+const SUPABASE_URL = 'https://ovxsolwdzxewxgggdfow.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_wcWXY0vOG6kvrbD5pyPN1g__BH5z-bf';
+
+// Ector County bounding box for Overpass
+const BBOX = '31.65,-102.83,32.07,-102.20'; // south,west,north,east
+
+// Commodity → color
+function pipelineColor(commodity) {
+  if (!commodity) return '#8b949e';
+  const c = commodity.toUpperCase();
+  if (c.includes('NATURAL GAS'))  return '#f97316';
+  if (c.includes('CRUDE'))        return '#60a5fa';
+  if (c.includes('HVL') || c.includes('VOLATILE')) return '#c084fc';
+  return '#8b949e';
+}
+
+// ── Layer visibility state ───────────────────────────────
+const layerVisible = { pipelines: true, schools: true, hospitals: true, parks: true };
+
+// ── Map ──────────────────────────────────────────────────
+const map = new maplibregl.Map({
+  container: 'map',
+  style: {
+    version: 8,
+    sources: {
+      'carto-dark': {
+        type: 'raster',
+        tiles: ['https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png'],
+        tileSize: 256,
+        attribution: '© CARTO © OpenStreetMap',
+        maxzoom: 19,
+      }
+    },
+    layers: [{ id: 'bg', type: 'raster', source: 'carto-dark' }]
+  },
+  center: [-102.523, 31.845],
+  zoom: 10,
+  maxZoom: 18,
+});
+
+map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+
+if (window.ResizeObserver) {
+  new ResizeObserver(() => map.resize()).observe(document.getElementById('map'));
+}
+
+// ── Fetch pipelines from Supabase ────────────────────────
+async function fetchPipelines() {
+  const PAGE = 1000;
+  let offset = 0, all = [];
+  while (true) {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/ector_pipelines?select=id,cmdty_desc,sys_nm,oper_nm,diameter,status_cd&limit=${PAGE}&offset=${offset}`,
+      { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
+    );
+    const rows = await res.json();
+    all.push(...rows);
+    if (rows.length < PAGE) break;
+    offset += PAGE;
+  }
+  return all;
+}
+
+async function fetchPipelineGeom() {
+  // Fetch geometry separately (large payload) — paginated
+  const PAGE = 500;
+  let offset = 0, features = [];
+  while (true) {
+    const res = await fetch(
+      `${SUPABASE_URL}/rest/v1/ector_pipelines?select=id,cmdty_desc,sys_nm,oper_nm,geom&limit=${PAGE}&offset=${offset}`,
+      { headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` } }
+    );
+    const rows = await res.json();
+    rows.forEach(r => {
+      if (!r.geom) return;
+      features.push({
+        type: 'Feature',
+        geometry: r.geom,
+        properties: {
+          id: r.id,
+          commodity: r.cmdty_desc || 'Unknown',
+          name: r.sys_nm || r.oper_nm || 'Unknown',
+          color: pipelineColor(r.cmdty_desc),
+        }
+      });
+    });
+    if (rows.length < PAGE) break;
+    offset += PAGE;
+  }
+  return { type: 'FeatureCollection', features };
+}
+
+// ── Fetch sensitive sites from Overpass ──────────────────
+async function fetchOSMSites() {
+  const query = `
+[out:json][timeout:30];
+(
+  node["amenity"="school"](${BBOX});
+  node["amenity"="college"](${BBOX});
+  node["amenity"="university"](${BBOX});
+  node["amenity"="hospital"](${BBOX});
+  node["amenity"="clinic"](${BBOX});
+  node["amenity"="doctors"](${BBOX});
+  node["leisure"="park"](${BBOX});
+  node["leisure"="recreation_ground"](${BBOX});
+  way["amenity"="school"](${BBOX});
+  way["amenity"="hospital"](${BBOX});
+  way["leisure"="park"](${BBOX});
+);
+out center;
+`.trim();
+
+  const res = await fetch('https://overpass-api.de/api/interpreter', {
+    method: 'POST',
+    body: `data=${encodeURIComponent(query)}`,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  });
+  const data = await res.json();
+
+  const features = data.elements.map(el => {
+    const lat = el.lat ?? el.center?.lat;
+    const lon = el.lon ?? el.center?.lon;
+    if (!lat || !lon) return null;
+
+    const amenity = el.tags?.amenity || el.tags?.leisure || '';
+    let siteType, color;
+    if (['school','college','university'].includes(amenity)) {
+      siteType = 'school'; color = '#facc15';
+    } else if (['hospital','clinic','doctors'].includes(amenity)) {
+      siteType = 'hospital'; color = '#f87171';
+    } else {
+      siteType = 'park'; color = '#4ade80';
+    }
+
+    return {
+      type: 'Feature',
+      geometry: { type: 'Point', coordinates: [lon, lat] },
+      properties: {
+        id: el.id,
+        name: el.tags?.name || el.tags?.['name:en'] || '(unnamed)',
+        amenity,
+        siteType,
+        color,
+      }
+    };
+  }).filter(Boolean);
+
+  return { type: 'FeatureCollection', features };
+}
+
+// ── RPC: nearest pipeline distance ───────────────────────
+async function getNearestPipeline(lat, lng) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/nearest_pipeline_distance`, {
+    method: 'POST',
+    headers: {
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ lat, lng }),
+  });
+  const data = await res.json();
+  return data[0] || null;
+}
+
+// ── Main load ─────────────────────────────────────────────
+map.on('load', async () => {
+  try {
+    updateLoadingText('Loading pipeline network…');
+    const pipelineGeoJSON = await fetchPipelineGeom();
+
+    updateLoadingText('Fetching schools, hospitals, parks…');
+    const sitesGeoJSON = await fetchOSMSites();
+
+    // Add pipeline source + layers
+    map.addSource('pipelines', { type: 'geojson', data: pipelineGeoJSON });
+
+    map.addLayer({
+      id: 'pipelines-line',
+      type: 'line',
+      source: 'pipelines',
+      paint: {
+        'line-color': ['get', 'color'],
+        'line-width': ['interpolate', ['linear'], ['zoom'], 9, 1, 14, 3],
+        'line-opacity': 0.8,
+      }
+    });
+
+    // Add sites source + layers (one per type for easy toggling)
+    ['school', 'hospital', 'park'].forEach(type => {
+      const colorMap = { school: '#facc15', hospital: '#f87171', park: '#4ade80' };
+      const filtered = {
+        type: 'FeatureCollection',
+        features: sitesGeoJSON.features.filter(f => f.properties.siteType === type)
+      };
+
+      map.addSource(`sites-${type}`, { type: 'geojson', data: filtered });
+
+      // Glow
+      map.addLayer({
+        id: `sites-${type}-glow`,
+        type: 'circle',
+        source: `sites-${type}`,
+        paint: {
+          'circle-radius': 12,
+          'circle-color': colorMap[type],
+          'circle-opacity': 0.15,
+          'circle-blur': 1,
+        }
+      });
+
+      // Dot
+      map.addLayer({
+        id: `sites-${type}-dot`,
+        type: 'circle',
+        source: `sites-${type}`,
+        paint: {
+          'circle-radius': 5,
+          'circle-color': colorMap[type],
+          'circle-stroke-width': 1.5,
+          'circle-stroke-color': '#0d1117',
+        }
+      });
+    });
+
+    hideLoading();
+    showHint();
+    wireLayerToggles();
+    wireSiteClicks();
+
+  } catch (err) {
+    console.error('Load error:', err);
+    document.querySelector('#loading strong').textContent = 'Failed to load';
+    document.querySelector('#loading p').textContent = err.message;
+    document.querySelector('.spinner').style.display = 'none';
+  }
+});
+
+// ── Layer toggles ─────────────────────────────────────────
+function wireLayerToggles() {
+  document.querySelectorAll('.layer-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const layer = btn.dataset.layer;
+      layerVisible[layer] = !layerVisible[layer];
+      btn.classList.toggle('on',  layerVisible[layer]);
+      btn.classList.toggle('off', !layerVisible[layer]);
+
+      const vis = layerVisible[layer] ? 'visible' : 'none';
+      if (layer === 'pipelines') {
+        safeSetVisibility('pipelines-line', vis);
+      } else {
+        safeSetVisibility(`sites-${layer}-dot`,  vis);
+        safeSetVisibility(`sites-${layer}-glow`, vis);
+      }
+    });
+  });
+}
+
+function safeSetVisibility(layerId, vis) {
+  if (map.getLayer(layerId)) map.setLayoutProperty(layerId, 'visibility', vis);
+}
+
+// ── Site click → info panel ───────────────────────────────
+function wireSiteClicks() {
+  ['school', 'hospital', 'park'].forEach(type => {
+    map.on('mouseenter', `sites-${type}-dot`, () => { map.getCanvas().style.cursor = 'pointer'; });
+    map.on('mouseleave', `sites-${type}-dot`, () => { map.getCanvas().style.cursor = ''; });
+
+    map.on('click', `sites-${type}-dot`, async e => {
+      const p   = e.features[0].properties;
+      const lng = e.features[0].geometry.coordinates[0];
+      const lat = e.features[0].geometry.coordinates[1];
+      showInfoPanel(p, lat, lng);
+    });
+  });
+}
+
+async function showInfoPanel(p, lat, lng) {
+  const panel = document.getElementById('info-panel');
+  const typeLabel = { school: 'School / Education', hospital: 'Hospital / Medical', park: 'Park / Recreation' }[p.siteType] || p.siteType;
+  const dotColor  = { school: '#facc15', hospital: '#f87171', park: '#4ade80' }[p.siteType] || '#8b949e';
+
+  panel.innerHTML = `
+    <button id="info-close">×</button>
+    <div class="info-site-name">${p.name}</div>
+    <div class="info-site-type" style="color:${dotColor}">${typeLabel}</div>
+    <div class="info-row">
+      <span class="info-key">Nearest Pipeline</span>
+      <span class="info-val loading-dist" id="dist-val">Calculating…</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">Pipeline System</span>
+      <span class="info-val" id="pipe-name">—</span>
+    </div>
+    <div class="info-row">
+      <span class="info-key">Commodity</span>
+      <span class="info-val" id="pipe-commodity">—</span>
+    </div>
+    <div id="compliance-flag"></div>
+  `;
+  panel.classList.add('visible');
+
+  document.getElementById('info-close').addEventListener('click', () => {
+    panel.classList.remove('visible');
+  });
+
+  // Async: fetch distance
+  try {
+    const result = await getNearestPipeline(lat, lng);
+    if (!result) return;
+
+    const ft = Math.round(result.distance_ft);
+    document.getElementById('dist-val').textContent = `${ft.toLocaleString()} ft`;
+    document.getElementById('dist-val').classList.remove('loading-dist');
+    document.getElementById('pipe-name').textContent = result.pipeline_name || '—';
+    document.getElementById('pipe-commodity').textContent = result.commodity || '—';
+
+    // Compliance flag
+    let flagClass, flagLabel, flagDetail;
+    if (ft <= 500) {
+      flagClass = 'warning';
+      flagLabel = 'WARNING — Within 500 ft';
+      flagDetail = 'Site is within the primary regulatory buffer zone.';
+    } else if (ft <= 1000) {
+      flagClass = 'caution';
+      flagLabel = 'CAUTION — 500–1,000 ft';
+      flagDetail = 'Site is within the secondary buffer zone.';
+    } else {
+      flagClass = 'clear';
+      flagLabel = 'CLEAR — Beyond 1,000 ft';
+      flagDetail = 'Site is outside standard regulatory buffer distances.';
+    }
+
+    document.getElementById('compliance-flag').innerHTML = `
+      <div class="compliance-flag ${flagClass}">
+        <div class="flag-dot ${flagClass}"></div>
+        ${flagLabel}
+      </div>
+      <div class="pipeline-detail">${flagDetail}</div>
+    `;
+  } catch (err) {
+    document.getElementById('dist-val').textContent = 'Error';
+  }
+}
+
+// ── Helpers ───────────────────────────────────────────────
+function updateLoadingText(msg) {
+  const p = document.querySelector('#loading p');
+  if (p) p.textContent = msg;
+}
+
+function hideLoading() {
+  const el = document.getElementById('loading');
+  el.classList.add('hidden');
+  setTimeout(() => el.remove(), 500);
+}
+
+function showHint() {
+  const h = document.createElement('div');
+  h.id = 'hint';
+  h.textContent = 'Tap any site marker to run compliance check';
+  document.getElementById('map-wrap').appendChild(h);
+  setTimeout(() => h.remove(), 4600);
+}
+</script>
+</body>
+</html>

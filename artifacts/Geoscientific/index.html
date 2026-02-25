@@ -2077,6 +2077,88 @@
         </div>
       </div>
 
+      <!-- Demo 6: Environmental Compliance Viewer -->
+      <div class="demo-card reveal reveal-delay-1">
+        <div class="demo-card-preview">
+          <div class="demo-preview-placeholder">
+            <svg viewBox="0 0 400 200" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="200" fill="#0d1117"/>
+              <pattern id="pg6" width="22" height="22" patternUnits="userSpaceOnUse">
+                <path d="M 22 0 L 0 0 0 22" fill="none" stroke="rgba(248,81,73,0.05)" stroke-width="0.5"/>
+              </pattern>
+              <rect width="400" height="200" fill="url(#pg6)"/>
+
+              <!-- Pipeline lines -->
+              <path d="M 20 80 Q 100 70 180 90 Q 260 110 380 85" fill="none" stroke="rgba(249,115,22,0.8)" stroke-width="2.5"/>
+              <path d="M 20 130 Q 90 125 160 135 Q 240 148 380 130" fill="none" stroke="rgba(96,165,250,0.7)" stroke-width="2"/>
+              <path d="M 60 20 L 65 180" fill="none" stroke="rgba(249,115,22,0.5)" stroke-width="1.5" stroke-dasharray="4 3"/>
+              <path d="M 200 20 L 205 180" fill="none" stroke="rgba(96,165,250,0.45)" stroke-width="1.5" stroke-dasharray="4 3"/>
+              <path d="M 310 20 L 312 180" fill="none" stroke="rgba(249,115,22,0.4)" stroke-width="1.5" stroke-dasharray="4 3"/>
+
+              <!-- 500ft buffer rings (red, dashed) around pipeline segments -->
+              <ellipse cx="180" cy="90" rx="38" ry="18" fill="rgba(248,81,73,0.08)" stroke="rgba(248,81,73,0.5)" stroke-width="1" stroke-dasharray="4 3"/>
+              <ellipse cx="180" cy="90" rx="60" ry="28" fill="none" stroke="rgba(227,179,65,0.35)" stroke-width="1" stroke-dasharray="4 3"/>
+
+              <!-- School marker — inside warning zone -->
+              <circle cx="195" cy="84" r="6" fill="rgba(250,204,21,0.2)" stroke="rgba(250,204,21,0.9)" stroke-width="1.5"/>
+              <circle cx="195" cy="84" r="2.5" fill="#facc15"/>
+              <!-- warning badge -->
+              <rect x="204" y="75" width="38" height="13" rx="3" fill="rgba(248,81,73,0.85)"/>
+              <text x="223" y="84.5" fill="white" font-size="7" font-family="monospace" text-anchor="middle" font-weight="bold">WARNING</text>
+
+              <!-- Hospital marker — in caution zone -->
+              <circle cx="155" cy="100" r="6" fill="rgba(248,135,113,0.2)" stroke="rgba(248,135,113,0.9)" stroke-width="1.5"/>
+              <circle cx="155" cy="100" r="2.5" fill="#f87171"/>
+              <!-- caution badge -->
+              <rect x="164" y="93" width="36" height="13" rx="3" fill="rgba(227,179,65,0.85)"/>
+              <text x="182" y="102.5" fill="#0d1117" font-size="7" font-family="monospace" text-anchor="middle" font-weight="bold">CAUTION</text>
+
+              <!-- Park marker — clear -->
+              <circle cx="310" cy="75" r="6" fill="rgba(74,222,128,0.2)" stroke="rgba(74,222,128,0.9)" stroke-width="1.5"/>
+              <circle cx="310" cy="75" r="2.5" fill="#4ade80"/>
+              <!-- clear badge -->
+              <rect x="319" y="68" width="28" height="13" rx="3" fill="rgba(63,185,80,0.8)"/>
+              <text x="333" y="77.5" fill="white" font-size="7" font-family="monospace" text-anchor="middle" font-weight="bold">CLEAR</text>
+
+              <!-- Second school — clear -->
+              <circle cx="60" cy="55" r="5" fill="rgba(250,204,21,0.15)" stroke="rgba(250,204,21,0.7)" stroke-width="1.2"/>
+              <circle cx="60" cy="55" r="2" fill="#facc15"/>
+
+              <!-- Legend strip -->
+              <line x1="20" y1="170" x2="40" y2="170" stroke="rgba(249,115,22,0.8)" stroke-width="2.5"/>
+              <text x="44" y="174" fill="rgba(249,115,22,0.7)" font-size="6" font-family="monospace">NAT GAS</text>
+              <line x1="95" y1="170" x2="115" y2="170" stroke="rgba(96,165,250,0.8)" stroke-width="2"/>
+              <text x="119" y="174" fill="rgba(96,165,250,0.7)" font-size="6" font-family="monospace">CRUDE OIL</text>
+              <circle cx="182" cy="170" r="4" fill="rgba(250,204,21,0.7)"/>
+              <text x="190" y="174" fill="rgba(250,204,21,0.6)" font-size="6" font-family="monospace">SCHOOL</text>
+              <circle cx="242" cy="170" r="4" fill="rgba(248,135,113,0.7)"/>
+              <text x="250" y="174" fill="rgba(248,135,113,0.6)" font-size="6" font-family="monospace">HOSPITAL</text>
+              <circle cx="310" cy="170" r="4" fill="rgba(74,222,128,0.7)"/>
+              <text x="318" y="174" fill="rgba(74,222,128,0.6)" font-size="6" font-family="monospace">PARK</text>
+
+              <!-- Title -->
+              <text x="10" y="12" fill="rgba(248,81,73,0.22)" font-size="6" font-family="monospace">ECTOR COUNTY · ENVIRONMENTAL COMPLIANCE · BUFFER ANALYSIS</text>
+            </svg>
+          </div>
+          <span class="demo-badge demo-badge--live">Live</span>
+        </div>
+        <div class="demo-card-body">
+          <div class="demo-card-type">Environmental &amp; Regulatory Compliance</div>
+          <h3 class="demo-card-title">Pipeline Compliance Viewer</h3>
+          <p class="demo-card-county">Ector County, TX · Buffer Analysis</p>
+          <p class="demo-card-desc">Buffer analysis showing proximity relationships between pipeline infrastructure and sensitive land uses — schools, hospitals, and parks. Click any site to query the nearest pipeline in real time via PostGIS and get an instant compliance flag: Warning (&lt;500 ft), Caution (500–1,000 ft), or Clear (&gt;1,000 ft).</p>
+          <div class="demo-card-tech">
+            <span class="demo-tech-tag">MapLibre GL</span>
+            <span class="demo-tech-tag">Supabase RPC</span>
+            <span class="demo-tech-tag">PostGIS</span>
+            <span class="demo-tech-tag">Overpass API</span>
+          </div>
+          <a href="compliance_demo/compliance_map.html" target="_blank" rel="noopener noreferrer" class="demo-card-action">
+            Open Viewer ↗
+          </a>
+        </div>
+      </div>
+
     </div>
 
   </section>
