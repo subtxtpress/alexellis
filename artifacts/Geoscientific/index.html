@@ -1320,10 +1320,11 @@
     @media (max-width: 640px) {
       .sectors-grid    { grid-template-columns: 1fr; }
       .process-steps   { grid-template-columns: 1fr; }
-      .footer-top      { grid-template-columns: 1fr 1fr; }
+      .footer-top      { grid-template-columns: 1fr 1fr; text-align: center; }
       .footer-top > div:first-child { grid-column: 1 / -1; }
-      .footer-bottom   { flex-direction: column; align-items: flex-start; gap: 1rem; }
-      .footer-bottom-links { flex-wrap: wrap; gap: 1rem; }
+      .footer-links    { align-items: center; }
+      .footer-bottom   { flex-direction: column; align-items: center; gap: 1rem; }
+      .footer-bottom-links { flex-wrap: wrap; gap: 1rem; justify-content: center; }
       .hero-headline   { font-size: 2.4rem; }
       .hero-actions    { flex-direction: column; align-items: stretch; gap: 1rem; }
       .btn-primary     { justify-content: center; }
