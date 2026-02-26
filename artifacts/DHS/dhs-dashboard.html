@@ -36,7 +36,7 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@700;800&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -50,21 +50,36 @@
     
     <style>
         :root {
-            --surface-base:    #070709;
-            --surface-1:       #0f0f14;
-            --surface-2:       #15151e;
-            --surface-3:       #1c1c28;
-            --accent-dim:      #6B50A8;
-            --accent-mid:      #9575CD;
-            --accent-bright:   #C5B0E8;
-            --accent-glow:     rgba(149, 117, 205, 0.15);
-            --alert-red:       #E05252;
-            --alert-red-dim:   rgba(224, 82, 82, 0.12);
-            --confirm-green:   #6da781;
-            --confirm-dim:     rgba(109, 167, 129, 0.1);
-            --text-primary:    #f0f0f4;
-            --text-secondary:  #b0b0c0;
-            --text-muted:      #66667a;
+            /* Surfaces */
+            --surface-base:    #080808;
+            --surface-1:       #0f0f0f;
+            --surface-2:       #181818;
+            --surface-3:       #212121;
+            --surface-hover:   #282828;
+
+            /* Accent — warm off-white used for active states + highlight */
+            --accent:          #d4c9b0;
+            --accent-dim:      rgba(212, 201, 176, 0.15);
+
+            /* Status */
+            --alert-red:       #c0392b;
+            --alert-red-dim:   rgba(192, 57, 43, 0.12);
+            --confirm-green:   #4a7c5e;
+            --confirm-dim:     rgba(74, 124, 94, 0.10);
+
+            /* Text — properly stepped, all legible */
+            --text-primary:    #f0ebe3;   /* headings, numbers */
+            --text-secondary:  #b8b2aa;   /* body text, card content */
+            --text-muted:      #7a7470;   /* labels, captions — was #575350, was unreadable */
+            --text-dim:        #4a4744;   /* purely decorative separators */
+
+            /* Borders */
+            --border-subtle:   rgba(255, 255, 255, 0.06);
+            --border-mid:      rgba(255, 255, 255, 0.11);
+            --border-strong:   rgba(255, 255, 255, 0.20);
+
+            /* Accent border — warm, used on active/hover left-borders */
+            --border-accent:   rgba(212, 201, 176, 0.40);
         }
 
         * {
@@ -78,185 +93,185 @@
         }
 
         body {
-            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: var(--surface-base);
             color: var(--text-secondary);
             overflow-x: hidden;
             min-height: 100vh;
-            font-size: 15px;
-            line-height: 1.7;
+            font-size: 16px;
+            line-height: 1.75;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            letter-spacing: 0.01em;
+            font-feature-settings: "kern" 1, "liga" 1;
         }
 
+        /* ─── HEADER ─── */
         .header {
-            background: linear-gradient(180deg, #0a0a12 0%, #0d0d18 60%, #0f0f14 100%);
-            padding: 3rem 1rem 2.5rem;
-            text-align: center;
-            border-bottom: 1px solid rgba(149, 117, 205, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -40%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 700px;
-            height: 350px;
-            background: radial-gradient(ellipse at center, rgba(149, 117, 205, 0.08) 0%, transparent 70%);
-            pointer-events: none;
+            background: var(--surface-base);
+            padding: 4.5rem 2rem 3.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-mid);
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .header-eyebrow {
-            font-family: 'Raleway', sans-serif;
-            font-size: 0.6rem;
-            letter-spacing: 0.35em;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6875rem;
+            letter-spacing: 0.18em;
             text-transform: uppercase;
-            color: var(--accent-mid);
-            margin-bottom: 1rem;
-            font-weight: 600;
-            position: relative;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            font-weight: 400;
         }
 
         .header h1 {
-            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-family: 'Epilogue', 'Inter', -apple-system, sans-serif;
+            font-size: clamp(2.25rem, 5.5vw, 4rem);
             font-weight: 800;
             letter-spacing: -0.03em;
-            line-height: 1.05;
-            margin-bottom: 1rem;
-            position: relative;
-            background: linear-gradient(180deg, #ffffff 0%, #c5b0e8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            line-height: 1.0;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
         }
 
         .header p {
-            font-family: 'Raleway', sans-serif;
-            font-size: 0.72rem;
-            letter-spacing: 0.22em;
-            text-transform: uppercase;
-            font-weight: 500;
-            font-style: normal;
-            color: var(--text-muted);
-            position: relative;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.0625rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            max-width: 60ch;
+            line-height: 1.65;
+            border-left: 3px solid var(--accent);
+            padding-left: 1.25rem;
+            opacity: 0.75;
         }
 
-        .controls {
-            background: rgba(10, 10, 18, 0.95);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 0.875rem 1rem;
-            display: flex;
-            justify-content: center;
-            gap: 0.4rem;
-            flex-wrap: wrap;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        /* ─── CONTROLS / NAV ─── */
+        .controls-wrap {
+            background: rgba(10, 10, 10, 0.97);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border-mid);
             position: sticky;
             top: 0;
             z-index: 100;
         }
 
+        .controls {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0;
+            flex-wrap: wrap;
+            overflow-x: auto;
+        }
+
         .btn {
             background: transparent;
-            color: var(--text-muted);
-            border: 1px solid transparent;
-            padding: 0.55rem 1.1rem;
+            color: var(--text-secondary);
+            border: none;
+            border-bottom: 2px solid transparent;
+            padding: 0.875rem 1rem;
             cursor: pointer;
-            border-radius: 6px;
-            font-family: 'Raleway', sans-serif;
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            transition: all 0.2s ease;
-            min-height: 36px;
-            min-width: auto;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            transition: color 0.15s ease, border-bottom-color 0.15s ease;
             white-space: nowrap;
+            border-radius: 0;
         }
 
         .btn:hover {
-            background: rgba(149, 117, 205, 0.1);
-            color: var(--accent-bright);
-            border-color: rgba(149, 117, 205, 0.25);
-            transform: none;
+            color: var(--text-primary);
+            background: transparent;
         }
 
         .btn.active {
-            background: rgba(149, 117, 205, 0.15);
             color: var(--text-primary);
-            border-color: var(--accent-mid);
-            box-shadow: 0 0 16px rgba(149, 117, 205, 0.2);
+            border-bottom-color: var(--text-primary);
         }
 
         .btn:focus-visible {
-            outline: 2px solid var(--accent-mid);
-            outline-offset: 3px;
+            outline: 2px solid var(--text-primary);
+            outline-offset: -2px;
         }
 
+        /* ─── LAYOUT ─── */
         .container {
             max-width: 1400px;
-            margin: 1rem auto 2rem;
-            padding: 0 1rem;
+            margin: 0 auto;
+            padding: 2.5rem 2rem 5rem;
         }
 
+        /* ─── STAT STRIP ─── */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+            gap: 0;
+            margin: 0 0 3rem;
+            border: 1px solid var(--border-mid);
+        }
+
+        .stat-card {
+            padding: 2rem 1.5rem;
+            text-align: left;
+            border-right: 1px solid var(--border-mid);
+            position: relative;
+        }
+
+        .stat-card:last-child {
+            border-right: none;
+        }
+
+        .stat-number {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-size: clamp(2rem, 4.5vw, 3rem);
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.04em;
+        }
+
+        .stat-label {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        /* ─── LAYER SECTIONS ─── */
         .layer {
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: var(--surface-2);
-            border: 1px solid rgba(107, 80, 168, 0.15);
-            border-left: 3px solid var(--accent-mid);
-            border-radius: 12px;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeIn 0.6s forwards;
-            box-shadow:
-                0 1px 0 rgba(255, 255, 255, 0.03) inset,
-                0 20px 60px rgba(0, 0, 0, 0.5),
-                0 1px 3px rgba(0, 0, 0, 0.8);
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            margin: 0 0 2px;
+            padding: 2.5rem;
+            background: var(--surface-1);
+            border: 1px solid var(--border-mid);
+            border-left: 3px solid var(--border-strong);
         }
 
         .layer-header {
             display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+            align-items: baseline;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
             cursor: pointer;
         }
 
         .layer-number {
-            background: transparent;
-            color: var(--accent-bright);
-            border: 2px solid var(--accent-mid);
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Raleway', sans-serif;
-            font-weight: 800;
-            font-size: 1.2rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            letter-spacing: 0.12em;
             flex-shrink: 0;
-            transition: all 0.25s ease;
-            box-shadow: 0 0 0 0 rgba(149, 117, 205, 0.4);
-        }
-
-        .layer-header:hover .layer-number {
-            background: var(--accent-mid);
-            color: #fff;
-            box-shadow: 0 0 0 4px rgba(149, 117, 205, 0.15);
+            padding-top: 0.2em;
         }
 
         .layer-title {
@@ -265,693 +280,611 @@
         }
 
         .layer-title h2 {
-            font-size: clamp(1.2rem, 4vw, 1.7rem);
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-size: clamp(1.25rem, 3vw, 1.625rem);
             color: var(--text-primary);
-            margin-bottom: 0.3rem;
-            word-wrap: break-word;
+            margin-bottom: 0.375rem;
             font-weight: 700;
-            letter-spacing: -0.02em;
+            letter-spacing: -0.03em;
             line-height: 1.15;
         }
 
         .layer-title p {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            letter-spacing: 0.01em;
-        }
-
-        .systems-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .system-card {
-            background: linear-gradient(135deg, rgba(21, 21, 30, 0.95) 0%, rgba(15, 15, 20, 0.98) 100%);
-            padding: 1.5rem;
-            border-radius: 10px;
-            border: 1px solid rgba(107, 80, 168, 0.18);
-            border-top: 1px solid rgba(197, 176, 232, 0.08);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .system-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(197, 176, 232, 0.4), transparent);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .system-card:hover::before {
-            opacity: 1;
-        }
-
-        .system-card:hover {
-            border-color: rgba(179, 157, 219, 0.45);
-            transform: translateY(-4px);
-            box-shadow:
-                0 12px 40px rgba(149, 117, 205, 0.18),
-                0 4px 12px rgba(0, 0, 0, 0.6),
-                0 0 0 1px rgba(197, 176, 232, 0.1) inset;
-            background: linear-gradient(135deg, rgba(28, 28, 40, 0.98) 0%, rgba(18, 18, 28, 0.99) 100%);
-        }
-
-        .system-card h3 {
-            color: var(--text-primary);
-            font-size: 1.1rem;
-            font-weight: 600;
-            letter-spacing: -0.01em;
-            margin-bottom: 0.4rem;
-        }
-
-        .system-card .function {
-            color: var(--accent-bright);
-            font-size: 0.72rem;
-            font-weight: 500;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            margin-bottom: 1rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid rgba(107, 80, 168, 0.15);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
             line-height: 1.5;
         }
 
-        .system-card .capabilities {
+        /* ─── SYSTEM CARDS ─── */
+        .systems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+            gap: 1px;
+            margin-top: 2rem;
+            background: var(--border-mid);
+        }
+
+        .system-card {
+            background: var(--surface-2);
+            padding: 1.75rem;
+            border-left: 3px solid transparent;
+            transition: background 0.15s ease, border-left-color 0.15s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .system-card:hover {
+            background: var(--surface-hover);
+            border-left-color: var(--border-strong);
+        }
+
+        .system-card h3 {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.3rem;
+            line-height: 1.25;
+        }
+
+        .system-card .function {
+            font-family: 'IBM Plex Mono', monospace;
             color: var(--text-muted);
-            font-size: 0.85rem;
-            line-height: 1.6;
+            font-size: 0.6875rem;
+            font-weight: 400;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-mid);
+        }
+
+        .system-card .capabilities {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.65;
         }
 
         .system-card .capabilities ul {
-            padding-left: 1.5rem;
-            list-style-position: inside;
+            padding-left: 1.25rem;
         }
 
         .system-card .capabilities li {
             margin-bottom: 0.3rem;
+            color: var(--text-secondary);
         }
 
+        /* ─── TAGS ─── */
         .tag {
             display: inline-block;
-            background: rgba(149, 117, 205, 0.08);
-            color: var(--accent-mid);
-            padding: 0.25rem 0.55rem;
-            border-radius: 4px;
+            color: var(--text-muted);
+            padding: 0.2rem 0.45rem;
+            font-family: 'IBM Plex Mono', monospace;
             font-size: 0.6rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
+            font-weight: 400;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            margin-right: 0.4rem;
-            margin-top: 0.5rem;
-            border: 1px solid rgba(149, 117, 205, 0.2);
-            transition: all 0.15s ease;
+            margin-right: 0.35rem;
+            margin-top: 0.625rem;
+            border: 1px solid var(--border-subtle);
             cursor: default;
         }
 
-        .tag:hover {
-            background: rgba(149, 117, 205, 0.18);
-            border-color: rgba(197, 176, 232, 0.4);
-            color: var(--accent-bright);
-        }
-
+        /* ─── INFO BOXES ─── */
         .info-box {
-            border-radius: 4px;
-            padding: 1.5rem;
+            padding: 1.75rem;
             margin-bottom: 1.5rem;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         .info-box h4 {
-            margin-bottom: 0.75rem;
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6875rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            font-weight: 400;
+            margin-bottom: 1rem;
         }
 
         .info-box p {
-            margin-bottom: 0.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9375rem;
+            line-height: 1.75;
+            margin-bottom: 0.6rem;
+            color: var(--text-secondary);
         }
 
         .info-box ul {
+            font-family: 'Inter', sans-serif;
             margin: 0;
             padding-left: 1.5rem;
-            list-style-position: inside;
         }
 
         .info-box li {
-            margin-bottom: 0.5rem;
+            font-size: 0.9375rem;
+            line-height: 1.75;
+            margin-bottom: 0.4rem;
+            color: var(--text-secondary);
         }
 
         .info-box-purple {
-            background: var(--surface-3);
-            border-left: 3px solid var(--accent-bright);
-            border-radius: 8px;
+            background: var(--surface-2);
+            border-left: 3px solid var(--border-strong);
         }
 
         .info-box-purple h4 {
-            color: var(--text-primary);
-            font-size: 0.65rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            font-weight: 700;
-            color: var(--accent-bright);
+            color: var(--text-secondary);
         }
 
         .info-box-green {
             background: var(--surface-1);
             border-left: 3px solid var(--confirm-green);
-            border-radius: 8px;
         }
 
         .info-box-green h4 {
-            color: var(--text-primary);
-            font-size: 0.65rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            font-weight: 700;
             color: var(--confirm-green);
         }
 
         .info-box-red {
             background: var(--alert-red-dim);
             border-left: 3px solid var(--alert-red);
-            border-radius: 8px;
         }
 
         .info-box-red h4 {
             color: var(--alert-red);
-            font-size: 0.65rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            font-weight: 700;
         }
 
-
-
+        /* ─── DATABASE GRID ─── */
         .database-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1px;
+            margin-top: 1.25rem;
+            background: var(--border-mid);
         }
 
         .database-category {
-            background: var(--surface-1);
-            border: 1px solid rgba(107, 80, 168, 0.1);
-            border-top: 1px solid rgba(107, 80, 168, 0.25);
-            padding: 1rem 1.25rem;
-            border-radius: 6px;
+            background: var(--surface-2);
+            padding: 1.5rem;
+            transition: background 0.15s ease;
+        }
+
+        .database-category:hover {
+            background: var(--surface-3);
         }
 
         .database-category h5 {
-            font-size: 0.62rem;
-            letter-spacing: 0.15em;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6875rem;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
-            font-weight: 700;
-            color: var(--accent-mid);
-            margin-bottom: 0.75rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-bottom: 0.875rem;
         }
 
         .database-category ul {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            line-height: 1.65;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.7;
             margin: 0;
             padding-left: 1.25rem;
-            list-style-position: inside;
         }
 
+        /* ─── SOURCE CARDS ─── */
         .source-card {
             background: var(--surface-1);
-            padding: 1.5rem;
-            padding-left: 1.75rem;
-            border-radius: 8px;
-            border-left: 3px solid var(--accent-dim);
-            border: 1px solid rgba(107, 80, 168, 0.15);
-            border-left: 3px solid var(--accent-mid);
+            padding: 1.75rem;
+            padding-left: 2rem;
+            border: 1px solid var(--border-subtle);
+            border-left: 3px solid var(--border-strong);
         }
 
         .source-card h4 {
-            color: var(--accent-bright);
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--text-muted);
             margin-bottom: 1rem;
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: 0.18em;
+            font-size: 0.6875rem;
+            font-weight: 400;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
         }
 
         .source-card ul {
+            font-family: 'Inter', sans-serif;
             color: var(--text-secondary);
             line-height: 1.8;
             margin: 0;
             padding-left: 1.25rem;
-            list-style-position: inside;
         }
 
         .source-card li {
             margin-bottom: 0.5rem;
+            font-size: 0.9375rem;
         }
 
         .source-card a {
-            color: var(--accent-mid);
+            color: var(--text-secondary);
             text-decoration: none;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.2s ease, color 0.2s ease;
+            border-bottom: 1px solid var(--border-mid);
+            transition: border-color 0.15s ease, color 0.15s ease;
             padding-bottom: 1px;
         }
 
         .source-card a:hover {
-            color: var(--accent-bright);
-            border-bottom-color: var(--accent-bright);
-            text-decoration: none;
+            color: var(--text-primary);
+            border-bottom-color: var(--text-primary);
+        }
+
+        .source-card span {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+            display: inline;
         }
 
         .source-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
         }
 
+        /* ─── CASE STUDIES ─── */
         .case-study {
             background: var(--surface-1);
-            padding: 1.5rem;
+            padding: 1.75rem;
             margin-bottom: 1.5rem;
-            border-radius: 0 8px 8px 0;
-            border-left: 2px solid rgba(107, 80, 168, 0.3);
-            transition: border-left-color 0.2s ease;
+            border-left: 3px solid var(--border-mid);
+            transition: border-left-color 0.15s ease;
         }
 
         .case-study:hover {
-            border-left-color: var(--accent-mid);
+            border-left-color: var(--border-strong);
         }
 
         .case-study h5 {
+            font-family: 'Inter', -apple-system, sans-serif;
             color: var(--text-primary);
             margin-bottom: 1rem;
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-weight: 700;
-            letter-spacing: 0.01em;
         }
 
         .case-study .connection-item {
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.75rem;
         }
 
+        /* ─── CONNECTIONS ─── */
         .connections {
             margin-top: 2rem;
-            padding: 1.5rem;
-            background: rgba(107, 80, 168, 0.04);
-            border-radius: 8px;
-            border: 1px solid rgba(107, 80, 168, 0.2);
+            padding: 1.75rem;
+            background: var(--surface-2);
+            border: 1px solid var(--border-subtle);
         }
 
         .connections h4 {
-            font-size: 0.62rem;
-            letter-spacing: 0.25em;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6875rem;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
-            font-weight: 700;
-            color: var(--accent-mid);
-            margin-bottom: 1rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
         }
 
         .connection-item {
-            margin: 0.8rem 0;
+            margin: 0.75rem 0;
+            font-family: 'Inter', sans-serif;
             color: var(--text-secondary);
-            font-size: 0.88rem;
-            line-height: 1.6;
+            font-size: 0.9375rem;
+            line-height: 1.65;
         }
 
         .connection-item .arrow {
-            color: var(--accent-mid);
-            opacity: 0.7;
+            color: var(--text-muted);
             margin-right: 0.5rem;
-            font-weight: bold;
             font-size: 0.85em;
             display: inline;
         }
 
         .arrow {
-            color: var(--accent-mid);
-            opacity: 0.7;
+            color: var(--text-muted);
             margin: 0 0.5rem;
-            font-weight: bold;
             font-size: 0.85em;
             flex-shrink: 0;
         }
 
+        /* ─── ACTORS SECTION ─── */
         .actors-section {
-            background: linear-gradient(180deg, #12121c 0%, #0f0f18 100%);
-            padding: 1.5rem;
-            border-radius: 12px;
-            margin: 2rem 0;
-            border: 1px solid rgba(149, 117, 205, 0.3);
-            border-top: 2px solid var(--accent-mid);
-            box-shadow: 0 0 60px rgba(149, 117, 205, 0.06);
+            background: var(--surface-1);
+            padding: 2.5rem;
+            margin: 0 0 2px;
+            border: 1px solid var(--border-mid);
+            border-top: 3px solid var(--border-strong);
         }
 
         .actors-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
-            gap: 1rem;
-            margin-top: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+            gap: 1px;
+            margin-top: 2rem;
+            background: var(--border-mid);
         }
 
         .actor-card {
-            background: linear-gradient(145deg, #0f0f18 0%, #0a0a12 100%);
+            background: var(--surface-2);
             padding: 1.5rem;
-            border-radius: 10px;
-            border: 1px solid rgba(107, 80, 168, 0.2);
-            transition: all 0.25s ease;
+            border-left: 3px solid transparent;
+            transition: background 0.15s ease, border-left-color 0.15s ease;
         }
 
         .actor-card:hover {
-            border-color: rgba(197, 176, 232, 0.4);
-            box-shadow: 0 8px 32px rgba(149, 117, 205, 0.2);
-            transform: translateY(-3px);
+            background: var(--surface-hover);
+            border-left-color: var(--border-strong);
         }
 
         .actor-card h3 {
+            font-family: 'Inter', -apple-system, sans-serif;
             color: var(--text-primary);
-            margin-bottom: 0.3rem;
-            font-size: clamp(0.95rem, 3vw, 1.1rem);
+            margin-bottom: 0.2rem;
+            font-size: 1rem;
             font-weight: 700;
-            letter-spacing: -0.01em;
+            letter-spacing: -0.02em;
         }
 
         .actor-card .role {
-            color: var(--accent-bright);
-            font-size: 0.7rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--text-muted);
+            font-size: 0.6875rem;
+            font-weight: 400;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.875rem;
         }
 
         .actor-card .details {
-            color: var(--text-muted);
-            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
             line-height: 1.65;
         }
 
+        /* ─── TIMELINE ─── */
         .timeline {
             position: relative;
-            padding-left: 2.5rem;
+            padding-left: 2rem;
             margin: 2rem 0;
         }
 
         .timeline::before {
             content: '';
             position: absolute;
-            left: 8px;
+            left: 0;
             top: 0;
             bottom: 0;
             width: 1px;
-            background: linear-gradient(
-                to bottom,
-                transparent 0%,
-                rgba(149, 117, 205, 0.6) 5%,
-                rgba(179, 157, 219, 0.4) 50%,
-                rgba(107, 80, 168, 0.2) 95%,
-                transparent 100%
-            );
+            background: var(--border-strong);
         }
 
         .timeline-item {
             position: relative;
-            margin-bottom: 1rem;
+            margin-bottom: 1px;
             background: var(--surface-1);
-            padding: 1rem 1.25rem;
-            border-radius: 8px;
-            border: 1px solid rgba(107, 80, 168, 0.12);
-            border-left: 2px solid rgba(107, 80, 168, 0.3);
-            transition: all 0.2s ease;
+            padding: 1.25rem 1.5rem;
+            border: 1px solid var(--border-mid);
+            border-left: 3px solid transparent;
+            transition: background 0.15s ease, border-left-color 0.15s ease;
         }
 
         .timeline-item:hover {
-            border-left-color: var(--accent-mid);
             background: var(--surface-2);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            border-left-color: var(--border-strong);
         }
 
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: -36px;
-            top: 18px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--surface-base);
-            border: 2px solid var(--accent-mid);
-            box-shadow: 0 0 8px rgba(149, 117, 205, 0.5);
-            transition: all 0.2s ease;
-        }
-
-        .timeline-item:hover::before {
-            background: var(--accent-mid);
-            box-shadow: 0 0 14px rgba(149, 117, 205, 0.8);
-            transform: scale(1.3);
+            left: -2rem;
+            top: 1.5rem;
+            width: 1rem;
+            height: 1px;
+            background: var(--border-mid);
         }
 
         .timeline-item .year {
-            font-family: 'Raleway', sans-serif;
-            font-size: 0.62rem;
-            font-weight: 800;
-            letter-spacing: 0.2em;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: var(--accent-mid);
-            margin-bottom: 0.4rem;
+            color: var(--accent);
+            opacity: 0.8;
+            margin-bottom: 0.375rem;
         }
 
         .timeline-item .event {
-            color: var(--text-secondary);
-            line-height: 1.65;
-            font-size: clamp(0.82rem, 2vw, 0.9rem);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.7;
+            font-size: 0.9375rem;
         }
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-
-        .stat-card {
-            background: var(--surface-2);
-            border: 1px solid rgba(107, 80, 168, 0.2);
-            border-top: 2px solid var(--accent-mid);
-            border-radius: 10px;
-            padding: 1.75rem 1.25rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.25s ease;
-        }
-
-        .stat-card::after {
-            content: '';
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(ellipse, rgba(149, 117, 205, 0.1) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        .stat-card:hover {
-            border-top-color: var(--accent-bright);
-            box-shadow: 0 8px 32px rgba(149, 117, 205, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .stat-number {
-            font-family: 'Roboto', sans-serif;
-            font-size: clamp(2rem, 5vw, 2.8rem);
-            font-weight: 900;
-            letter-spacing: -0.04em;
-            color: var(--accent-bright);
-            font-variant-numeric: tabular-nums;
-            margin-bottom: 0.6rem;
-            line-height: 1;
-        }
-
-        .stat-label {
-            color: var(--text-muted);
-            font-size: clamp(0.62rem, 1.8vw, 0.7rem);
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            font-weight: 500;
-            line-height: 1.4;
-        }
-
+        /* ─── NETWORK MAP ─── */
         .network-map {
-            background: linear-gradient(135deg, #0a0a14 0%, #080810 100%);
-            padding: 2rem;
-            border-radius: 12px;
+            background: var(--surface-1);
+            padding: 2.5rem;
             margin: 2.5rem 0;
-            border: 1px solid rgba(149, 117, 205, 0.25);
-            position: relative;
-            overflow: hidden;
-            box-shadow:
-                0 0 60px rgba(149, 117, 205, 0.05),
-                0 20px 60px rgba(0, 0, 0, 0.5);
-        }
-
-        .network-map::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(149, 117, 205, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(149, 117, 205, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            pointer-events: none;
+            border: 1px solid var(--border-subtle);
         }
 
         .network-title {
-            font-family: 'Raleway', sans-serif;
-            font-size: 0.62rem;
-            letter-spacing: 0.3em;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6875rem;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
-            font-weight: 700;
-            color: var(--accent-mid);
+            font-weight: 400;
+            color: var(--text-muted);
             margin-bottom: 2rem;
-            text-align: left;
-            position: relative;
         }
 
         .network-connections {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
-            position: relative;
+            gap: 1px;
+            background: var(--border-mid);
         }
 
         .network-connection {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.875rem 1rem;
-            background: rgba(15, 15, 20, 0.7);
-            border-radius: 8px;
-            border: 1px solid rgba(107, 80, 168, 0.15);
+            padding: 1rem 1.25rem;
+            background: var(--surface-2);
             flex-wrap: wrap;
             gap: 0.5rem;
-            backdrop-filter: blur(4px);
-            transition: border-color 0.2s ease;
+            transition: background 0.15s ease;
         }
 
         .network-connection:hover {
-            border-color: rgba(149, 117, 205, 0.3);
+            background: var(--surface-hover);
         }
 
         .network-node {
-            background: rgba(149, 117, 205, 0.06);
-            padding: 0.6rem 0.875rem;
-            border-radius: 6px;
+            background: var(--surface-3);
+            padding: 0.5rem 0.875rem;
             color: var(--text-secondary);
-            font-weight: 500;
-            border: 1px solid rgba(149, 117, 205, 0.2);
-            font-size: clamp(0.78rem, 2vw, 0.85rem);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: clamp(0.6875rem, 1.8vw, 0.75rem);
+            font-weight: 400;
+            border: 1px solid var(--border-mid);
             text-align: center;
             flex: 1;
             min-width: 120px;
-            transition: all 0.2s ease;
-        }
-
-        .network-node:hover {
-            background: rgba(149, 117, 205, 0.12);
-            border-color: rgba(197, 176, 232, 0.4);
-            color: var(--text-primary);
         }
 
         .network-arrow {
-            color: rgba(149, 117, 205, 0.5);
-            font-size: 1rem;
-            font-weight: 300;
+            color: var(--text-muted);
+            font-size: 0.85rem;
             flex-shrink: 0;
-            padding: 0 0.25rem;
+            padding: 0 0.375rem;
         }
 
+        /* ─── UTILITY ─── */
         .hidden {
             display: none;
         }
 
+        /* General heading styles used inline */
+        .layer h2,
+        .actors-section h2 {
+            font-family: 'Inter', -apple-system, sans-serif;
+            font-size: clamp(1.25rem, 3vw, 1.625rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            margin-bottom: 1.25rem;
+        }
+
+        /* Info box general overrides */
+        .info-box h4 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6875rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        /* Strong tags */
+        .info-box strong,
+        .case-study strong,
+        .connection-item strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Source grid */
+        .source-grid > div h4 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.6875rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            font-weight: 400;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .source-grid > div ul {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            font-size: 0.9375rem;
+            line-height: 1.8;
+        }
+
+        .source-grid > div a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-mid);
+            transition: border-color 0.15s ease, color 0.15s ease;
+        }
+
+        .source-grid > div a:hover {
+            color: var(--text-primary);
+            border-bottom-color: var(--text-primary);
+        }
+
+        /* ─── SCROLLBAR ─── */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--surface-base);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-strong);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* ─── RESPONSIVE ─── */
         @media (max-width: 768px) {
             .header {
-                padding: 2rem 1rem 1.5rem;
+                padding: 2.5rem 1.25rem 2rem;
             }
 
             .header h1 {
                 font-size: 1.75rem;
             }
 
-            .header p {
-                font-size: 0.65rem;
-            }
-
             .controls {
-                padding: 0.6rem 0.5rem;
-                gap: 0.35rem;
+                padding: 0 1rem;
             }
 
             .btn {
-                font-size: 0.68rem;
-                padding: 0.5rem 0.7rem;
-                flex: 1 1 auto;
-                max-width: 48%;
+                font-size: 0.75rem;
+                padding: 0.75rem 0.75rem;
             }
 
             .container {
-                padding: 0 0.75rem;
-                margin: 1rem auto;
+                padding: 1.5rem 1.25rem 3rem;
             }
 
             .layer {
-                padding: 1rem;
-                margin: 1.5rem 0;
-            }
-
-            .layer-number {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-            }
-
-            .layer-title h2 {
-                font-size: 1.2rem;
-            }
-
-            .layer-title p {
-                font-size: 0.85rem;
+                padding: 1.5rem;
+                margin: 0 0 1.5rem;
             }
 
             .systems-grid {
                 grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .system-card {
-                padding: 1rem;
-            }
-
-            .system-card h3 {
-                font-size: 1.1rem;
-            }
-
-            .system-card .function,
-            .system-card .capabilities {
-                font-size: 0.85rem;
             }
 
             .actors-grid {
@@ -960,30 +893,19 @@
 
             .stats {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 0.75rem;
+                border: none;
+                gap: 1px;
+                background: var(--border-subtle);
+                margin-bottom: 2rem;
             }
 
             .stat-card {
-                padding: 1rem 0.5rem;
+                border-right: none;
+                border: 1px solid var(--border-subtle);
             }
 
             .timeline {
                 padding-left: 1.5rem;
-            }
-
-            .timeline::before {
-                left: 5px;
-            }
-
-            .timeline-item {
-                padding: 0.75rem;
-            }
-
-            .timeline-item::before {
-                left: -30px;
-                top: 14px;
-                width: 8px;
-                height: 8px;
             }
 
             .network-connection {
@@ -1000,90 +922,28 @@
                 align-self: center;
             }
 
-            .connection-item {
-                font-size: 0.85rem;
-                line-height: 1.5;
-            }
-
-            .arrow {
-                margin: 0 0.25rem;
-            }
-
-            .info-box {
-                padding: 1rem;
-                margin-bottom: 1rem;
-            }
-
-            .info-box h4 {
-                font-size: 1rem;
-            }
-
-            .case-study {
-                padding: 1rem;
-                margin-bottom: 1rem;
-            }
-
-            .case-study h5 {
-                font-size: 1rem;
-            }
-
-            .case-study .connection-item {
-                margin-bottom: 0.6rem;
-                font-size: 0.85rem;
-            }
-
             .source-grid {
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
 
-            .source-card {
-                padding: 1rem;
-                padding-left: 1.5rem;
-            }
-
-            .source-card h4 {
-                font-size: 1rem;
-            }
-
-            .source-card ul {
-                font-size: 0.9rem;
-                line-height: 1.6;
-                padding-left: 1.5rem;
-            }
-
             .database-grid {
                 grid-template-columns: 1fr;
-                gap: 0.75rem;
             }
 
-            .database-category {
-                padding: 0.75rem;
-                padding-left: 1.25rem;
-            }
-
-            .database-category h5 {
-                font-size: 0.9rem;
-            }
-
-            .database-category ul {
-                font-size: 0.85rem;
-                padding-left: 1.5rem;
+            .actors-section {
+                padding: 1.5rem;
             }
         }
 
         @media (max-width: 480px) {
-            .btn {
-                max-width: 100%;
-                font-size: 0.8rem;
-            }
-
             .stats {
                 grid-template-columns: 1fr;
             }
 
-            .layer-header {
-                gap: 0.75rem;
+            .btn {
+                font-size: 0.75rem;
+                padding: 0.75rem 0.625rem;
             }
         }
 
@@ -1099,118 +959,20 @@
             .stats {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .stat-card:nth-child(2) {
+                border-right: none;
+            }
         }
 
-        /* Touch optimization */
         @media (hover: none) and (pointer: coarse) {
             .system-card:active {
-                transform: scale(0.98);
+                background: var(--surface-3);
             }
 
             .btn:active {
-                transform: scale(0.95);
+                color: var(--text-primary);
             }
-        }
-
-        /* General heading styles used inline */
-        .layer h2,
-        .actors-section h2 {
-            font-size: clamp(1.3rem, 4vw, 1.9rem);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
-            margin-bottom: 1rem;
-        }
-
-        /* Info box general overrides */
-        .info-box h4 {
-            font-size: 0.65rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            font-weight: 700;
-            margin-bottom: 0.85rem;
-        }
-
-        .info-box p {
-            font-size: 0.9rem;
-            line-height: 1.7;
-            margin-bottom: 0.6rem;
-        }
-
-        /* Strong tags in info boxes */
-        .info-box strong,
-        .case-study strong,
-        .connection-item strong {
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        /* System card capability list */
-        .system-card .capabilities ul {
-            padding-left: 1.2rem;
-        }
-
-        .system-card .capabilities li {
-            color: var(--text-muted);
-            margin-bottom: 0.3rem;
-            font-size: 0.84rem;
-        }
-
-        /* Source grid headings used as inline styles - override with class */
-        .source-grid > div h4 {
-            font-size: 0.62rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            font-weight: 700;
-            color: var(--accent-bright);
-            margin-bottom: 1rem;
-        }
-
-        .source-grid > div ul {
-            color: var(--text-secondary);
-            font-size: 0.88rem;
-            line-height: 1.8;
-        }
-
-        .source-grid > div a {
-            color: var(--accent-mid);
-            text-decoration: none;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.2s ease, color 0.2s ease;
-        }
-
-        .source-grid > div a:hover {
-            color: var(--accent-bright);
-            border-bottom-color: var(--accent-bright);
-        }
-
-        /* About / footnote info boxes */
-        .container > .layer:last-child .info-box {
-            margin-top: 1.5rem;
-        }
-
-        /* Network map title bump */
-        h3.network-title {
-            font-size: 0.62rem;
-        }
-
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--surface-base);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent-dim);
-            border-radius: 3px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-mid);
         }
     </style>
 </head>
@@ -1221,14 +983,16 @@
         <p>Mapping the Surveillance Infrastructure</p>
     </div>
 
-    <div class="controls">
-        <button class="btn active" onclick="showAll()">Show All</button>
-        <button class="btn" onclick="showLayer('data')">Data Collection</button>
-        <button class="btn" onclick="showLayer('watchlist')">Watchlists</button>
-        <button class="btn" onclick="showLayer('palantir')">Palantir Layer</button>
-        <button class="btn" onclick="showLayer('field')">Field Tools</button>
-        <button class="btn" onclick="showLayer('policy')">Policy Framework</button>
-        <button class="btn" onclick="showLayer('actors')">Key Players</button>
+    <div class="controls-wrap">
+        <div class="controls">
+            <button class="btn active" onclick="showAll()">Show All</button>
+            <button class="btn" onclick="showLayer('data')">Data Collection</button>
+            <button class="btn" onclick="showLayer('watchlist')">Watchlists</button>
+            <button class="btn" onclick="showLayer('palantir')">Palantir Layer</button>
+            <button class="btn" onclick="showLayer('field')">Field Tools</button>
+            <button class="btn" onclick="showLayer('policy')">Policy Framework</button>
+            <button class="btn" onclick="showLayer('actors')">Key Players</button>
+        </div>
     </div>
 
     <div class="container">
@@ -1254,7 +1018,7 @@
 
         <!-- Key Actors -->
         <div class="actors-section layer-content" data-layer="actors">
-            <h2 style="color: #e0e0e0; font-size: clamp(1.5rem, 4vw, 2rem); margin-bottom: 1rem;">Key Players</h2>
+            <h2>Key Players</h2>
             <div class="actors-grid">
                 <div class="actor-card">
                     <h3>Stephen Miller</h3>
@@ -1302,7 +1066,7 @@
         </div>
 
         <!-- Layer 1: Data Collection -->
-        <div class="layer layer-content" data-layer="data" style="animation-delay: 0.1s">
+        <div class="layer layer-content" data-layer="data">
             <div class="layer-header">
                 <div class="layer-number">1</div>
                 <div class="layer-title">
@@ -1415,7 +1179,7 @@
         </div>
 
         <!-- Layer 2: Watchlist Systems -->
-        <div class="layer layer-content" data-layer="watchlist" style="animation-delay: 0.2s">
+        <div class="layer layer-content" data-layer="watchlist">
             <div class="layer-header">
                 <div class="layer-number">2</div>
                 <div class="layer-title">
@@ -1537,7 +1301,7 @@
         </div>
 
         <!-- Layer 3: Palantir Integration -->
-        <div class="layer layer-content" data-layer="palantir" style="animation-delay: 0.3s">
+        <div class="layer layer-content" data-layer="palantir">
             <div class="layer-header">
                 <div class="layer-number">3</div>
                 <div class="layer-title">
@@ -1680,7 +1444,7 @@
 
             <div class="info-box info-box-purple">
                 <h4>The 28+ Databases Accessible Through IRS-NG</h4>
-                <p style="color: #e0e0e0;">
+                <p>
                     According to leaked DHS documents, the Intelligence Reporting System - Next Generation gives federal agents simultaneous access to at least 28 different databases, plus DMV records, seized device data, and "certain law enforcement and/or intelligence data." This creates a unified surveillance apparatus where a single query can pull information from systems designed for completely different purposes:
                 </p>
                 <div class="database-grid">
@@ -1755,14 +1519,14 @@
                         </ul>
                     </div>
                 </div>
-                <p style="color: #6da781; line-height: 1.6; margin-top: 1rem; font-weight: 500;">
+                <p style="line-height: 1.6; margin-top: 1rem;">
                     Result: A single domestic terrorism investigation can query travel history, criminal records, biometrics, visa status, school enrollment, seized assets, death records, and device data—all without a warrant.
                 </p>
             </div>
         </div>
 
         <!-- Layer 4: Field Tools -->
-        <div class="layer layer-content" data-layer="field" style="animation-delay: 0.4s">
+        <div class="layer layer-content" data-layer="field">
             <div class="layer-header">
                 <div class="layer-number">4</div>
                 <div class="layer-title">
@@ -1982,7 +1746,7 @@
 
                 <div class="info-box info-box-green">
                     <h4>Constitutional Concerns</h4>
-                    <p style="color: #e0e0e0;">
+                    <p>
                         These policies create a legal framework that circumvents traditional Fourth Amendment protections. By labeling activists as "domestic terrorists" under NSPM-7, the government claims authority for warrantless surveillance. The "Eliminating Silos" executive order mandates data sharing that was previously prohibited by agency-specific privacy laws. Together, they create a surveillance system that operates largely outside judicial oversight.
                     </p>
                 </div>
@@ -1991,20 +1755,20 @@
 
         <!-- Data Flow to Consequences -->
         <div class="layer">
-            <h2 style="color: #e0e0e0; font-size: clamp(1.5rem, 4vw, 2rem); margin-bottom: 1rem;">From Data Collection to Targeting: Real Cases</h2>
+            <h2>From Data Collection to Targeting: Real Cases</h2>
             
             <div class="info-box info-box-green">
                 <h4>The ITIN Paradox</h4>
-                <p style="color: #e0e0e0;">
+                <p>
                     <strong>4.8 million undocumented immigrants</strong> hold Individual Taxpayer Identification Numbers (ITINs) and pay federal taxes annually—contributing an estimated <strong>$11.6 billion in state and local taxes</strong> per year. Despite paying into systems they cannot benefit from (Social Security, Medicare, most federal programs), their tax data is now being weaponized against them through the IRS-ICE data sharing agreement.
                 </p>
-                <p style="color: #a0a0a0;">
+                <p>
                     They pay taxes. They get no benefits. And now their tax records are used to deport them.
                 </p>
             </div>
 
             <div class="connections">
-                <h4 style="margin-bottom: 1.5rem;">How Palantir's Data Flows Lead to Targeting Americans</h4>
+                <h4>How Palantir's Data Flows Lead to Targeting Americans</h4>
                 
                 <div class="case-study">
                     <h5>Case Study: Chandler Patey &mdash; "Leader of Antifa"</h5>
@@ -2026,7 +1790,7 @@
                     <div class="connection-item">
                         <span class="arrow">→</span> Flagged in 28+ federal databases through IRS-NG
                     </div>
-                    <div class="connection-item" style="color: #6da781;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> <strong>Result:</strong>  Ordinary protester designated domestic terrorist based on cable news hysteria. No crime alleged.
                     </div>
                 </div>
@@ -2045,7 +1809,7 @@
                     <div class="connection-item">
                         <span class="arrow">→</span> IRS-NG entry: "Further research is currently being conducted on this individual"
                     </div>
-                    <div class="connection-item" style="color: #6da781;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> <strong>Result:</strong>  Using free speech = federal surveillance file. No crime alleged.
                     </div>
                 </div>
@@ -2067,13 +1831,13 @@
                     <div class="connection-item">
                         <span class="arrow">→</span> IRS-NG entry tracks her posts about delivering supplies to protesters
                     </div>
-                    <div class="connection-item" style="color: #6da781;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> <strong>Result:</strong>  Mutual aid = domestic terrorism. No crime alleged.
                     </div>
                 </div>
 
                 <div class="case-study">
-                    <h5 style="color: #e0e0e0; margin-bottom: 1.1rem; font-size: 1.1rem;">Case Study: Nicole Cleland & Alex Pretti &mdash; Immigration Court Monitors</h5>
+                    <h5>Case Study: Nicole Cleland & Alex Pretti &mdash; Immigration Court Monitors</h5>
                     <div class="connection-item">
                         <strong>Nicole Cleland</strong> and <strong>Alex Pretti</strong> attend immigration court hearings to monitor due process
                     </div>
@@ -2092,7 +1856,7 @@
                     <div class="connection-item">
                         <span class="arrow">→</span> ICE agent directly tells court observer: "You're in our domestic terrorist database"
                     </div>
-                    <div class="connection-item" style="color: #6da781;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> <strong>Result:</strong>  Constitutional right to observe courts = permanent surveillance
                     </div>
                 </div>
@@ -2114,7 +1878,7 @@
                     <div class="connection-item">
                         <span class="arrow">→</span> August 7, 2019: Coordinated raids across Mississippi
                     </div>
-                    <div class="connection-item" style="color: #6da781;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> <strong>Result:</strong>  680 workers arrested; children left stranded at schools; families destroyed
                     </div>
                 </div>
@@ -2136,7 +1900,7 @@
                     <div class="connection-item">
                         <span class="arrow">→</span> System generates "actionable intelligence" on taxpayers' locations and routines
                     </div>
-                    <div class="connection-item" style="color: #6da781;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> <strong>Result:</strong>  Tax compliance = deportation roadmap (chilling effect on future tax filing)
                     </div>
                 </div>
@@ -2158,7 +1922,7 @@
                     <div class="connection-item">
                         <span class="arrow">→</span> Parents stop seeking medical care for children to avoid detection
                     </div>
-                    <div class="connection-item" style="color: #6da781;">
+                    <div class="connection-item">
                         <span class="arrow">→</span> <strong>Result:</strong>  Public health crisis as families avoid emergency rooms and prenatal care
                     </div>
                 </div>
@@ -2167,10 +1931,10 @@
 
             <div class="info-box info-box-green">
                 <h4>The Pattern</h4>
-                <p style="color: #e0e0e0;">
+                <p>
                     Every case follows the same architecture: <strong>data collected for legitimate purposes</strong> (tax compliance, healthcare, court observation, mutual aid) → <strong>fed into Palantir's systems via IRS-NG</strong> → <strong>weaponized for surveillance and enforcement</strong> → <strong>constitutional rights chilled</strong>. 
                 </p>
-                <p style="color: #e0e0e0;">
+                <p>
                     The "evidence" standard is dystopian: <strong>Fox News segments, random Twitter posts, and living near an ICE facility</strong> are treated as intelligence. DHS agents admit to "Alex Jones-level paranoia and wild leaps" in their analysis. The infrastructure doesn't just target "criminals"—it transforms ordinary civic participation into grounds for permanent federal surveillance.
                 </p>
             </div>
@@ -2220,7 +1984,7 @@
 
         <!-- Timeline -->
         <div class="layer">
-            <h2 style="color: #e0e0e0; font-size: clamp(1.5rem, 4vw, 2rem); margin-bottom: 1rem;">Timeline: Building the Machine</h2>
+            <h2>Timeline: Building the Machine</h2>
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="year">2003</div>
@@ -2291,163 +2055,163 @@
 
         <!-- Sources & References -->
         <div class="layer">
-            <h2 style="color: #e0e0e0; font-size: clamp(1.5rem, 4vw, 2rem); margin-bottom: 1rem;">Sources &amp; References</h2>
+            <h2>Sources &amp; References</h2>
             
-            <div class="info-box" style="background: #111; border-left: 4px solid #B39DDB; padding: 1.5rem; margin-bottom: 2rem; border-radius: 4px;">
-                <p style="color: #e0e0e0;">
+            <div class="info-box info-box-purple">
+                <p>
                     This dashboard synthesizes reporting from investigative journalists, leaked government documents, federal contracts, and FOIA requests. All claims are sourced from publicly available documents or verified reporting.
                 </p>
             </div>
 
             <div class="source-grid">
                 
-                <div style="background: #111; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
+                <div class="source-card">
                     <h4>Primary Investigations</h4>
                     <ul>
                         <li>
                             <strong>Ken Klippenstein</strong> &mdash; "Feds Identify 'Leader of Antifa'" (Feb 2026)<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">Exposed IRS-NG system, 28 databases, Chandler Patey/Dustin Ragsdale/Mossy Matriarch cases</span><br/>
-                            <a href="https://www.kenklippenstein.com/" target="_blank" style="color: #B39DDB;">kenklippenstein.com</a>
+                            <span>Exposed IRS-NG system, 28 databases, Chandler Patey/Dustin Ragsdale/Mossy Matriarch cases</span><br/>
+                            <a href="https://www.kenklippenstein.com/" target="_blank">kenklippenstein.com</a>
                         </li>
                         <li>
                             <strong>Ken Klippenstein</strong> &mdash; "The Deportation Machine Comes Home" (Jan 2026)<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">Original secret watchlist investigation, Nicole Cleland case</span>
+                            <span>Original secret watchlist investigation, Nicole Cleland case</span>
                         </li>
                         <li>
                             <strong>404 Media</strong> &mdash; ELITE System Exposure (Jan 2026)<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">Revealed targeting algorithms and confidence scoring</span><br/>
-                            <a href="https://www.404media.co/" target="_blank" style="color: #B39DDB;">404media.co</a>
+                            <span>Revealed targeting algorithms and confidence scoring</span><br/>
+                            <a href="https://www.404media.co/" target="_blank">404media.co</a>
                         </li>
                         <li>
                             <strong>Alex Ellis/Subtxt Press</strong> &mdash; "The Deportation Machine Comes Home" (Jan 2026)<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">Comprehensive ICE surveillance infrastructure investigation</span><br/>
-                            <a href="https://substack.com/@subtxtpress" target="_blank" style="color: #B39DDB;">substack.com/@subtxtpress</a>
+                            <span>Comprehensive ICE surveillance infrastructure investigation</span><br/>
+                            <a href="https://substack.com/@subtxtpress" target="_blank">substack.com/@subtxtpress</a>
                         </li>
                     </ul>
                 </div>
 
-                <div style="background: #111; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
+                <div class="source-card">
                     <h4>Government Documents &amp; Contracts</h4>
                     <ul>
                         <li>
                             <strong>ImmigrationOS Contract</strong> &mdash; 70CMSD24F00000213<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">$29.9M sole-source award to Palantir (April 2025)</span><br/>
-                            <a href="https://sam.gov/" target="_blank" style="color: #B39DDB;">SAM.gov</a>
+                            <span>$29.9M sole-source award to Palantir (April 2025)</span><br/>
+                            <a href="https://sam.gov/" target="_blank">SAM.gov</a>
                         </li>
                         <li>
                             <strong>HUD-GNMA Contract</strong> &mdash; 47QTCA24D004L-86615526F00002<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">$200K demonstration contract, modified 1 day after inauguration</span>
+                            <span>$200K demonstration contract, modified 1 day after inauguration</span>
                         </li>
                         <li>
                             <strong>DHS Privacy Impact Assessment</strong> &mdash; IRS-NG System<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">Details 28 database access, first week of Trump admin (2025)</span>
+                            <span>Details 28 database access, first week of Trump admin (2025)</span>
                         </li>
                         <li>
                             <strong>NSPM-7</strong> &mdash; National Security Presidential Memorandum<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">Domestic terrorism redefinition (September 2025)</span>
+                            <span>Domestic terrorism redefinition (September 2025)</span>
                         </li>
                         <li>
                             <strong>Executive Order</strong> &mdash; "Eliminating Information Silos"<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">Cross-agency data sharing mandate (March 2025)</span>
+                            <span>Cross-agency data sharing mandate (March 2025)</span>
                         </li>
                     </ul>
                 </div>
 
-                <div style="background: #111; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
+                <div class="source-card">
                     <h4>Historical Context &amp; Background</h4>
                     <ul>
                         <li>
                             <strong>WikiLeaks Vault 7</strong> &mdash; CIA ExpressLane exposure (2017)<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">Biometric exfiltration tool, Joshua Schulte arrest</span>
+                            <span>Biometric exfiltration tool, Joshua Schulte arrest</span>
                         </li>
                         <li>
                             <strong>Mississippi Raids</strong> &mdash; ICE Operations (August 2019)<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">680 arrests using FALCON targeting</span>
+                            <span>680 arrests using FALCON targeting</span>
                         </li>
                         <li>
                             <strong>Migration 5 Alliance</strong> &mdash; Five Eyes Biometric Sharing<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">3,000 checks/year (2011) to 8M checks/year (2024)</span>
+                            <span>3,000 checks/year (2011) to 8M checks/year (2024)</span>
                         </li>
                         <li>
                             <strong>Palantir Student Boycott</strong> &mdash; 1,200+ Students Pledge (2019)<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">Never Again Action campaign against ICE contracts</span>
+                            <span>Never Again Action campaign against ICE contracts</span>
                         </li>
                     </ul>
                 </div>
 
-                <div style="background: #111; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
+                <div class="source-card">
                     <h4>Financial &amp; Accountability Reporting</h4>
                     <ul>
                         <li>
                             <strong>POGO Investigation</strong> &mdash; Stephen Miller Palantir Stock (June 2025)<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">Conflict of interest disclosure analysis</span><br/>
-                            <a href="https://www.pogo.org/" target="_blank" style="color: #B39DDB;">pogo.org</a>
+                            <span>Conflict of interest disclosure analysis</span><br/>
+                            <a href="https://www.pogo.org/" target="_blank">pogo.org</a>
                         </li>
                         <li>
                             <strong>Peter Thiel Political Spending</strong><br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">$1.25M to Trump (2016), $15M for JD Vance Senate seat (2022)</span>
+                            <span>$1.25M to Trump (2016), $15M for JD Vance Senate seat (2022)</span>
                         </li>
                         <li>
                             <strong>Palantir Stock Performance</strong><br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">200% surge following Trump election (2024-2025)</span>
+                            <span>200% surge following Trump election (2024-2025)</span>
                         </li>
                         <li>
                             <strong>In-Q-Tel Investment</strong> &mdash; CIA Venture Capital (2005)<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">Initial CIA funding of Palantir Technologies</span>
+                            <span>Initial CIA funding of Palantir Technologies</span>
                         </li>
                     </ul>
                 </div>
 
-                <div style="background: #111; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
+                <div class="source-card">
                     <h4>Policy &amp; Legal Framework</h4>
                     <ul>
                         <li>
                             <strong>IRS-ICE Data Sharing Agreement</strong> (January 2025)<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">Tax records access, 4.8M ITIN holders affected</span>
+                            <span>Tax records access, 4.8M ITIN holders affected</span>
                         </li>
                         <li>
                             <strong>HHS Medicaid Data Order</strong> (June 2025)<br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">80M+ patient records transferred to ICE</span>
+                            <span>80M+ patient records transferred to ICE</span>
                         </li>
                         <li>
                             <strong>Section 287(g) Agreements</strong><br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">Local law enforcement ICE deputization program</span>
+                            <span>Local law enforcement ICE deputization program</span>
                         </li>
                         <li>
                             <strong>Secure Communities Program</strong><br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">Automatic fingerprint-to-immigration screening in jails</span>
+                            <span>Automatic fingerprint-to-immigration screening in jails</span>
                         </li>
                     </ul>
                 </div>
 
-                <div style="background: #111; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #9575CD;">
+                <div class="source-card">
                     <h4>Additional Resources</h4>
                     <ul>
                         <li>
                             <strong>Active FOIA Tracker</strong><br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">~15 ongoing requests across JCPD, MDOC, Treasury, DOJ, DHS, IRS, ICE, Minneapolis PD</span><br/>
-                            <a href="https://docs.google.com/spreadsheets/d/103CKXPKrYh_mPyeVznY_5Ue87DJFk_nUhcNTQdgmHcQ/" target="_blank" style="color: #B39DDB;">View FOIA Tracker</a>
+                            <span>~15 ongoing requests across JCPD, MDOC, Treasury, DOJ, DHS, IRS, ICE, Minneapolis PD</span><br/>
+                            <a href="https://docs.google.com/spreadsheets/d/103CKXPKrYh_mPyeVznY_5Ue87DJFk_nUhcNTQdgmHcQ/" target="_blank">View FOIA Tracker</a>
                         </li>
                         <li>
                             <strong>Interactive Dashboards Archive</strong><br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">From Epstein's Amazon shipments to DHS surveillance infrastructure</span>
+                            <span>From Epstein's Amazon shipments to DHS surveillance infrastructure</span>
                         </li>
                         <li>
                             <strong>Subtxt Press Editorial Policies</strong><br/>
-                            <span style="color: #a0a0a0; font-size: 0.9rem;">Source protection protocols, on/off the record ground rules</span>
+                            <span>Source protection protocols, on/off the record ground rules</span>
                         </li>
                     </ul>
                 </div>
 
             </div>
 
-            <div class="info-box" style="background: #111; border-left: 4px solid #9575CD; padding: 1.5rem; margin-top: 2rem; border-radius: 4px;">
+            <div class="info-box info-box-purple">
                 <h4>About This Dashboard</h4>
-                <p style="color: #e0e0e0;">
+                <p>
                     Created by <strong>Alex Ellis/Subtxt Press</strong> as part of ongoing investigative reporting on surveillance infrastructure, extremism in law enforcement, and accountability failures. This dashboard is a living document updated as new information becomes available through FOIA requests, leaked documents, and verified reporting.
                 </p>
-                <p style="color: #a0a0a0;">
-                    <strong>Contact:</strong> For tips, corrections, or additional documentation → <a href="https://substack.com/@subtxtpress" target="_blank" style="color: #B39DDB;">Subtxt Press</a>
+                <p>
+                    <strong>Contact:</strong> For tips, corrections, or additional documentation → <a href="https://substack.com/@subtxtpress" target="_blank">Subtxt Press</a>
                 </p>
             </div>
         </div>
