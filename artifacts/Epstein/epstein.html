@@ -5,12 +5,10 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <!-- Required Info -->
   <title>Subtxt Press</title>
   <meta name="description" content="Epstein's Amazon Shipments // @subtxtpress GitHub">
   <link rel="canonical" href="https://subtxtpress.github.io/alexellis/artifacts/epstein/epstein.html">
 
-  <!-- Open Graph (Facebook, LinkedIn, etc.) -->
   <meta property="og:title" content="Epstein's Amazon Shipments // @subtxtpress GitHub">
   <meta property="og:description" content="Epstein's Amazon Shipments // @subtxtpress GitHub">
   <meta property="og:type" content="website">
@@ -20,611 +18,596 @@
   <meta property="og:image:height" content="720">
   <meta property="og:site_name" content="Subtxt Press">
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Epstein's Amazon Shipments // @subtxtpress GitHub">
   <meta name="twitter:description" content="Epstein's Amazon Shipments // @subtxtpress GitHub">
   <meta name="twitter:image" content="https://subtxtpress.github.io/alexellis/artifacts/Epstein/img/epstein-dashboard.png">
   <meta name="twitter:creator" content="@subtxtpress">
 
-  <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
-   
-    <title>Jeffrey Epstein's Amazon Shipments</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
 
-    html {
-        scroll-behavior: smooth;
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    html,
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --bg:         #0a0a0a;
+      --surface:    #111111;
+      --surface-2:  #1a1a1a;
+      --border:     rgba(255, 255, 255, 0.07);
+      --border-dim: rgba(255, 255, 255, 0.06);
+      --accent:     #c9d1d9;
+      --gold:       #fbbf24;
+      --red:        #f87171;
+      --text:       #e2e8f0;
+      --muted:      #8b949e;
+      --dim:        #484f58;
+      --radius:     10px;
+    }
+
     body {
-        max-width: 1200px;
-        margin: 0 auto;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px 16px 56px;
     }
-    
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        padding: 10px;
-        color: #e0e0e0;
-        min-height: 100vh;
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
     }
-    
-    .container {
-        width: 90%;
-        margin: 0 auto;
-        width: 100%;
+
+    /* ── Header ── */
+    .header {
+      border-bottom: 1px solid var(--border-dim);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
     }
-    
-    @media (min-width: 768px) {
-        body {
-            padding: 20px;
-        }
+
+    .eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 8px;
     }
-    
+
     h1 {
-        text-align: center;
-        color: white;
-        margin-bottom: 10px;
-        font-size: clamp(1.5em, 5vw, 2.5em);
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        padding: 0 10px;
+      font-size: clamp(1.35rem, 4vw, 1.9rem);
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 8px;
     }
-    
-    .subtitle {
-        text-align: center;
-        color: rgba(255,255,255,0.9);
-        margin-bottom: 20px;
-        font-size: clamp(0.9em, 3vw, 1.1em);
-        padding: 0 15px;
-        line-height: 1.4;
+
+    .subhead {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.5;
     }
-    
-    .dashboard {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr));
-        gap: 15px;
-        margin-bottom: 20px;
+
+    .subhead a { color: var(--accent); text-decoration: none; }
+    .subhead a:hover { text-decoration: underline; }
+
+    /* ── Stats ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
     }
-    
-    @media (min-width: 768px) {
-        .dashboard {
-            gap: 20px;
-        }
+
+    @media (min-width: 580px) {
+      .stats-row { grid-template-columns: repeat(4, 1fr); }
     }
-    
+
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border-dim);
+      border-top: 2px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+
+    .stat-n {
+      font-size: clamp(1.4rem, 4vw, 1.85rem);
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat-l {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    /* ── Layout grids ── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    @media (min-width: 740px) {
+      .grid-2 { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ── Cards ── */
     .card {
-        background: #0f1419;
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        transition: transform 0.3s ease;
-        border: 1px solid rgba(102, 126, 234, 0.2);
-    }
-    
-    @media (min-width: 768px) {
-        .card {
-            padding: 25px;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-        }
-    }
-    
-    .card h2 {
-        color: #7c9cff;
-        margin-bottom: 15px;
-        font-size: clamp(1.2em, 4vw, 1.5em);
-        border-bottom: 3px solid #7c9cff;
-        padding-bottom: 10px;
-    }
-    
-    .chart-container {
-        position: relative;
-        height: 250px;
-        min-height: 200px;
-    }
-    
-    @media (min-width: 768px) {
-        .chart-container {
-            height: 300px;
-        }
-    }
-    
-    .tall-chart {
-        height: 350px;
-        min-height: 300px;
-    }
-    
-    @media (min-width: 768px) {
-        .tall-chart {
-            height: 400px;
-        }
-    }
-    
-    .stat-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-top: 20px;
-    }
-    
-    @media (min-width: 480px) {
-        .stat-grid {
-            gap: 15px;
-        }
-    }
-    
-    .stat-box {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 15px;
-        border-radius: 10px;
-        text-align: center;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    }
-    
-    @media (min-width: 768px) {
-        .stat-box {
-            padding: 20px;
-        }
-    }
-    
-    .stat-number {
-        font-size: clamp(1.5em, 5vw, 2em);
-        font-weight: bold;
-        margin-bottom: 5px;
-    }
-    
-    .stat-label {
-        font-size: clamp(0.8em, 2.5vw, 0.9em);
-        opacity: 0.9;
-    }
-    
-    .insights {
-        background: #0f1419;
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        margin-top: 20px;
-        border: 1px solid rgba(102, 126, 234, 0.2);
-    }
-    
-    @media (min-width: 768px) {
-        .insights {
-            padding: 25px;
-        }
-    }
-    
-    .insights h2 {
-        color: #7c9cff;
-        margin-bottom: 15px;
-        font-size: clamp(1.2em, 4vw, 1.5em);
-    }
-    
-    .insight-item {
-        background: #1a1f2e;
-        padding: 12px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-        border-left: 4px solid #7c9cff;
-        color: #e0e0e0;
-        font-size: clamp(0.85em, 2.5vw, 0.95em);
-        line-height: 1.5;
-    }
-    
-    @media (min-width: 768px) {
-        .insight-item {
-            padding: 15px;
-        }
-    }
-    
-    .insight-item strong {
-        color: #a78bfa;
-        display: block;
-        margin-bottom: 3px;
-    }
-    
-    @media (min-width: 768px) {
-        .insight-item strong {
-            display: inline;
-            margin-bottom: 0;
-        }
-    }
-    
-    .filter-buttons {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 15px;
-        flex-wrap: wrap;
-    }
-    
-    .filter-btn {
-        padding: 8px 16px;
-        border: none;
-        border-radius: 20px;
-        background: #1a1f2e;
-        color: #e0e0e0;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        border: 1px solid rgba(102, 126, 234, 0.3);
-    }
-    
-    .filter-btn:hover {
-        background: #667eea;
-        color: white;
-        border-color: #667eea;
-    }
-    
-    .filter-btn.active {
-        background: #764ba2;
-        color: white;
-        border-color: #764ba2;
+      background: var(--surface);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius);
+      padding: 18px 20px 20px;
     }
 
-    .link { 
-        color: #a78bfa;
-        font-weight: bold;
+    .card-title {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
     }
-</style>
- 
+
+    .chart-wrap { position: relative; }
+
+    /* ── Notable items ── */
+    .notable {
+      background: var(--surface);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .notable-head {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-dim);
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .notable-title {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .notable-body {
+      padding: 14px 16px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    @media (min-width: 740px) {
+      .notable-body { grid-template-columns: 1fr 1fr; }
+    }
+
+    .insight {
+      background: var(--surface-2);
+      border-radius: 8px;
+      padding: 13px 15px;
+      border: 1px solid var(--border-dim);
+      border-top: 2px solid var(--accent);
+    }
+
+    .insight.tag-s-top { border-top-color: #f87171; }
+    .insight.tag-u-top { border-top-color: #fbbf24; }
+    .insight.tag-a-top { border-top-color: #a78bfa; }
+    .insight.tag-c-top { border-top-color: #34d399; }
+    .insight.tag-b-top { border-top-color: #38bdf8; }
+    .insight.tag-k-top { border-top-color: #fb923c; }
+
+    .insight-top {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 5px;
+    }
+
+    .insight-top strong {
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+
+    .insight p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .tag-s { background: rgba(248,113,113,0.15); color: #f87171; }
+    .tag-u { background: rgba(251,191,36,0.15);  color: #fbbf24; }
+    .tag-a { background: rgba(167,139,250,0.15); color: #a78bfa; }
+    .tag-c { background: rgba(52,211,153,0.15);  color: #34d399; }
+    .tag-b { background: rgba(56,189,248,0.15);  color: #38bdf8; }
+    .tag-k { background: rgba(251,146,60,0.15);  color: #fb923c; }
+
+    /* ── Source strip ── */
+    .source {
+      background: var(--surface);
+      border: 1px solid var(--border-dim);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 13px 16px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .source a { color: var(--accent); text-decoration: none; }
+    .source a:hover { text-decoration: underline; }
+  </style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>📦 Epstein's Amazon Shipments Dashboard</h1>
-        <p class="subtitle">Interactive visualization of purchase patterns across multiple locations (2007-2019)</p>
+  <div class="page">
 
-    <div class="dashboard">
-        <div class="card">
-            <h2>📊 Purchase Categories</h2>
-            <div class="chart-container tall-chart">
-                <canvas id="categoriesChart"></canvas>
-            </div>
-        </div>
-        
-        <div class="card">
-            <h2>📍 Spending by Location</h2>
-            <div class="chart-container">
-                <canvas id="locationChart"></canvas>
-            </div>
-        </div>
-        
-        <div class="card">
-            <h2>🗓️ Orders Over Time</h2>
-            <div class="chart-container">
-                <canvas id="timelineChart"></canvas>
-            </div>
-        </div>
-        
-        <div class="card">
-            <h2>🧮 Key Statistics</h2>
-            <div class="stat-grid">
-                <div class="stat-box">
-                    <div class="stat-number">293</div>
-                    <div class="stat-label">Total Orders</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">$92K+</div>
-                    <div class="stat-label">Total Spent</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">6</div>
-                    <div class="stat-label">Properties</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number">2018</div>
-                    <div class="stat-label">Peak Year</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="insights">
-        <h2>🔍 Notable Patterns & Insights</h2>
-        
-        <div class="insight-item">
-            <strong>Bulk Purchasing:</strong> Frequent bulk orders of identical items &mdash; 10-20 packs of Oral-B toothbrush heads, 5-10 packs of underwear, multiple Sony WH1000XM3 headphones ($1,905 in one order for 5 units)
-        </div>
-        
-        <div class="insight-item">
-            <strong>Sleep Health Obsession:</strong> 45+ orders related to sleep apnea equipment (CPAP machines, masks from multiple brands), anti-snoring devices, and sleep aids across all properties
-        </div>
-        
-        <div class="insight-item">
-            <strong>Pool Float Collection:</strong> Extensive purchases of giant swan pool floats (some 75" size), inflatable islands, and luxury pool equipment. One order included 4-6 swan floats at once
-        </div>
-        
-        <div class="insight-item">
-            <strong>Unusual Combinations:</strong> Mixture of mundane items (basic clothing, dental care) with unusual purchases (12 ft disco mirror ball, stripper pole, surveillance cameras, prostate massager), and an Israeli Defense Forces sweatshirt 
-        </div>
-        
-        <div class="insight-item">
-            <strong>Book Selection:</strong> Purchased books on tantra, sex magic, Nabokov novels, and titles like "Investing for Dummies" 
-        </div>
-        
-        <div class="insight-item">
-            <strong>Children's Items:</strong> Baby toys, stacking toys, crib items, and school uniforms ordered to NYC and Palm Beach addresses
-        </div>
-        
-        <div class="insight-item">
-            <strong>Surveillance Equipment:</strong> Hidden cameras (1080p), Blink security camera systems, motion sensors ordered to various properties
-        </div>
-        
-        <div class="insight-item">
-            <strong>Geographic Pattern:</strong> Palm Beach property received the most shipments, followed by NYC. Private island received fewer but more specialized equipment items
-        </div>
+    <header class="header">
+      <div class="eyebrow">Subtxt Press &mdash; Investigative Report</div>
+      <h1>Jeffrey Epstein's Amazon Shipments</h1>
+      <p class="subhead">
+        654 orders shipped to 7 properties &bull; September 2007 &ndash; July 2019 &bull;
+        Source: <a href="https://docs.google.com/spreadsheets/d/1nAQSUE_bcqSwVbmfCy_wS9nYf9LBkJld_JQVW6EbD34/" target="_blank">JMail files via Dropsite News</a>
+      </p>
+    </header>
+
+    <div class="stats-row">
+      <div class="stat">
+        <div class="stat-n">654</div>
+        <div class="stat-l">Total Orders</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">$51.7K</div>
+        <div class="stat-l">Total Spent</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">7</div>
+        <div class="stat-l">Properties</div>
+      </div>
+      <div class="stat">
+        <div class="stat-n">2018</div>
+        <div class="stat-l">Peak &mdash; 283 orders</div>
+      </div>
     </div>
 
-</div>
-
-    <div class="insights">
-        <h2>📈 Spreadsheet</h2>
- <div class="insight-item"> 
-            <a class="link">JMail:</a> All listed items were found in the Jmail files on Dropsite News. The <a class="link" href="https://docs.google.com/spreadsheets/d/1nAQSUE_bcqSwVbmfCy_wS9nYf9LBkJld_JQVW6EbD34/" target="_blank">spreadsheet</a> links each listing to it's original email.
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Orders &amp; Spending by Year</div>
+        <div class="chart-wrap" style="height:230px">
+          <canvas id="timelineChart"></canvas>
         </div>
-</div>
+      </div>
 
-<script>
-    // Store chart instances
-    let categoriesChart, locationChart, timelineChart;
-    
-    // Color palette
-    const colors = ['#667eea', '#764ba2', '#ed64a6', '#ff9f40', '#4bc0c0', 
-                   '#9966ff', '#ff6384', '#36a2eb', '#ffce56'];
-    
-    // Responsive helper function
-    function isMobile() {
-        return window.innerWidth < 768;
-    }
-    
-    // Categories Chart
-    const categoriesCtx = document.getElementById('categoriesChart').getContext('2d');
-    categoriesChart = new Chart(categoriesCtx, {
-        type: 'bar',
-        data: {
-            labels: ['Clothing', 'Sleep/Health', 'Pool Equipment', 'Unusual Items', 'Bicycles', 'Fitness', 'Books', 'Surveillance', 'Baby Items'],
-            datasets: [{
-                label: 'Number of Orders',
-                data: [60, 45, 35, 25, 20, 18, 15, 12, 8],
-                backgroundColor: [
-                    'rgba(102, 126, 234, 0.8)',
-                    'rgba(118, 75, 162, 0.8)',
-                    'rgba(237, 100, 166, 0.8)',
-                    'rgba(255, 159, 64, 0.8)',
-                    'rgba(75, 192, 192, 0.8)',
-                    'rgba(153, 102, 255, 0.8)',
-                    'rgba(255, 99, 132, 0.8)',
-                    'rgba(54, 162, 235, 0.8)',
-                    'rgba(255, 206, 86, 0.8)'
-                ],
-                borderColor: [
-                    'rgba(102, 126, 234, 1)',
-                    'rgba(118, 75, 162, 1)',
-                    'rgba(237, 100, 166, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)'
-                ],
-                borderWidth: 2
-            }]
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                },
-                title: {
-                    display: false
-                },
-                tooltip: {
-                    enabled: true,
-                    padding: 12,
-                    titleFont: {
-                        size: 14
-                    },
-                    bodyFont: {
-                        size: 13
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    beginAtZero: true,
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
-                    },
-                    ticks: {
-                        color: '#e0e0e0',
-                        font: {
-                            size: window.innerWidth < 768 ? 10 : 12
-                        }
-                    }
-                },
-                y: {
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        color: '#e0e0e0',
-                        font: {
-                            size: window.innerWidth < 768 ? 9 : 11
-                        }
-                    }
-                }
+      <div class="card">
+        <div class="card-title">Spending by Location</div>
+        <div class="chart-wrap" style="height:230px">
+          <canvas id="locationChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title">Purchase Categories (estimated)</div>
+      <div class="chart-wrap" style="height:310px">
+        <canvas id="categoriesChart"></canvas>
+      </div>
+    </div>
+
+    <div class="notable">
+      <div class="notable-head">
+        <span class="notable-title">Notable Patterns &amp; Insights</span>
+      </div>
+      <div class="notable-body">
+
+        <div class="insight tag-k-top">
+          <div class="insight-top">
+            <span class="tag tag-k">Bulk</span>
+            <strong>Bulk Purchasing</strong>
+          </div>
+          <p>Frequent multi-unit orders &mdash; 5&times; Sony WH-1000XM3 headphones ($1,905 in one order), 8&times; SENSO Bluetooth headphones, 10&ndash;20 packs of Oral-B toothbrush heads, 5&ndash;10 packs of underwear, and 4&ndash;6 giant swan pool floats at once.</p>
+        </div>
+
+        <div class="insight tag-u-top">
+          <div class="insight-top">
+            <span class="tag tag-u">Unusual</span>
+            <strong>Sleep &amp; Health Obsession</strong>
+          </div>
+          <p>45+ orders related to sleep apnea &mdash; CPAP machines, masks from multiple brands (Fisher &amp; Paykel, Respironics, Vogvigo), CPAP hoses, and humidifiers. Separately, 4+ orders of anti-snoring devices across multiple brands shipped to all properties.</p>
+        </div>
+
+        <div class="insight tag-b-top">
+          <div class="insight-top">
+            <span class="tag tag-b">Books</span>
+            <strong>Book Selection</strong>
+          </div>
+          <p><em>Filthy Rich</em> &mdash; a book about his own victims &mdash; purchased 4 separate times. Other titles: <em>Secrets of Western Tantra</em>, <em>Modern Sex Magick</em>, <em>Ecstasy Through Tantra</em>, <em>Nobody Likes a Cockblock</em>, <em>Room at the Topless</em>, <em>Man from Orgy</em>, Nabokov novels, and <em>Stock Investing for Dummies</em>.</p>
+        </div>
+
+        <div class="insight tag-c-top">
+          <div class="insight-top">
+            <span class="tag tag-c">Children</span>
+            <strong>Children&rsquo;s Items</strong>
+          </div>
+          <p>Baby crib toys, stacking toys, and infant rattles ordered to NYC and Palm Beach addresses. Girls&rsquo; school uniforms in multiple sizes (Cherokee, generic brands) shipped to the same residential properties.</p>
+        </div>
+
+        <div class="insight tag-s-top">
+          <div class="insight-top">
+            <span class="tag tag-s">Surveillance</span>
+            <strong>Surveillance Equipment</strong>
+          </div>
+          <p>Hidden cameras (FREDI 1080p covert), 2&times; Blink XT home security camera systems, multiple URPOWER motion sensors, and a HWC Police Security Private Property sign ordered across various properties.</p>
+        </div>
+
+        <div class="insight tag-a-top">
+          <div class="insight-top">
+            <span class="tag tag-a">Adult</span>
+            <strong>Unusual Combinations</strong>
+          </div>
+          <p>Portable exotic stripper spinning pole, prostate massager, clitoral device, 12&Prime; disco mirror ball, Israel Defense Forces sweatshirt, adult FBI costume, wedding dress (size 6), vaginal tightening cream, saliva hormone test kit, and fake rubber cockroaches.</p>
+        </div>
+
+        <div class="insight tag-k-top">
+          <div class="insight-top">
+            <span class="tag tag-k">Bulk</span>
+            <strong>Pool Float Collection</strong>
+          </div>
+          <p>Extensive purchases of giant swan pool floats (75&Prime; size) ordered to multiple properties including the private island. One order included 4&ndash;6 swan floats at once. Also: inflatable islands, Swimline products, and luxury water sports equipment.</p>
+        </div>
+
+        <div class="insight tag-u-top">
+          <div class="insight-top">
+            <span class="tag tag-u">Unusual</span>
+            <strong>Geographic Pattern</strong>
+          </div>
+          <p>Palm Beach (El Brillo Way) and NYC (9 E 71st St) together account for 97% of spending. The private island (Little St. James) received fewer but more specialized shipments. Paris and New Mexico together totaled under $320.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="source">
+      <strong>Source:</strong> All listed items were found in the JMail files published by
+      <a href="https://dropsiteusa.com" target="_blank">Dropsite News</a>.
+      The <a href="https://docs.google.com/spreadsheets/d/1nAQSUE_bcqSwVbmfCy_wS9nYf9LBkJld_JQVW6EbD34/" target="_blank">full spreadsheet</a>
+      links each listing to its original email.
+    </div>
+
+  </div>
+
+  <script>
+    const ACCENT   = '#38bdf8';
+    const GOLD     = '#fbbf24';
+    const MUTED    = '#8b949e';
+    const GRID     = 'rgba(255,255,255,0.06)';
+    const FONT     = { family: "'Segoe UI', system-ui, sans-serif" };
+    const TOOLTIP  = {
+      backgroundColor: '#1a1a1a',
+      borderColor: 'rgba(255,255,255,0.1)',
+      borderWidth: 1,
+      titleColor: '#e2e8f0',
+      bodyColor: '#8b949e',
+      padding: 12,
+      cornerRadius: 6,
+    };
+
+    // Timeline: bars = orders, line = spending
+    new Chart(document.getElementById('timelineChart'), {
+      type: 'bar',
+      data: {
+        labels: ['2007','2014','2015','2016','2017','2018','2019'],
+        datasets: [
+          {
+            type: 'bar',
+            label: 'Orders',
+            data: [14, 10, 19, 72, 189, 283, 67],
+            backgroundColor: 'rgba(56,189,248,0.22)',
+            borderColor: ACCENT,
+            borderWidth: 1,
+            borderRadius: 3,
+            yAxisID: 'yO',
+            order: 2,
+          },
+          {
+            type: 'line',
+            label: 'Spent ($)',
+            data: [200, 2767, 901, 6049, 14212, 19696, 7929],
+            borderColor: GOLD,
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            pointRadius: 4,
+            pointBackgroundColor: GOLD,
+            pointBorderColor: '#0a0a0a',
+            pointBorderWidth: 2,
+            tension: 0.3,
+            yAxisID: 'yS',
+            order: 1,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { labels: { color: MUTED, font: FONT, boxWidth: 11, padding: 14 } },
+          tooltip: {
+            ...TOOLTIP,
+            callbacks: {
+              label: ctx => ctx.dataset.label === 'Spent ($)'
+                ? ` $${ctx.parsed.y.toLocaleString()}`
+                : ` ${ctx.parsed.y} orders`
             }
+          }
+        },
+        scales: {
+          yO: {
+            type: 'linear', position: 'left', beginAtZero: true,
+            grid: { color: GRID },
+            ticks: { color: MUTED, font: FONT }
+          },
+          yS: {
+            type: 'linear', position: 'right', beginAtZero: true,
+            grid: { display: false },
+            ticks: {
+              color: GOLD, font: FONT,
+              callback: v => '$' + (v >= 1000 ? (v/1000).toFixed(0)+'k' : v)
+            }
+          },
+          x: {
+            grid: { display: false },
+            ticks: { color: MUTED, font: FONT }
+          }
         }
+      }
     });
 
-    // Location Chart
-    const locationCtx = document.getElementById('locationChart').getContext('2d');
-    locationChart = new Chart(locationCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Palm Beach', 'NYC Residence', 'Private Island', 'Yacht Harbor', 'New Mexico Ranch', 'Paris'],
-            datasets: [{
-                data: [45000, 35000, 8000, 2000, 1500, 500],
-                backgroundColor: [
-                    'rgba(102, 126, 234, 0.8)',
-                    'rgba(118, 75, 162, 0.8)',
-                    'rgba(237, 100, 166, 0.8)',
-                    'rgba(255, 159, 64, 0.8)',
-                    'rgba(75, 192, 192, 0.8)',
-                    'rgba(255, 206, 86, 0.8)'
-                ],
-                borderWidth: 3,
-                borderColor: 'white'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: window.innerWidth < 768 ? 'bottom' : 'bottom',
-                    labels: {
-                        color: '#e0e0e0',
-                        padding: window.innerWidth < 768 ? 8 : 10,
-                        font: {
-                            size: window.innerWidth < 768 ? 10 : 12
-                        },
-                        boxWidth: window.innerWidth < 768 ? 15 : 20
-                    }
-                },
-                tooltip: {
-                    enabled: true,
-                    padding: 12,
-                    titleFont: {
-                        size: 14
-                    },
-                    bodyFont: {
-                        size: 13
-                    },
-                    callbacks: {
-                        label: function(context) {
-                            return context.label + ': $' + context.parsed.toLocaleString();
-                        }
-                    }
-                }
-            },
-            layout: {
-                padding: window.innerWidth < 768 ? 5 : 10
-            }
+    // Location donut
+    new Chart(document.getElementById('locationChart'), {
+      type: 'doughnut',
+      data: {
+        labels: [
+          'NYC — 9 E 71st St',
+          'Palm Beach — El Brillo Way',
+          'Private Island — St. James',
+          'Yacht Harbor',
+          'New Mexico Ranch',
+          'Paris — Ave Foch'
+        ],
+        datasets: [{
+          data: [23670, 24268, 2655, 502, 179, 136],
+          backgroundColor: [
+            'rgba(56,189,248,0.8)',
+            'rgba(251,191,36,0.8)',
+            'rgba(167,139,250,0.8)',
+            'rgba(52,211,153,0.8)',
+            'rgba(248,113,113,0.8)',
+            'rgba(251,146,60,0.8)',
+          ],
+          borderColor: '#111111',
+          borderWidth: 2,
+          hoverOffset: 6,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '60%',
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: { color: MUTED, font: { ...FONT, size: 11 }, padding: 9, boxWidth: 11 }
+          },
+          tooltip: {
+            ...TOOLTIP,
+            callbacks: { label: ctx => ` $${ctx.parsed.toLocaleString()}` }
+          }
         }
+      }
     });
 
-    // Timeline Chart
-    const timelineCtx = document.getElementById('timelineChart').getContext('2d');
-    timelineChart = new Chart(timelineCtx, {
-        type: 'line',
-        data: {
-            labels: ['2007', '2014', '2015', '2016', '2017', '2018', '2019'],
-            datasets: [{
-                label: 'Number of Orders',
-                data: [5, 8, 15, 25, 85, 120, 35],
-                borderColor: 'rgba(102, 126, 234, 1)',
-                backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                tension: 0.4,
-                fill: true,
-                pointRadius: 6,
-                pointHoverRadius: 8,
-                pointBackgroundColor: 'rgba(102, 126, 234, 1)',
-                pointBorderColor: 'white',
-                pointBorderWidth: 2
-            }]
+    // Categories
+    new Chart(document.getElementById('categoriesChart'), {
+      type: 'bar',
+      data: {
+        labels: [
+          "Men's Clothing",
+          'Home Decor / Rugs',
+          'Health & Supplements',
+          'Sleep / CPAP / Anti-Snoring',
+          'Electronics & Tech',
+          'Books',
+          "Women's Clothing",
+          'Pool & Water Sports',
+          'Bikes & Fitness',
+          'Food & Snacks',
+          "Children's Items",
+          'Surveillance / Cameras',
+          'Adult / Unusual',
+        ],
+        datasets: [{
+          label: 'Est. orders',
+          data: [58, 46, 38, 24, 22, 22, 20, 18, 16, 14, 11, 9, 8],
+          backgroundColor: [
+            'rgba(56,189,248,0.75)',
+            'rgba(56,189,248,0.62)',
+            'rgba(56,189,248,0.50)',
+            'rgba(56,189,248,0.38)',
+            'rgba(251,191,36,0.75)',
+            'rgba(251,191,36,0.62)',
+            'rgba(167,139,250,0.75)',
+            'rgba(167,139,250,0.62)',
+            'rgba(52,211,153,0.72)',
+            'rgba(52,211,153,0.58)',
+            'rgba(52,211,153,0.44)',
+            'rgba(248,113,113,0.8)',
+            'rgba(248,113,113,0.65)',
+          ],
+          borderWidth: 0,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            ...TOOLTIP,
+            callbacks: { label: ctx => ` ~${ctx.parsed.x} items` }
+          }
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    enabled: true,
-                    padding: 12,
-                    titleFont: {
-                        size: 14
-                    },
-                    bodyFont: {
-                        size: 13
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.1)'
-                    },
-                    ticks: {
-                        color: '#e0e0e0',
-                        font: {
-                            size: window.innerWidth < 768 ? 10 : 12
-                        }
-                    }
-                },
-                x: {
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        color: '#e0e0e0',
-                        font: {
-                            size: window.innerWidth < 768 ? 10 : 12
-                        },
-                        maxRotation: window.innerWidth < 768 ? 45 : 0,
-                        minRotation: window.innerWidth < 768 ? 45 : 0
-                    }
-                }
-            },
-            elements: {
-                point: {
-                    radius: window.innerWidth < 768 ? 4 : 6,
-                    hoverRadius: window.innerWidth < 768 ? 6 : 8
-                }
-            }
+        scales: {
+          x: {
+            beginAtZero: true,
+            grid: { color: GRID },
+            ticks: { color: MUTED, font: FONT }
+          },
+          y: {
+            grid: { display: false },
+            ticks: { color: MUTED, font: { ...FONT, size: 11 } }
+          }
         }
+      }
     });
-    
-    // Handle window resize for responsive updates
-    let resizeTimer;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
-            // Update charts on resize
-            if (categoriesChart) categoriesChart.resize();
-            if (locationChart) locationChart.resize();
-            if (timelineChart) timelineChart.resize();
-        }, 250);
-    });
-    
-    // Ensure charts render properly on load
-    window.addEventListener('load', function() {
-        setTimeout(function() {
-            if (categoriesChart) categoriesChart.resize();
-            if (locationChart) locationChart.resize();
-            if (timelineChart) timelineChart.resize();
-        }, 100);
-    });
-</script>
+  </script>
 
 </body>
 </html>
