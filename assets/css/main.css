@@ -234,7 +234,7 @@ h6 {
   background-color: color-mix(in srgb, var(--accent-color) 90%, white 15%);
 }
 
-.artifact-wrapper {
+.portfolio-wrapper {
   width: 95%;
   margin: auto;
   padding: 10% 0;
