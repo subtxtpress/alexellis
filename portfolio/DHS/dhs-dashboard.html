@@ -59,7 +59,8 @@
     /* ─── PALETTE 3 — MindfulPalettes No.168 ─── */
     :root {
       --p-white:   #F5F5F5;
-      --p-cream:   #F4E5C4;
+      /*--p-cream:   #F4E5C4;*/
+      --p-cream: #ebe2cd;
       --p-rust:    #C04E01;
       --p-silver:  #D8DADB;
       --p-teal:    #12403C;
@@ -71,7 +72,8 @@
 
       --text-pure:      #F5F5F5;
       --text-secondary: #D8DADB;
-      --text-label:     #F4E5C4;
+      /*--text-label:     #F4E5C4;*/
+      --text-label: #ebe2cd;
       --text-muted:     rgba(216, 218, 219, 0.50);
 
       --accent:         #C04E01;
@@ -474,6 +476,7 @@
       gap: 1rem;
     }
     .flip-wrap {
+      -webkit-perspective: 900px;
       perspective: 900px;
       width: 200px;
       height: 150px;
@@ -484,6 +487,7 @@
       width: 100%; height: 100%;
       position: relative;
       transition: transform 0.48s cubic-bezier(0.4, 0, 0.2, 1);
+      -webkit-transform-style: preserve-3d;
       transform-style: preserve-3d;
     }
     .flip-wrap:hover .flip-inner,
@@ -902,15 +906,35 @@
       .main-container { padding: 1.5rem 1.25rem 4rem; }
       .layer-section { padding: 1.5rem; border-radius: 8px; }
       .card-grid { grid-template-columns: 1fr; }
-      .flip-grid { justify-content: center; }
-      .flip-wrap { width: 160px; height: 135px; }
+      .flip-grid { flex-direction: column; align-items: stretch; }
+      .flip-wrap { width: 100%; height: 160px; }
       .stat-strip { grid-template-columns: repeat(2, 1fr); }
       .stat-card { border-right: none; border-bottom: 1px solid var(--border-mid); }
       .stat-card:nth-child(odd) { border-right: 1px solid var(--border-mid); }
       .net-row { flex-direction: column; }
-      .net-arr { transform: rotate(90deg); padding: 0.4rem; align-self: center; }
+      .net-node { text-align: center; }
+      .net-arr {
+        transform: none;
+        align-self: center;
+        padding: 0.2rem 0;
+        border: none;
+        font-size: 0;
+        line-height: 1;
+      }
+      .net-arr::after {
+        content: '↓';
+        font-size: 0.9rem;
+        display: block;
+        line-height: 1;
+        background: linear-gradient(to bottom, var(--p-white), var(--p-teal));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
       .db-grid { grid-template-columns: 1fr; }
       .timeline-wrap { padding-left: 1.5rem; }
+      .tl-item::before { left: -1.5rem; width: 1.5rem; }
+      .tl-item::after { top: 1.375rem; transform: none; }
     }
     @media (max-width: 480px) {
       .page-header { padding: 1.5rem 0; }
@@ -926,6 +950,17 @@
     }
     @media (hover: none) and (pointer: coarse) {
       .flip-wrap:hover .flip-inner { transform: none; }
+      /* Re-assert is-flipped after the hover reset so click/tap still works */
+      .flip-wrap.is-flipped .flip-inner { transform: rotateY(180deg); }
+      .flip-hint { visibility: hidden; }
+      .flip-hint::after {
+        content: 'Tap to reveal →';
+        visibility: visible;
+        font-size: 0.5rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
     }
   </style>
 </head>
