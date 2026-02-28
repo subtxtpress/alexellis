@@ -499,9 +499,10 @@ section,
   background-color: var(--background-color);
   padding: 60px 0;
   overflow: clip;
-  margin-bottom: -5%;
 }
-
+.index-section {
+  margin-bottom: -10%;
+}
 /*--------------------------------------------------------------
 # Global Section Titles
 --------------------------------------------------------------*/
