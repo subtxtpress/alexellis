@@ -1,22 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <!-- Background — near-black with rounded corners -->
-  <rect width="512" height="512" rx="72" fill="#111111"/>
+  <defs>
+    <linearGradient id="g03" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#D8DADB"/>
+      <stop offset="100%" stop-color="#C04E01"/>
+    </linearGradient>
+  </defs>
 
-  <!--
-    Eye / almond shape — two quadratic béziers.
-    Corners at (97,256) and (415,256).
-    Control points doubled from the actual peak so Q-bezier
-    midpoint lands at the intended peak height (±67 px from centre).
-    Upper arc control: (256, 122)  →  lower arc control: (256, 390)
-  -->
-  <path d="M 97,256 Q 256,122 415,256 Q 256,390 97,256 Z" fill="#f7f4ef"/>
+  <!-- Background — navy -->
+  <rect width="512" height="512" rx="72" fill="#060B14"/>
 
-  <!-- Iris — red accent -->
-  <circle cx="256" cy="256" r="53" fill="#c0392b"/>
+  <!-- Eye almond — cream -->
+  <path d="M 97,256 Q 256,122 415,256 Q 256,390 97,256 Z" fill="#F4E5C4"/>
 
-  <!-- Pupil — dark -->
-  <circle cx="256" cy="256" r="22" fill="#111111"/>
+  <!-- Iris — G03 gradient -->
+  <circle cx="256" cy="256" r="53" fill="url(#g03)"/>
 
-  <!-- Catchlight glint — upper-left -->
-  <circle cx="247" cy="247" r="8" fill="#f7f4ef" opacity="0.90"/>
+  <!-- Pupil — navy -->
+  <circle cx="256" cy="256" r="22" fill="#060B14"/>
+
+  <!-- Catchlight glint -->
+  <circle cx="247" cy="247" r="8" fill="#F5F5F5" opacity="0.90"/>
 </svg>

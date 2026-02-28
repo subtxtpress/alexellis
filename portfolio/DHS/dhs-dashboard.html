@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +8,7 @@
   <meta name="description" content="Interactive dashboard mapping ICE's secret watchlists, Palantir's deportation machine and the network of surveillance systems tracking millions of Americans.">
   <meta name="author" content="Subtxt Press">
   <meta name="robots" content="index, follow">
-  <meta name="theme-color" content="#111111">
-  <meta name="msapplication-TileColor" content="#111111">
+  <meta name="theme-color" content="#060B14">
   <link rel="canonical" href="https://subtxtpress.github.io/home/portfolio/DHS/dhs-dashboard.html">
 
   <!-- Open Graph -->
@@ -42,956 +40,7 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="../assets/vendor/aos/aos.css" rel="stylesheet">
-  <link href="../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
-  <link href="../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
-
-  <!-- Main CSS File -->
-  <link href="../assets/css/main.css" rel="stylesheet">
-    
-    <style>
-        :root {
-            /* Surfaces — warm paper light mode */
-            --surface-base:    #f7f4ef;
-            --surface-1:       #ffffff;
-            --surface-2:       #f0ece5;
-            --surface-3:       #e8e3db;
-            --surface-hover:   #ede9e1;
-
-            /* Accent — ProPublica red for active states */
-            --accent:          #c0392b;
-            --accent-dim:      rgba(192, 57, 43, 0.08);
-
-            /* Status */
-            --alert-red:       #c0392b;
-            --alert-red-dim:   rgba(192, 57, 43, 0.07);
-            --confirm-green:   #2d6a4a;
-            --confirm-dim:     rgba(45, 106, 74, 0.08);
-
-            /* Text */
-            --text-primary:    #111111;
-            --text-secondary:  #333333;
-            --text-muted:      #666666;
-            --text-dim:        #999999;
-
-            /* Borders */
-            --border-subtle:   rgba(0, 0, 0, 0.07);
-            --border-mid:      rgba(0, 0, 0, 0.13);
-            --border-strong:   rgba(0, 0, 0, 0.25);
-
-            /* Accent border */
-            --border-accent:   rgba(192, 57, 43, 0.35);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--surface-base);
-            color: var(--text-secondary);
-            overflow-x: hidden;
-            min-height: 100vh;
-            font-size: 16px;
-            line-height: 1.75;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            font-feature-settings: "kern" 1, "liga" 1;
-        }
-
-        /* ─── HEADER ─── */
-        .header {
-            background: var(--surface-1);
-            padding: 4rem 0 3rem;
-            text-align: left;
-            border-bottom: 3px solid var(--text-primary);
-        }
-
-        .header-inner {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .header-eyebrow {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.6875rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 1.25rem;
-            font-weight: 400;
-        }
-
-        .header h1 {
-            font-family: 'Barlow Condensed', 'DM Sans', sans-serif;
-            font-size: clamp(3rem, 7vw, 5.5rem);
-            /*font-size: 4rem;*/
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            text-transform: uppercase;
-            line-height: 0.95;
-            margin-bottom: 1.5rem;
-            color: var(--text-primary);
-        }
-
-        .header p {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 1.0625rem;
-            font-weight: 400;
-            color: var(--text-muted);
-            max-width: 60ch;
-            line-height: 1.65;
-            border-left: 3px solid var(--accent);
-            padding-left: 1.25rem;
-        }
-
-        /* ─── CONTROLS / NAV ─── */
-        .controls-wrap {
-            background: var(--surface-1);
-            border-bottom: 1px solid var(--border-mid);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .controls {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0;
-            flex-wrap: wrap;
-            overflow-x: auto;
-        }
-
-        .btn {
-            background: transparent;
-            color: var(--text-muted);
-            border: none;
-            border-bottom: 2px solid transparent;
-            padding: 0.875rem 1rem;
-            cursor: pointer;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.8125rem;
-            font-weight: 500;
-            letter-spacing: 0.01em;
-            transition: color 0.15s ease, border-bottom-color 0.15s ease;
-            white-space: nowrap;
-            border-radius: 0;
-        }
-
-        .btn:hover {
-            color: var(--text-primary);
-            background: transparent;
-        }
-
-        .btn.active {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-        }
-
-        .btn:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: -2px;
-        }
-
-        /* ─── LAYOUT ─── */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2.5rem 2rem 5rem;
-        }
-
-        /* ─── STAT STRIP ─── */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
-            gap: 0;
-            margin: 0 0 3rem;
-            border: 1px solid var(--border-mid);
-            border-top: 3px solid var(--text-primary);
-        }
-
-        .stat-card {
-            padding: 2rem 1.5rem;
-            text-align: left;
-            border-right: 1px solid var(--border-mid);
-            background: var(--surface-1);
-            position: relative;
-        }
-
-        .stat-card:last-child {
-            border-right: none;
-        }
-
-        .stat-number {
-            font-family: 'Barlow Condensed', 'DM Sans', sans-serif;
-            font-size: clamp(2.25rem, 5vw, 3.5rem);
-            font-weight: 700;
-            color: var(--text-primary);
-            line-height: 1;
-            margin-bottom: 0.5rem;
-            letter-spacing: 0.01em;
-        }
-
-        .stat-label {
-            font-family: 'IBM Plex Mono', monospace;
-            color: var(--text-muted);
-            font-size: 0.6875rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            font-weight: 400;
-            line-height: 1.4;
-        }
-
-        /* ─── LAYER SECTIONS ─── */
-        .layer {
-            margin: 0 0 2px;
-            padding: 2.5rem;
-            background: var(--surface-1);
-            border: 1px solid var(--border-mid);
-            border-left: 4px solid var(--text-primary);
-        }
-
-        .layer-header {
-            display: flex;
-            align-items: baseline;
-            gap: 1.25rem;
-            margin-bottom: 2rem;
-            cursor: pointer;
-        }
-
-        .layer-number {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.6875rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            letter-spacing: 0.12em;
-            flex-shrink: 0;
-            padding-top: 0.2em;
-        }
-
-        .layer-title {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .layer-title h2 {
-            font-family: 'Barlow Condensed', 'DM Sans', sans-serif;
-            font-size: clamp(1.5rem, 3.5vw, 2.25rem);
-            color: var(--text-primary);
-            margin-bottom: 0.375rem;
-            font-weight: 700;
-            letter-spacing: 0.01em;
-            text-transform: uppercase;
-            line-height: 1.1;
-        }
-
-        .layer-title p {
-            font-family: 'DM Sans', sans-serif;
-            color: var(--text-muted);
-            font-size: 0.9375rem;
-            line-height: 1.5;
-        }
-
-        /* ─── SYSTEM CARDS ─── */
-        .systems-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-            gap: 0;
-            margin-top: 2rem;
-            border: 1px solid var(--border-mid);
-        }
-
-        .system-card {
-            background: var(--surface-1);
-            padding: 1.75rem;
-            border-right: 1px solid var(--border-mid);
-            border-bottom: 1px solid var(--border-mid);
-            border-top: 3px solid transparent;
-            transition: background 0.15s ease, border-top-color 0.15s ease;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .system-card:hover {
-            background: var(--surface-2);
-            border-top-color: var(--accent);
-        }
-
-        .system-card h3 {
-            font-family: 'DM Sans', sans-serif;
-            color: var(--text-primary);
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            margin-bottom: 0.25rem;
-            line-height: 1.25;
-        }
-
-        .system-card .function {
-            font-family: 'IBM Plex Mono', monospace;
-            color: var(--text-muted);
-            font-size: 0.6875rem;
-            font-weight: 400;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            margin-bottom: 1.25rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border-mid);
-        }
-
-        .system-card .capabilities {
-            font-family: 'DM Sans', sans-serif;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            line-height: 1.65;
-        }
-
-        .system-card .capabilities ul {
-            padding-left: 1.25rem;
-        }
-
-        .system-card .capabilities li {
-            margin-bottom: 0.3rem;
-            color: var(--text-secondary);
-        }
-
-        /* ─── TAGS ─── */
-        .tag {
-            display: inline-block;
-            color: var(--text-muted);
-            padding: 0.15rem 0.4rem;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.6rem;
-            font-weight: 400;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            margin-right: 0.35rem;
-            margin-top: 0.625rem;
-            border: 1px solid var(--border-mid);
-            background: var(--surface-2);
-            cursor: default;
-        }
-
-        /* ─── INFO BOXES ─── */
-        .info-box {
-            padding: 1.75rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.7;
-        }
-
-        .info-box h4 {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.6875rem;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            font-weight: 400;
-            margin-bottom: 1rem;
-        }
-
-        .info-box p {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.9375rem;
-            line-height: 1.75;
-            margin-bottom: 0.6rem;
-            color: var(--text-secondary);
-        }
-
-        .info-box ul {
-            font-family: 'DM Sans', sans-serif;
-            margin: 0;
-            padding-left: 1.5rem;
-        }
-
-        .info-box li {
-            font-size: 0.9375rem;
-            line-height: 1.75;
-            margin-bottom: 0.4rem;
-            color: var(--text-secondary);
-        }
-
-        .info-box-purple {
-            background: var(--surface-2);
-            border-left: 3px solid var(--border-strong);
-        }
-
-        .info-box-purple h4 {
-            color: var(--text-muted);
-        }
-
-        .info-box-green {
-            background: var(--confirm-dim);
-            border-left: 3px solid var(--confirm-green);
-        }
-
-        .info-box-green h4 {
-            color: var(--confirm-green);
-        }
-
-        .info-box-red {
-            background: var(--alert-red-dim);
-            border-left: 3px solid var(--alert-red);
-        }
-
-        .info-box-red h4 {
-            color: var(--alert-red);
-        }
-
-        /* ─── DATABASE GRID ─── */
-        .database-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 0;
-            margin-top: 1.25rem;
-            border: 1px solid var(--border-mid);
-        }
-
-        .database-category {
-            background: var(--surface-1);
-            padding: 1.5rem;
-            border-right: 1px solid var(--border-mid);
-            border-bottom: 1px solid var(--border-mid);
-            transition: background 0.15s ease;
-        }
-
-        .database-category:hover {
-            background: var(--surface-2);
-        }
-
-        .database-category h5 {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.6875rem;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            font-weight: 400;
-            color: var(--text-muted);
-            margin-bottom: 0.875rem;
-        }
-
-        .database-category ul {
-            font-family: 'DM Sans', sans-serif;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            line-height: 1.7;
-            margin: 0;
-            padding-left: 1.25rem;
-        }
-
-        /* ─── SOURCE CARDS ─── */
-        .source-card {
-            background: var(--surface-2);
-            padding: 1.75rem;
-            padding-left: 2rem;
-            border: 1px solid var(--border-mid);
-            border-left: 3px solid var(--border-strong);
-        }
-
-        .source-card h4 {
-            font-family: 'IBM Plex Mono', monospace;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            font-size: 0.6875rem;
-            font-weight: 400;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-        }
-
-        .source-card ul {
-            font-family: 'DM Sans', sans-serif;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin: 0;
-            padding-left: 1.25rem;
-        }
-
-        .source-card li {
-            margin-bottom: 0.5rem;
-            font-size: 0.9375rem;
-        }
-
-        .source-card a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            border-bottom: 1px solid var(--border-mid);
-            transition: border-color 0.15s ease, color 0.15s ease;
-            padding-bottom: 1px;
-        }
-
-        .source-card a:hover {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-        }
-
-        .source-card span {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.8125rem;
-            color: var(--text-muted);
-            display: inline;
-        }
-
-        .source-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        /* ─── CASE STUDIES ─── */
-        .case-study {
-            background: var(--surface-1);
-            padding: 1.75rem;
-            margin-bottom: 1px;
-            border-left: 4px solid var(--border-mid);
-            border: 1px solid var(--border-mid);
-            border-left: 4px solid var(--border-mid);
-            transition: border-left-color 0.15s ease;
-        }
-
-        .case-study:hover {
-            border-left-color: var(--accent);
-        }
-
-        .case-study h5 {
-            font-family: 'DM Sans', sans-serif;
-            color: var(--text-primary);
-            margin-bottom: 1rem;
-            font-size: 1rem;
-            font-weight: 700;
-        }
-
-        .case-study .connection-item {
-            margin-bottom: 0.75rem;
-        }
-
-        /* ─── CONNECTIONS ─── */
-        .connections {
-            margin-top: 2rem;
-            padding: 1.75rem;
-            background: var(--surface-2);
-            border: 1px solid var(--border-mid);
-        }
-
-        .connections h4 {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.6875rem;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            font-weight: 400;
-            color: var(--text-muted);
-            margin-bottom: 1.25rem;
-        }
-
-        .connection-item {
-            margin: 0.75rem 0;
-            font-family: 'DM Sans', sans-serif;
-            color: var(--text-secondary);
-            font-size: 0.9375rem;
-            line-height: 1.65;
-        }
-
-        .connection-item .arrow {
-            color: var(--text-muted);
-            margin-right: 0.5rem;
-            font-size: 0.85em;
-            display: inline;
-        }
-
-        .arrow {
-            color: var(--text-muted);
-            margin: 0 0.5rem;
-            font-size: 0.85em;
-            flex-shrink: 0;
-        }
-
-        /* ─── ACTORS SECTION ─── */
-        .actors-section {
-            background: var(--surface-1);
-            padding: 2.5rem;
-            margin: 0 0 2px;
-            border: 1px solid var(--border-mid);
-            border-top: 3px solid var(--text-primary);
-        }
-
-        .actors-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
-            gap: 0;
-            margin-top: 2rem;
-            border: 1px solid var(--border-mid);
-        }
-
-        .actor-card {
-            background: var(--surface-1);
-            padding: 1.5rem;
-            border-right: 1px solid var(--border-mid);
-            border-bottom: 1px solid var(--border-mid);
-            border-top: 3px solid transparent;
-            transition: background 0.15s ease, border-top-color 0.15s ease;
-        }
-
-        .actor-card:hover {
-            background: var(--surface-2);
-            border-top-color: var(--accent);
-        }
-
-        .actor-card h3 {
-            font-family: 'DM Sans', sans-serif;
-            color: var(--text-primary);
-            margin-bottom: 0.2rem;
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-        }
-
-        .actor-card .role {
-            font-family: 'IBM Plex Mono', monospace;
-            color: var(--text-muted);
-            font-size: 0.6875rem;
-            font-weight: 400;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            margin-bottom: 0.875rem;
-        }
-
-        .actor-card .details {
-            font-family: 'DM Sans', sans-serif;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            line-height: 1.65;
-        }
-
-        /* ─── TIMELINE ─── */
-        .timeline {
-            position: relative;
-            padding-left: 2rem;
-            margin: 2rem 0;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--text-primary);
-        }
-
-        .timeline-item {
-            position: relative;
-            margin-bottom: 1px;
-            background: var(--surface-1);
-            padding: 1.25rem 1.5rem;
-            border: 1px solid var(--border-mid);
-            border-left: none;
-            transition: background 0.15s ease;
-        }
-
-        .timeline-item:hover {
-            background: var(--surface-2);
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: -2rem;
-            top: 1.5rem;
-            width: 1rem;
-            height: 2px;
-            background: var(--text-primary);
-        }
-
-        .timeline-item .year {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.75rem;
-            font-weight: 500;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 0.375rem;
-        }
-
-        .timeline-item .event {
-            font-family: 'DM Sans', sans-serif;
-            color: var(--text-primary);
-            line-height: 1.7;
-            font-size: 0.9375rem;
-        }
-
-        /* ─── NETWORK MAP ─── */
-        .network-map {
-            background: var(--surface-2);
-            padding: 2.5rem;
-            margin: 2.5rem 0;
-            border: 1px solid var(--border-mid);
-        }
-
-        .network-title {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.6875rem;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            font-weight: 400;
-            color: var(--text-muted);
-            margin-bottom: 2rem;
-        }
-
-        .network-connections {
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-            background: var(--border-mid);
-        }
-
-        .network-connection {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem 1.25rem;
-            background: var(--surface-1);
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            transition: background 0.15s ease;
-        }
-
-        .network-connection:hover {
-            background: var(--surface-hover);
-        }
-
-        .network-node {
-            background: var(--surface-2);
-            padding: 0.5rem 0.875rem;
-            color: var(--text-secondary);
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: clamp(0.6875rem, 1.8vw, 0.75rem);
-            font-weight: 400;
-            border: 1px solid var(--border-mid);
-            text-align: center;
-            flex: 1;
-            min-width: 120px;
-        }
-
-        .network-arrow {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            flex-shrink: 0;
-            padding: 0 0.375rem;
-        }
-
-        /* ─── UTILITY ─── */
-        .hidden {
-            display: none;
-        }
-
-        /* General heading styles */
-        .layer h2,
-        .actors-section h2 {
-            font-family: 'Barlow Condensed', 'DM Sans', sans-serif;
-            font-size: clamp(1.5rem, 3.5vw, 2.25rem);
-            font-weight: 700;
-            letter-spacing: 0.01em;
-            text-transform: uppercase;
-            color: var(--text-primary);
-            margin-bottom: 1.25rem;
-        }
-
-        /* Info box heading overrides */
-        .info-box h4 {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.6875rem;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            font-weight: 400;
-            margin-bottom: 1rem;
-        }
-
-        /* Strong tags */
-        .info-box strong,
-        .case-study strong,
-        .connection-item strong {
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-
-        /* Source grid */
-        .source-grid > div h4 {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.6875rem;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            font-weight: 400;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-        }
-
-        .source-grid > div ul {
-            font-family: 'DM Sans', sans-serif;
-            color: var(--text-secondary);
-            font-size: 0.9375rem;
-            line-height: 1.8;
-        }
-
-        .source-grid > div a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            border-bottom: 1px solid var(--border-mid);
-            transition: border-color 0.15s ease, color 0.15s ease;
-        }
-
-        .source-grid > div a:hover {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-        }
-
-        /* ─── SCROLLBAR ─── */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--surface-base);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-strong);
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-muted);
-        }
-
-        /* ─── RESPONSIVE ─── */
-        @media (max-width: 768px) {
-            .header {
-                padding: 2.5rem 1.25rem 2rem;
-            }
-
-            .header h1 {
-                font-size: 1.875rem;
-            }
-
-            .controls {
-                padding: 0 1rem;
-            }
-
-            .btn {
-                font-size: 0.75rem;
-                padding: 0.75rem 0.75rem;
-            }
-
-            .container {
-                padding: 1.5rem 1.25rem 3rem;
-            }
-
-            .layer {
-                padding: 1.5rem;
-                margin: 0 0 1.5rem;
-            }
-
-            .systems-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .actors-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-                margin-bottom: 2rem;
-            }
-
-            .stat-card {
-                border-right: none;
-                border-bottom: 1px solid var(--border-mid);
-            }
-
-            .timeline {
-                padding-left: 1.5rem;
-            }
-
-            .network-connection {
-                flex-direction: column;
-                align-items: stretch;
-            }
-
-            .network-node {
-                min-width: 100%;
-            }
-
-            .network-arrow {
-                transform: rotate(90deg);
-                align-self: center;
-            }
-
-            .source-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .database-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .actors-section {
-                padding: 1.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .stats {
-                grid-template-columns: 1fr;
-            }
-
-            .btn {
-                font-size: 0.75rem;
-                padding: 0.75rem 0.625rem;
-            }
-        }
-
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .systems-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .actors-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .stat-card:nth-child(2) {
-                border-right: none;
-            }
-        }
-
-        @media (hover: none) and (pointer: coarse) {
-            .system-card:active {
-                background: var(--surface-2);
-            }
-
-            .btn:active {
-                color: var(--accent);
-            }
-        }
-    </style>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Roboto+Condensed:wght@300;400;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -1000,1298 +49,2222 @@
     "@type": "Article",
     "headline": "ICE/DHS Surveillance Infrastructure",
     "description": "Interactive dashboard mapping ICE's secret watchlists, Palantir's deportation machine and the network of surveillance systems tracking millions of Americans.",
-    "author": {
-      "@type": "Organization",
-      "name": "Subtxt Press",
-      "url": "https://subtxtpress.github.io/home/index.html"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Subtxt Press",
-      "url": "https://subtxtpress.github.io/home/index.html"
-    },
+    "author": { "@type": "Organization", "name": "Subtxt Press", "url": "https://subtxtpress.github.io/home/index.html" },
+    "publisher": { "@type": "Organization", "name": "Subtxt Press", "url": "https://subtxtpress.github.io/home/index.html" },
     "url": "https://subtxtpress.github.io/home/portfolio/DHS/dhs-dashboard.html"
   }
   </script>
+
+  <style>
+    /* ─── PALETTE 3 — MindfulPalettes No.168 ─── */
+    :root {
+      --p-white:   #F5F5F5;
+      --p-cream:   #F4E5C4;
+      --p-rust:    #C04E01;
+      --p-silver:  #D8DADB;
+      --p-teal:    #12403C;
+      --p-navy:    #060B14;
+
+      --surface-base: #060B14;
+      --surface-1:    rgba(18, 64, 60, 0.22);
+      --surface-2:    #12403C;
+
+      --text-pure:      #F5F5F5;
+      --text-secondary: #D8DADB;
+      --text-label:     #F4E5C4;
+      --text-muted:     rgba(216, 218, 219, 0.50);
+
+      --accent:         #C04E01;
+      --accent-dim:     rgba(192, 78, 1, 0.10);
+      --accent-border:  rgba(192, 78, 1, 0.55);
+
+      --border-mid:     rgba(244, 229, 196, 0.10);
+      --border-strong:  rgba(244, 229, 196, 0.26);
+      --border-subtle:  rgba(18, 64, 60, 0.45);
+
+      --grad-dark:   linear-gradient(160deg, #060B14 0%, #12403C 100%);
+      --grad-g01:    linear-gradient(to bottom, #F5F5F5, #F4E5C4);
+      --grad-g03:    linear-gradient(to right, #D8DADB, #C04E01);
+      --grad-teal:   linear-gradient(to bottom, #F5F5F5, #12403C);
+      --grad-spine:  linear-gradient(to bottom, #F5F5F5, #F4E5C4, #D8DADB, #C04E01);
+    }
+
+    /* ─── RESET & BASE ─── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    a {
+      background: linear-gradient(to right, var(--p-white), var(--p-teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: underline;
+      text-decoration-color: rgba(18, 64, 60, 0.45);
+      transition: text-decoration-color 0.15s ease;
+    }
+    a:hover { text-decoration-color: var(--p-teal); }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--surface-base);
+      color: var(--text-secondary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ─── KEYFRAMES ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.35; }
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── PAGE HEADER ─── */
+    .page-header {
+      position: relative;
+      padding: 3rem 0 2.75rem;
+      background: var(--surface-1);
+      border-bottom: 1px solid var(--border-mid);
+      border-top: 4px solid transparent;
+      animation: fadeUp 0.5s ease 0.05s both;
+      overflow: visible;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: -4px; left: 0; right: 0;
+      height: 4px;
+      background: var(--grad-g03);
+      pointer-events: none;
+    }
+    .header-inner { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+    .header-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      color: var(--text-label);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .live-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulseDot 2s ease infinite;
+      flex-shrink: 0;
+    }
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.75rem, 4.5vw, 3rem);
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 1.05;
+      color: var(--text-secondary);
+      margin-bottom: 1.25rem;
+    }
+    .header-sub {
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      border-left: 3px solid var(--accent);
+      padding-left: 1rem;
+      max-width: 52ch;
+      line-height: 1.5;
+    }
+
+    /* ─── STICKY NAV ─── */
+    .nav-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(6, 11, 20, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-mid);
+    }
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .nav-inner::-webkit-scrollbar { display: none; }
+    .nav-btn {
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      border-bottom: 2px solid transparent;
+      position: relative;
+      padding: 0.875rem 1rem;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      transition: color 0.15s ease, background 0.15s ease, border-bottom-color 0.15s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .nav-btn:hover {
+      color: var(--text-secondary);
+      background: rgba(18, 64, 60, 0.20);
+    }
+    .nav-btn.active {
+      background: var(--grad-teal);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, var(--p-white), var(--p-teal));
+    }
+    .nav-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: -2px;
+    }
+
+    /* ─── MAIN CONTAINER ─── */
+    .main-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem 2rem 6rem;
+    }
+
+    /* ─── STAT STRIP ─── */
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+      gap: 0;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border-mid);
+      border-top: 3px solid transparent;
+      border-radius: 10px;
+      overflow: hidden;
+      background-image: var(--grad-g03);
+      background-size: 100% 3px;
+      background-repeat: no-repeat;
+      background-position: top left;
+      background-origin: border-box;
+    }
+    .stat-card {
+      padding: 2rem 1.5rem;
+      background: var(--surface-1);
+      border-right: 1px solid var(--border-mid);
+      transition: background 0.2s ease;
+      cursor: default;
+    }
+    .stat-card:last-child { border-right: none; }
+    .stat-card:hover { background: var(--surface-2); }
+    .stat-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2.25rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--text-pure);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.01em;
+    }
+    .stat-lbl {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-label);
+      line-height: 1.45;
+    }
+
+    /* ─── SECTION LABEL ─── */
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-label);
+      margin-bottom: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-mid);
+    }
+
+    /* ─── LAYER SECTIONS ─── */
+    .layer-section {
+      position: relative;
+      background: var(--surface-1);
+      border: 1px solid var(--border-mid);
+      border-radius: 12px;
+      border-top: 3px solid transparent;
+      padding: 2.5rem;
+      margin-bottom: 1.5rem;
+      overflow: visible;
+    }
+    .layer-section::before {
+      content: '';
+      position: absolute;
+      top: -3px; left: 0; right: 0;
+      height: 3px;
+      background: var(--grad-g03);
+      border-radius: 12px 12px 0 0;
+      pointer-events: none;
+    }
+    .layer-section h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-pure);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+    .layer-desc {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      border-left: 3px solid var(--accent);
+      padding-left: 1rem;
+      max-width: 60ch;
+      line-height: 1.5;
+      margin-bottom: 2rem;
+    }
+
+    /* ─── CARD GRID ─── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .card-grid-sm {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    /* ─── SYSTEM CARDS ─── */
+    .sys-card {
+      background: rgba(6, 11, 20, 0.45);
+      border: 1px solid var(--border-mid);
+      border-radius: 10px;
+      border-top: 3px solid transparent;
+      padding: 1.75rem;
+      position: relative;
+      transition: background 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+      cursor: default;
+      display: flex;
+      flex-direction: column;
+    }
+    .sys-card:hover {
+      background:
+        var(--grad-g03) top left / 100% 3px no-repeat border-box,
+        var(--surface-2);
+      border-top-color: transparent;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 0 0 1px var(--accent-border);
+    }
+    .sys-card h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-pure);
+      margin-bottom: 0.2rem;
+      letter-spacing: -0.01em;
+    }
+    .card-fn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      padding-bottom: 0.875rem;
+      border-bottom: 1px solid var(--border-mid);
+    }
+    .card-body {
+      font-size: 0.875rem;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      flex: 1;
+    }
+    .card-body ul { padding-left: 1.1rem; }
+    .card-body li { margin-bottom: 0.3rem; }
+    .card-body p { margin-bottom: 0.5rem; line-height: 1.65; }
+    .card-body strong { color: var(--text-pure); font-weight: 600; }
+
+    /* ─── TAGS ─── */
+    .tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 1.1rem; }
+    .tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.5625rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-label);
+      padding: 0.175rem 0.45rem;
+      border: 1px solid var(--border-mid);
+      border-radius: 3px;
+      background: rgba(18, 64, 60, 0.3);
+    }
+    .tag.hot {
+      color: var(--text-label);
+      border-color: var(--accent-border);
+      background: var(--accent-dim);
+    }
+    .tag.sec {
+      color: var(--p-silver);
+      border-color: rgba(216, 218, 219, 0.3);
+      background: rgba(216, 218, 219, 0.08);
+    }
+
+    /* ─── CARD ACTIONS ─── */
+    .card-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.1rem;
+      padding-top: 0.875rem;
+      border-top: 1px solid var(--border-mid);
+      align-items: center;
+    }
+    .act-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: none;
+      transition: color 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+    }
+    .act-btn.primary { color: var(--text-label); }
+    .act-btn.primary:hover { color: var(--text-pure); }
+    .act-btn.secondary { color: var(--text-muted); }
+    .act-btn.secondary:hover { color: var(--text-secondary); }
+
+    /* ─── FLIP CARDS (ACTORS) ─── */
+    .flip-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .flip-wrap {
+      perspective: 900px;
+      width: 200px;
+      height: 150px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .flip-inner {
+      width: 100%; height: 100%;
+      position: relative;
+      transition: transform 0.48s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .flip-wrap:hover .flip-inner,
+    .flip-wrap.is-flipped .flip-inner { transform: rotateY(180deg); }
+    .flip-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: 10px;
+      padding: 1.1rem;
+      border: 1px solid var(--border-mid);
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .flip-front {
+      background: rgba(6, 11, 20, 0.5);
+      border-top: 3px solid var(--p-teal);
+    }
+    .flip-back {
+      background:
+        var(--grad-g03) top left / 100% 3px no-repeat border-box,
+        var(--surface-2);
+      border-top: 3px solid transparent;
+      transform: rotateY(180deg);
+      justify-content: center;
+    }
+    .flip-name {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text-pure);
+    }
+    .flip-role {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.5625rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-label);
+    }
+    .flip-hint {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.5rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: auto;
+    }
+    .flip-detail {
+      font-size: 0.8125rem;
+      line-height: 1.55;
+      color: var(--text-secondary);
+    }
+
+    /* ─── INFO BOXES ─── */
+    .info-box {
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .info-head {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .info-box p { font-size: 0.875rem; line-height: 1.65; color: var(--text-secondary); }
+    .info-box p + p { margin-top: 0.75rem; }
+    .info-box strong { color: var(--text-pure); font-weight: 600; }
+
+    .info-alert {
+      position: relative;
+      background: var(--surface-1);
+      border: 1px solid var(--accent);
+      border-left: 3px solid transparent;
+    }
+    .info-alert::before {
+      content: '';
+      position: absolute;
+      left: -3px; top: -1px; bottom: -1px;
+      width: 3px;
+      background: linear-gradient(to bottom, #D8DADB, #C04E01);
+      border-radius: 10px 0 0 10px;
+      pointer-events: none;
+    }
+    .info-alert .info-head { color: var(--accent); }
+
+    .info-neutral {
+      position: relative;
+      background: var(--surface-1);
+      border: 1px solid #12403C;
+      border-left: 3px solid transparent;
+    }
+    .info-neutral::before {
+      content: '';
+      position: absolute;
+      left: -3px; top: -1px; bottom: -1px;
+      width: 3px;
+      background: var(--grad-teal);
+      border-radius: 10px 0 0 10px;
+      pointer-events: none;
+    }
+    .info-neutral .info-head { color: #F5F5F5; }
+
+    .info-neutral2 {
+      position: relative;
+      background: var(--surface-1);
+      border: 1px solid #12403C;
+      border-left: 3px solid transparent;
+    }
+    .info-neutral2::before {
+      content: '';
+      position: absolute;
+      left: -3px; top: -1px; bottom: -1px;
+      width: 3px;
+      background: var(--grad-teal);
+      border-radius: 10px 0 0 10px;
+      pointer-events: none;
+    }
+    .info-neutral2 .info-head { color: #F5F5F5; }
+
+    /* ─── FLOW / CONNECTIONS BOX ─── */
+    .flow-box {
+      margin-top: 1.5rem;
+      padding: 1.5rem;
+      background: rgba(6, 11, 20, 0.5);
+      border: 1px solid var(--border-mid);
+      border-radius: 8px;
+    }
+    .flow-box h4 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    .flow-item {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 0;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .flow-item:last-child { border-bottom: none; }
+    .flow-arrow {
+      margin: 0 0.375rem;
+      background: linear-gradient(to right, var(--p-white), var(--p-teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ─── DATABASE GRID (TOGGLE) ─── */
+    .db-toggle-btn {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(6, 11, 20, 0.5);
+      border: 1px solid var(--border-mid);
+      border-radius: 6px;
+      color: var(--text-label);
+      padding: 0.625rem 1rem;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .db-toggle-btn:hover {
+      background: var(--surface-2);
+      color: var(--text-pure);
+    }
+    .db-panel {
+      margin-top: 1rem;
+      padding: 1.75rem;
+      background: rgba(6, 11, 20, 0.5);
+      border: 1px solid var(--border-mid);
+      border-radius: 8px;
+    }
+    .db-panel > h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-pure);
+      margin-bottom: 0.5rem;
+    }
+    .db-panel > p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 1.25rem;
+      max-width: 72ch;
+    }
+    .db-panel > p:last-child { margin-top: 1rem; margin-bottom: 0; }
+    .db-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.875rem;
+    }
+    .db-cat {
+      padding: 1rem;
+      background: var(--surface-1);
+      border: 1px solid var(--border-mid);
+      border-radius: 8px;
+    }
+    .db-cat h5 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-label);
+      margin-bottom: 0.625rem;
+    }
+    .db-cat ul {
+      padding-left: 1rem;
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+    .db-cat li { margin-bottom: 0.25rem; }
+
+    /* ─── CASE STUDY CARDS ─── */
+    .case-detail { margin-top: 1rem; }
+    .case-step {
+      font-size: 0.8375rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      padding: 0.4rem 0 0.4rem 0.875rem;
+      border-left: 2px solid var(--border-mid);
+      margin-bottom: 0.25rem;
+    }
+    .case-step.result {
+      color: var(--text-pure);
+      border-left-color: var(--accent);
+      font-weight: 500;
+    }
+    .case-step strong { color: var(--text-pure); }
+    .case-step .arrow { color: var(--text-muted); margin-right: 0.4rem; }
+
+    /* ─── NETWORK MAP ─── */
+    .net-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .net-row {
+      display: flex;
+      align-items: stretch;
+    }
+    .net-node {
+      flex: 1;
+      padding: 1rem 1.25rem;
+      background: rgba(6, 11, 20, 0.5);
+      border: 1px solid var(--border-mid);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: clamp(0.6875rem, 1.5vw, 0.75rem);
+      color: var(--text-secondary);
+      line-height: 1.4;
+      transition: background 0.2s ease;
+    }
+    .net-node:hover { background: var(--surface-2); }
+    .net-arr {
+      display: flex;
+      align-items: center;
+      padding: 0 0.625rem;
+      border-top: 1px solid var(--border-mid);
+      border-bottom: 1px solid var(--border-mid);
+      font-size: 0.8rem;
+      flex-shrink: 0;
+      background: linear-gradient(to right, var(--p-white), var(--p-teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ─── TIMELINE ─── */
+    .timeline-wrap {
+      position: relative;
+      padding-left: 2.25rem;
+    }
+    .timeline-wrap::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--grad-spine);
+      border-radius: 2px;
+    }
+    .tl-item {
+      position: relative;
+      margin-bottom: 2px;
+      padding: 1.1rem 1.4rem;
+      background: rgba(6, 11, 20, 0.45);
+      border: 1px solid var(--border-mid);
+      border-left: none;
+      border-radius: 0 8px 8px 0;
+      transition: background 0.2s ease;
+    }
+    .tl-item:hover { background: var(--surface-2); }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem; top: 1.375rem;
+      width: 0.875rem; height: 2px;
+      background: var(--accent);
+    }
+    .tl-item::after {
+      content: '';
+      position: absolute;
+      left: -4px; top: 50%;
+      transform: translateY(-50%);
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--surface-base);
+    }
+    .tl-year {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-label);
+      margin-bottom: 0.25rem;
+    }
+    .tl-event {
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ─── SOURCE CARDS ─── */
+    .source-card .card-body ul {
+      padding-left: 0;
+      list-style: none;
+    }
+    .source-card .card-body li {
+      padding: 0.625rem 0;
+      border-bottom: 1px solid var(--border-mid);
+      margin-bottom: 0;
+    }
+    .source-card .card-body li:last-child { border-bottom: none; }
+    .source-card .card-body a {
+      text-decoration: none;
+      border-bottom: 1px solid rgba(18, 64, 60, 0.4);
+      transition: border-color 0.15s ease;
+    }
+    .source-card .card-body a:hover {
+      border-color: var(--p-teal);
+    }
+    .source-card .card-body .src-meta {
+      display: block;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-top: 0.2rem;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    .source-card .card-body strong { color: var(--text-pure); font-weight: 600; }
+
+    /* ─── ABOUT BOX ─── */
+    .about-box {
+      position: relative;
+      margin-top: 1rem;
+      padding: 1rem 1.25rem;
+      background: var(--surface-1);
+      border: 1px solid #EFD7AB;
+      border-left: 3px solid transparent;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+    .about-box::before {
+      content: '';
+      position: absolute;
+      left: -3px; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, #D8DADB, #C04E01);
+      border-radius: 6px 0 0 6px;
+      pointer-events: none;
+    }
+    .about-box strong { color: var(--text-label); }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--surface-base); }
+    ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+    /* ─── UTILITY ─── */
+    .hidden { display: none !important; }
+    .mt-sm { margin-top: 1rem; }
+    .mt-md { margin-top: 1.5rem; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .page-header { padding: 2rem 0; }
+      .header-inner { padding: 0 1.25rem; }
+      .nav-inner { padding: 0 1.25rem; }
+      .main-container { padding: 1.5rem 1.25rem 4rem; }
+      .layer-section { padding: 1.5rem; border-radius: 8px; }
+      .card-grid { grid-template-columns: 1fr; }
+      .flip-grid { justify-content: center; }
+      .flip-wrap { width: 160px; height: 135px; }
+      .stat-strip { grid-template-columns: repeat(2, 1fr); }
+      .stat-card { border-right: none; border-bottom: 1px solid var(--border-mid); }
+      .stat-card:nth-child(odd) { border-right: 1px solid var(--border-mid); }
+      .net-row { flex-direction: column; }
+      .net-arr { transform: rotate(90deg); padding: 0.4rem; align-self: center; }
+      .db-grid { grid-template-columns: 1fr; }
+      .timeline-wrap { padding-left: 1.5rem; }
+    }
+    @media (max-width: 480px) {
+      .page-header { padding: 1.5rem 0; }
+      .header-inner { padding: 0 1rem; }
+      .main-container { padding: 1.25rem 1rem 3rem; }
+      .stat-strip { grid-template-columns: 1fr; }
+      .stat-card { border-right: none; border-bottom: 1px solid var(--border-mid); }
+      .stat-card:nth-child(odd) { border-right: none; }
+      .nav-btn { font-size: 0.75rem; padding: 0.75rem 0.75rem; }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .card-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (hover: none) and (pointer: coarse) {
+      .flip-wrap:hover .flip-inner { transform: none; }
+    }
+  </style>
 </head>
 <body>
-    <div class="header">
-        <div class="header-inner">
-            <div class="header-eyebrow">Subtxt Press &mdash; Investigative Reporting</div>
-            <h1>Dept. of Homeland Security</h1>
-            <p>Mapping the Surveillance Infrastructure</p>
-        </div>
+
+  <!-- ─── PAGE HEADER ─── -->
+  <header class="page-header">
+    <div class="header-inner">
+      <div class="header-eyebrow">
+        <span class="live-dot"></span>
+        Subtxt Press &mdash; Investigative Reporting
+      </div>
+      <h1>Dept. of Homeland Security</h1>
+      <p class="header-sub">Mapping the Surveillance Infrastructure</p>
+    </div>
+  </header>
+
+  <!-- ─── STICKY NAV ─── -->
+  <nav class="nav-wrap" role="navigation" aria-label="Filter by layer">
+    <div class="nav-inner">
+      <button class="nav-btn active" onclick="showAll(event)">Show All</button>
+      <button class="nav-btn" onclick="showLayer(event,'data')">Data Collection</button>
+      <button class="nav-btn" onclick="showLayer(event,'watchlist')">Watchlists</button>
+      <button class="nav-btn" onclick="showLayer(event,'palantir')">Palantir Layer</button>
+      <button class="nav-btn" onclick="showLayer(event,'field')">Field Tools</button>
+      <button class="nav-btn" onclick="showLayer(event,'policy')">Policy Framework</button>
+      <button class="nav-btn" onclick="showLayer(event,'actors')">Key Players</button>
+    </div>
+  </nav>
+
+  <!-- ─── MAIN CONTENT ─── -->
+  <main class="main-container">
+
+    <!-- Key Stats -->
+    <div class="stat-strip reveal">
+      <div class="stat-card">
+        <div class="stat-num">270M+</div>
+        <div class="stat-lbl">Biometric Records<br>(IDENT)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">80M</div>
+        <div class="stat-lbl">Medicaid Patients<br>Transferred to ICE</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">100K+</div>
+        <div class="stat-lbl">Mobile Fortify<br>Field Scans</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$970M</div>
+        <div class="stat-lbl">Palantir Contracts<br>2025</div>
+      </div>
     </div>
 
-    <div class="controls-wrap">
-        <div class="controls">
-            <button class="btn active" onclick="showAll()">Show All</button>
-            <button class="btn" onclick="showLayer('data')">Data Collection</button>
-            <button class="btn" onclick="showLayer('watchlist')">Watchlists</button>
-            <button class="btn" onclick="showLayer('palantir')">Palantir Layer</button>
-            <button class="btn" onclick="showLayer('field')">Field Tools</button>
-            <button class="btn" onclick="showLayer('policy')">Policy Framework</button>
-            <button class="btn" onclick="showLayer('actors')">Key Players</button>
-        </div>
-    </div>
+    <!-- ─── LAYER 1: DATA COLLECTION ─── -->
+    <section class="layer-section layer-content reveal" data-layer="data" id="layer-data">
+      <div class="section-label">Layer 01 &mdash; Data Collection &amp; Ingestion</div>
+      <h2>Data Collection</h2>
+      <p class="layer-desc">Raw data capture from field operations, government databases, and social media</p>
 
-    <div class="container">
-        <!-- Key Stats -->
-        <div class="stats">
-            <div class="stat-card">
-                <div class="stat-number">270M+</div>
-                <div class="stat-label">Biometric Records (IDENT)</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">80M</div>
-                <div class="stat-label">Medicaid Patients</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">100K+</div>
-                <div class="stat-label">Mobile Fortify Scans</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">$970M</div>
-                <div class="stat-label">Palantir Contracts (2025)</div>
-            </div>
+      <div class="card-grid">
+
+        <div class="sys-card">
+          <h3>IDENT / HART</h3>
+          <div class="card-fn">DHS Biometric Database</div>
+          <div class="card-body">
+            <ul>
+              <li>270+ million unique identities</li>
+              <li>Fingerprints, facial images, iris scans</li>
+              <li>400,000+ transactions per day</li>
+              <li>Integrates with FBI NGI</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">DHS</span>
+            <span class="tag">ICE</span>
+            <span class="tag">CBP</span>
+          </div>
         </div>
 
-        <!-- Key Actors -->
-        <div class="actors-section layer-content" data-layer="actors">
-            <h2>Key Players</h2>
-            <div class="actors-grid">
-                <div class="actor-card">
-                    <h3>Stephen Miller</h3>
-                    <div class="role">Deputy Chief of Staff</div>
-                    <div class="details">
-                        Architect of Trump immigration policy. Owned $100K-$250K in Palantir stock. Policy creates demand for Palantir's tools.
-                    </div>
-                </div>
-                <div class="actor-card">
-                    <h3>Peter Thiel</h3>
-                    <div class="role">Palantir Co-founder</div>
-                    <div class="details">
-                        Major GOP donor. $15M to JD Vance's Senate campaign. Palantir stake worth ~$10B at peak.
-                    </div>
-                </div>
-                <div class="actor-card">
-                    <h3>Elon Musk</h3>
-                    <div class="role">DOGE Leader</div>
-                    <div class="details">
-                        Thiel's PayPal co-founder. Created DOGE with access to federal data. Building "mega API" with Palantir.
-                    </div>
-                </div>
-                <div class="actor-card">
-                    <h3>Tom Homan</h3>
-                    <div class="role">Border Czar</div>
-                    <div class="details">
-                        Threatened to create database of protesters and "make them famous." Driving aggressive enforcement.
-                    </div>
-                </div>
-                <div class="actor-card">
-                    <h3>Alex Karp</h3>
-                    <div class="role">Palantir CEO</div>
-                    <div class="details">
-                        Calls Palantir's mission essential to "Western security." Stock up 200% since Trump election.
-                    </div>
-                </div>
-                <div class="actor-card">
-                    <h3>Pam Bondi</h3>
-                    <div class="role">Attorney General</div>
-                    <div class="details">
-                        Issued memos defining immigration activists as potential domestic terrorists under NSPM-7.
-                    </div>
-                </div>
-            </div>
+        <div class="sys-card">
+          <h3>Medicaid Data</h3>
+          <div class="card-fn">Health Records Pipeline</div>
+          <div class="card-body">
+            <ul>
+              <li>~80 million patient records</li>
+              <li>Names, addresses, SSNs</li>
+              <li>Transferred to ICE via HHS order</li>
+              <li>Partial injunction in 20 states</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">HHS</span>
+            <span class="tag">CMS</span>
+          </div>
         </div>
 
-        <!-- Layer 1: Data Collection -->
-        <div class="layer layer-content" data-layer="data">
-            <div class="layer-header">
-                <div class="layer-number">1</div>
-                <div class="layer-title">
-                    <h2>Data Collection & Ingestion</h2>
-                    <p>Raw data capture from field operations, government databases, and social media</p>
-                </div>
-            </div>
-
-            <div class="systems-grid">
-                <div class="system-card">
-                    <h3>IDENT/HART</h3>
-                    <div class="function">DHS Biometric Database</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>270+ million unique identities</li>
-                            <li>Fingerprints, facial images, iris scans</li>
-                            <li>400,000+ transactions per day</li>
-                            <li>Integrates with FBI NGI</li>
-                        </ul>
-                    </div>
-                    <span class="tag">DHS</span>
-                    <span class="tag">ICE</span>
-                    <span class="tag">CBP</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>Medicaid Data</h3>
-                    <div class="function">Health Records Pipeline</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>~80 million patient records</li>
-                            <li>Names, addresses, SSNs</li>
-                            <li>Transferred to ICE via HHS order</li>
-                            <li>Partial injunction in 20 states</li>
-                        </ul>
-                    </div>
-                    <span class="tag">HHS</span>
-                    <span class="tag">CMS</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>IRS Data</h3>
-                    <div class="function">Tax Records & Financial Data</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>150+ million taxpayer records</li>
-                            <li>Income, addresses, SSNs</li>
-                            <li>DOGE "mega API" project</li>
-                            <li>IRS-ICE sharing agreement (Jan 2025)</li>
-                        </ul>
-                    </div>
-                    <span class="tag">IRS</span>
-                    <span class="tag">Treasury</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>TECS</h3>
-                    <div class="function">Border Crossing Records</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>CBP's primary enforcement system</li>
-                            <li>Travel history, border crossings</li>
-                            <li>Integrates with APIS (air travel)</li>
-                            <li>Lookout and seizure tracking</li>
-                        </ul>
-                    </div>
-                    <span class="tag">CBP</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>SEVIS</h3>
-                    <div class="function">Student & Exchange Visitor Data</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>International student tracking</li>
-                            <li>Visa compliance monitoring</li>
-                            <li>Educational institution data</li>
-                        </ul>
-                    </div>
-                    <span class="tag">DHS</span>
-                    <span class="tag">ICE</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>Social Security Admin</h3>
-                    <div class="function">Identity & Benefits Data</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>70+ million benefit recipients</li>
-                            <li>SSNs, addresses, disability records</li>
-                            <li>Part of DOGE integration plan</li>
-                        </ul>
-                    </div>
-                    <span class="tag">SSA</span>
-                </div>
-            </div>
-
-            <div class="connections">
-                <h4>Data Flows</h4>
-                <div class="connection-item">
-                    Field Reports <span class="arrow">→</span> Fusion Centers <span class="arrow">→</span> Federal Databases
-                </div>
-                <div class="connection-item">
-                    Social Media <span class="arrow">→</span> SLIPSTREAM <span class="arrow">→</span> Intelligence Reports
-                </div>
-                <div class="connection-item">
-                    Agency Databases <span class="arrow">→</span> DOGE Mega API <span class="arrow">→</span> Palantir Integration
-                </div>
-            </div>
+        <div class="sys-card">
+          <h3>IRS Data</h3>
+          <div class="card-fn">Tax Records &amp; Financial Data</div>
+          <div class="card-body">
+            <ul>
+              <li>150+ million taxpayer records</li>
+              <li>Income, addresses, SSNs</li>
+              <li>DOGE "mega API" project</li>
+              <li>IRS-ICE sharing agreement (Jan 2025)</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">IRS</span>
+            <span class="tag">Treasury</span>
+          </div>
         </div>
 
-        <!-- Layer 2: Watchlist Systems -->
-        <div class="layer layer-content" data-layer="watchlist">
-            <div class="layer-header">
-                <div class="layer-number">2</div>
-                <div class="layer-title">
-                    <h2>Watchlist & Processing Systems</h2>
-                    <p>Linking individuals, assigning risk scores, and generating intelligence reports</p>
-                </div>
-            </div>
-
-            <div class="systems-grid">
-                <div class="system-card">
-                    <h3>SPARTA</h3>
-                    <div class="function">High-Level Target Profiling</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>Generates "HEL-C" reports</li>
-                            <li>Flags "aggressive protesters"</li>
-                            <li>Compiles multi-source intelligence</li>
-                            <li>Integrates with ImmigrationOS</li>
-                        </ul>
-                    </div>
-                    <span class="tag">ICE</span>
-                    <span class="tag">DHS I&A</span>
-                    <span class="tag">SECRET</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>GRAPEVINE</h3>
-                    <div class="function">Social Network Mapping</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>"Call chaining" via metadata</li>
-                            <li>Proximity-based linking</li>
-                            <li>Guilt-by-association profiles</li>
-                            <li>Contact tracing (phone, email)</li>
-                        </ul>
-                    </div>
-                    <span class="tag">ICE</span>
-                    <span class="tag">CBP</span>
-                    <span class="tag">SECRET</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>SLIPSTREAM</h3>
-                    <div class="function">Social Media Surveillance</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>Scrapes protest footage/livestreams</li>
-                            <li>Sentiment analysis</li>
-                            <li>Facial recognition on videos</li>
-                            <li>Archives deleted posts</li>
-                        </ul>
-                    </div>
-                    <span class="tag">ICE</span>
-                    <span class="tag">DHS I&A</span>
-                    <span class="tag">SECRET</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>HUMMINGBIRD</h3>
-                    <div class="function">Repurposed Vetting System</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>Originally Afghan refugee vetting</li>
-                            <li>Now tracks domestic protesters</li>
-                            <li>Immigration activist monitoring</li>
-                            <li>Legal authority unclear</li>
-                        </ul>
-                    </div>
-                    <span class="tag">ICE</span>
-                    <span class="tag">USCIS</span>
-                    <span class="tag">SECRET</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>REAPER</h3>
-                    <div class="function">Behavioral Threat Modeling</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>Function largely unknown</li>
-                            <li>Possibly escalation triggers</li>
-                            <li>Predictive targeting</li>
-                        </ul>
-                    </div>
-                    <span class="tag">ICE/DHS</span>
-                    <span class="tag">SECRET</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>BLUEKEY/SIENNA</h3>
-                    <div class="function">Metadata Aggregation</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>Functions unclear</li>
-                            <li>Likely location/comms metadata</li>
-                            <li>Behavioral flags and tagging</li>
-                        </ul>
-                    </div>
-                    <span class="tag">ICE</span>
-                    <span class="tag">DHS</span>
-                    <span class="tag">SECRET</span>
-                </div>
-            </div>
-
-            <div class="connections">
-                <h4>System Interlinking</h4>
-                <div class="connection-item">
-                    GRAPEVINE ↔ SLIPSTREAM: Social contacts linked to real-world networks
-                </div>
-                <div class="connection-item">
-                    SPARTA ↔ GRAPEVINE: Pulls relational data for HEL-C reports
-                </div>
-                <div class="connection-item">
-                    HUMMINGBIRD → SPARTA: Protester tracking feeds high-level targeting
-                </div>
-                <div class="connection-item">
-                    BLUEKEY/SIENNA → ALL: Metadata enriches all systems
-                </div>
-            </div>
+        <div class="sys-card">
+          <h3>TECS</h3>
+          <div class="card-fn">Border Crossing Records</div>
+          <div class="card-body">
+            <ul>
+              <li>CBP's primary enforcement system</li>
+              <li>Travel history, border crossings</li>
+              <li>Integrates with APIS (air travel)</li>
+              <li>Lookout and seizure tracking</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">CBP</span>
+          </div>
         </div>
 
-        <!-- Layer 3: Palantir Integration -->
-        <div class="layer layer-content" data-layer="palantir">
-            <div class="layer-header">
-                <div class="layer-number">3</div>
-                <div class="layer-title">
-                    <h2>Palantir Integration Layer</h2>
-                    <p>The brain: where all data is integrated, analyzed, and made searchable</p>
-                </div>
-            </div>
-
-            <div class="systems-grid">
-                <div class="system-card">
-                    <h3>FALCON</h3>
-                    <div class="function">Legacy System (2014-2022)</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>Federal Acquisition and Location Network</li>
-                            <li>Hourly location tracking via cell phones</li>
-                            <li>Black Asphalt integration (civil asset forfeiture)</li>
-                            <li>No automatic account deprovisioning</li>
-                        </ul>
-                    </div>
-                    <span class="tag">Palantir Gotham</span>
-                    <span class="tag">HSI</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>ICM</h3>
-                    <div class="function">Core Investigation Platform</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>Investigative Case Management</li>
-                            <li>Tracks persons, vehicles, vessels, aircraft</li>
-                            <li>Relationship mapping (like GRAPEVINE)</li>
-                            <li>Integrates TECS, IDENT, SEVIS, FBI systems</li>
-                            <li>"Also supports immigration enforcement"</li>
-                        </ul>
-                    </div>
-                    <span class="tag">Palantir Gotham</span>
-                    <span class="tag">HSI</span>
-                    <span class="tag">ERO</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>ImmigrationOS</h3>
-                    <div class="function">The Rebrand (2025)</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>$29.9M contract (April 2025)</li>
-                            <li>Targeting & Enforcement Prioritization</li>
-                            <li>Self-deportation tracking</li>
-                            <li>"End-to-end immigration lifecycle"</li>
-                            <li>Built on ICM infrastructure</li>
-                        </ul>
-                    </div>
-                    <span class="tag">Palantir</span>
-                    <span class="tag">ICE</span>
-                    <span class="tag">SOLE-SOURCE</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>Palantir Foundry</h3>
-                    <div class="function">DOGE Mega API Hub</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>"Read center of all IRS systems"</li>
-                            <li>Unified API layer for all agencies</li>
-                            <li>Cloud-based data integration</li>
-                            <li>FedRAMP High approved (Dec 2024)</li>
-                        </ul>
-                    </div>
-                    <span class="tag">DOGE</span>
-                    <span class="tag">Under Construction</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>Palantir Gotham</h3>
-                    <div class="function">Analytics Engine</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>Backend for ImmigrationOS/ELITE</li>
-                            <li>Used by ICE, DHS, FBI, CBP</li>
-                            <li>Fusion center integration</li>
-                            <li>Link analysis and pattern detection</li>
-                        </ul>
-                    </div>
-                    <span class="tag">Multi-Agency</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>IRS-NG</h3>
-                    <div class="function">Intelligence Reporting System - Next Generation</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>Central portal for tracking "domestic terrorists"</li>
-                            <li>Accesses 28+ federal databases simultaneously</li>
-                            <li>Includes TSDS, WLS, IDENT, NCIC, SSA, DMV records</li>
-                            <li>Tracks legal names, aliases, SSNs, addresses, biometrics</li>
-                            <li>Evidence sources: social media, Fox News, "open-source research"</li>
-                            <li>No crime required for inclusion</li>
-                        </ul>
-                    </div>
-                    <span class="tag">DHS</span>
-                    <span class="tag">CBP</span>
-                    <span class="tag">Domestic Surveillance</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>LEAD TRACKER</h3>
-                    <div class="function">Deportation Pipeline Manager</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>Intake, triage, analysis, tasking</li>
-                            <li>Manages "executable final orders of removal"</li>
-                            <li>Interfaces with ICM</li>
-                            <li>Enforcement disposition tracking</li>
-                        </ul>
-                    </div>
-                    <span class="tag">ICE</span>
-                    <span class="tag">ERO</span>
-                </div>
-            </div>
-
-            <div class="connections">
-                <h4>Integration Architecture</h4>
-                <div class="connection-item">
-                    Watchlists (SPARTA, etc.) <span class="arrow">→</span> ImmigrationOS <span class="arrow">→</span> Targeting Dossiers
-                </div>
-                <div class="connection-item">
-                    Government Databases <span class="arrow">→</span> Foundry API <span class="arrow">→</span> Unified Query Interface
-                </div>
-                <div class="connection-item">
-                    Social media / Fox News <span class="arrow">→</span> IRS-NG "intelligence" <span class="arrow">→</span> Domestic terrorist watchlist
-                </div>
-                <div class="connection-item">
-                    IRS-NG queries 28 databases <span class="arrow">→</span> Feeds IDENT/ICM <span class="arrow">→</span> Permanent surveillance
-                </div>
-                <div class="connection-item">
-                    ICM <span class="arrow">→</span> LEAD TRACKER <span class="arrow">→</span> Field Operations
-                </div>
-            </div>
-
-            <div class="info-box info-box-purple">
-                <h4>The 28+ Databases Accessible Through IRS-NG</h4>
-                <p>
-                    According to leaked DHS documents, the Intelligence Reporting System - Next Generation gives federal agents simultaneous access to at least 28 different databases, plus DMV records, seized device data, and "certain law enforcement and/or intelligence data." This creates a unified surveillance apparatus where a single query can pull information from systems designed for completely different purposes:
-                </p>
-                <div class="database-grid">
-                    <div class="database-category">
-                        <h5>Terrorism & Watchlists</h5>
-                        <ul>
-                            <li>Terrorist Screening Dataset (TSDS)</li>
-                            <li>Watchlist Service (WLS)</li>
-                        </ul>
-                    </div>
-                    <div class="database-category">
-                        <h5>Travel & Border Control</h5>
-                        <ul>
-                            <li>Secure Flight Passenger Data (SFPD)</li>
-                            <li>Automated Targeting System (ATS)</li>
-                            <li>Arrival and Departure Info System (ADIS)</li>
-                            <li>Advance Passenger Info System (APIS)</li>
-                            <li>Electronic System for Travel Authorization (ESTA)</li>
-                            <li>Electronic Visa Update System (EVUS)</li>
-                            <li>Border Crossing Information (BCI)</li>
-                            <li>I-94 data</li>
-                        </ul>
-                    </div>
-                    <div class="database-category">
-                        <h5>Immigration & Students</h5>
-                        <ul>
-                            <li>Non-Immigrant Information System (NIIS)</li>
-                            <li>Student and Exchange Visitor Program (SEVP)</li>
-                            <li>Enforcement Integrated Database (EID)</li>
-                            <li>Criminal Arrest & Immigration Records (CAIR)</li>
-                            <li>National Security Entry-Exit Registration (NSEERS)</li>
-                            <li>Central Index System (CIS)</li>
-                        </ul>
-                    </div>
-                    <div class="database-category">
-                        <h5>Law Enforcement & Criminal Records</h5>
-                        <ul>
-                            <li>National Crime Information Center (NCIC)</li>
-                            <li>Interstate Identification Index (III)</li>
-                            <li>Seized Asset and Case Tracking (SEACATS)</li>
-                        </ul>
-                    </div>
-                    <div class="database-category">
-                        <h5>Biometrics & Identity</h5>
-                        <ul>
-                            <li>Automated Biometric Identification System (IDENT)</li>
-                            <li>Global Enrollment System (GES)</li>
-                        </ul>
-                    </div>
-                    <div class="database-category">
-                        <h5>Government Records</h5>
-                        <ul>
-                            <li>Social Security Administration Death Master File</li>
-                            <li>Consular Consolidated Database (CCD)</li>
-                            <li>Electronic Questionnaires for Investigations (e-QIP)</li>
-                        </ul>
-                    </div>
-                    <div class="database-category">
-                        <h5>Commercial & Trade</h5>
-                        <ul>
-                            <li>Automated Commercial Environment (ACE)</li>
-                            <li>Automated Export System (AES)</li>
-                            <li>Importer Security Filing & manifests</li>
-                        </ul>
-                    </div>
-                    <div class="database-category">
-                        <h5>Additional Access</h5>
-                        <ul>
-                            <li>DMV licenses and records</li>
-                            <li>Data from seized/cloned devices</li>
-                            <li>"Certain law enforcement/intelligence data"</li>
-                        </ul>
-                    </div>
-                </div>
-                <p style="line-height: 1.6; margin-top: 1rem;">
-                    Result: A single domestic terrorism investigation can query travel history, criminal records, biometrics, visa status, school enrollment, seized assets, death records, and device data—all without a warrant.
-                </p>
-            </div>
+        <div class="sys-card">
+          <h3>SEVIS</h3>
+          <div class="card-fn">Student &amp; Exchange Visitor Data</div>
+          <div class="card-body">
+            <ul>
+              <li>International student tracking</li>
+              <li>Visa compliance monitoring</li>
+              <li>Educational institution data</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">DHS</span>
+            <span class="tag">ICE</span>
+          </div>
         </div>
 
-        <!-- Layer 4: Field Tools -->
-        <div class="layer layer-content" data-layer="field">
-            <div class="layer-header">
-                <div class="layer-number">4</div>
-                <div class="layer-title">
-                    <h2>Field Execution Tools</h2>
-                    <p>Mobile surveillance deployed by agents during street operations</p>
-                </div>
-            </div>
-
-            <div class="systems-grid">
-                <div class="system-card">
-                    <h3>ELITE</h3>
-                    <div class="function">Enhanced Leads Identification & Targeting</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>Map-based targeting interface</li>
-                            <li>Pins = potential deportation targets</li>
-                            <li>"Confidence scores" for addresses</li>
-                            <li>Photos, DOB, A-numbers included</li>
-                            <li>Powered by Palantir Gotham</li>
-                        </ul>
-                    </div>
-                    <span class="tag">Palantir</span>
-                    <span class="tag">ICE Field Agents</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>Mobile Fortify</h3>
-                    <div class="function">Facial Recognition App</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>Smartphone-based face scanning</li>
-                            <li>Contactless fingerprint capture</li>
-                            <li>Connects to IDENT (270M+ records)</li>
-                            <li>100,000+ field scans documented</li>
-                            <li>Known accuracy problems</li>
-                        </ul>
-                    </div>
-                    <span class="tag">NEC</span>
-                    <span class="tag">ICE</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>I.R.I.S. / MORIS</h3>
-                    <div class="function">Iris Biometric Systems</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>Iris scanning from 1 meter away</li>
-                            <li>Liveness detection built-in</li>
-                            <li>Works on any smartphone</li>
-                            <li>Connects to FBI NGI & IDENT</li>
-                            <li>Contract finalized Aug 2025</li>
-                        </ul>
-                    </div>
-                    <span class="tag">BI2 Technologies</span>
-                    <span class="tag">ICE</span>
-                </div>
-
-                <div class="system-card">
-                    <h3>FALCON Mobile</h3>
-                    <div class="function">Field Database Access</div>
-                    <div class="capabilities">
-                        <ul>
-                            <li>Real-time database queries</li>
-                            <li>GPS tracking</li>
-                            <li>Field interview documentation</li>
-                            <li>Integration with FALCON Tipline</li>
-                        </ul>
-                    </div>
-                    <span class="tag">Palantir</span>
-                    <span class="tag">HSI</span>
-                </div>
-            </div>
-
-            <div class="connections">
-                <h4>Field Workflow</h4>
-                <div class="connection-item">
-                    Agent opens ELITE <span class="arrow">→</span> Views map with confidence scores <span class="arrow">→</span> Selects high-priority targets
-                </div>
-                <div class="connection-item">
-                    Street encounter <span class="arrow">→</span> Mobile Fortify scan <span class="arrow">→</span> IDENT match <span class="arrow">→</span> Detainment decision
-                </div>
-                <div class="connection-item">
-                    Field data <span class="arrow">→</span> Updates ICM/ImmigrationOS <span class="arrow">→</span> Feeds back into targeting
-                </div>
-            </div>
+        <div class="sys-card">
+          <h3>Social Security Admin</h3>
+          <div class="card-fn">Identity &amp; Benefits Data</div>
+          <div class="card-body">
+            <ul>
+              <li>70+ million benefit recipients</li>
+              <li>SSNs, addresses, disability records</li>
+              <li>Part of DOGE integration plan</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">SSA</span>
+          </div>
         </div>
 
-        <!-- Policy & Legal Framework -->
-        <div class="layer" data-layer="policy">
-            <div class="layer-header">
-                <div class="layer-number">5</div>
-                <div class="layer-title">
-                    <h2>Policy & Legal Framework</h2>
-                    <p>Executive orders and directives that authorize the surveillance infrastructure</p>
-                </div>
-            </div>
-            <div class="layer-content" data-layer="policy">
-                <div class="systems-grid">
-                    <div class="system-card">
-                        <h3>NSPM-7: Domestic Terrorism</h3>
-                        <div class="function">Redefines Domestic Terrorism (September 2025)</div>
-                        <div class="capabilities">
-                            <ul>
-                                <li>Expands definition beyond violent acts to include "advocacy"</li>
-                                <li>Designates Antifa as "domestic terrorist organization"</li>
-                                <li>Authorizes preemptive surveillance of individuals deemed threats</li>
-                                <li>Creates legal basis for IRS-NG watchlist entries</li>
-                                <li>Enables financial surveillance through FinCEN collaboration</li>
-                                <li>DHS officials struggle to implement "patently outrageous directives"</li>
-                                <li>DOJ implementation memo by AG Bondi (September 2025)</li>
-                            </ul>
-                        </div>
-                        <span class="tag">Trump Administration</span>
-                        <span class="tag">DOJ</span>
-                        <span class="tag">DHS</span>
-                    </div>
+      </div>
 
-                    <div class="system-card">
-                        <h3>"Eliminating Information Silos" EO</h3>
-                        <div class="function">Cross-Agency Data Sharing (March 2025)</div>
-                        <div class="capabilities">
-                            <ul>
-                                <li>Mandates data sharing across all federal agencies</li>
-                                <li>Removes restrictions on immigration-related data transfer</li>
-                                <li>Authorizes "mega API" development by DOGE</li>
-                                <li>Creates unified search across IRS, HHS, SSA, VA databases</li>
-                                <li>Legal basis for Medicaid-to-ICE data pipeline</li>
-                            </ul>
-                        </div>
-                        <span class="tag">Trump Administration</span>
-                        <span class="tag">DOGE</span>
-                    </div>
+      <div class="flow-box">
+        <h4>Data Flows</h4>
+        <div class="flow-item">Field Reports <span class="flow-arrow">→</span> Fusion Centers <span class="flow-arrow">→</span> Federal Databases</div>
+        <div class="flow-item">Social Media <span class="flow-arrow">→</span> SLIPSTREAM <span class="flow-arrow">→</span> Intelligence Reports</div>
+        <div class="flow-item">Agency Databases <span class="flow-arrow">→</span> DOGE Mega API <span class="flow-arrow">→</span> Palantir Integration</div>
+      </div>
+    </section>
 
-                    <div class="system-card">
-                        <h3>IRS-ICE Data Sharing Agreement</h3>
-                        <div class="function">Financial Data Pipeline (January 2025)</div>
-                        <div class="capabilities">
-                            <ul>
-                                <li>Grants ICE access to tax records without warrants</li>
-                                <li>Includes ITIN holder data (millions of taxpayers)</li>
-                                <li>Enables employer raid targeting through W-2 analysis</li>
-                                <li>Circumvents traditional privacy protections</li>
-                                <li>Implemented immediately after inauguration</li>
-                            </ul>
-                        </div>
-                        <span class="tag">IRS</span>
-                        <span class="tag">ICE</span>
-                    </div>
+    <!-- ─── LAYER 2: WATCHLISTS ─── -->
+    <section class="layer-section layer-content reveal" data-layer="watchlist" id="layer-watchlist">
+      <div class="section-label">Layer 02 &mdash; Watchlist &amp; Processing Systems</div>
+      <h2>Watchlists</h2>
+      <p class="layer-desc">Linking individuals, assigning risk scores, and generating intelligence reports</p>
 
-                    <div class="system-card">
-                        <h3>HHS Medicaid Data Order</h3>
-                        <div class="function">Healthcare Records Transfer (June 2025)</div>
-                        <div class="capabilities">
-                            <ul>
-                                <li>Requires transfer of Medicaid enrollment data to ICE</li>
-                                <li>Affects 80+ million patient records</li>
-                                <li>Includes immigration status, addresses, family composition</li>
-                                <li>Creates chilling effect on healthcare access</li>
-                                <li>No judicial oversight required</li>
-                            </ul>
-                        </div>
-                        <span class="tag">HHS</span>
-                        <span class="tag">ICE</span>
-                    </div>
+      <div class="card-grid">
 
-                    <div class="system-card">
-                        <h3>Section 287(g) Agreements</h3>
-                        <div class="function">Local Law Enforcement Integration</div>
-                        <div class="capabilities">
-                            <ul>
-                                <li>Deputizes local police as immigration agents</li>
-                                <li>Grants access to ICE databases (IDENT, ICM)</li>
-                                <li>Enables immigration checks during routine stops</li>
-                                <li>Creates pipeline from local jails to deportation</li>
-                                <li>Expanded dramatically under Trump 2.0</li>
-                            </ul>
-                        </div>
-                        <span class="tag">ICE</span>
-                        <span class="tag">Local Law Enforcement</span>
-                    </div>
-
-                    <div class="system-card">
-                        <h3>Secure Communities Program</h3>
-                        <div class="function">Jail-Based Screening</div>
-                        <div class="capabilities">
-                            <ul>
-                                <li>Automatically runs fingerprints against immigration databases</li>
-                                <li>Triggers ICE detainers in local jails</li>
-                                <li>Active in thousands of jurisdictions nationwide</li>
-                                <li>No probable cause required for immigration holds</li>
-                                <li>Feeds FALCON targeting algorithms</li>
-                            </ul>
-                        </div>
-                        <span class="tag">ICE</span>
-                        <span class="tag">FBI</span>
-                    </div>
-                </div>
-
-                <div class="connections">
-                    <h4>Policy Workflow: From Executive Order to Deportation</h4>
-                    <div class="connection-item">
-                        NSPM-7 signed <span class="arrow">→</span> Immigration court monitors labeled "domestic terrorists" <span class="arrow">→</span> Added to secret watchlists
-                    </div>
-                    <div class="connection-item">
-                        "Eliminating Silos" EO <span class="arrow">→</span> DOGE builds mega API <span class="arrow">→</span> Palantir integrates all databases
-                    </div>
-                    <div class="connection-item">
-                        IRS-ICE agreement <span class="arrow">→</span> W-2 data analyzed <span class="arrow">→</span> ELITE identifies worksite raid targets
-                    </div>
-                    <div class="connection-item">
-                        HHS Medicaid order <span class="arrow">→</span> Patient addresses extracted <span class="arrow">→</span> ICM updates target locations
-                    </div>
-                    <div class="connection-item">
-                        287(g) agreement <span class="arrow">→</span> Traffic stop <span class="arrow">→</span> IDENT fingerprint match <span class="arrow">→</span> ICE detainer
-                    </div>
-                </div>
-
-                <div class="info-box info-box-green">
-                    <h4>Constitutional Concerns</h4>
-                    <p>
-                        These policies create a legal framework that circumvents traditional Fourth Amendment protections. By labeling activists as "domestic terrorists" under NSPM-7, the government claims authority for warrantless surveillance. The "Eliminating Silos" executive order mandates data sharing that was previously prohibited by agency-specific privacy laws. Together, they create a surveillance system that operates largely outside judicial oversight.
-                    </p>
-                </div>
-            </div>
+        <div class="sys-card">
+          <h3>SPARTA</h3>
+          <div class="card-fn">High-Level Target Profiling</div>
+          <div class="card-body">
+            <ul>
+              <li>Generates "HEL-C" intelligence reports</li>
+              <li>Flags "aggressive protesters"</li>
+              <li>Compiles multi-source intelligence</li>
+              <li>Integrates with ImmigrationOS</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">ICE</span>
+            <span class="tag">DHS I&amp;A</span>
+            <span class="tag sec">SECRET</span>
+          </div>
         </div>
 
-        <!-- Data Flow to Consequences -->
-        <div class="layer">
-            <h2>From Data Collection to Targeting: Real Cases</h2>
-            
-            <div class="info-box info-box-green">
-                <h4>The ITIN Paradox</h4>
-                <p>
-                    <strong>4.8 million undocumented immigrants</strong> hold Individual Taxpayer Identification Numbers (ITINs) and pay federal taxes annually—contributing an estimated <strong>$11.6 billion in state and local taxes</strong> per year. Despite paying into systems they cannot benefit from (Social Security, Medicare, most federal programs), their tax data is now being weaponized against them through the IRS-ICE data sharing agreement.
-                </p>
-                <p>
-                    They pay taxes. They get no benefits. And now their tax records are used to deport them.
-                </p>
-            </div>
-
-            <div class="connections">
-                <h4>How Palantir's Data Flows Lead to Targeting Americans</h4>
-                
-                <div class="case-study">
-                    <h5>Case Study: Chandler Patey &mdash; "Leader of Antifa"</h5>
-                    <div class="connection-item">
-                        <strong>Chandler Patey</strong>, 29, protests outside Portland ICE facility, lets protesters use his bathroom
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> Fox News (Laura Ingraham, Jesse Watters) calls his apartment an "Antifa safe house"
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> DHS agents scroll Twitter/TikTok for "open-source research"
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> IRS-NG entry created: "He is the leader of Antifa in Portland, OR"
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> Full dossier: DMV photo, SSN, address, phone number, passport
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> Flagged in 28+ federal databases through IRS-NG
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> <strong>Result:</strong>  Ordinary protester designated domestic terrorist based on cable news hysteria. No crime alleged.
-                    </div>
-                </div>
-
-                <div class="case-study">
-                    <h5>Case Study: Dustin Ragsdale &mdash; The "Aggressive" Protester</h5>
-                    <div class="connection-item">
-                        <strong>Dustin Ragsdale</strong> holds pride flag, wears Batman sweatpants, uses megaphone at protests
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> Lives across street from ICE detention center
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> DHS "open-source research" notes he's "aggressive to counterprotesters"
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> IRS-NG entry: "Further research is currently being conducted on this individual"
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> <strong>Result:</strong>  Using free speech = federal surveillance file. No crime alleged.
-                    </div>
-                </div>
-
-                <div class="case-study">
-                    <h5>Case Study: "Mossy Matriarch" &mdash; The Supply Coordinator</h5>
-                    <div class="connection-item">
-                        <strong>"Mossy Matriarch"</strong>, 30, Washington state photographer and small business owner
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> Posts on social media asking people to donate protest supplies (water, first aid)
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> Provides PO Box address and school drop-off location
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> DHS labels her "social media influencer" and "iniuencer" [sic]
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> IRS-NG entry tracks her posts about delivering supplies to protesters
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> <strong>Result:</strong>  Mutual aid = domestic terrorism. No crime alleged.
-                    </div>
-                </div>
-
-                <div class="case-study">
-                    <h5>Case Study: Nicole Cleland & Alex Pretti &mdash; Immigration Court Monitors</h5>
-                    <div class="connection-item">
-                        <strong>Nicole Cleland</strong> and <strong>Alex Pretti</strong> attend immigration court hearings to monitor due process
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> NSPM-7 redefines "domestic terrorism" to include immigration advocacy
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> ICE agents enter them in IRS-NG / FALCON/ICM as "domestic terrorist" threats
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> Their names now trigger alerts in IDENT biometric database
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> Any encounter with law enforcement (traffic stop, airport, etc.) flags them
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> ICE agent directly tells court observer: "You're in our domestic terrorist database"
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> <strong>Result:</strong>  Constitutional right to observe courts = permanent surveillance
-                    </div>
-                </div>
-
-                <div class="case-study">
-                    <h5>Case Study: Mississippi Worksite Raids (2019)</h5>
-                    <div class="connection-item">
-                        ICE analyzes W-2 and Social Security data through Palantir's FALCON system
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> Identifies "discrepancies" in employment records of immigrant workers
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> FALCON generates target lists and "confidence scores" for seven processing plants
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> ELITE maps optimal raid timing and agent deployment
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> August 7, 2019: Coordinated raids across Mississippi
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> <strong>Result:</strong>  680 workers arrested; children left stranded at schools; families destroyed
-                    </div>
-                </div>
-
-                <div class="case-study">
-                    <h5>Case Study: ITIN Taxpayers (Ongoing)</h5>
-                    <div class="connection-item">
-                        4.8 million undocumented immigrants file taxes annually using ITINs
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> January 2025: IRS-ICE data sharing agreement grants access to tax records
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> Palantir's ImmigrationOS ingests ITIN data, addresses, employer information
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> ELITE cross-references with other databases (Medicaid, DMV, utilities)
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> System generates "actionable intelligence" on taxpayers' locations and routines
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> <strong>Result:</strong>  Tax compliance = deportation roadmap (chilling effect on future tax filing)
-                    </div>
-                </div>
-
-                <div class="case-study">
-                    <h5>Case Study: Medicaid Patients (2025-Present)</h5>
-                    <div class="connection-item">
-                        80+ million Americans receive Medicaid, including children born to immigrant parents
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> June 2025: HHS orders transfer of Medicaid enrollment data to ICE
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> Data includes home addresses, family composition, immigration status
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> Palantir systems update ICM with healthcare-derived targeting data
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> Parents stop seeking medical care for children to avoid detection
-                    </div>
-                    <div class="connection-item">
-                        <span class="arrow">→</span> <strong>Result:</strong>  Public health crisis as families avoid emergency rooms and prenatal care
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="info-box info-box-green">
-                <h4>The Pattern</h4>
-                <p>
-                    Every case follows the same architecture: <strong>data collected for legitimate purposes</strong> (tax compliance, healthcare, court observation, mutual aid) → <strong>fed into Palantir's systems via IRS-NG</strong> → <strong>weaponized for surveillance and enforcement</strong> → <strong>constitutional rights chilled</strong>. 
-                </p>
-                <p>
-                    The "evidence" standard is dystopian: <strong>Fox News segments, random Twitter posts, and living near an ICE facility</strong> are treated as intelligence. DHS agents admit to "Alex Jones-level paranoia and wild leaps" in their analysis. The infrastructure doesn't just target "criminals"—it transforms ordinary civic participation into grounds for permanent federal surveillance.
-                </p>
-            </div>
+        <div class="sys-card">
+          <h3>GRAPEVINE</h3>
+          <div class="card-fn">Social Network Mapping</div>
+          <div class="card-body">
+            <ul>
+              <li>"Call chaining" via metadata</li>
+              <li>Proximity-based linking</li>
+              <li>Guilt-by-association profiles</li>
+              <li>Contact tracing (phone, email)</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">ICE</span>
+            <span class="tag">CBP</span>
+            <span class="tag sec">SECRET</span>
+          </div>
         </div>
 
-        <!-- Network Map -->
-        <div class="network-map">
-            <h3 class="network-title">The Thiel-Musk-Miller Network</h3>
-            <div class="network-connections">
-                <div class="network-connection">
-                    <div class="network-node">Thiel co-founds Palantir</div>
-                    <div class="network-arrow">→</div>
-                    <div class="network-node">CIA investment (2005)</div>
-                    <div class="network-arrow">→</div>
-                    <div class="network-node">Government surveillance tools</div>
-                </div>
-                <div class="network-connection">
-                    <div class="network-node">Thiel backs Trump ($1.25M)</div>
-                    <div class="network-arrow">→</div>
-                    <div class="network-node">Trump wins</div>
-                    <div class="network-arrow">→</div>
-                    <div class="network-node">JD Vance becomes VP</div>
-                </div>
-                <div class="network-connection">
-                    <div class="network-node">Musk (Thiel's PayPal co-founder)</div>
-                    <div class="network-arrow">→</div>
-                    <div class="network-node">Creates DOGE</div>
-                    <div class="network-arrow">→</div>
-                    <div class="network-node">Recommends Palantir</div>
-                </div>
-                <div class="network-connection">
-                    <div class="network-node">Miller (Palantir stockholder)</div>
-                    <div class="network-arrow">→</div>
-                    <div class="network-node">Shapes immigration policy</div>
-                    <div class="network-arrow">→</div>
-                    <div class="network-node">Policy requires Palantir's tools</div>
-                </div>
-                <div class="network-connection">
-                    <div class="network-node">Palantir gets sole-source contracts</div>
-                    <div class="network-arrow">→</div>
-                    <div class="network-node">Stock price soars 200%</div>
-                    <div class="network-arrow">→</div>
-                    <div class="network-node">Everyone profits</div>
-                </div>
-            </div>
+        <div class="sys-card">
+          <h3>SLIPSTREAM</h3>
+          <div class="card-fn">Social Media Surveillance</div>
+          <div class="card-body">
+            <ul>
+              <li>Scrapes protest footage / livestreams</li>
+              <li>Sentiment analysis</li>
+              <li>Facial recognition on videos</li>
+              <li>Archives deleted posts</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">ICE</span>
+            <span class="tag">DHS I&amp;A</span>
+            <span class="tag sec">SECRET</span>
+          </div>
         </div>
 
-        <!-- Timeline -->
-        <div class="layer">
-            <h2>Timeline: Building the Machine</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="year">2003</div>
-                    <div class="event">Peter Thiel co-founds Palantir Technologies</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">2005</div>
-                    <div class="event">Palantir receives investment from In-Q-Tel, CIA's venture capital arm</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">2009</div>
-                    <div class="event">CIA develops ExpressLane biometric exfiltration tool</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">2011</div>
-                    <div class="event">Five Eyes establish Migration 5 biometric sharing (3,000 checks/year)</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">2014</div>
-                    <div class="event">ICE awards Palantir contract for FALCON system</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">2017</div>
-                    <div class="event">Vault 7 leaks expose CIA's ExpressLane; Schulte arrested</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">2019</div>
-                    <div class="event">Mississippi raids using Palantir (680 arrested); 1,200+ students pledge not to work for Palantir</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">2022</div>
-                    <div class="event">ICM succeeds FALCON; Thiel spends $15M helping JD Vance win Senate seat</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">2024</div>
-                    <div class="event">Migration 5 reaches 8M checks/year (26,000% increase); Trump wins election; Palantir stock begins surge</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">Jan 2025</div>
-                    <div class="event">Trump inaugurated; IRS-ICE data sharing agreement; Miller files disclosure showing Palantir stock</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">Mar 2025</div>
-                    <div class="event">Trump signs "Eliminating Information Silos" executive order</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">Apr 2025</div>
-                    <div class="event">ImmigrationOS contract ($29.9M) awarded to Palantir; DOGE hosts IRS "hackathon"</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">Jun 2025</div>
-                    <div class="event">HHS orders Medicaid data transfer to ICE (80M patients); POGO publishes Miller stock investigation</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">Sep 2025</div>
-                    <div class="event">NSPM-7 signed redefining domestic terrorism; Bondi issues first implementation memo</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">Dec 2025</div>
-                    <div class="event">HUD awards Palantir $200K "demonstration" contract for GNMA financial systems; modified one day after Trump inauguration</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="year">Jan 2026</div>
-                    <div class="event">Klippenstein reveals secret watchlists; 404 Media exposes ELITE; ICE agent tells observer she's in "domestic terrorist" database</div>
-                </div>
-            </div>
+        <div class="sys-card">
+          <h3>HUMMINGBIRD</h3>
+          <div class="card-fn">Repurposed Vetting System</div>
+          <div class="card-body">
+            <ul>
+              <li>Originally Afghan refugee vetting</li>
+              <li>Now tracks domestic protesters</li>
+              <li>Immigration activist monitoring</li>
+              <li>Legal authority unclear</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">ICE</span>
+            <span class="tag">USCIS</span>
+            <span class="tag sec">SECRET</span>
+          </div>
         </div>
 
-        <!-- Sources & References -->
-        <div class="layer">
-            <h2>Sources &amp; References</h2>
-            
-            <div class="info-box info-box-purple">
-                <p>
-                    This dashboard synthesizes reporting from investigative journalists, leaked government documents, federal contracts, and FOIA requests. All claims are sourced from publicly available documents or verified reporting.
-                </p>
-            </div>
-
-            <div class="source-grid">
-                
-                <div class="source-card">
-                    <h4>Primary Investigations</h4>
-                    <ul>
-                        <li>
-                            <strong>Ken Klippenstein</strong> &mdash; "Feds Identify 'Leader of Antifa'" (Feb 2026)<br/>
-                            <span>Exposed IRS-NG system, 28 databases, Chandler Patey/Dustin Ragsdale/Mossy Matriarch cases</span><br/>
-                            <a href="https://www.kenklippenstein.com/" target="_blank">kenklippenstein.com</a>
-                        </li>
-                        <li>
-                            <strong>Ken Klippenstein</strong> &mdash; "The Deportation Machine Comes Home" (Jan 2026)<br/>
-                            <span>Original secret watchlist investigation, Nicole Cleland case</span>
-                        </li>
-                        <li>
-                            <strong>404 Media</strong> &mdash; ELITE System Exposure (Jan 2026)<br/>
-                            <span>Revealed targeting algorithms and confidence scoring</span><br/>
-                            <a href="https://www.404media.co/" target="_blank">404media.co</a>
-                        </li>
-                        <li>
-                            <strong>Alex Ellis/Subtxt Press</strong> &mdash; "The Deportation Machine Comes Home" (Jan 2026)<br/>
-                            <span>Comprehensive ICE surveillance infrastructure investigation</span><br/>
-                            <a href="https://substack.com/@subtxtpress" target="_blank">substack.com/@subtxtpress</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="source-card">
-                    <h4>Government Documents &amp; Contracts</h4>
-                    <ul>
-                        <li>
-                            <strong>ImmigrationOS Contract</strong> &mdash; 70CMSD24F00000213<br/>
-                            <span>$29.9M sole-source award to Palantir (April 2025)</span><br/>
-                            <a href="https://sam.gov/" target="_blank">SAM.gov</a>
-                        </li>
-                        <li>
-                            <strong>HUD-GNMA Contract</strong> &mdash; 47QTCA24D004L-86615526F00002<br/>
-                            <span>$200K demonstration contract, modified 1 day after inauguration</span>
-                        </li>
-                        <li>
-                            <strong>DHS Privacy Impact Assessment</strong> &mdash; IRS-NG System<br/>
-                            <span>Details 28 database access, first week of Trump admin (2025)</span>
-                        </li>
-                        <li>
-                            <strong>NSPM-7</strong> &mdash; National Security Presidential Memorandum<br/>
-                            <span>Domestic terrorism redefinition (September 2025)</span>
-                        </li>
-                        <li>
-                            <strong>Executive Order</strong> &mdash; "Eliminating Information Silos"<br/>
-                            <span>Cross-agency data sharing mandate (March 2025)</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="source-card">
-                    <h4>Historical Context &amp; Background</h4>
-                    <ul>
-                        <li>
-                            <strong>WikiLeaks Vault 7</strong> &mdash; CIA ExpressLane exposure (2017)<br/>
-                            <span>Biometric exfiltration tool, Joshua Schulte arrest</span>
-                        </li>
-                        <li>
-                            <strong>Mississippi Raids</strong> &mdash; ICE Operations (August 2019)<br/>
-                            <span>680 arrests using FALCON targeting</span>
-                        </li>
-                        <li>
-                            <strong>Migration 5 Alliance</strong> &mdash; Five Eyes Biometric Sharing<br/>
-                            <span>3,000 checks/year (2011) to 8M checks/year (2024)</span>
-                        </li>
-                        <li>
-                            <strong>Palantir Student Boycott</strong> &mdash; 1,200+ Students Pledge (2019)<br/>
-                            <span>Never Again Action campaign against ICE contracts</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="source-card">
-                    <h4>Financial &amp; Accountability Reporting</h4>
-                    <ul>
-                        <li>
-                            <strong>POGO Investigation</strong> &mdash; Stephen Miller Palantir Stock (June 2025)<br/>
-                            <span>Conflict of interest disclosure analysis</span><br/>
-                            <a href="https://www.pogo.org/" target="_blank">pogo.org</a>
-                        </li>
-                        <li>
-                            <strong>Peter Thiel Political Spending</strong><br/>
-                            <span>$1.25M to Trump (2016), $15M for JD Vance Senate seat (2022)</span>
-                        </li>
-                        <li>
-                            <strong>Palantir Stock Performance</strong><br/>
-                            <span>200% surge following Trump election (2024-2025)</span>
-                        </li>
-                        <li>
-                            <strong>In-Q-Tel Investment</strong> &mdash; CIA Venture Capital (2005)<br/>
-                            <span>Initial CIA funding of Palantir Technologies</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="source-card">
-                    <h4>Policy &amp; Legal Framework</h4>
-                    <ul>
-                        <li>
-                            <strong>IRS-ICE Data Sharing Agreement</strong> (January 2025)<br/>
-                            <span>Tax records access, 4.8M ITIN holders affected</span>
-                        </li>
-                        <li>
-                            <strong>HHS Medicaid Data Order</strong> (June 2025)<br/>
-                            <span>80M+ patient records transferred to ICE</span>
-                        </li>
-                        <li>
-                            <strong>Section 287(g) Agreements</strong><br/>
-                            <span>Local law enforcement ICE deputization program</span>
-                        </li>
-                        <li>
-                            <strong>Secure Communities Program</strong><br/>
-                            <span>Automatic fingerprint-to-immigration screening in jails</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="source-card">
-                    <h4>Additional Resources</h4>
-                    <ul>
-                        <li>
-                            <strong>Active FOIA Tracker</strong><br/>
-                            <span>~15 ongoing requests across JCPD, MDOC, Treasury, DOJ, DHS, IRS, ICE, Minneapolis PD</span><br/>
-                            <a href="https://docs.google.com/spreadsheets/d/103CKXPKrYh_mPyeVznY_5Ue87DJFk_nUhcNTQdgmHcQ/" target="_blank">View FOIA Tracker</a>
-                        </li>
-                        <li>
-                            <strong>Interactive Dashboards Archive</strong><br/>
-                            <span>From Epstein's Amazon shipments to DHS surveillance infrastructure</span>
-                        </li>
-                        <li>
-                            <strong>Subtxt Press Editorial Policies</strong><br/>
-                            <span>Source protection protocols, on/off the record ground rules</span>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
-
-            <div class="info-box info-box-purple" style="margin-top:3%;">
-                <h4>About This Dashboard</h4>
-                <p>
-                    Created by <strong>Subtxt Press</strong> as part of ongoing investigative reporting on surveillance infrastructure, extremism in law enforcement, and accountability failures. This dashboard is a living document updated as new information becomes available through FOIA requests, leaked documents, and verified reporting.
-                </p>
-            </div>
+        <div class="sys-card">
+          <h3>REAPER</h3>
+          <div class="card-fn">Behavioral Threat Modeling</div>
+          <div class="card-body">
+            <ul>
+              <li>Function largely unknown</li>
+              <li>Possibly escalation triggers</li>
+              <li>Predictive targeting</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">ICE / DHS</span>
+            <span class="tag sec">SECRET</span>
+          </div>
         </div>
-    </div>
 
-    <script>
-        function showAll() {
-            document.querySelectorAll('.layer-content').forEach(el => {
-                el.classList.remove('hidden');
-            });
-            document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+        <div class="sys-card">
+          <h3>BLUEKEY / SIENNA</h3>
+          <div class="card-fn">Metadata Aggregation</div>
+          <div class="card-body">
+            <ul>
+              <li>Functions unclear</li>
+              <li>Likely location / comms metadata</li>
+              <li>Behavioral flags and tagging</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">ICE</span>
+            <span class="tag">DHS</span>
+            <span class="tag sec">SECRET</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="flow-box">
+        <h4>System Interlinking</h4>
+        <div class="flow-item">GRAPEVINE <span class="flow-arrow">↔</span> SLIPSTREAM: Social contacts linked to real-world networks</div>
+        <div class="flow-item">SPARTA <span class="flow-arrow">↔</span> GRAPEVINE: Pulls relational data for HEL-C reports</div>
+        <div class="flow-item">HUMMINGBIRD <span class="flow-arrow">→</span> SPARTA: Protester tracking feeds high-level targeting</div>
+        <div class="flow-item">BLUEKEY/SIENNA <span class="flow-arrow">→</span> ALL: Metadata enriches all systems</div>
+      </div>
+    </section>
+
+    <!-- ─── LAYER 3: PALANTIR ─── -->
+    <section class="layer-section layer-content reveal" data-layer="palantir" id="layer-palantir">
+      <div class="section-label">Layer 03 &mdash; Palantir Integration Layer</div>
+      <h2>Palantir Layer</h2>
+      <p class="layer-desc">The brain: where all data is integrated, analyzed, and made searchable</p>
+
+      <div class="card-grid">
+
+        <div class="sys-card">
+          <h3>FALCON</h3>
+          <div class="card-fn">Legacy System (2014–2022)</div>
+          <div class="card-body">
+            <ul>
+              <li>Federal Acquisition and Location Network</li>
+              <li>Hourly location tracking via cell phones</li>
+              <li>Black Asphalt integration (civil asset forfeiture)</li>
+              <li>No automatic account deprovisioning</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">Palantir Gotham</span>
+            <span class="tag">HSI</span>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>ICM</h3>
+          <div class="card-fn">Core Investigation Platform</div>
+          <div class="card-body">
+            <ul>
+              <li>Investigative Case Management</li>
+              <li>Tracks persons, vehicles, vessels, aircraft</li>
+              <li>Relationship mapping (like GRAPEVINE)</li>
+              <li>Integrates TECS, IDENT, SEVIS, FBI systems</li>
+              <li>"Also supports immigration enforcement"</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">Palantir Gotham</span>
+            <span class="tag">HSI</span>
+            <span class="tag">ERO</span>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>ImmigrationOS</h3>
+          <div class="card-fn">The Rebrand (2025)</div>
+          <div class="card-body">
+            <ul>
+              <li>$29.9M contract (April 2025)</li>
+              <li>Targeting &amp; Enforcement Prioritization</li>
+              <li>Self-deportation tracking</li>
+              <li>"End-to-end immigration lifecycle"</li>
+              <li>Built on ICM infrastructure</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">Palantir</span>
+            <span class="tag">ICE</span>
+            <span class="tag hot">SOLE-SOURCE</span>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>Palantir Foundry</h3>
+          <div class="card-fn">DOGE Mega API Hub</div>
+          <div class="card-body">
+            <ul>
+              <li>"Read center of all IRS systems"</li>
+              <li>Unified API layer for all agencies</li>
+              <li>Cloud-based data integration</li>
+              <li>FedRAMP High approved (Dec 2024)</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">DOGE</span>
+            <span class="tag hot">Under Construction</span>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>Palantir Gotham</h3>
+          <div class="card-fn">Analytics Engine</div>
+          <div class="card-body">
+            <ul>
+              <li>Backend for ImmigrationOS / ELITE</li>
+              <li>Used by ICE, DHS, FBI, CBP</li>
+              <li>Fusion center integration</li>
+              <li>Link analysis and pattern detection</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">Multi-Agency</span>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>IRS-NG</h3>
+          <div class="card-fn">Intelligence Reporting — Next Generation</div>
+          <div class="card-body">
+            <ul>
+              <li>Central portal for tracking "domestic terrorists"</li>
+              <li>Accesses 28+ federal databases simultaneously</li>
+              <li>Includes TSDS, WLS, IDENT, NCIC, SSA, DMV records</li>
+              <li>Tracks names, SSNs, aliases, addresses, biometrics</li>
+              <li>Evidence: social media, Fox News, "open-source research"</li>
+              <li>No crime required for inclusion</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">DHS</span>
+            <span class="tag">CBP</span>
+            <span class="tag hot">Domestic Surveillance</span>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>LEAD TRACKER</h3>
+          <div class="card-fn">Deportation Pipeline Manager</div>
+          <div class="card-body">
+            <ul>
+              <li>Intake, triage, analysis, tasking</li>
+              <li>Manages "executable final orders of removal"</li>
+              <li>Interfaces with ICM</li>
+              <li>Enforcement disposition tracking</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">ICE</span>
+            <span class="tag">ERO</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="flow-box">
+        <h4>Integration Architecture</h4>
+        <div class="flow-item">Watchlists (SPARTA, etc.) <span class="flow-arrow">→</span> ImmigrationOS <span class="flow-arrow">→</span> Targeting Dossiers</div>
+        <div class="flow-item">Government Databases <span class="flow-arrow">→</span> Foundry API <span class="flow-arrow">→</span> Unified Query Interface</div>
+        <div class="flow-item">Social media / Fox News <span class="flow-arrow">→</span> IRS-NG "intelligence" <span class="flow-arrow">→</span> Domestic terrorist watchlist</div>
+        <div class="flow-item">IRS-NG queries 28 databases <span class="flow-arrow">→</span> Feeds IDENT / ICM <span class="flow-arrow">→</span> Permanent surveillance record</div>
+        <div class="flow-item">ICM <span class="flow-arrow">→</span> LEAD TRACKER <span class="flow-arrow">→</span> Field Operations</div>
+      </div>
+
+      <button class="db-toggle-btn" id="db-btn" onclick="toggleDb(this)" aria-expanded="false">
+        View the 28+ database list →
+      </button>
+
+      <div class="db-panel" id="db-panel" hidden>
+        <h4>The 28+ Databases Accessible Through IRS-NG</h4>
+        <p>According to leaked DHS documents, the Intelligence Reporting System — Next Generation gives federal agents simultaneous access to at least 28 different databases, plus DMV records, seized device data, and "certain law enforcement and/or intelligence data."</p>
+        <div class="db-grid">
+          <div class="db-cat">
+            <h5>Terrorism &amp; Watchlists</h5>
+            <ul>
+              <li>Terrorist Screening Dataset (TSDS)</li>
+              <li>Watchlist Service (WLS)</li>
+            </ul>
+          </div>
+          <div class="db-cat">
+            <h5>Travel &amp; Border Control</h5>
+            <ul>
+              <li>Secure Flight Passenger Data (SFPD)</li>
+              <li>Automated Targeting System (ATS)</li>
+              <li>Arrival and Departure Info System (ADIS)</li>
+              <li>Advance Passenger Info System (APIS)</li>
+              <li>Electronic System for Travel Authorization (ESTA)</li>
+              <li>Electronic Visa Update System (EVUS)</li>
+              <li>Border Crossing Information (BCI)</li>
+              <li>I-94 data</li>
+            </ul>
+          </div>
+          <div class="db-cat">
+            <h5>Immigration &amp; Students</h5>
+            <ul>
+              <li>Non-Immigrant Information System (NIIS)</li>
+              <li>Student and Exchange Visitor Program (SEVP)</li>
+              <li>Enforcement Integrated Database (EID)</li>
+              <li>Criminal Arrest &amp; Immigration Records (CAIR)</li>
+              <li>Natl. Security Entry-Exit Registration (NSEERS)</li>
+              <li>Central Index System (CIS)</li>
+            </ul>
+          </div>
+          <div class="db-cat">
+            <h5>Law Enforcement &amp; Criminal</h5>
+            <ul>
+              <li>National Crime Information Center (NCIC)</li>
+              <li>Interstate Identification Index (III)</li>
+              <li>Seized Asset and Case Tracking (SEACATS)</li>
+            </ul>
+          </div>
+          <div class="db-cat">
+            <h5>Biometrics &amp; Identity</h5>
+            <ul>
+              <li>Automated Biometric ID System (IDENT)</li>
+              <li>Global Enrollment System (GES)</li>
+            </ul>
+          </div>
+          <div class="db-cat">
+            <h5>Government Records</h5>
+            <ul>
+              <li>SSA Death Master File</li>
+              <li>Consular Consolidated Database (CCD)</li>
+              <li>Electronic Questionnaires for Investigations (e-QIP)</li>
+            </ul>
+          </div>
+          <div class="db-cat">
+            <h5>Commercial &amp; Trade</h5>
+            <ul>
+              <li>Automated Commercial Environment (ACE)</li>
+              <li>Automated Export System (AES)</li>
+              <li>Importer Security Filing &amp; manifests</li>
+            </ul>
+          </div>
+          <div class="db-cat">
+            <h5>Additional Access</h5>
+            <ul>
+              <li>DMV licenses and records</li>
+              <li>Data from seized / cloned devices</li>
+              <li>"Certain law enforcement / intelligence data"</li>
+            </ul>
+          </div>
+        </div>
+        <p><strong>Result:</strong> A single domestic terrorism investigation can query travel history, criminal records, biometrics, visa status, school enrollment, seized assets, death records, and device data — all without a warrant.</p>
+      </div>
+
+      <div class="info-alert info-box mt-md">
+        <div class="info-head">▲ &nbsp;Critical Finding</div>
+        <p>A single IRS-NG query pulls <strong>28+ federal databases</strong> simultaneously — travel history, criminal records, biometrics, visa status, school enrollment — all without a warrant. The evidence standard: Fox News segments and Twitter posts are treated as actionable intelligence.</p>
+      </div>
+    </section>
+
+    <!-- ─── LAYER 4: FIELD TOOLS ─── -->
+    <section class="layer-section layer-content reveal" data-layer="field" id="layer-field">
+      <div class="section-label">Layer 04 &mdash; Field Execution Tools</div>
+      <h2>Field Tools</h2>
+      <p class="layer-desc">Mobile surveillance deployed by agents during street operations</p>
+
+      <div class="card-grid">
+
+        <div class="sys-card">
+          <h3>ELITE</h3>
+          <div class="card-fn">Enhanced Leads Identification &amp; Targeting</div>
+          <div class="card-body">
+            <ul>
+              <li>Map-based targeting interface</li>
+              <li>Pins = potential deportation targets</li>
+              <li>"Confidence scores" for addresses</li>
+              <li>Photos, DOB, A-numbers included</li>
+              <li>Powered by Palantir Gotham</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">Palantir</span>
+            <span class="tag">ICE Field Agents</span>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>Mobile Fortify</h3>
+          <div class="card-fn">Facial Recognition App</div>
+          <div class="card-body">
+            <ul>
+              <li>Smartphone-based face scanning</li>
+              <li>Contactless fingerprint capture</li>
+              <li>Connects to IDENT (270M+ records)</li>
+              <li>100,000+ field scans documented</li>
+              <li>Known accuracy problems</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">NEC</span>
+            <span class="tag">ICE</span>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>I.R.I.S. / MORIS</h3>
+          <div class="card-fn">Iris Biometric Systems</div>
+          <div class="card-body">
+            <ul>
+              <li>Iris scanning from 1 meter away</li>
+              <li>Liveness detection built-in</li>
+              <li>Works on any smartphone</li>
+              <li>Connects to FBI NGI &amp; IDENT</li>
+              <li>Contract finalized Aug 2025</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">BI2 Technologies</span>
+            <span class="tag">ICE</span>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>FALCON Mobile</h3>
+          <div class="card-fn">Field Database Access</div>
+          <div class="card-body">
+            <ul>
+              <li>Real-time database queries</li>
+              <li>GPS tracking</li>
+              <li>Field interview documentation</li>
+              <li>Integration with FALCON Tipline</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">Palantir</span>
+            <span class="tag">HSI</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="flow-box">
+        <h4>Field Workflow</h4>
+        <div class="flow-item">Agent opens ELITE <span class="flow-arrow">→</span> Views map with confidence scores <span class="flow-arrow">→</span> Selects high-priority targets</div>
+        <div class="flow-item">Street encounter <span class="flow-arrow">→</span> Mobile Fortify scan <span class="flow-arrow">→</span> IDENT match <span class="flow-arrow">→</span> Detainment decision</div>
+        <div class="flow-item">Field data <span class="flow-arrow">→</span> Updates ICM / ImmigrationOS <span class="flow-arrow">→</span> Feeds back into targeting</div>
+      </div>
+    </section>
+
+    <!-- ─── LAYER 5: POLICY ─── -->
+    <section class="layer-section layer-content reveal" data-layer="policy" id="layer-policy">
+      <div class="section-label">Layer 05 &mdash; Policy &amp; Legal Framework</div>
+      <h2>Policy Framework</h2>
+      <p class="layer-desc">Executive orders and directives that authorize the surveillance infrastructure</p>
+
+      <div class="card-grid">
+
+        <div class="sys-card">
+          <h3>NSPM-7: Domestic Terrorism</h3>
+          <div class="card-fn">Redefines Domestic Terrorism (September 2025)</div>
+          <div class="card-body">
+            <ul>
+              <li>Expands definition beyond violence to include "advocacy"</li>
+              <li>Designates Antifa as "domestic terrorist organization"</li>
+              <li>Authorizes preemptive surveillance of designated threats</li>
+              <li>Creates legal basis for IRS-NG watchlist entries</li>
+              <li>Enables financial surveillance via FinCEN collaboration</li>
+              <li>DHS officials struggle to implement "patently outrageous directives"</li>
+              <li>DOJ implementation memo by AG Bondi (September 2025)</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">Trump Administration</span>
+            <span class="tag">DOJ</span>
+            <span class="tag">DHS</span>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>"Eliminating Information Silos" EO</h3>
+          <div class="card-fn">Cross-Agency Data Sharing (March 2025)</div>
+          <div class="card-body">
+            <ul>
+              <li>Mandates data sharing across all federal agencies</li>
+              <li>Removes restrictions on immigration-related data transfer</li>
+              <li>Authorizes "mega API" development by DOGE</li>
+              <li>Creates unified search across IRS, HHS, SSA, VA databases</li>
+              <li>Legal basis for Medicaid-to-ICE data pipeline</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">Trump Administration</span>
+            <span class="tag">DOGE</span>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>IRS-ICE Data Sharing Agreement</h3>
+          <div class="card-fn">Financial Data Pipeline (January 2025)</div>
+          <div class="card-body">
+            <ul>
+              <li>Grants ICE access to tax records without warrants</li>
+              <li>Includes ITIN holder data (millions of taxpayers)</li>
+              <li>Enables employer raid targeting through W-2 analysis</li>
+              <li>Circumvents traditional privacy protections</li>
+              <li>Implemented immediately after inauguration</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">IRS</span>
+            <span class="tag">ICE</span>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>HHS Medicaid Data Order</h3>
+          <div class="card-fn">Healthcare Records Transfer (June 2025)</div>
+          <div class="card-body">
+            <ul>
+              <li>Requires transfer of Medicaid enrollment data to ICE</li>
+              <li>Affects 80+ million patient records</li>
+              <li>Includes immigration status, addresses, family composition</li>
+              <li>Creates chilling effect on healthcare access</li>
+              <li>No judicial oversight required</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">HHS</span>
+            <span class="tag">ICE</span>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>Section 287(g) Agreements</h3>
+          <div class="card-fn">Local Law Enforcement Integration</div>
+          <div class="card-body">
+            <ul>
+              <li>Deputizes local police as immigration agents</li>
+              <li>Grants access to ICE databases (IDENT, ICM)</li>
+              <li>Enables immigration checks during routine stops</li>
+              <li>Creates pipeline from local jails to deportation</li>
+              <li>Expanded dramatically under Trump 2.0</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">ICE</span>
+            <span class="tag">Local Law Enforcement</span>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>Secure Communities Program</h3>
+          <div class="card-fn">Jail-Based Screening</div>
+          <div class="card-body">
+            <ul>
+              <li>Automatically runs fingerprints against immigration databases</li>
+              <li>Triggers ICE detainers in local jails</li>
+              <li>Active in thousands of jurisdictions nationwide</li>
+              <li>No probable cause required for immigration holds</li>
+              <li>Feeds FALCON targeting algorithms</li>
+            </ul>
+          </div>
+          <div class="tags">
+            <span class="tag">ICE</span>
+            <span class="tag">FBI</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="flow-box">
+        <h4>Policy Workflow: From Executive Order to Deportation</h4>
+        <div class="flow-item">NSPM-7 signed <span class="flow-arrow">→</span> Immigration court monitors labeled "domestic terrorists" <span class="flow-arrow">→</span> Added to secret watchlists</div>
+        <div class="flow-item">"Eliminating Silos" EO <span class="flow-arrow">→</span> DOGE builds mega API <span class="flow-arrow">→</span> Palantir integrates all databases</div>
+        <div class="flow-item">IRS-ICE agreement <span class="flow-arrow">→</span> W-2 data analyzed <span class="flow-arrow">→</span> ELITE identifies worksite raid targets</div>
+        <div class="flow-item">HHS Medicaid order <span class="flow-arrow">→</span> Patient addresses extracted <span class="flow-arrow">→</span> ICM updates target locations</div>
+        <div class="flow-item">287(g) agreement <span class="flow-arrow">→</span> Traffic stop <span class="flow-arrow">→</span> IDENT fingerprint match <span class="flow-arrow">→</span> ICE detainer</div>
+      </div>
+
+      <div class="info-neutral info-box mt-md">
+        <div class="info-head">◉ &nbsp;Constitutional Concern</div>
+        <p>These policies create a legal framework that circumvents traditional <strong>Fourth Amendment protections</strong>. By labeling activists as "domestic terrorists" under NSPM-7, the government claims authority for warrantless surveillance. The "Eliminating Silos" executive order mandates data sharing that was previously prohibited by agency-specific privacy laws. Together, they create a surveillance system that operates largely outside judicial oversight.</p>
+      </div>
+    </section>
+
+    <!-- ─── KEY PLAYERS (FLIP CARDS) ─── -->
+    <section class="layer-section layer-content reveal" data-layer="actors" id="layer-actors">
+      <div class="section-label">Key Players &mdash; Hover or tap to reveal</div>
+      <h2>Key Players</h2>
+      <p class="layer-desc">The network of individuals whose financial interests, political decisions, and policy choices built and maintain the surveillance apparatus</p>
+
+      <div class="flip-grid">
+
+        <div class="flip-wrap" title="Hover to flip" aria-label="Stephen Miller — click to reveal details">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <div class="flip-name">Stephen Miller</div>
+              <div class="flip-role">Deputy Chief of Staff</div>
+              <div class="flip-hint">Hover to reveal →</div>
+            </div>
+            <div class="flip-face flip-back">
+              <div class="flip-detail">Architect of Trump immigration policy. Owned $100K–$250K in Palantir stock while shaping policy that drives demand for Palantir's tools.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-wrap" title="Hover to flip" aria-label="Peter Thiel — click to reveal details">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <div class="flip-name">Peter Thiel</div>
+              <div class="flip-role">Palantir Co-founder</div>
+              <div class="flip-hint">Hover to reveal →</div>
+            </div>
+            <div class="flip-face flip-back">
+              <div class="flip-detail">Major GOP donor. $15M to JD Vance's Senate campaign. Palantir stake worth ~$10B at peak valuation.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-wrap" title="Hover to flip" aria-label="Elon Musk — click to reveal details">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <div class="flip-name">Elon Musk</div>
+              <div class="flip-role">DOGE Leader</div>
+              <div class="flip-hint">Hover to reveal →</div>
+            </div>
+            <div class="flip-face flip-back">
+              <div class="flip-detail">Thiel's PayPal co-founder. Created DOGE with access to federal data. Building "mega API" with Palantir to unify government databases.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-wrap" title="Hover to flip" aria-label="Tom Homan — click to reveal details">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <div class="flip-name">Tom Homan</div>
+              <div class="flip-role">Border Czar</div>
+              <div class="flip-hint">Hover to reveal →</div>
+            </div>
+            <div class="flip-face flip-back">
+              <div class="flip-detail">Threatened to database protesters and "make them famous." Driving most aggressive enforcement expansion in DHS history.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-wrap" title="Hover to flip" aria-label="Alex Karp — click to reveal details">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <div class="flip-name">Alex Karp</div>
+              <div class="flip-role">Palantir CEO</div>
+              <div class="flip-hint">Hover to reveal →</div>
+            </div>
+            <div class="flip-face flip-back">
+              <div class="flip-detail">Calls Palantir's mission essential to "Western security." Company stock up 200% since Trump's 2024 election win.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-wrap" title="Hover to flip" aria-label="Pam Bondi — click to reveal details">
+          <div class="flip-inner">
+            <div class="flip-face flip-front">
+              <div class="flip-name">Pam Bondi</div>
+              <div class="flip-role">Attorney General</div>
+              <div class="flip-hint">Hover to reveal →</div>
+            </div>
+            <div class="flip-face flip-back">
+              <div class="flip-detail">Issued memos defining immigration activists as potential domestic terrorists under NSPM-7. First implementation memo September 2025.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─── REAL CASES ─── -->
+    <section class="layer-section reveal" id="cases">
+      <div class="section-label">Data Flow to Consequences &mdash; Real Cases</div>
+      <h2>Real Cases</h2>
+      <p class="layer-desc">How Palantir's data architecture leads to targeting real people</p>
+
+      <div class="info-neutral2 info-box">
+        <div class="info-head">◈ &nbsp;The ITIN Paradox</div>
+        <p><strong>4.8 million undocumented immigrants</strong> hold Individual Taxpayer Identification Numbers (ITINs) and pay federal taxes annually — contributing an estimated <strong>$11.6 billion in state and local taxes</strong> per year. Despite paying into systems they cannot benefit from (Social Security, Medicare, most federal programs), their tax data is now being weaponized against them through the IRS-ICE data sharing agreement.</p>
+        <p>They pay taxes. They get no benefits. And now their tax records are used to deport them.</p>
+      </div>
+
+      <div class="card-grid mt-md" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+
+        <div class="sys-card">
+          <h3>Chandler Patey</h3>
+          <div class="card-fn">Portland — "Leader of Antifa"</div>
+          <div class="card-body">
+            <p><strong>Chandler Patey</strong>, 29, protests outside Portland ICE facility and lets protesters use his bathroom. No crime alleged.</p>
+          </div>
+          <div class="case-detail" id="case-1" hidden>
+            <div class="case-step"><span class="arrow">→</span> Fox News (Ingraham, Watters) calls his apartment an "Antifa safe house"</div>
+            <div class="case-step"><span class="arrow">→</span> DHS agents scroll Twitter/TikTok for "open-source research"</div>
+            <div class="case-step"><span class="arrow">→</span> IRS-NG entry created: "He is the leader of Antifa in Portland, OR"</div>
+            <div class="case-step"><span class="arrow">→</span> Full dossier: DMV photo, SSN, address, phone number, passport</div>
+            <div class="case-step"><span class="arrow">→</span> Flagged in 28+ federal databases through IRS-NG</div>
+            <div class="case-step result">Result: Ordinary protester designated domestic terrorist based on cable news. No crime alleged.</div>
+          </div>
+          <div class="card-actions">
+            <button class="act-btn primary" onclick="toggleCase('case-1',this)">Show details →</button>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>Dustin Ragsdale</h3>
+          <div class="card-fn">Portland — The "Aggressive" Protester</div>
+          <div class="card-body">
+            <p><strong>Dustin Ragsdale</strong> holds a pride flag, wears Batman sweatpants, and uses a megaphone at protests. Lives across from an ICE detention center. No crime alleged.</p>
+          </div>
+          <div class="case-detail" id="case-2" hidden>
+            <div class="case-step"><span class="arrow">→</span> DHS "open-source research" notes he's "aggressive to counterprotesters"</div>
+            <div class="case-step"><span class="arrow">→</span> IRS-NG entry: "Further research is currently being conducted on this individual"</div>
+            <div class="case-step result">Result: Using free speech = federal surveillance file. No crime alleged.</div>
+          </div>
+          <div class="card-actions">
+            <button class="act-btn primary" onclick="toggleCase('case-2',this)">Show details →</button>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>"Mossy Matriarch"</h3>
+          <div class="card-fn">Washington State — Supply Coordinator</div>
+          <div class="card-body">
+            <p><strong>"Mossy Matriarch"</strong>, 30, is a Washington state photographer and small business owner who posts on social media asking for protest supply donations.</p>
+          </div>
+          <div class="case-detail" id="case-3" hidden>
+            <div class="case-step"><span class="arrow">→</span> Posts asking people to donate water, first aid kits; provides PO Box</div>
+            <div class="case-step"><span class="arrow">→</span> DHS labels her "social media influencer" and "iniuencer" [sic]</div>
+            <div class="case-step"><span class="arrow">→</span> IRS-NG entry tracks her posts about delivering supplies to protesters</div>
+            <div class="case-step result">Result: Mutual aid = domestic terrorism. No crime alleged.</div>
+          </div>
+          <div class="card-actions">
+            <button class="act-btn primary" onclick="toggleCase('case-3',this)">Show details →</button>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>Nicole Cleland &amp; Alex Pretti</h3>
+          <div class="card-fn">Immigration Court Monitors</div>
+          <div class="card-body">
+            <p><strong>Nicole Cleland</strong> and <strong>Alex Pretti</strong> attend immigration court hearings to monitor due process. Constitutional right to observe courts.</p>
+          </div>
+          <div class="case-detail" id="case-4" hidden>
+            <div class="case-step"><span class="arrow">→</span> NSPM-7 redefines "domestic terrorism" to include immigration advocacy</div>
+            <div class="case-step"><span class="arrow">→</span> ICE agents enter them in IRS-NG / FALCON / ICM as "domestic terrorist" threats</div>
+            <div class="case-step"><span class="arrow">→</span> Their names now trigger alerts in IDENT biometric database</div>
+            <div class="case-step"><span class="arrow">→</span> Any encounter with law enforcement (traffic stop, airport) flags them</div>
+            <div class="case-step"><span class="arrow">→</span> ICE agent directly tells court observer: "You're in our domestic terrorist database"</div>
+            <div class="case-step result">Result: Constitutional right to observe courts = permanent surveillance record.</div>
+          </div>
+          <div class="card-actions">
+            <button class="act-btn primary" onclick="toggleCase('case-4',this)">Show details →</button>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>Mississippi Worksite Raids</h3>
+          <div class="card-fn">2019 — Data-Driven Mass Arrest</div>
+          <div class="card-body">
+            <p>ICE analyzes W-2 and Social Security data through Palantir's FALCON system to identify immigrant workers at seven processing plants across Mississippi.</p>
+          </div>
+          <div class="case-detail" id="case-5" hidden>
+            <div class="case-step"><span class="arrow">→</span> Identifies "discrepancies" in employment records of immigrant workers</div>
+            <div class="case-step"><span class="arrow">→</span> FALCON generates target lists and "confidence scores" for seven processing plants</div>
+            <div class="case-step"><span class="arrow">→</span> ELITE maps optimal raid timing and agent deployment</div>
+            <div class="case-step"><span class="arrow">→</span> August 7, 2019: Coordinated raids across Mississippi</div>
+            <div class="case-step result">Result: 680 workers arrested; children left stranded at schools; families destroyed.</div>
+          </div>
+          <div class="card-actions">
+            <button class="act-btn primary" onclick="toggleCase('case-5',this)">Show details →</button>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>ITIN Taxpayers</h3>
+          <div class="card-fn">Ongoing — Tax Compliance as Trap</div>
+          <div class="card-body">
+            <p>4.8 million undocumented immigrants file taxes annually using ITINs. January 2025: IRS-ICE data sharing agreement grants access to tax records.</p>
+          </div>
+          <div class="case-detail" id="case-6" hidden>
+            <div class="case-step"><span class="arrow">→</span> Palantir's ImmigrationOS ingests ITIN data, addresses, employer information</div>
+            <div class="case-step"><span class="arrow">→</span> ELITE cross-references with Medicaid, DMV, utilities databases</div>
+            <div class="case-step"><span class="arrow">→</span> System generates "actionable intelligence" on taxpayers' locations and routines</div>
+            <div class="case-step result">Result: Tax compliance = deportation roadmap. Chilling effect on future tax filing.</div>
+          </div>
+          <div class="card-actions">
+            <button class="act-btn primary" onclick="toggleCase('case-6',this)">Show details →</button>
+          </div>
+        </div>
+
+        <div class="sys-card">
+          <h3>Medicaid Patients</h3>
+          <div class="card-fn">2025–Present — Healthcare as Intelligence</div>
+          <div class="card-body">
+            <p>80+ million Americans receive Medicaid, including children born to immigrant parents. June 2025: HHS orders transfer of Medicaid enrollment data to ICE.</p>
+          </div>
+          <div class="case-detail" id="case-7" hidden>
+            <div class="case-step"><span class="arrow">→</span> Data includes home addresses, family composition, immigration status</div>
+            <div class="case-step"><span class="arrow">→</span> Palantir systems update ICM with healthcare-derived targeting data</div>
+            <div class="case-step"><span class="arrow">→</span> Parents stop seeking medical care for children to avoid detection</div>
+            <div class="case-step result">Result: Public health crisis as families avoid emergency rooms and prenatal care.</div>
+          </div>
+          <div class="card-actions">
+            <button class="act-btn primary" onclick="toggleCase('case-7',this)">Show details →</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="info-neutral info-box mt-md">
+        <div class="info-head">◉ &nbsp;The Pattern</div>
+        <p>Every case follows the same architecture: <strong>data collected for legitimate purposes</strong> (tax compliance, healthcare, court observation, mutual aid) → <strong>fed into Palantir's systems via IRS-NG</strong> → <strong>weaponized for surveillance and enforcement</strong> → <strong>constitutional rights chilled</strong>.</p>
+        <p>The "evidence" standard is dystopian: <strong>Fox News segments, random Twitter posts, and living near an ICE facility</strong> are treated as intelligence. DHS agents admit to "Alex Jones-level paranoia and wild leaps" in their analysis. The infrastructure doesn't just target "criminals" — it transforms ordinary civic participation into grounds for permanent federal surveillance.</p>
+      </div>
+    </section>
+
+    <!-- ─── NETWORK MAP ─── -->
+    <section class="layer-section reveal" id="network">
+      <div class="section-label">Network Map &mdash; Follow the money and influence</div>
+      <h2>The Thiel-Musk-Miller Network</h2>
+      <p class="layer-desc">How political donations, personal relationships, and policy decisions created a closed loop of profit and power</p>
+
+      <div class="net-rows">
+        <div class="net-row">
+          <div class="net-node">Thiel co-founds Palantir</div>
+          <div class="net-arr">→</div>
+          <div class="net-node">CIA investment (2005)</div>
+          <div class="net-arr">→</div>
+          <div class="net-node">Government surveillance tools built</div>
+        </div>
+        <div class="net-row">
+          <div class="net-node">Thiel backs Trump ($1.25M)</div>
+          <div class="net-arr">→</div>
+          <div class="net-node">Trump wins election</div>
+          <div class="net-arr">→</div>
+          <div class="net-node">JD Vance becomes VP</div>
+        </div>
+        <div class="net-row">
+          <div class="net-node">Musk (Thiel's PayPal co-founder)</div>
+          <div class="net-arr">→</div>
+          <div class="net-node">Creates DOGE</div>
+          <div class="net-arr">→</div>
+          <div class="net-node">Recommends Palantir for federal systems</div>
+        </div>
+        <div class="net-row">
+          <div class="net-node">Miller (Palantir stockholder)</div>
+          <div class="net-arr">→</div>
+          <div class="net-node">Shapes immigration policy</div>
+          <div class="net-arr">→</div>
+          <div class="net-node">Policy requires Palantir's tools</div>
+        </div>
+        <div class="net-row">
+          <div class="net-node">Palantir gets sole-source contracts</div>
+          <div class="net-arr">→</div>
+          <div class="net-node">Stock price soars 200%</div>
+          <div class="net-arr">→</div>
+          <div class="net-node">Everyone in the network profits</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── TIMELINE ─── -->
+    <section class="layer-section reveal" id="timeline">
+      <div class="section-label">Timeline &mdash; Building the Machine (2003–2026)</div>
+      <h2>Timeline</h2>
+      <p class="layer-desc">Chronological record of how two decades of decisions built today's surveillance apparatus</p>
+
+      <div class="timeline-wrap">
+
+        <div class="tl-item">
+          <div class="tl-year">2003</div>
+          <div class="tl-event">Peter Thiel co-founds Palantir Technologies</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2005</div>
+          <div class="tl-event">Palantir receives investment from In-Q-Tel, CIA's venture capital arm</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2009</div>
+          <div class="tl-event">CIA develops ExpressLane biometric exfiltration tool</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2011</div>
+          <div class="tl-event">Five Eyes establish Migration 5 biometric sharing (3,000 checks/year)</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2014</div>
+          <div class="tl-event">ICE awards Palantir contract for FALCON system</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2017</div>
+          <div class="tl-event">Vault 7 leaks expose CIA's ExpressLane; Schulte arrested</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2019</div>
+          <div class="tl-event">Mississippi raids using Palantir (680 arrested); 1,200+ students pledge not to work for Palantir</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2022</div>
+          <div class="tl-event">ICM succeeds FALCON; Thiel spends $15M helping JD Vance win Senate seat</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2024</div>
+          <div class="tl-event">Migration 5 reaches 8M checks/year (26,000% increase); Trump wins election; Palantir stock begins surge</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Jan 2025</div>
+          <div class="tl-event">Trump inaugurated; IRS-ICE data sharing agreement signed; Miller files disclosure showing Palantir stock ownership</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Mar 2025</div>
+          <div class="tl-event">Trump signs "Eliminating Information Silos" executive order</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Apr 2025</div>
+          <div class="tl-event">ImmigrationOS contract ($29.9M sole-source) awarded to Palantir; DOGE hosts IRS "hackathon"</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Jun 2025</div>
+          <div class="tl-event">HHS orders Medicaid data transfer to ICE (80M patients); POGO publishes Miller stock investigation</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Sep 2025</div>
+          <div class="tl-event">NSPM-7 signed redefining domestic terrorism; Bondi issues first implementation memo</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Dec 2025</div>
+          <div class="tl-event">HUD awards Palantir $200K "demonstration" contract for GNMA financial systems; modified one day after Trump inauguration</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">Jan 2026</div>
+          <div class="tl-event">Klippenstein reveals secret watchlists; 404 Media exposes ELITE; ICE agent tells observer she's in "domestic terrorist" database</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ─── SOURCES & REFERENCES ─── -->
+    <section class="layer-section reveal" id="sources">
+      <div class="section-label">Sources &amp; References</div>
+      <h2>Sources</h2>
+      <p class="layer-desc">This dashboard synthesizes reporting from investigative journalists, leaked government documents, federal contracts, and FOIA requests. All claims are sourced from publicly available documents or verified reporting.</p>
+
+      <div class="card-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+
+        <div class="sys-card source-card">
+          <h3>Primary Investigations</h3>
+          <div class="card-fn">Key Investigative Sources</div>
+          <div class="card-body">
+            <ul>
+              <li>
+                <strong>Ken Klippenstein</strong> — "Feds Identify 'Leader of Antifa'" (Feb 2026)<br>
+                <span class="src-meta">Exposed IRS-NG system, 28 databases, Chandler Patey / Dustin Ragsdale / Mossy Matriarch cases</span>
+                <a href="https://www.kenklippenstein.com/" target="_blank" rel="noopener">kenklippenstein.com</a>
+              </li>
+              <li>
+                <strong>Ken Klippenstein</strong> — "The Deportation Machine Comes Home" (Jan 2026)<br>
+                <span class="src-meta">Original secret watchlist investigation, Nicole Cleland case</span>
+              </li>
+              <li>
+                <strong>404 Media</strong> — ELITE System Exposure (Jan 2026)<br>
+                <span class="src-meta">Revealed targeting algorithms and confidence scoring</span>
+                <a href="https://www.404media.co/" target="_blank" rel="noopener">404media.co</a>
+              </li>
+              <li>
+                <strong>Alex Ellis / Subtxt Press</strong> — "The Deportation Machine Comes Home" (Jan 2026)<br>
+                <span class="src-meta">Comprehensive ICE surveillance infrastructure investigation</span>
+                <a href="https://substack.com/@subtxtpress" target="_blank" rel="noopener">substack.com/@subtxtpress</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sys-card source-card">
+          <h3>Government Documents &amp; Contracts</h3>
+          <div class="card-fn">Official Records</div>
+          <div class="card-body">
+            <ul>
+              <li>
+                <strong>ImmigrationOS Contract</strong> — 70CMSD24F00000213<br>
+                <span class="src-meta">$29.9M sole-source award to Palantir (April 2025)</span>
+                <a href="https://sam.gov/" target="_blank" rel="noopener">SAM.gov</a>
+              </li>
+              <li>
+                <strong>HUD-GNMA Contract</strong> — 47QTCA24D004L-86615526F00002<br>
+                <span class="src-meta">$200K demonstration contract, modified 1 day after inauguration</span>
+              </li>
+              <li>
+                <strong>DHS Privacy Impact Assessment</strong> — IRS-NG System<br>
+                <span class="src-meta">Details 28 database access, first week of Trump admin (2025)</span>
+              </li>
+              <li>
+                <strong>NSPM-7</strong> — National Security Presidential Memorandum<br>
+                <span class="src-meta">Domestic terrorism redefinition (September 2025)</span>
+              </li>
+              <li>
+                <strong>Executive Order</strong> — "Eliminating Information Silos"<br>
+                <span class="src-meta">Cross-agency data sharing mandate (March 2025)</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sys-card source-card">
+          <h3>Historical Context</h3>
+          <div class="card-fn">Background &amp; Precedent</div>
+          <div class="card-body">
+            <ul>
+              <li>
+                <strong>WikiLeaks Vault 7</strong> — CIA ExpressLane exposure (2017)<br>
+                <span class="src-meta">Biometric exfiltration tool, Joshua Schulte arrest</span>
+              </li>
+              <li>
+                <strong>Mississippi Raids</strong> — ICE Operations (August 2019)<br>
+                <span class="src-meta">680 arrests using FALCON targeting</span>
+              </li>
+              <li>
+                <strong>Migration 5 Alliance</strong> — Five Eyes Biometric Sharing<br>
+                <span class="src-meta">3,000 checks/year (2011) to 8M checks/year (2024)</span>
+              </li>
+              <li>
+                <strong>Palantir Student Boycott</strong> — 1,200+ Students Pledge (2019)<br>
+                <span class="src-meta">Never Again Action campaign against ICE contracts</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sys-card source-card">
+          <h3>Financial &amp; Accountability</h3>
+          <div class="card-fn">Follow the Money</div>
+          <div class="card-body">
+            <ul>
+              <li>
+                <strong>POGO Investigation</strong> — Stephen Miller Palantir Stock (June 2025)<br>
+                <span class="src-meta">Conflict of interest disclosure analysis</span>
+                <a href="https://www.pogo.org/" target="_blank" rel="noopener">pogo.org</a>
+              </li>
+              <li>
+                <strong>Peter Thiel Political Spending</strong><br>
+                <span class="src-meta">$1.25M to Trump (2016), $15M for JD Vance Senate seat (2022)</span>
+              </li>
+              <li>
+                <strong>Palantir Stock Performance</strong><br>
+                <span class="src-meta">200% surge following Trump election (2024–2025)</span>
+              </li>
+              <li>
+                <strong>In-Q-Tel Investment</strong> — CIA Venture Capital (2005)<br>
+                <span class="src-meta">Initial CIA funding of Palantir Technologies</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sys-card source-card">
+          <h3>Policy &amp; Legal Framework</h3>
+          <div class="card-fn">Authorizing Documents</div>
+          <div class="card-body">
+            <ul>
+              <li>
+                <strong>IRS-ICE Data Sharing Agreement</strong> (January 2025)<br>
+                <span class="src-meta">Tax records access, 4.8M ITIN holders affected</span>
+              </li>
+              <li>
+                <strong>HHS Medicaid Data Order</strong> (June 2025)<br>
+                <span class="src-meta">80M+ patient records transferred to ICE</span>
+              </li>
+              <li>
+                <strong>Section 287(g) Agreements</strong><br>
+                <span class="src-meta">Local law enforcement ICE deputization program</span>
+              </li>
+              <li>
+                <strong>Secure Communities Program</strong><br>
+                <span class="src-meta">Automatic fingerprint-to-immigration screening in jails</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="sys-card source-card">
+          <h3>Additional Resources</h3>
+          <div class="card-fn">Ongoing Work</div>
+          <div class="card-body">
+            <ul>
+              <li>
+                <strong>Active FOIA Tracker</strong><br>
+                <span class="src-meta">~15 ongoing requests across JCPD, MDOC, Treasury, DOJ, DHS, IRS, ICE, Minneapolis PD</span>
+                <a href="https://docs.google.com/spreadsheets/d/103CKXPKrYh_mPyeVznY_5Ue87DJFk_nUhcNTQdgmHcQ/" target="_blank" rel="noopener">View FOIA Tracker</a>
+              </li>
+              <li>
+                <strong>Interactive Dashboards Archive</strong><br>
+                <span class="src-meta">From Epstein's Amazon shipments to DHS surveillance infrastructure</span>
+              </li>
+              <li>
+                <strong>Subtxt Press Editorial Policies</strong><br>
+                <span class="src-meta">Source protection protocols, on/off the record ground rules</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="about-box">
+        <strong>About This Dashboard:</strong> Created by <strong>Subtxt Press</strong> as part of ongoing investigative reporting on surveillance infrastructure, extremism in law enforcement, and accountability failures. This dashboard is a living document updated as new information becomes available through FOIA requests, leaked documents, and verified reporting.
+      </div>
+
+    </section>
+
+  </main>
+
+  <script>
+    /* ─── LAYER FILTER ─── */
+    function showAll(e) {
+      document.querySelectorAll('.layer-content').forEach(el => el.classList.remove('hidden'));
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+    }
+
+    function showLayer(e, layer) {
+      document.querySelectorAll('.layer-content').forEach(el => {
+        el.dataset.layer === layer
+          ? el.classList.remove('hidden')
+          : el.classList.add('hidden');
+      });
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+    }
+
+    /* ─── CASE STUDY TOGGLE ─── */
+    function toggleCase(id, btn) {
+      const el = document.getElementById(id);
+      if (el.hasAttribute('hidden')) {
+        el.removeAttribute('hidden');
+        btn.textContent = 'Hide details ↑';
+      } else {
+        el.setAttribute('hidden', '');
+        btn.textContent = 'Show details →';
+      }
+    }
+
+    /* ─── DATABASE GRID TOGGLE ─── */
+    function toggleDb(btn) {
+      const panel = document.getElementById('db-panel');
+      if (panel.hasAttribute('hidden')) {
+        panel.removeAttribute('hidden');
+        btn.textContent = '↑ Hide database list';
+        btn.setAttribute('aria-expanded', 'true');
+      } else {
+        panel.setAttribute('hidden', '');
+        btn.textContent = 'View the 28+ database list →';
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    /* ─── FLIP CARD TOUCH SUPPORT ─── */
+    document.querySelectorAll('.flip-wrap').forEach(card => {
+      card.addEventListener('click', () => card.classList.toggle('is-flipped'));
+    });
+
+    /* ─── SCROLL REVEAL ─── */
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          revealObserver.unobserve(entry.target);
         }
+      });
+    }, { threshold: 0.06, rootMargin: '0px 0px -32px 0px' });
 
-        function showLayer(layer) {
-            document.querySelectorAll('.layer-content').forEach(el => {
-                if (el.dataset.layer === layer) {
-                    el.classList.remove('hidden');
-                } else {
-                    el.classList.add('hidden');
-                }
-            });
-            document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-        }
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  </script>
 
-        // Animate on scroll
-        const observerOptions = {
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.layer').forEach(layer => {
-            observer.observe(layer);
-        });
-    </script>
 </body>
 </html>

@@ -859,14 +859,14 @@
     }
 
     @media (max-width: 768px) {
-      .map-header { padding: 16px 1rem 12px; }
+      .map-header { padding: 16px 1rem 12px; flex-direction: column; align-items: flex-start; }
       .map-footer { padding: 10px 1rem; }
       #map { height: 420px !important; }
     }
 
     @media (max-width: 480px) {
       #map { height: 320px !important; }
-      .map-legend { gap: 8px; }
+      .map-legend { gap: 8px; font-size: 10px; }
     }
 
     /* ── No results ── */
@@ -880,8 +880,26 @@
     .no-results strong { display: block; font-size: 1rem; margin-bottom: 0.5rem; color: var(--text-dim); }
 
     /* ── Responsive ── */
+
+    /* Tablet — medium screens */
+    @media (max-width: 1024px) {
+      .container { padding: 2rem 1.25rem 5rem; }
+    }
+
+    /* Tablet — stat bar wraps to 3 columns */
+    @media (max-width: 900px) {
+      .stat-bar-inner { grid-template-columns: repeat(3, 1fr); }
+      .stat { border-bottom: 1px solid var(--border); }
+      .stat:nth-child(3n) { border-right: none; }
+      .stat:nth-last-child(-n+3) { border-bottom: none; }
+    }
+
+    /* Mobile landscape / small tablet */
     @media (max-width: 768px) {
       .container { padding: 1rem 1rem 3rem; }
+
+      /* Reduce header inner padding so it doesn't compound with outer padding */
+      .header-inner { padding: 0 1rem; }
 
       .section-header {
         flex-direction: column;
@@ -889,21 +907,34 @@
         gap: 0.35rem;
       }
 
+      .section-count { font-size: 0.70rem; line-height: 1.5; }
+
       .filter-bar {
         flex-direction: column;
         align-items: stretch;
       }
 
       .search-wrap { min-width: unset; }
-
       .filter-select { width: 100%; }
-
       .filter-tag { text-align: center; }
 
       .result-count {
         margin-left: 0;
         text-align: right;
       }
+
+      /* Tighten card padding */
+      .intro-body { padding: 1.25rem; }
+      .sidebar-block { padding: 1rem; }
+      .shell-card { padding: 1.1rem 1.2rem; }
+      .foia-card { padding: 1.1rem; }
+      .method-block { padding: 1.1rem; }
+      .stat { padding: 1.1rem 1.25rem; }
+
+      /* Table density */
+      table { font-size: 0.74rem; }
+      td { padding: 0.65rem 0.75rem; }
+      th { padding: 0.65rem 0.75rem; }
 
       /* Hide lower-priority table columns on small screens */
       .table-wrap table th:nth-child(4),
@@ -916,25 +947,43 @@
       }
     }
 
+    /* Mobile portrait */
     @media (max-width: 600px) {
+      /* Stat bar: 2 columns */
       .stat-bar-inner { grid-template-columns: repeat(2, 1fr); }
       .stat { border-bottom: 1px solid var(--border); }
 
-      /* Last row bottom stats shouldn't double-border */
+      /* Reset 3-col border rules, apply 2-col rules */
+      .stat:nth-child(3n) { border-right: 1px solid var(--border); }
+      .stat:nth-child(2n) { border-right: none; }
       .stat:nth-last-child(-n+2) { border-bottom: none; }
 
-      .header { padding: 1.5rem 1rem 1.25rem; }
-
+      /* Remove horizontal padding from outer header — header-inner handles it */
+      .header { padding: 1.5rem 0 1.25rem; }
       .header-meta { gap: 0.75rem; flex-direction: column; }
     }
 
+    /* Small phones */
     @media (max-width: 480px) {
       .stat-bar-inner { grid-template-columns: 1fr 1fr; }
       .stat-value { font-size: 2rem; }
 
-      .nav-btn { padding: 0.85rem 1rem; font-size: 0.75rem; }
+      .nav-btn { padding: 0.85rem 1rem; font-size: 0.72rem; }
 
       .shell-row { grid-template-columns: 70px 1fr; }
+
+      /* Tighten card padding further */
+      .intro-body { padding: 1rem; }
+      .sidebar-block { padding: 0.9rem; }
+      .shell-card { padding: 1rem; }
+      .foia-card { padding: 0.9rem; }
+      .method-block { padding: 0.9rem; }
+      .info-box { padding: 1rem; }
+
+      /* Table cell min-widths for horizontal scroll */
+      .td-name { min-width: 130px; }
+      .td-entity { min-width: 100px; }
+      .td-location { min-width: 120px; }
     }
 
     /* ── Row hidden by filter ── */
@@ -1488,7 +1537,6 @@
         <p>Request any economic development agreements, tax abatements, or incentive packages issued to Winner LLC, Ernst LLC, or Meta Platforms in connection with the 4500 Like Way facility. Exemption runs to 2035. Same structure used by Wurldwide LLC DBA Statue LLC in El Paso — request parallel records from City of El Paso.</p>
         <div class="foia-target">Target: City of Fort Worth — Economic Development Department; City of El Paso — Economic Development</div>
       </div>
-    </div>
 
       <div class="foia-card">
         <h3>Texas PUC — Self-Generator Registrations for Unresolved Addresses</h3>
@@ -1507,6 +1555,7 @@
         <p>Request all permit applications, appraisal records, and economic development agreements for 951 Co Rd 204, Colorado City (Cipher Barber Lake LLC). The Comptroller lists Anthropic as occupant, but Cipher Mining filings describe Fluidstack as primary leaseholder with Google as backstop. Mitchell County CAD records may clarify the actual operational structure and whether any local abatements were granted alongside the state exemption.</p>
         <div class="foia-target">Target: Mitchell County Appraisal District; Colorado City — City Manager's Office</div>
       </div>
+    </div>
 
     <div class="info-box">
       <strong>Using this list?</strong> If you file any of these requests or have already received responsive records, please reach out at 
