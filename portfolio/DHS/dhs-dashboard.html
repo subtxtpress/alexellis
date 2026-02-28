@@ -468,17 +468,15 @@
 
     /* ─── FLIP CARDS (ACTORS) ─── */
     .flip-grid {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
     }
     .flip-wrap {
       -webkit-perspective: 900px;
       perspective: 900px;
-      width: 200px;
-      height: 150px;
+      height: 170px;
       cursor: pointer;
-      flex-shrink: 0;
     }
     .flip-inner {
       width: 100%; height: 100%;
@@ -798,9 +796,13 @@
     .tl-item::before {
       content: '';
       position: absolute;
-      left: -2.25rem; top: 1.375rem;
-      width: 2.25rem; height: 2px;
-      background: var(--accent);
+      left: calc(-2.25rem - 3px);
+      top: 1.375rem;
+      transform: translateY(-50%);
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(to bottom, #F5F5F5, #F4E5C4, #D8DADB, #C04E01);
+      border: 2px solid var(--surface-base);
     }
     .tl-item::after { display: none; }
     .tl-year {
@@ -894,8 +896,8 @@
       .main-container { padding: 1.5rem 1.25rem 4rem; }
       .layer-section { padding: 1.5rem; border-radius: 8px; }
       .card-grid { grid-template-columns: 1fr; }
-      .flip-grid { flex-direction: column; align-items: stretch; }
-      .flip-wrap { width: 100%; height: 160px; }
+      .flip-grid { grid-template-columns: 1fr; }
+      .flip-wrap { height: 160px; }
       .stat-strip { grid-template-columns: repeat(2, 1fr); }
       .stat-card { border-right: none; border-bottom: 1px solid var(--border-mid); }
       .stat-card:nth-child(odd) { border-right: 1px solid var(--border-mid); }
@@ -921,7 +923,7 @@
       }
       .db-grid { grid-template-columns: 1fr; }
       .timeline-wrap { padding-left: 1.5rem; }
-      .tl-item::before { left: -1.5rem; width: 1.5rem; }
+      .tl-item::before { left: calc(-1.5rem - 3px); width: auto; }
       .net-row {
         padding-bottom: 1.25rem;
         margin-bottom: 1rem;
