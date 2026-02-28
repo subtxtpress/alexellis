@@ -99,9 +99,11 @@
     .header {
       background: var(--bg2);
       border-bottom: 1px solid var(--border);
-      padding: 3rem 1.5rem 2.25rem;
+      padding: 3rem 0 2.25rem;
       position: relative;
       overflow: hidden;
+      max-width: 1400px;
+      margin: 0 auto;
     }
 
     .header::before {
@@ -131,6 +133,7 @@
     .header-inner {
       max-width: 1400px;
       margin: 0 auto;
+      padding: 0 1.5rem;
       position: relative;
     }
 
@@ -159,7 +162,6 @@
     .header-desc {
       font-size: 0.88rem;
       color: var(--text-dim);
-      max-width: 640px;
       line-height: 1.75;
       margin-bottom: 1.5rem;
     }
@@ -194,11 +196,14 @@
       background: var(--bg2);
       border-bottom: 1px solid var(--border);
       padding: 0;
+      max-width: 1400px;
+      margin: 0 auto;
     }
 
     .stat-bar-inner {
       max-width: 1400px;
       margin: 0 auto;
+      padding: 0 1.5rem;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     }
@@ -259,6 +264,8 @@
       position: sticky;
       top: 0;
       z-index: 100;
+      max-width: 1400px;
+      margin: 0 auto;
     }
 
     .nav-inner {
@@ -825,7 +832,9 @@
 
     /* ── Map panel ── */
     .map-header {
-      padding: 24px 32px 16px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px 1.5rem 16px;
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
@@ -842,15 +851,16 @@
     }
 
     .map-footer {
-      padding: 12px 32px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 12px 1.5rem;
       font-size: 11px;
       color: var(--text-dim);
-      border-top: 1px solid var(--border);
     }
 
     @media (max-width: 768px) {
-      .map-header { padding: 16px 16px 12px; }
-      .map-footer { padding: 10px 16px; }
+      .map-header { padding: 16px 1rem 12px; }
+      .map-footer { padding: 10px 1rem; }
       #map { height: 420px !important; }
     }
 
@@ -958,11 +968,10 @@
 <!-- ── Header ── -->
 <header class="header">
   <div class="header-inner">
-    <div class="header-eyebrow">Subtxt Press // Investigative Data</div>
+    <div class="header-eyebrow">Subtxt Press // Investigative Report</div>
     <h1>Texas <span>Data Centers</span></h1>
     <p class="header-desc">
-      An investigative database of registered qualifying data centers under the Texas Comptroller's tax exemption program. 
-      Who owns them, who really occupies them, how much power they consume, and what communities are giving up to host them.
+      An investigative database of registered qualifying data centers under the Texas Comptroller's tax exemption program. Who owns them, who really occupies them, how much power they consume, and what communities are giving up to host them.
     </p>
     <div class="header-meta">
       <span><span class="dot"></span> Living document — updated as more info and records are confirmed</span>
@@ -1592,7 +1601,7 @@
 </div><!-- /container -->
 
   <!-- ═══ MAP ═══ -->
-  <div class="tab-panel" id="tab-map" style="padding: 0;">
+  <div class="tab-panel" id="tab-map" style="padding: 0; max-width: 1400px; margin: 0 auto;">
     <div class="map-header">
       <div>
         <h2 style="font-family:'Bebas Neue',sans-serif; font-size:28px; font-weight:400; letter-spacing:0.05em; color:var(--text); margin-bottom:4px;">Facility Map</h2>
@@ -1612,7 +1621,7 @@
     </div>
   </div>
 
-<footer style="background:var(--bg2); border-top:1px solid var(--border); padding:1.5rem; text-align:center; font-size:0.7rem; color:var(--text-muted); letter-spacing:0.04em;">
+<footer style="background:var(--bg2); border-top:1px solid var(--border); padding:1.5rem; text-align:center; font-size:0.7rem; color:var(--text-muted); letter-spacing:0.04em; max-width:1400px; margin:0 auto;">
   Subtxt Press &nbsp;·&nbsp; TX Data Centers &nbsp;·&nbsp; Living document — updated as records are confirmed &nbsp;·&nbsp; <a href="https://substack.com/@subtxtpress" target="_blank">substack.com/@subtxtpress</a>
 </footer>
 
