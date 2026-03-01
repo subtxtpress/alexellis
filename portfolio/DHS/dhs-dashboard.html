@@ -58,7 +58,7 @@
   <style>
     :root {
       --p-white:   #F5F5F5;
-      --p-cream: #ebe2cd;
+      --p-cream:   #ebe2cd;
       --p-rust:    #C04E01;
       --p-silver:  #D8DADB;
       --p-teal:    #12403C;
@@ -70,7 +70,7 @@
 
       --text-pure:      #F5F5F5;
       --text-secondary: #D8DADB;
-      --text-label: #ebe2cd;
+      --text-label:     #ebe2cd;
       --text-muted:     rgba(216, 218, 219, 0.50);
 
       --accent:         #C04E01;
@@ -142,14 +142,14 @@
       animation: fadeUp 0.5s ease 0.05s both;
       overflow: visible;
     }
-    /*.page-header::before {
+    .page-header::before {
       content: '';
       position: absolute;
       top: -4px; left: 0; right: 0;
       height: 4px;
       background: var(--grad-g03);
       pointer-events: none;
-    }*/
+    }
     .header-inner { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
     .header-eyebrow {
       font-family: 'IBM Plex Mono', monospace;
@@ -468,17 +468,15 @@
 
     /* ─── FLIP CARDS (ACTORS) ─── */
     .flip-grid {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
     }
     .flip-wrap {
       -webkit-perspective: 900px;
       perspective: 900px;
-      width: 200px;
-      height: 150px;
+      height: 170px;
       cursor: pointer;
-      flex-shrink: 0;
     }
     .flip-inner {
       width: 100%; height: 100%;
@@ -798,9 +796,13 @@
     .tl-item::before {
       content: '';
       position: absolute;
-      left: -2.25rem; top: 1.375rem;
-      width: 2.25rem; height: 2px;
-      background: var(--accent);
+      left: calc(-2.25rem - 3px);
+      top: 1.375rem;
+      transform: translateY(-50%);
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(to bottom, #F5F5F5, #F4E5C4, #D8DADB, #C04E01);
+      border: 2px solid var(--surface-base);
     }
     .tl-item::after { display: none; }
     .tl-year {
@@ -894,8 +896,8 @@
       .main-container { padding: 1.5rem 1.25rem 4rem; }
       .layer-section { padding: 1.5rem; border-radius: 8px; }
       .card-grid { grid-template-columns: 1fr; }
-      .flip-grid { flex-direction: column; align-items: stretch; }
-      .flip-wrap { width: 100%; height: 160px; }
+      .flip-grid { grid-template-columns: 1fr; }
+      .flip-wrap { height: 160px; }
       .stat-strip { grid-template-columns: repeat(2, 1fr); }
       .stat-card { border-right: none; border-bottom: 1px solid var(--border-mid); }
       .stat-card:nth-child(odd) { border-right: 1px solid var(--border-mid); }
@@ -921,7 +923,7 @@
       }
       .db-grid { grid-template-columns: 1fr; }
       .timeline-wrap { padding-left: 1.5rem; }
-      .tl-item::before { left: -1.5rem; width: 1.5rem; }
+      .tl-item::before { left: calc(-1.5rem - 3px); width: auto; }
       .net-row {
         padding-bottom: 1.25rem;
         margin-bottom: 1rem;
@@ -2211,15 +2213,15 @@
               <li>
                 <strong>FOIA.io</strong><br>
                 <span class="src-meta">Track deadlines, generate request letters and manage appeals across federal, state and local agencies¶mdash;all in one place.</span>
-                <a href="../FOIA/landing.html" target="_blank" rel="noopener">View FOIA Tracker</a>
+                <a href="https://docs.google.com/spreadsheets/d/103CKXPKrYh_mPyeVznY_5Ue87DJFk_nUhcNTQdgmHcQ/" target="_blank" rel="noopener">View FOIA Tracker</a>
               </li>
               <li>
                 <strong>Interactive Dashboards</strong><br>
-                <span class="src-meta">Index of recent <strong><a href="../tx-data-centers/tx-data-centers.html" target="_blank">data projects</a></strong> from TX data centers to Epstein's Amazon Account.</span>
+                <span class="src-meta">Index of recent <strong><a href="../home/portfolio/portfolio.html" target="_blank">data projects</a></strong> from TX data centers to Epstein's Amazon Account.</span>
               </li>
               <li>
                 <strong>Subtxt Press Editorial Policies</strong><br>
-                <span class="src-meta">Find our <strong><a href="../../policies.html" target="_blank">on/off the record ground rules</a></strong>, how to contact us securely and various editorial policies.</span>
+                <span class="src-meta">Find our <strong><a href="policies.html" target="_blank">on/off the record ground rules</a></strong>, how to contact us securely and various editorial policies.</span>
               </li>
             </ul>
           </div>
