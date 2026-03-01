@@ -237,7 +237,7 @@ h6 {
 .portfolio-wrapper {
   width: 95%;
   margin: auto;
-  padding: 10% 0;
+  padding: 5% 0;
 }
 /*--------------------------------------------------------------
 # Navigation Menu
@@ -497,17 +497,14 @@ section,
 .section {
   color: var(--default-color);
   background-color: var(--background-color);
-  padding: 60px 0;
+  padding: 20px 0;
   overflow: clip;
-}
-.index-section {
-  margin-bottom: -10%;
 }
 /*--------------------------------------------------------------
 # Global Section Titles
 --------------------------------------------------------------*/
 .section-title {
-  padding-bottom: 60px;
+  padding-bottom: 20px;
   position: relative;
 }
 
