@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Epstein's Amazon Account — Subtxt Press</title>
+  <title>Jeffrey's Epstein's Amazon Account — Subtxt Press</title>
   <meta name="description" content="An interactive dashboard analyzing Jeffrey Epstein's Amazon shipment records from the Jmail document release.">
   <meta name="author" content="Subtxt Press">
   <meta name="robots" content="index, follow">
@@ -30,11 +30,12 @@
   <meta name="twitter:image" content="https://subtxtpress.github.io/home/portfolio/Epstein/img/epstein-dashboard.png">
 
   <!-- Favicons -->
-  <link rel="apple-touch-icon" sizes="180x180" href="../../icons/icon-180.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="../../icons/icon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="../../icons/icon-16.png">
-  <link rel="icon" type="image/x-icon" href="../../icons/favicon.ico">
-  <link rel="manifest" href="../../icons/site.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png">
+  <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
+  <link rel="manifest" href="icons/site.webmanifest">
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -46,7 +47,9 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
 
     :root {
       --bg:         #0a0a0a;
@@ -84,7 +87,7 @@
     }
 
     .eyebrow {
-      font-size: 0.68rem;
+      font-size: 0.75rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--accent);
@@ -106,8 +109,13 @@
       line-height: 1.5;
     }
 
-    .subhead a { color: var(--accent); text-decoration: none; }
-    .subhead a:hover { text-decoration: underline; }
+    .subhead a {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+    .subhead a:hover {
+      text-decoration: none;
+    }
 
     /* ── Stats ── */
     .stats-row {
@@ -166,7 +174,7 @@
     }
 
     .card-title {
-      font-size: 0.68rem;
+      font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -174,7 +182,9 @@
       margin-bottom: 14px;
     }
 
-    .chart-wrap { position: relative; }
+    .chart-wrap {
+      position: relative;
+    }
 
     /* ── Notable items ── */
     .notable {
@@ -195,7 +205,7 @@
     }
 
     .notable-title {
-      font-size: 0.68rem;
+      font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -221,12 +231,12 @@
       border-top: 2px solid var(--accent);
     }
 
-    .insight.tag-s-top { border-top-color: #f87171; }
-    .insight.tag-u-top { border-top-color: #fbbf24; }
-    .insight.tag-a-top { border-top-color: #a78bfa; }
-    .insight.tag-c-top { border-top-color: #34d399; }
-    .insight.tag-b-top { border-top-color: #38bdf8; }
-    .insight.tag-k-top { border-top-color: #fb923c; }
+    .insight.tag-s-top { border-top-color: lightgray;/*#f87171;*/ }
+    .insight.tag-u-top { border-top-color: lightgray;/*#fbbf24;*/ }
+    .insight.tag-a-top { border-top-color: lightgray;/*#a78bfa;*/ }
+    .insight.tag-c-top { border-top-color: lightgray;/*#34d399;*/ }
+    .insight.tag-b-top { border-top-color: lightgray;/*#38bdf8;*/ }
+    .insight.tag-k-top { border-top-color: lightgray;/*#fb923c;*/ }
 
     .insight-top {
       display: flex;
@@ -248,7 +258,7 @@
 
     .tag {
       display: inline-block;
-      font-size: 0.6rem;
+      font-size: 0.7rem;
       font-weight: 700;
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -277,8 +287,15 @@
       line-height: 1.6;
     }
 
-    .source a { color: var(--accent); text-decoration: none; }
-    .source a:hover { text-decoration: underline; }
+    .source a { color: var(--accent); text-decoration: underline; }
+    .source a:hover { text-decoration: none; }
+
+    /* ── Focus styles ── */
+    a:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
   </style>
 
   <!-- Structured Data -->
@@ -307,7 +324,7 @@
   <div class="page">
 
     <header class="header">
-      <div class="eyebrow">Subtxt Press &mdash; Investigative Report</div>
+      <div class="eyebrow">Subtxt Press &mdash; Report</div>
       <h1>Jeffrey Epstein's Amazon Shipments</h1>
       <p class="subhead">
         654 orders shipped to 7 properties &bull; September 2007 &ndash; July 2019 &bull;
@@ -338,14 +355,14 @@
       <div class="card">
         <div class="card-title">Orders &amp; Spending by Year</div>
         <div class="chart-wrap" style="height:230px">
-          <canvas id="timelineChart"></canvas>
+          <canvas id="timelineChart" role="img" aria-label="Bar and line chart: Orders rose from 14 in 2007 to a peak of 283 in 2018, then fell to 67 in 2019. Spending followed the same arc, peaking at $19,696 in 2018."></canvas>
         </div>
       </div>
 
       <div class="card">
         <div class="card-title">Spending by Location</div>
         <div class="chart-wrap" style="height:230px">
-          <canvas id="locationChart"></canvas>
+          <canvas id="locationChart" role="img" aria-label="Donut chart of spending by location: Palm Beach El Brillo Way $24,268 (47%), NYC 9 E 71st St $23,670 (46%), Private Island $2,655 (5%), Yacht Harbor $502, New Mexico $179, Paris $136."></canvas>
         </div>
       </div>
     </div>
@@ -353,7 +370,7 @@
     <div class="card" style="margin-bottom:12px">
       <div class="card-title">Purchase Categories (estimated)</div>
       <div class="chart-wrap" style="height:310px">
-        <canvas id="categoriesChart"></canvas>
+        <canvas id="categoriesChart" role="img" aria-label="Horizontal bar chart of estimated purchase categories: Men's Clothing 58, Home Decor/Rugs 46, Health and Supplements 38, Sleep/CPAP 24, Electronics 22, Books 22, Women's Clothing 20, Pool and Water Sports 18, Bikes and Fitness 16, Food 14, Children's Items 11, Surveillance 9, Adult/Unusual 8."></canvas>
       </div>
     </div>
 
@@ -433,8 +450,7 @@
     <div class="source">
       <strong>Source:</strong> All listed items were found in the JMail files published by
       <a href="https://dropsiteusa.com" target="_blank">Dropsite News</a>.
-      The <a href="https://docs.google.com/spreadsheets/d/1nAQSUE_bcqSwVbmfCy_wS9nYf9LBkJld_JQVW6EbD34/" target="_blank">full spreadsheet</a>
-      links each listing to its original email.
+      The full spreadsheet linking to each listing to its original email can be found <a href="https://docs.google.com/spreadsheets/d/1nAQSUE_bcqSwVbmfCy_wS9nYf9LBkJld_JQVW6EbD34/" target="_blank">here</a>.
     </div>
 
   </div>
