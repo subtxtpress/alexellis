@@ -5,12 +5,10 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <!-- Required Info -->
   <title>Subtxt Press</title>
-  <meta name="description" content="Home // @subtxtpress GitHub">
+  <meta name="description" content="Irreverent, adversarial reporting on corruption, due process and institutional failures.">
   <link rel="canonical" href="https://subtxtpress.github.io/home/index.html">
 
-  <!-- Open Graph (Facebook, LinkedIn, etc.) -->
   <meta property="og:title" content="Home // Subtxt Press">
   <meta property="og:description" content="Irreverent, adversarial reporting on corruption, due process and institutional failures.">
   <meta property="og:type" content="website">
@@ -20,179 +18,532 @@
   <meta property="og:image:height" content="720">
   <meta property="og:site_name" content="Subtxt Press">
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Home // Subtxt Press">
   <meta name="twitter:description" content="Irreverent, adversarial reporting on corruption, due process and institutional failures.">
   <meta name="twitter:image" content="https://subtxtpress.github.io/home/assets/img/texas-landscape.jpg">
   <meta name="twitter:creator" content="@subtxtpress">
 
-  <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png">
   <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
   <link rel="manifest" href="icons/site.webmanifest">
 
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Raleway:wght@700;800;900&display=swap" rel="stylesheet">
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="assets/vendor/aos/aos.css" rel="stylesheet">
 
-  <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --peach:   #E8956A;
+      --cream:   #F4EDE3;
+      --sand:    #DDD0BC;
+      --plum:    #3E2436;
+      --carmine: #7A5063;
+      --ink:     #241620;
+
+      --surface-page:     #F4EDE3;
+      --surface-card:     #FFFFFF;
+      --surface-elevated: #EDE5D8;
+
+      --text-heading: #241620;
+      --text-body:    #44373C;
+      --text-label:   #7A5063;
+      --text-muted:   rgba(68, 55, 60, 0.45);
+
+      --accent:        #E8956A;
+      --accent-subtle: rgba(232, 149, 106, 0.08);
+      --accent-border: rgba(232, 149, 106, 0.40);
+
+      --border-light:  rgba(221, 208, 188, 0.55);
+      --border-mid:    rgba(180, 140, 100, 0.22);
+
+      --grad-neutral: linear-gradient(to right, #DDD0BC, #E8956A);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--surface-page);
+      color: var(--text-body);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: var(--carmine); }
+    a:hover { color: var(--accent); }
+
+    /* ─── Nav ───────────────────────────────────────────────── */
+    .site-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 56px;
+      transition: background 0.3s, padding 0.3s, border-color 0.3s, box-shadow 0.3s;
+      border-bottom: 1px solid transparent;
+    }
+
+    .site-nav.scrolled {
+      padding: 14px 56px;
+      background: rgba(244, 237, 227, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom-color: var(--border-light);
+      box-shadow: 0 1px 12px rgba(36, 22, 32, 0.06);
+    }
+
+    .nav-brand {
+      font-family: 'Raleway', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .site-nav.scrolled .nav-brand { color: var(--ink); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.62);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover  { color: #fff; }
+    .nav-links a.active { color: var(--peach); }
+
+    .site-nav.scrolled .nav-links a        { color: var(--text-label); }
+    .site-nav.scrolled .nav-links a:hover  { color: var(--ink); }
+    .site-nav.scrolled .nav-links a.active { color: var(--accent); }
+
+    /* ─── Hero ──────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 80vh;
+      min-height: 520px;
+      overflow: hidden;
+    }
+
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 60%;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.52)  0%,
+        rgba(0, 0, 0, 0.18) 45%,
+        rgba(0, 0, 0, 0.38) 100%
+      );
+    }
+
+    .hero-content {
+      position: absolute;
+      bottom: 72px;
+      left: 56px;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--peach);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 22px;
+      height: 1.5px;
+      background: var(--peach);
+      flex-shrink: 0;
+    }
+
+    .hero-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(3.2rem, 7.5vw, 6rem);
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 24px rgba(36, 22, 32, 0.5);
+      margin-bottom: 18px;
+    }
+
+    .hero-tagline {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: clamp(0.8rem, 1.4vw, 0.95rem);
+      color: rgba(255, 255, 255, 0.70);
+      letter-spacing: 0.08em;
+      min-height: 1.4em;
+    }
+
+    .typed-cursor { color: var(--peach); }
+
+    /* ─── Site content ──────────────────────────────────────── */
+    .site-content {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 56px 80px;
+    }
+
+    /* ─── Section label ─────────────────────────────────────── */
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-label);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 36px 0 24px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-mid);
+    }
+
+    /* ─── About ─────────────────────────────────────────────── */
+    .about-text {
+      font-size: 15px;
+      line-height: 1.78;
+      color: var(--text-body);
+      max-width: 680px;
+      margin-bottom: 28px;
+    }
+
+    /* ─── Info links ─────────────────────────────────────────── */
+    .info-links {
+      border: 1px solid var(--border-mid);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--surface-card);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.06);
+      position: relative;
+    }
+
+    /* Gradient top-border strip */
+    .info-links::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--grad-neutral);
+      border-radius: 10px 10px 0 0;
+      pointer-events: none;
+    }
+
+    .info-link-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border-light);
+      transition: background 0.18s;
+    }
+
+    .info-link-row:last-child { border-bottom: none; }
+    .info-link-row:hover { background: var(--surface-elevated); }
+
+    .info-link-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-label);
+      min-width: 88px;
+      padding-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .info-link-body {
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: var(--text-body);
+    }
+
+    .info-link-body a { color: var(--carmine); font-weight: 600; }
+    .info-link-body a:hover { color: var(--accent); }
+
+    /* ─── Stats strip ───────────────────────────────────────── */
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border-mid);
+      border: 1px solid var(--border-mid);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.06);
+    }
+
+    .stat-item {
+      background: var(--surface-card);
+      padding: 24px 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-icon {
+      font-size: 17px;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .stat-number {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      line-height: 1;
+      letter-spacing: 0.02em;
+    }
+
+    .stat-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-label);
+      margin-top: 4px;
+    }
+
+    .stat-sub {
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* ─── Footer ─────────────────────────────────────────────── */
+    .site-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 24px 56px;
+      border-top: 1px solid var(--border-light);
+    }
+
+    .footer-brand {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-social a {
+      color: var(--text-muted);
+      font-size: 15px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-social a:hover { color: var(--carmine); }
+
+    /* ─── Scroll top ─────────────────────────────────────────── */
+    .scroll-top {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      width: 38px; height: 38px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 18px;
+      text-decoration: none;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, background 0.2s;
+      z-index: 100;
+    }
+
+    .scroll-top.visible { opacity: 1; pointer-events: auto; }
+    .scroll-top:hover { background: var(--ink); color: var(--cream); }
+
+    /* ─── Mobile ─────────────────────────────────────────────── */
+    @media (max-width: 720px) {
+      .site-nav,
+      .site-nav.scrolled { padding: 14px 20px; }
+      .nav-links          { gap: 20px; }
+      .hero-content       { left: 20px; bottom: 48px; }
+      .site-content       { padding: 0 16px 60px; }
+      .stat-strip         { grid-template-columns: repeat(2, 1fr); }
+      .info-link-row      { flex-direction: column; gap: 4px; }
+      .info-link-label    { min-width: unset; }
+      .site-footer        { padding: 24px 20px; }
+    }
+  </style>
 </head>
 
-<body class="index-page">
+<body>
 
-  <header id="header" class="header dark-background d-flex flex-column">
-    <i class="header-toggle d-xl-none bi bi-list"></i>
+  <nav class="site-nav" id="siteNav">
+    <a href="index.html" class="nav-brand">Subtxt Press</a>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="policies.html">Policies</a></li>
+      <li><a href="portfolio/portfolio.html">Portfolio</a></li>
+    </ul>
+  </nav>
 
-    <div class="avi-img">
-      <img src="assets/img/avi-img.png" class="img-fluid rounded-circle" alt="Desert mountain landscape (Photo Credit: Published by Dan Gentile on February 14, 2019)">
+  <section class="hero">
+    <img class="hero-img" src="assets/img/texas-landscape.jpg" alt="Texas landscape — Big Bend region">
+    <div class="hero-content" data-aos="fade-up">
+      <p class="hero-eyebrow">subtxtpress.github.io</p>
+      <h1 class="hero-title">Subtxt Press</h1>
+      <p class="hero-tagline"><span class="typed"></span></p>
+    </div>
+  </section>
+
+  <main class="site-content">
+
+    <div class="section-label">About</div>
+
+    <p class="about-text">
+      Independent journalist reporting on corruption, due process, and institutional failures.
+      I focus on how power is exercised, who it protects, and who it targets.
+      My work is not neutral&mdash;it's adversarial by design.
+    </p>
+
+    <div class="info-links" data-aos="fade-up">
+      <div class="info-link-row">
+        <span class="info-link-label">Portfolio</span>
+        <span class="info-link-body">Index of recent <a href="portfolio/portfolio.html">data projects</a>&mdash;from TX data centers to Epstein's Amazon Account to the DHS/ICE surveillance machine infrastructure.</span>
+      </div>
+      <div class="info-link-row">
+        <span class="info-link-label">Substack</span>
+        <span class="info-link-body">Recent long-form work on the <a href="https://substack.com/@subtxtpress" target="_blank" rel="noopener">@subtxtpress</a> Substack.</span>
+      </div>
+      <div class="info-link-row">
+        <span class="info-link-label">Got a tip?</span>
+        <span class="info-link-body">Find our <a href="policies.html">on/off the record ground rules</a>, how to contact us securely, and various editorial policies.</span>
+      </div>
     </div>
 
-    <a href="index.html" class="logo d-flex align-items-center justify-content-center">
-      <h1 class="sitename">Subtxt Press</h1>
-    </a>
+    <div class="section-label">Notebook</div>
 
-    <div class="social-links text-center">
-      <a href="https://substack.com/@subtxtpress" class="substack"><i class="bi bi-substack"></i></a>
-      <a href="https://www.tiktok.com/@subtxtpress" class="tiktok"><i class="bi bi-tiktok"></i></a>
-      <a href="https://vimeo.com/user253808178?fl=pp&fe=sh" class="vimeo"><i class="bi bi-vimeo"></i></a>
-      <a href="https://www.youtube.com/@subtxtpress" class="youtube"><i class="bi bi-youtube"></i></a>
-      <a href="https://x.com/subtxtpress" class="twitter"><i class="bi bi-twitter-x"></i></a>
+    <div class="stat-strip" data-aos="fade-up">
+      <div class="stat-item">
+        <i class="bi bi-file-text stat-icon"></i>
+        <span class="stat-number purecounter" data-purecounter-start="0" data-purecounter-end="17" data-purecounter-duration="1">17</span>
+        <span class="stat-label">FOIAs Filed</span>
+        <span class="stat-sub">as of March 2026</span>
+      </div>
+      <div class="stat-item">
+        <i class="bi bi-substack stat-icon"></i>
+        <span class="stat-number purecounter" data-purecounter-start="0" data-purecounter-end="3" data-purecounter-duration="1">3</span>
+        <span class="stat-label">Articles Published</span>
+        <span class="stat-sub">as a bona fide NYU &times; Rolling Stone YB Grad</span>
+      </div>
+      <div class="stat-item">
+        <i class="bi bi-alarm stat-icon"></i>
+        <span class="stat-number purecounter" data-purecounter-start="0" data-purecounter-end="12345" data-purecounter-duration="1">12345</span>
+        <span class="stat-label">Hours of Reading</span>
+        <span class="stat-sub">ballpark: I read more hours than I sleep</span>
+      </div>
+      <div class="stat-item">
+        <i class="bi bi-emoji-smile stat-icon"></i>
+        <span class="stat-number purecounter" data-purecounter-start="0" data-purecounter-end="10" data-purecounter-duration="1">10</span>
+        <span class="stat-label">Vibes</span>
+        <span class="stat-sub">on a scale of 1 to 10, with 1 being bad and 10 being good</span>
+      </div>
     </div>
-
-    <nav id="navmenu" class="navmenu">
-      <ul>
-        <li><a href="index.html" class="active"><i class="bi bi-house navicon"></i>Home</a></li>
-        <li><a href="policies.html"><i class="bi bi-person navicon"></i> Policies</a></li>
-        <li><a href="../home/portfolio/portfolio.html"><i class="bi bi-hdd-stack navicon"></i> Portfolio</a></li>
-      </ul>
-    </nav>
-
-  </header>
-
-    <main class="main">
-
-    <!-- Hero Section -->
-    <section id="hero" class="hero section dark-background">
-
-      <img src="assets/img/hero-bg.jpg" alt="Big Bend National Park, Texas, États-Unis (Photo Credit: Published by Loik Marras (loik_marras) on February 12, 2023)">
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <h2></h2>
-        <p> <span class="typed" data-typed-items="Subtxt Press:, Irreverent, Adversarial, Independent journalist."></span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span><span class="typed-cursor typed-cursor--blink" aria-hidden="true"></span></p>
-      </div>
-
-    </section><!-- /Hero Section -->
-
-    <!-- About Section -->
-    <section id="about" class="about section">
-
-      <!-- About Section Title -->
-      <div class="container section-title">
-        <h2>About Me</h2>
-          <p>
-            Independent journalist reporting on corruption, due process and institutional failures. I focus on how power is exercised, who it protects, and who it targets. My work is not neutral&mdash;it's adversarial by design.
-          </p>
-      </div><!-- End About Section Title -->
-
-
-    <!-- Portfolio Details Section -->
-    <section id="portfolio-details" class="portfolio-details section">
-
-      <div class="container">
-        <img src="assets/img/texas-landscape.jpg" class="img-fluid" alt="Desert mountain landscape (Photo Credit: Published by Dan Gentile on February 14, 2019)">
-      </div>
-      <!-- Portfolio Details Container -->
-      <div class="container">
-        <!-- Portfolio Details Row -->
-        <div class="row gy-4">
-          <!-- Portfolio Details Column -->
-          <div class="col-lg-12">
-            <!-- Portfolio Details -->
-            <div class="portfolio-info">
-              <h3></h3>
-              <ul>
-                <li><strong>Portfolio</strong>: Index of recent <strong><a href="../home/portfolio/portfolio.html" target="_blank">data projects</a></strong> from TX data centers to Epstein's Amazon Account to the DHS/ICE surveillance machine infrastructure.</li>
-                <li><strong>Substack</strong>: My recent long-form work can be found on the <strong><a href="https://substack.com/@subtxtpress" target="_blank">@subtxtpress</a></strong> Substack.</li>
-                <li><strong>Got a tip?</strong>: Find our <strong><a href="policies.html" target="_blank">on/off the record ground rules</a></strong>, how to contact us securely and various editorial policies.</li>
-              </ul>
-            </div><!-- End /About Details -->
-          </div><!-- End /About Details Column -->
-        </div><!-- End /About Details Row -->
-      </div><!-- End /About Details Container -->
-    </section><!-- End /About Details Section -->
-
-    <!-- Stats Section -->
-    <section id="stats" class="stats section">
-
-      <div class="container">
-
-        <div class="row gy-4">
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item">
-              <i class="bi bi-file-text"></i>
-              <span data-purecounter-start="0" data-purecounter-end="017" data-purecounter-duration="1" class="purecounter"></span>
-              <p><strong>FOIAs Filed</strong> <span>as of March 2026</span></p>
-            </div>
-          </div><!-- End Stats Item -->
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item">
-              <i class="bi bi-substack"></i>
-              <span data-purecounter-start="0" data-purecounter-end="003" data-purecounter-duration="1" class="purecounter"></span>
-              <p><strong>Articles Published</strong> <span> as a bona fide NYU x Rolling Stone YB Grad</span></p>
-            </div>
-          </div><!-- End Stats Item -->
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item">
-              <i class="bi bi-alarm"></i>
-              <span data-purecounter-start="0" data-purecounter-end="12345" data-purecounter-duration="1" class="purecounter"></span>
-              <p><strong>Hours Of Reading</strong> <span>(ballpark: I read more hours than I sleep)</span></p>
-            </div>
-          </div><!-- End Stats Item -->
-
-          <div class="col-lg-3 col-md-6">
-            <div class="stats-item">
-              <i class="bi bi-emoji-smile"></i>
-              <span data-purecounter-start="0" data-purecounter-end="10" data-purecounter-duration="1" class="purecounter"></span>
-              <p><strong>Vibes</strong> <span>on a scale of 1 to 10, with 1 being bad and 10 being good</span></p>
-            </div>
-          </div><!-- End Stats Item -->
-
-        </div>
-
-      </div>
-
-    </section><!-- /Stats Section -->
 
   </main>
 
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <footer class="site-footer">
+    <span class="footer-brand">Subtxt Press</span>
+    <div class="footer-social">
+      <a href="https://substack.com/@subtxtpress" aria-label="Substack"><i class="bi bi-substack"></i></a>
+      <a href="https://www.tiktok.com/@subtxtpress" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+      <a href="https://vimeo.com/user253808178?fl=pp&fe=sh" aria-label="Vimeo"><i class="bi bi-vimeo"></i></a>
+      <a href="https://www.youtube.com/@subtxtpress" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+      <a href="https://x.com/subtxtpress" aria-label="X / Twitter"><i class="bi bi-twitter-x"></i></a>
+    </div>
+  </footer>
 
-  <!-- Preloader -->
-  <div id="preloader"></div>
+  <a href="#" class="scroll-top" id="scrollTop"><i class="bi bi-arrow-up-short"></i></a>
 
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
   <script src="assets/vendor/typed.js/typed.umd.js"></script>
   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script>
+    AOS.init({ duration: 600, easing: 'ease-out-quart', once: true, offset: 50 });
 
-  <!-- Main JS File -->
-  <script src="assets/js/main.js"></script>
+    const nav = document.getElementById('siteNav');
+    const scrollBtn = document.getElementById('scrollTop');
+
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      nav.classList.toggle('scrolled', y > 60);
+      scrollBtn.classList.toggle('visible', y > 300);
+    }, { passive: true });
+
+    new Typed('.typed', {
+      strings: ['Irreverent.', 'Adversarial.', 'Independent journalist.'],
+      typeSpeed: 60,
+      backSpeed: 35,
+      backDelay: 2200,
+      loop: true
+    });
+
+    new PureCounter();
+  </script>
 
 </body>
-
 </html>

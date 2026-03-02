@@ -5,12 +5,10 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <!-- Required Info -->
   <title>Policies – Subtxt Press</title>
   <meta name="description" content="Find our On/Off the record ground rules, how to contact us securely, and also our various editorial policies.">
   <link rel="canonical" href="https://subtxtpress.github.io/home/policies.html">
 
-  <!-- Open Graph -->
   <meta property="og:title" content="Subtxt Press Policies">
   <meta property="og:description" content="Find our On/Off the record ground rules, how to contact us securely, and also our various editorial policies.">
   <meta property="og:type" content="website">
@@ -20,57 +18,68 @@
   <meta property="og:image:height" content="720">
   <meta property="og:site_name" content="Subtxt Press">
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Subtxt Press Policies">
   <meta name="twitter:description" content="Find our On/Off the record ground rules, how to contact us securely, and also our various editorial policies.">
   <meta name="twitter:image" content="https://subtxtpress.github.io/home/assets/img/texas-landscape.jpg">
   <meta name="twitter:creator" content="@subtxtpress">
 
-  <!-- Favicons -->
   <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
   <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png">
   <link rel="icon" type="image/x-icon" href="icons/favicon.ico">
   <link rel="manifest" href="icons/site.webmanifest">
 
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=Raleway:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Bootstrap Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Raleway:wght@700;800;900&display=swap" rel="stylesheet">
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-
-  <!-- AOS -->
   <link href="assets/vendor/aos/aos.css" rel="stylesheet">
 
   <style>
-    /* ─── Base ─────────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --gold:    #E4B55D;
-      --teal:    #A9C4C4;
-      --mauve:   #755468;
-      --navy:    #004466;
-      --deep:    #000435;
-      --linen:   #E1DED9;
+      --peach:   #E8956A;
+      --cream:   #F4EDE3;
+      --sand:    #DDD0BC;
+      --plum:    #3E2436;
+      --carmine: #7A5063;
+      --ink:     #241620;
+
+      --surface-page:     #F4EDE3;
+      --surface-card:     #FFFFFF;
+      --surface-elevated: #EDE5D8;
+
+      --text-heading: #241620;
+      --text-body:    #44373C;
+      --text-label:   #7A5063;
+      --text-muted:   rgba(68, 55, 60, 0.45);
+
+      --accent:        #E8956A;
+      --accent-subtle: rgba(232, 149, 106, 0.08);
+      --accent-border: rgba(232, 149, 106, 0.40);
+
+      --border-light:  rgba(221, 208, 188, 0.55);
+      --border-mid:    rgba(180, 140, 100, 0.22);
+
+      --grad-neutral: linear-gradient(to right, #DDD0BC, #E8956A);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background: var(--linen);
-      color: #0a0e3a;
+      font-family: 'Inter', sans-serif;
+      background: var(--surface-page);
+      color: var(--text-body);
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    a { text-decoration: none; color: var(--navy); }
-    a:hover { color: var(--gold); }
+    a { text-decoration: none; color: var(--carmine); }
+    a:hover { color: var(--accent); }
 
-    /* ─── Fixed Top Navigation ──────────────────────────────── */
+    /* ─── Nav ───────────────────────────────────────────────── */
     .site-nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -78,44 +87,56 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 20px 48px;
-      transition: background 0.35s ease, padding 0.35s ease;
+      padding: 22px 56px;
+      transition: background 0.3s, padding 0.3s, border-color 0.3s, box-shadow 0.3s;
+      border-bottom: 1px solid transparent;
     }
 
     .site-nav.scrolled {
-      padding: 14px 48px;
-      background: rgba(8, 13, 42, 0.93);
+      padding: 14px 56px;
+      background: rgba(244, 237, 227, 0.96);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-bottom-color: var(--border-light);
+      box-shadow: 0 1px 12px rgba(36, 22, 32, 0.06);
     }
 
     .nav-brand {
       font-family: 'Raleway', sans-serif;
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 700;
-      color: #ffffff;
-      letter-spacing: 0.04em;
+      color: #fff;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      transition: color 0.3s;
     }
+
+    .site-nav.scrolled .nav-brand { color: var(--ink); }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 36px;
+      gap: 40px;
       list-style: none;
     }
 
     .nav-links a {
-      font-size: 13.5px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
       font-weight: 500;
-      color: rgba(255,255,255,0.65);
-      letter-spacing: 0.06em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.62);
+      text-decoration: none;
       transition: color 0.2s;
     }
 
-    .nav-links a:hover { color: #ffffff; }
-    .nav-links a.active { color: var(--gold); }
+    .nav-links a:hover  { color: #fff; }
+    .nav-links a.active { color: var(--peach); }
+
+    .site-nav.scrolled .nav-links a        { color: var(--text-label); }
+    .site-nav.scrolled .nav-links a:hover  { color: var(--ink); }
+    .site-nav.scrolled .nav-links a.active { color: var(--accent); }
 
     /* ─── Hero ──────────────────────────────────────────────── */
     .hero {
@@ -134,68 +155,95 @@
       object-position: center 60%;
     }
 
-    /* Seamless gradient: dark at top, fades to page linen at bottom */
     .hero::after {
       content: '';
       position: absolute;
       inset: 0;
       background: linear-gradient(
         180deg,
-        rgba(0, 4, 53, 0.60)  0%,
-        rgba(0, 4, 53, 0.28) 38%,
-        rgba(210, 206, 200, 0.82) 72%,
-        var(--linen) 100%
+        rgba(0, 0, 0, 0.52)  0%,
+        rgba(0, 0, 0, 0.18) 45%,
+        rgba(0, 0, 0, 0.38) 100%
       );
     }
 
     .hero-content {
-      position: relative;
+      position: absolute;
+      bottom: 44px;
+      left: 56px;
       z-index: 2;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
-      text-align: center;
-      padding: 0 24px 56px;
     }
 
     .hero-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
       font-size: 11px;
-      font-weight: 600;
+      font-weight: 500;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 10px;
+      color: var(--peach);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 22px;
+      height: 1.5px;
+      background: var(--peach);
+      flex-shrink: 0;
     }
 
     .hero-title {
-      font-family: 'Raleway', sans-serif;
-      font-size: clamp(2.2rem, 5vw, 3.8rem);
-      font-weight: 700;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 800;
       color: #ffffff;
-      line-height: 1.1;
-      letter-spacing: -0.01em;
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      text-shadow: 0 2px 24px rgba(36, 22, 32, 0.5);
     }
 
     /* ─── Content area ──────────────────────────────────────── */
     .policies-content {
-      padding: 12px 28px 80px;
-      max-width: 1200px;
+      padding: 0 56px 80px;
+      max-width: 1080px;
       margin: 0 auto;
+    }
+
+    /* ─── Section label ──────────────────────────────────────── */
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-label);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 36px 0 24px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-mid);
     }
 
     /* ─── 2-column grid ─────────────────────────────────────── */
     .card-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: 16px;
     }
 
     @media (min-width: 900px) {
       .card-grid {
         grid-template-columns: 1fr 1fr;
-        gap: 22px;
+        gap: 18px;
       }
 
       /* Full-width: Mission (1st), The Rules (8th), Bottom Line (11th) */
@@ -204,67 +252,60 @@
       .policy-card:nth-child(11) { grid-column: 1 / -1; }
     }
 
-    /* ─── Cards ─────────────────────────────────────────────── */
+    /* ─── Standard card ─────────────────────────────────────── */
     .policy-card {
-      background: rgba(251, 249, 246, 0.97);
-      border-radius: 14px;
-      padding: 28px 32px;
-      box-shadow: 0 1px 3px rgba(0,4,53,0.05), 0 5px 20px rgba(0,4,53,0.08);
+      background: var(--surface-card);
+      border: 1px solid var(--border-mid);
+      border-radius: 10px;
+      padding: 26px 30px;
       position: relative;
       overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05), 0 4px 16px rgba(0,0,0,0.06);
       transition: transform 0.22s ease, box-shadow 0.22s ease;
     }
 
-    .policy-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 4px 12px rgba(0,4,53,0.09), 0 16px 40px rgba(0,4,53,0.12);
-    }
-
-    /* Gold→teal accent bar */
+    /* Gradient top-border strip — always visible */
     .policy-card::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 3px;
-      background: linear-gradient(90deg, var(--gold) 0%, var(--teal) 100%);
-      border-radius: 14px 14px 0 0;
+      background: var(--grad-neutral);
+      border-radius: 10px 10px 0 0;
+      pointer-events: none;
     }
 
-    /* Card label */
+    .policy-card:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0 8px 28px rgba(0, 0, 0, 0.10),
+        0 0 0 1px var(--accent-border);
+    }
+
+    /* ─── Card label ─────────────────────────────────────────── */
     .card-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.17em;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--navy);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 16px;
-      padding-bottom: 13px;
-      border-bottom: 1px solid rgba(169, 196, 196, 0.38);
+      color: var(--text-label);
+      margin-bottom: 1rem;
+      padding-bottom: 0.875rem;
+      border-bottom: 1px solid var(--border-mid);
     }
 
-    .card-label::before {
-      content: '';
-      flex-shrink: 0;
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--gold);
-    }
-
-    /* Lists and paragraphs */
+    /* ─── Lists and text ─────────────────────────────────────── */
     .policy-card ul {
       list-style: none;
       padding: 0;
     }
 
     .policy-card ul li {
-      padding: 8px 0;
-      font-size: 14px;
-      line-height: 1.7;
-      color: #1a1e4a;
-      border-bottom: 1px solid rgba(169, 196, 196, 0.2);
+      padding: 9px 0;
+      font-size: 13.5px;
+      line-height: 1.72;
+      color: var(--text-body);
+      border-bottom: 1px solid var(--border-light);
     }
 
     .policy-card ul li:last-child {
@@ -273,132 +314,141 @@
     }
 
     .policy-card p {
-      font-size: 14px;
-      line-height: 1.7;
-      color: #1a1e4a;
+      font-size: 13.5px;
+      line-height: 1.72;
+      color: var(--text-body);
       margin-bottom: 10px;
     }
 
-    .policy-card strong { color: var(--navy); font-weight: 600; }
-
-    /* ─── Mission Statement — dark navy hero card ───────────── */
-    .policy-card.card-mission {
-      background: linear-gradient(135deg, #003a5c 0%, var(--deep) 100%);
-      padding: 34px 38px;
+    .policy-card strong {
+      color: var(--text-heading);
+      font-weight: 600;
     }
 
-    .policy-card.card-mission::before {
-      height: 4px;
-      background: linear-gradient(90deg, var(--gold) 0%, var(--teal) 55%, var(--mauve) 100%);
+    /* ─── Mission Statement — dark editorial card ─────────────── */
+    .card-mission {
+      background: linear-gradient(135deg, var(--plum) 0%, var(--ink) 100%);
+      border-color: transparent;
+      padding: 32px 36px;
     }
 
-    .policy-card.card-mission .card-label {
-      color: var(--teal);
-      border-bottom-color: rgba(169,196,196,0.18);
+    .card-mission::before {
+      background: linear-gradient(to right, var(--sand), var(--peach), var(--carmine));
     }
 
-    .policy-card.card-mission ul li {
-      color: #c6d6de;
-      border-bottom-color: rgba(169,196,196,0.14);
+    .card-mission .card-label {
+      color: rgba(244, 237, 227, 0.5);
+      border-bottom-color: rgba(255, 255, 255, 0.08);
     }
 
-    .policy-card.card-mission ul li:first-child {
+    .card-mission ul li {
+      color: rgba(244, 237, 227, 0.78);
+      border-bottom-color: rgba(255, 255, 255, 0.07);
+    }
+
+    .card-mission ul li:first-child {
       color: #ffffff;
-      font-size: 16px;
+      font-size: 15px;
       font-style: italic;
       padding-bottom: 16px;
-      border-bottom-color: rgba(228,181,93,0.3);
+      border-bottom-color: rgba(232, 149, 106, 0.28);
     }
 
-    /* ─── Sources — dark teal callout ──────────────────────── */
-    .policy-card.card-sources {
-      background: linear-gradient(140deg, #004466 0%, #000d2e 100%);
-      box-shadow: 0 4px 18px rgba(0,4,53,0.3), 0 1px 4px rgba(0,4,53,0.2);
+    .card-mission strong { color: var(--peach); }
+
+    /* ─── Sources — accent-tinted callout ───────────────────── */
+    .card-sources {
+      background: var(--accent-subtle);
+      border-color: var(--accent-border);
     }
 
-    .policy-card.card-sources::before {
-      background: linear-gradient(90deg, var(--gold) 0%, var(--teal) 50%, var(--mauve) 100%);
+    .card-sources::before {
+      background: linear-gradient(to right, var(--sand), var(--peach));
     }
 
-    .policy-card.card-sources .card-label {
-      color: var(--teal);
-      border-bottom-color: rgba(169,196,196,0.18);
+    .card-sources .card-label {
+      color: var(--accent);
+      border-bottom-color: var(--accent-border);
     }
 
-    .policy-card.card-sources p,
-    .policy-card.card-sources ul li {
-      color: #dce8ee;
-      border-bottom-color: rgba(169,196,196,0.14);
+    .card-sources p,
+    .card-sources ul li {
+      color: var(--text-body);
+      border-bottom-color: var(--border-light);
     }
 
-    .policy-card.card-sources strong { color: var(--gold); }
+    .card-sources strong { color: var(--ink); }
 
-    /* ─── Bottom Line — mauve closing card ─────────────────── */
-    .policy-card.card-bottom-line {
-      background: linear-gradient(140deg, #755468 0%, #3d1e35 100%);
+    /* ─── Bottom Line — dark closing card ───────────────────── */
+    .card-bottom-line {
+      background: linear-gradient(140deg, var(--carmine) 0%, var(--plum) 100%);
+      border-color: transparent;
     }
 
-    .policy-card.card-bottom-line::before {
-      background: linear-gradient(90deg, var(--gold) 0%, var(--teal) 100%);
+    .card-bottom-line::before {
+      background: linear-gradient(to right, var(--sand), var(--peach));
     }
 
-    .policy-card.card-bottom-line .card-label {
-      color: #e8d8e2;
-      border-bottom-color: rgba(169,196,196,0.18);
+    .card-bottom-line .card-label {
+      color: rgba(244, 237, 227, 0.5);
+      border-bottom-color: rgba(255, 255, 255, 0.08);
     }
 
-    .policy-card.card-bottom-line ul li {
-      color: #e8d8e2;
-      border-bottom-color: rgba(255,255,255,0.1);
+    .card-bottom-line ul li {
+      color: rgba(244, 237, 227, 0.85);
+      border-bottom-color: rgba(255, 255, 255, 0.07);
     }
 
-    .policy-card.card-bottom-line strong { color: var(--gold); }
+    .card-bottom-line strong { color: var(--peach); }
 
     /* ─── Footer ────────────────────────────────────────────── */
     .site-footer {
-      border-top: 1px solid rgba(0,4,53,0.1);
-      padding: 26px 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 14px;
-      max-width: 1200px;
+      gap: 12px;
+      max-width: 1080px;
       margin: 0 auto;
+      padding: 24px 56px;
+      border-top: 1px solid var(--border-light);
     }
 
     .footer-brand {
-      font-family: 'Raleway', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      color: rgba(0,4,53,0.35);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
     }
 
     .footer-social {
       display: flex;
-      gap: 18px;
+      gap: 20px;
     }
 
     .footer-social a {
-      color: rgba(0,4,53,0.3);
-      font-size: 17px;
+      color: var(--text-muted);
+      font-size: 15px;
+      text-decoration: none;
       transition: color 0.2s;
     }
 
-    .footer-social a:hover { color: var(--navy); }
+    .footer-social a:hover { color: var(--carmine); }
 
-    /* ─── Scroll top ────────────────────────────────────────── */
+    /* ─── Scroll top ─────────────────────────────────────────── */
     .scroll-top {
       position: fixed;
       bottom: 24px; right: 24px;
-      width: 40px; height: 40px;
-      background: var(--gold);
+      width: 38px; height: 38px;
+      background: var(--accent);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--deep);
-      font-size: 20px;
+      color: #fff;
+      font-size: 18px;
+      text-decoration: none;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s, background 0.2s;
@@ -410,32 +460,31 @@
       pointer-events: auto;
     }
 
-    .scroll-top:hover { background: var(--navy); color: var(--linen); }
+    .scroll-top:hover { background: var(--ink); color: var(--cream); }
 
-    /* ─── Responsive ─────────────────────────────────────────── */
-    @media (max-width: 600px) {
-      .site-nav { padding: 16px 20px; }
-      .site-nav.scrolled { padding: 12px 20px; }
-      .nav-links { display: none; }
-      .policies-content { padding: 8px 14px 60px; }
-      .hero-content { padding: 0 20px 48px; }
+    /* ─── Mobile ─────────────────────────────────────────────── */
+    @media (max-width: 720px) {
+      .site-nav,
+      .site-nav.scrolled { padding: 14px 20px; }
+      .nav-links         { gap: 20px; }
+      .policies-content  { padding: 0 16px 60px; }
+      .hero-content      { left: 20px; bottom: 36px; }
+      .site-footer       { padding: 24px 20px; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Navigation -->
   <nav class="site-nav" id="siteNav">
-    <a href="index.html" class="nav-brand">Subtxt Press</a>
+    <a href="../index.html" class="nav-brand">Subtxt Press</a>
     <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="policies.html" class="active">Policies</a></li>
-      <li><a href="portfolio/portfolio.html">Portfolio</a></li>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../policies.html">Policies</a></li>
+      <li><a href="#" class="active">Portfolio</a></li>
     </ul>
   </nav>
 
-  <!-- Hero -->
   <section class="hero">
     <img class="hero-img" src="assets/img/texas-landscape.jpg" alt="Texas landscape — Big Bend region">
     <div class="hero-content">
@@ -444,8 +493,10 @@
     </div>
   </section>
 
-  <!-- Policies Content -->
   <div class="policies-content">
+
+    <div class="section-label">Editorial Policies · How we operate</div>
+
     <div class="card-grid">
 
       <!-- 1. Mission Statement -->
@@ -516,7 +567,7 @@
         </ul>
       </div>
 
-      <!-- 7. Sources and Attribution — dark teal -->
+      <!-- 7. Sources and Attribution -->
       <div class="policy-card card-sources" data-aos="fade-up" data-aos-delay="80">
         <h3 class="card-label">Sources and Attribution Policy</h3>
         <p>We follow standard journalistic ground rules&mdash;but we establish terms clearly and early.</p>
@@ -560,7 +611,7 @@
         </ul>
       </div>
 
-      <!-- 11. Bottom Line — mauve, full-width -->
+      <!-- 11. Bottom Line — full-width, dark -->
       <div class="policy-card card-bottom-line" data-aos="fade-up">
         <h3 class="card-label">Bottom Line</h3>
         <ul>
@@ -573,7 +624,6 @@
     </div>
   </div>
 
-  <!-- Footer -->
   <footer class="site-footer">
     <span class="footer-brand">Subtxt Press</span>
     <div class="footer-social">
@@ -585,12 +635,9 @@
     </div>
   </footer>
 
-  <!-- Scroll Top -->
   <a href="#" class="scroll-top" id="scrollTop"><i class="bi bi-arrow-up-short"></i></a>
 
-  <!-- AOS -->
   <script src="assets/vendor/aos/aos.js"></script>
-
   <script>
     AOS.init({ duration: 600, easing: 'ease-out-quart', once: true, offset: 50 });
 
@@ -605,5 +652,4 @@
   </script>
 
 </body>
-
 </html>
