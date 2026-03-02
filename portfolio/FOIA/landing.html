@@ -32,7 +32,7 @@
   <link rel="icon" type="image/x-icon" href="../../icons/favicon.ico">
   <link rel="manifest" href="../../icons/site.webmanifest">
 
-  <style>
+   <style>
     /* ─── Design Tokens ─────────────────────────────────────────── */
     :root {
       --bg:        #121212;
@@ -537,13 +537,6 @@
       box-shadow: 0 -3px 0 0 var(--cyan), var(--shadow-lg);
     }
 
-    .price-card-soon {
-      opacity: 0.55;
-    }
-    .price-card-soon .price-cta {
-      cursor: default;
-    }
-
     .price-badge {
       display: inline-block;
       padding: 3px 10px;
@@ -922,23 +915,6 @@
       }
     }
   </style>
-
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "FOIA.io",
-    "description": "A request management tool for public records professionals. Track deadlines, generate request letters and manage appeals across federal, state and local agencies.",
-    "applicationCategory": "ProductivityApplication",
-    "author": {
-      "@type": "Organization",
-      "name": "Subtxt Press",
-      "url": "https://subtxtpress.github.io/home/index.html"
-    },
-    "url": "https://subtxtpress.github.io/home/portfolio/portfolio.html"
-  }
-  </script>
 </head>
 <body>
 
@@ -1103,9 +1079,9 @@
           <a href="https://foiaio-production.up.railway.app/register" class="price-cta price-cta-pro">Get Pro →</a>
         </div>
 
-        <!-- Newsroom (coming soon) -->
-        <div class="price-card price-card-soon">
-          <div class="price-badge price-badge-free">Coming soon</div>
+        <!-- Newsroom -->
+        <div class="price-card">
+          <div class="price-badge price-badge-free">Teams</div>
           <div class="price-name">Newsroom</div>
           <div class="price-amount">$15<span>/month</span></div>
           <p class="price-period-note">Everything in Pro, plus:</p>
@@ -1116,7 +1092,7 @@
             <li><span class="check">✓</span> Team notes and handoff tools</li>
           </ul>
           <p class="price-tagline">Built for newsrooms managing requests across beats.</p>
-          <a href="https://foiaio-production.up.railway.app/register" class="price-cta price-cta-free">Join waitlist →</a>
+          <a href="https://foiaio-production.up.railway.app/register" class="price-cta price-cta-free">Get Newsroom →</a>
         </div>
       </div>
     </div>
@@ -1153,7 +1129,7 @@
               </svg>
             </summary>
             <div class="faq-body">
-              FOIA.io can help you draft a legally-grounded administrativeappeal letter tailored to the specific reason for denial.
+              FOIA.io can help you draft a legally-grounded administrative appeal letter tailored to the specific reason for denial.
             </div>
           </details>
 
