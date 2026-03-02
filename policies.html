@@ -6,11 +6,11 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <!-- Required Info -->
-  <title>Subtxt Press</title>
-  <meta name="description" content="Policies // @subtxtpress GitHub">
-  <link rel="canonical" href="https://subtxtpress.github.io/home/polices.html">
+  <title>Policies – Subtxt Press</title>
+  <meta name="description" content="Find our On/Off the record ground rules, how to contact us securely, and also our various editorial policies.">
+  <link rel="canonical" href="https://subtxtpress.github.io/home/policies.html">
 
-  <!-- Open Graph (Facebook, LinkedIn, etc.) -->
+  <!-- Open Graph -->
   <meta property="og:title" content="Subtxt Press Policies">
   <meta property="og:description" content="Find our On/Off the record ground rules, how to contact us securely, and also our various editorial policies.">
   <meta property="og:type" content="website">
@@ -37,364 +37,572 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400&family=Raleway:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- AOS -->
   <link href="assets/vendor/aos/aos.css" rel="stylesheet">
 
-  <!-- Main CSS File -->
-  <link href="assets/css/main.css" rel="stylesheet">
+  <style>
+    /* ─── Base ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:    #E4B55D;
+      --teal:    #A9C4C4;
+      --mauve:   #755468;
+      --navy:    #004466;
+      --deep:    #000435;
+      --linen:   #E1DED9;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--linen);
+      color: #0a0e3a;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { text-decoration: none; color: var(--navy); }
+    a:hover { color: var(--gold); }
+
+    /* ─── Fixed Top Navigation ──────────────────────────────── */
+    .site-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      transition: background 0.35s ease, padding 0.35s ease;
+    }
+
+    .site-nav.scrolled {
+      padding: 14px 48px;
+      background: rgba(8, 13, 42, 0.93);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav-brand {
+      font-family: 'Raleway', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.04em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.65);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: #ffffff; }
+    .nav-links a.active { color: var(--gold); }
+
+    /* ─── Hero ──────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 52vh;
+      min-height: 340px;
+      overflow: hidden;
+    }
+
+    .hero-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 60%;
+    }
+
+    /* Seamless gradient: dark at top, fades to page linen at bottom */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(0, 4, 53, 0.60)  0%,
+        rgba(0, 4, 53, 0.28) 38%,
+        rgba(210, 206, 200, 0.82) 72%,
+        var(--linen) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      text-align: center;
+      padding: 0 24px 56px;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+
+    .hero-title {
+      font-family: 'Raleway', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+    }
+
+    /* ─── Content area ──────────────────────────────────────── */
+    .policies-content {
+      padding: 12px 28px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ─── 2-column grid ─────────────────────────────────────── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 900px) {
+      .card-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
+      }
+
+      /* Full-width: Mission (1st), The Rules (8th), Bottom Line (11th) */
+      .policy-card:nth-child(1)  { grid-column: 1 / -1; }
+      .policy-card:nth-child(8)  { grid-column: 1 / -1; }
+      .policy-card:nth-child(11) { grid-column: 1 / -1; }
+    }
+
+    /* ─── Cards ─────────────────────────────────────────────── */
+    .policy-card {
+      background: rgba(251, 249, 246, 0.97);
+      border-radius: 14px;
+      padding: 28px 32px;
+      box-shadow: 0 1px 3px rgba(0,4,53,0.05), 0 5px 20px rgba(0,4,53,0.08);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .policy-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(0,4,53,0.09), 0 16px 40px rgba(0,4,53,0.12);
+    }
+
+    /* Gold→teal accent bar */
+    .policy-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--teal) 100%);
+      border-radius: 14px 14px 0 0;
+    }
+
+    /* Card label */
+    .card-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.17em;
+      text-transform: uppercase;
+      color: var(--navy);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding-bottom: 13px;
+      border-bottom: 1px solid rgba(169, 196, 196, 0.38);
+    }
+
+    .card-label::before {
+      content: '';
+      flex-shrink: 0;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    /* Lists and paragraphs */
+    .policy-card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .policy-card ul li {
+      padding: 8px 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #1a1e4a;
+      border-bottom: 1px solid rgba(169, 196, 196, 0.2);
+    }
+
+    .policy-card ul li:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .policy-card p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #1a1e4a;
+      margin-bottom: 10px;
+    }
+
+    .policy-card strong { color: var(--navy); font-weight: 600; }
+
+    /* ─── Mission Statement — dark navy hero card ───────────── */
+    .policy-card.card-mission {
+      background: linear-gradient(135deg, #003a5c 0%, var(--deep) 100%);
+      padding: 34px 38px;
+    }
+
+    .policy-card.card-mission::before {
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold) 0%, var(--teal) 55%, var(--mauve) 100%);
+    }
+
+    .policy-card.card-mission .card-label {
+      color: var(--teal);
+      border-bottom-color: rgba(169,196,196,0.18);
+    }
+
+    .policy-card.card-mission ul li {
+      color: #c6d6de;
+      border-bottom-color: rgba(169,196,196,0.14);
+    }
+
+    .policy-card.card-mission ul li:first-child {
+      color: #ffffff;
+      font-size: 16px;
+      font-style: italic;
+      padding-bottom: 16px;
+      border-bottom-color: rgba(228,181,93,0.3);
+    }
+
+    /* ─── Sources — dark teal callout ──────────────────────── */
+    .policy-card.card-sources {
+      background: linear-gradient(140deg, #004466 0%, #000d2e 100%);
+      box-shadow: 0 4px 18px rgba(0,4,53,0.3), 0 1px 4px rgba(0,4,53,0.2);
+    }
+
+    .policy-card.card-sources::before {
+      background: linear-gradient(90deg, var(--gold) 0%, var(--teal) 50%, var(--mauve) 100%);
+    }
+
+    .policy-card.card-sources .card-label {
+      color: var(--teal);
+      border-bottom-color: rgba(169,196,196,0.18);
+    }
+
+    .policy-card.card-sources p,
+    .policy-card.card-sources ul li {
+      color: #dce8ee;
+      border-bottom-color: rgba(169,196,196,0.14);
+    }
+
+    .policy-card.card-sources strong { color: var(--gold); }
+
+    /* ─── Bottom Line — mauve closing card ─────────────────── */
+    .policy-card.card-bottom-line {
+      background: linear-gradient(140deg, #755468 0%, #3d1e35 100%);
+    }
+
+    .policy-card.card-bottom-line::before {
+      background: linear-gradient(90deg, var(--gold) 0%, var(--teal) 100%);
+    }
+
+    .policy-card.card-bottom-line .card-label {
+      color: #e8d8e2;
+      border-bottom-color: rgba(169,196,196,0.18);
+    }
+
+    .policy-card.card-bottom-line ul li {
+      color: #e8d8e2;
+      border-bottom-color: rgba(255,255,255,0.1);
+    }
+
+    .policy-card.card-bottom-line strong { color: var(--gold); }
+
+    /* ─── Footer ────────────────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid rgba(0,4,53,0.1);
+      padding: 26px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-brand {
+      font-family: 'Raleway', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(0,4,53,0.35);
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 18px;
+    }
+
+    .footer-social a {
+      color: rgba(0,4,53,0.3);
+      font-size: 17px;
+      transition: color 0.2s;
+    }
+
+    .footer-social a:hover { color: var(--navy); }
+
+    /* ─── Scroll top ────────────────────────────────────────── */
+    .scroll-top {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      width: 40px; height: 40px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--deep);
+      font-size: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, background 0.2s;
+      z-index: 100;
+    }
+
+    .scroll-top.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .scroll-top:hover { background: var(--navy); color: var(--linen); }
+
+    /* ─── Responsive ─────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .site-nav { padding: 16px 20px; }
+      .site-nav.scrolled { padding: 12px 20px; }
+      .nav-links { display: none; }
+      .policies-content { padding: 8px 14px 60px; }
+      .hero-content { padding: 0 20px 48px; }
+    }
+  </style>
 </head>
 
-<body class="starter-page-page">
+<body>
 
-<header id="header" class="header dark-background d-flex flex-column">
-    <i class="header-toggle d-xl-none bi bi-list"></i>
+  <!-- Navigation -->
+  <nav class="site-nav" id="siteNav">
+    <a href="index.html" class="nav-brand">Subtxt Press</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="policies.html" class="active">Policies</a></li>
+      <li><a href="portfolio/portfolio.html">Portfolio</a></li>
+    </ul>
+  </nav>
 
-    <div class="avi-img">
-      <img src="assets/img/avi-img.png" class="img-fluid rounded-circle" alt="Desert mountain landscape (Photo Credit: Published by Dan Gentile on February 14, 2019)">
+  <!-- Hero -->
+  <section class="hero">
+    <img class="hero-img" src="assets/img/texas-landscape.jpg" alt="Texas landscape — Big Bend region">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Subtxt Press</p>
+      <h1 class="hero-title">Editorial Standards</h1>
     </div>
+  </section>
 
-    <a href="index.html" class="logo d-flex align-items-center justify-content-center">
-      <h1 class="sitename">Subtxt Press</h1>
-    </a>
+  <!-- Policies Content -->
+  <div class="policies-content">
+    <div class="card-grid">
 
-    <div class="social-links text-center">
-      <a href="https://substack.com/@subtxtpress" class="substack"><i class="bi bi-substack"></i></a>
-      <a href="https://www.tiktok.com/@subtxtpress" class="tiktok"><i class="bi bi-tiktok"></i></a>
-      <a href="https://vimeo.com/user253808178?fl=pp&fe=sh" class="vimeo"><i class="bi bi-vimeo"></i></a>
-      <a href="https://www.youtube.com/@subtxtpress" class="youtube"><i class="bi bi-youtube"></i></a>
-      <a href="https://x.com/subtxtpress" class="twitter"><i class="bi bi-twitter-x"></i></a>
-    </div>
-
-    <nav id="navmenu" class="navmenu">
-      <ul>
-        <li><a href="index.html" class="active"><i class="bi bi-house navicon"></i>Home</a></li>
-        <li><a href="#policies"><i class="bi bi-person navicon"></i> Policies</a></li>
-        <li><a href="../home/portfolio/portfolio.html"><i class="bi bi-hdd-stack navicon"></i> Portfolio</a></li>
-      </ul>
-    </nav>
-
-  </header>
-
-  <main class="main">
-
-    <!-- Page Title -->
-    <div class="page-title dark-background">
-      <div class="container d-lg-flex justify-content-between align-items-center">
-        <h1 class="mb-2 mb-lg-0">Policies</h1>
-        <nav class="breadcrumbs">
-          <ol>
-            <li><a href="index.html">Home</a></li>
-            <li class="current">Editorial Standards</li>
-          </ol>
-        </nav>
+      <!-- 1. Mission Statement -->
+      <div class="policy-card card-mission" data-aos="fade-up">
+        <h3 class="card-label">Mission Statement</h3>
+        <ul>
+          <li>Independent reporting on corruption, due process, and institutional failures.</li>
+          <li>Subtxt Press investigates how power is exercised, who it protects, and who it targets. We report on criminal cases, wrongful convictions, corruption, and the spread of extremism through the criminal legal system.</li>
+          <li>We report with urgency when damage can be prevented—and push back even when it's inconvenient, uncomfortable, or unpopular. We are meticulous, relentless, and irreverent in equal measure. Our work is not neutral&mdash;it's adversarial by design.</li>
+        </ul>
       </div>
-    </div><!-- End Page Title -->
 
-      <!-- Mission Statement Section -->
-      <section id="portfolio-details" class="portfolio-details section">
+      <!-- 2. Areas of Focus -->
+      <div class="policy-card" data-aos="fade-up" data-aos-delay="40">
+        <h3 class="card-label">Areas of Focus</h3>
+        <ul>
+          <li><strong>Active Criminal Cases</strong>: Investigative and accountability reporting during ongoing proceedings, with a focus on preventing wrongful convictions before they calcify.</li>
+          <li><strong>High-Profile Trials</strong>: Strategic coverage of cases with significant public interest—leveraging attention to expose deeper truths and redirect the spotlight toward accountability.</li>
+          <li><strong>Federal Agency Oversight</strong>: DOJ, FBI, Bureau of Prisons, and other federal bodies—especially where transparency ends and misconduct begins.</li>
+          <li><strong>Systemic Failures in Criminal Justice</strong>: Corruption, cover-ups, and institutional rot—from the courthouse to the holding cell.</li>
+          <li><strong>Extremism in Law Enforcement</strong>: Far-right infiltration of police and corrections, white supremacist influence on prosecutions, and extremist networks operating within the justice system.</li>
+        </ul>
+      </div>
 
-        <!-- Mission Statement Container -->
-        <div class="container">
+      <!-- 3. Geographic Scope -->
+      <div class="policy-card" data-aos="fade-up" data-aos-delay="80">
+        <h3 class="card-label">Geographic Scope</h3>
+        <p>We go where the story demands it. No borders, no blind spots&mdash;just a compass pointed at power. We prioritize:</p>
+        <ul>
+          <li>• Federal agencies and federal cases</li>
+          <li>• High-profile trials and public-interest litigation</li>
+          <li>• Systemic failures with ripple effects</li>
+          <li>• Cases where extremism intersects with law enforcement or prosecution</li>
+        </ul>
+      </div>
 
-          <!-- Mission Statement Row -->
-          <div>
-            <!-- Mission Statement Column -->
-            <div>
-              <!-- Mission Statement -->
-              <div class="portfolio-info">
-              <h3>Mission Statement</h3>
-                <ul>
-                  <li>Independent reporting on corruption, due process, and institutional failures.</li>
-                  <li>Subtxt Press investigates how power is exercised, who it protects, and who it targets. We report on criminal cases, wrongful convictions, corruption, and the spread of extremism through the criminal legal system.</li>
-                  <li>We report with urgency when damage can be prevented—and push back even when it's inconvenient, uncomfortable, or unpopular. We are meticulous, relentless, and irreverent in equal measure. Our work is not neutral&mdash;it's adversarial by design.</li>
-                </ul>
-              </div><!-- End /Mission Statement -->
-            </div><!-- End /Mission Statement Column -->
-          </div><!-- End /Mission Statement Row -->
-        </div><!-- End /Mission Statement Container -->
-      </section><!-- End /Mission Statement Section -->
+      <!-- 4. Story Selection Criteria -->
+      <div class="policy-card" data-aos="fade-up" data-aos-delay="40">
+        <h3 class="card-label">Story Selection Criteria</h3>
+        <p>We pursue stories that:</p>
+        <ul>
+          <li>• Expose government misconduct and secrecy</li>
+          <li>• Reveal systemic failures—preferably before conviction</li>
+          <li>• Serve whistleblowers and inform the public</li>
+          <li>• Demonstrate patterns of abuse or corruption</li>
+          <li>• Cross multiple areas of our editorial focus</li>
+        </ul>
+      </div>
 
-      <!-- Areas of Focus Section -->
-      <section id="portfolio-details" class="portfolio-details section">
+      <!-- 5. Editorial Standards -->
+      <div class="policy-card" data-aos="fade-up" data-aos-delay="80">
+        <h3 class="card-label">Editorial Standards</h3>
+        <ul>
+          <li><strong>Verification first</strong>. If we can't confirm it, we don't print it. If it's uncertain, we say so.</li>
+          <li><strong>Follow the facts</strong>. We don't chase narratives. We follow the evidence and report back.</li>
+          <li><strong>Aim at power</strong>. Our fire is directed at institutions, not individuals without it.</li>
+          <li><strong>Show your work</strong>. We're transparent about how we report and why it matters.</li>
+          <li><strong>Protect sources</strong>. We use secure communication channels and safeguard source identities.</li>
+        </ul>
+      </div>
 
-        <!-- Areas of Focus Container -->
-        <div class="container">
+      <!-- 6. Credentials -->
+      <div class="policy-card" data-aos="fade-up" data-aos-delay="40">
+        <h3 class="card-label">Credentials</h3>
+        <ul>
+          <li><strong>None offered</strong>. The work is either accurate or it isn't. Subtxt Press doesn't trade in bios.</li>
+          <li><strong>Byline policy</strong>. Pseudonym used to keep the focus where it belongs: on the record and facts&mdash;not the résumé, not the source, nor the author.</li>
+        </ul>
+      </div>
 
-          <!-- Areas of Focus Row -->
-          <div>
-            <!-- Areas of Focus Column -->
-            <div>
-              <!-- Areas of Focus Area  -->
-              <div class="portfolio-info">
-              <h3>Areas of Focus</h3>
-                <ul>
-                  <li><strong>Active Criminal Cases</strong>: Investigative and accountability reporting during ongoing proceedings, with a focus on preventing wrongful convictions before they calcify.</li>
-                  <li><strong>High-Profile Trials</strong>: Strategic coverage of cases with significant public interest—leveraging attention to expose deeper truths and redirect the spotlight toward accountability.</li>
-                  <li><strong>Federal Agency Oversight</strong>: DOJ, FBI, Bureau of Prisons, and other federal bodies—especially where transparency ends and misconduct begins.</li>
-                  <li><strong>Systemic Failures in Criminal Justice</strong>: Corruption, cover-ups, and institutional rot—from the courthouse to the holding cell.</li>
-                  <li><strong>Extremism in Law Enforcement</strong>: Far-right infiltration of police and corrections, white supremacist influence on prosecutions, and extremist networks operating within the justice system.</li>
-                </ul>
-              </div><!-- End /Areas of Focus -->
-            </div><!-- End /Areas of Focus Column -->
-          </div><!-- End /Areas of Focus Row -->
-        </div><!-- End /Areas of Focus Container -->
-      </section><!-- End /Areas of Focus Section -->
+      <!-- 7. Sources and Attribution — dark teal -->
+      <div class="policy-card card-sources" data-aos="fade-up" data-aos-delay="80">
+        <h3 class="card-label">Sources and Attribution Policy</h3>
+        <p>We follow standard journalistic ground rules&mdash;but we establish terms clearly and early.</p>
+        <ul>
+          <li><strong>Got a tip?</strong> We take source protection seriously. Subtxt Press offers secure, encrypted communication via Signal and we never share source information without consent.</li>
+          <li><strong>📱 Signal</strong>: +1 (432) 232-1892</li>
+          <li><strong>🕵️‍♀️ Display name</strong>: Subtxt Press</li>
+          <li><strong>🕓 Disappearing messages</strong>: enabled by default</li>
+        </ul>
+      </div>
 
-      <!-- Geographic Scope Section -->
-      <section id="portfolio-details" class="portfolio-details section">
+      <!-- 8. The Rules — full-width -->
+      <div class="policy-card" data-aos="fade-up">
+        <h3 class="card-label">The Rules</h3>
+        <ul>
+          <li><strong>On the Record (default)</strong>: Unless we agree otherwise in advance, everything you say is on the record. That means it can be quoted and attributed to you by name. This is the default for all conversations.</li>
+          <li><strong>Off the Record</strong>: Off the record means just that: we won't publish it, quote it, paraphrase it, or use it to chase confirmation elsewhere. It stays in the vault. Use this sparingly. If you want us to understand something without being able to report it, "background" is usually the better fit.</li>
+          <li><strong>Background / Not for Attribution</strong>: We can use the information, but we won't identify you as the source. We'll describe you using language we agree on ("a federal law enforcement official," "a former prosecutor," "a source familiar with the investigation"). We'll negotiate the description with you. If it risks identifying you, we'll revise—or we won't use it.</li>
+          <li><strong>Deep Background</strong>: We can use the information to guide our reporting, but we won't quote or attribute it in any form. It helps us ask better questions, file better records requests, and understand the landscape.</li>
+        </ul>
+      </div>
 
-        <!-- Geographic Scope Container -->
-        <div class="container">
+      <!-- 9. How This Works in Practice -->
+      <div class="policy-card" data-aos="fade-up" data-aos-delay="40">
+        <h3 class="card-label">How This Works in Practice</h3>
+        <ul>
+          <li><strong>Before the conversation</strong>: We establish ground rules up front. If you don't specify, it's on the record.</li>
+          <li><strong>During the conversation</strong>: You can't retroactively go off the record. If you say something on the record, then ask to walk it back, we'll consider it—but we're not obligated to agree. Set the terms before you speak.</li>
+          <li><strong>If terms shift mid-conversation</strong>: We'll confirm the change explicitly before you continue. When we return to on-the-record, we'll say so clearly.</li>
+          <li><strong>If you're unsure</strong>: Ask. We'd rather clarify than burn a source.</li>
+        </ul>
+      </div>
 
-          <!-- Geographic Scope Row -->
-          <div>
-            <!-- Geographic Scope Column -->
-            <div>
-              <!-- Geographic Scope Area  -->
-              <div class="portfolio-info">
-              <h3>Geographic Scope</h3>
-                <p>
-                  We go where the story demands it. No borders, no blind spots&mdash;just a compass pointed at power. We prioritize:
-                </p>
-                <ul>
-                  <li>• Federal agencies and federal cases</li>
-                  <li>• High-profile trials and public-interest litigation</li>
-                  <li>• Systemic failures with ripple effects</li>
-                  <li>• Cases where extremism intersects with law enforcement or prosecution</li>
-                </ul>
-              </div><!-- End /Geographic Scope Area -->
-            </div><!-- End /Geographic Scope Column -->
-          </div><!-- End /Geographic Scope Row -->
-        </div><!-- End /Geographic Scope Container -->
-      </section><!-- End /Geographic Scope Section -->
+      <!-- 10. What We Don't Do -->
+      <div class="policy-card" data-aos="fade-up" data-aos-delay="80">
+        <h3 class="card-label">What We Don't Do</h3>
+        <ul>
+          <li>• We're not a bulletin board. We don't play games with attribution. If you're trying to float trial balloons or manipulate coverage behind anonymity—go elsewhere.</li>
+          <li>• We don't honor retroactive requests from public officials or spokespeople trying to walk back statements. If you're speaking in an official capacity, you're on the record unless we agree otherwise in advance.</li>
+          <li>• We don't burn sources. If we agree to protect your identity, we will—period. That includes under legal pressure. We have protocols in place to back that up.</li>
+        </ul>
+      </div>
 
-      <!-- Story Selection Criteria Section -->
-      <section id="portfolio-details" class="portfolio-details section">
+      <!-- 11. Bottom Line — mauve, full-width -->
+      <div class="policy-card card-bottom-line" data-aos="fade-up">
+        <h3 class="card-label">Bottom Line</h3>
+        <ul>
+          <li>• We're here to report verified information—either from people willing to stand behind it, or from people who need protection to tell the truth.</li>
+          <li>• If you're the former, let's talk on the record. If you're the latter, let's talk about how to keep you safe while getting the truth out.</li>
+          <li>• Either way, we'll establish the rules before we begin.</li>
+        </ul>
+      </div>
 
-        <!-- Story Selection Criteria Container -->
-        <div class="container">
+    </div>
+  </div>
 
-          <!-- Story Selection Criteria Row -->
-          <div>
-            <!-- Story Selection Criteria Column -->
-            <div>
-              <!-- Story Selection Criteria -->
-              <div class="portfolio-info">
-              <h3>Story Selection Criteria</h3>
-                <p>
-                  We pursue stories that:
-                </p>
-                <ul>
-                  <li>• Expose government misconduct and secrecy</li>
-                  <li>• Reveal systemic failures—preferably before conviction</li>
-                  <li>• Serve whistleblowers and inform the public</li>
-                  <li>• Demonstrate patterns of abuse or corruption</li>
-                  <li>• Cross multiple areas of our editorial focus</li>
-                </ul>
-              </div><!-- End /Story Selection Criteria -->
-            </div><!-- End /Story Selection Criteria Column -->
-          </div><!-- End /Story Selection Criteria Row -->
-        </div><!-- End /Story Selection Criteria Container -->
-      </section><!-- End /Story Selection Criteria Section -->
-
-      <!-- Editorial Standards Section -->
-      <section id="portfolio-details">
-
-        <!-- Editorial Standards Container -->
-        <div class="container">
-
-          <!-- Editorial Standards Row -->
-          <div>
-            <!-- Editorial Standards Column -->
-            <div>
-              <!-- Editorial Standards Criteria -->
-              <div class="portfolio-info">
-              <h3>Editorial Standards</h3>
-                <ul>
-                  <li><strong>Verification first</strong>. If we can't confirm it, we don't print it. If it's uncertain, we say so.</li>
-                  <li><strong>Follow the facts</strong>. We don't chase narratives. We follow the evidence and report back.</li>
-                  <li><strong>Aim at power</strong>. Our fire is directed at institutions, not individuals without it.</li>
-                  <li><strong>Show your work</strong>. We're transparent about how we report and why it matters.</li>
-                  <li><strong>Protect sources</strong>. We use secure communication channels and safeguard source identities. </li>
-                </ul>
-              </div><!-- End /Editorial Standards -->
-            </div><!-- End /Editorial Standards Column -->
-          </div><!-- End /Editorial Standards Row -->
-        </div><!-- End /Editorial Standards Container -->
-      </section><!-- End /Editorial Standards Section -->
-
-      <!-- Credentials Section -->
-      <section id="portfolio-details" class="portfolio-details section">
-
-        <!-- Credentials Container -->
-        <div class="container">
-
-          <!-- Credentials Row -->
-          <div>
-            <!-- Credentials Column -->
-            <div>
-              <!-- Credentials Criteria -->
-              <div class="portfolio-info">
-              <h3>Credentials</h3>
-                <ul>
-                  <li><strong>None offered</strong>. The work is either accurate or it isn't. Subtxt Press doesn't trade in bios.</li>
-                  <li><strong>Byline policy</strong>. Pseudonym used to keep the focus where it belongs: on the record and facts&mdash;not the résumé, not the source, nor the author.</li>
-                </ul>
-              </div><!-- End /Credentials -->
-            </div><!-- End /Credentials Column -->
-          </div><!-- End /Credentials Row -->
-        </div><!-- End /Credentials Container -->
-      </section><!-- End /Credentials Section -->
-
-      <!-- Sources and Attribution Policy -->
-      <section id="portfolio-details" class="portfolio-details section">
-
-        <!-- Sources and Attribution Policy Container -->
-        <div class="container">
-
-          <!-- Sources and Attribution Policy Row -->
-          <div>
-            <!-- Sources and Attribution Policy Column -->
-            <div>
-              <!-- Sources and Attribution Policy -->
-              <div class="portfolio-info">
-              <h3>Sources and Attribution Policy</h3>
-                <p>
-                  We follow standard journalistic ground rules&mdash;but we establish terms clearly and early.
-                </p>
-                <ul>
-                  <li><strong>Got a tip?</strong> We take source protection seriously. Subtxt Press offers secure, encrypted communication via Signal and we never share source information without consent.</li>
-                  <li><strong>📱 Signal</strong>: +1 (432) 232-1892</li>
-                  <li><strong>🕵️‍♀️ Display name</strong>: Subtxt Press</li>
-                  <li><strong>🕓 Disappearing messages</strong>: enabled by default</li>
-                </ul>
-              </div><!-- End /Sources and Attribution Policy -->
-            </div><!-- End /Sources and Attribution Policy Column -->
-          </div><!-- End /Sources and Attribution Policy Row -->
-        </div><!-- End /Sources and Attribution Policy Container -->
-      </section><!-- End /Sources and Attribution Policy Section -->
-
-      <!-- The Rules Section -->
-      <section id="portfolio-details" class="portfolio-details section">
-
-        <!-- The Rules Container -->
-        <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-          <!-- The Rules Row -->
-          <div>
-            <!-- The Rules Column -->
-            <div>
-              <!-- The Rules -->
-              <div class="portfolio-info">
-              <h3>The Rules</h3>
-                <ul>
-                  <li><strong>On the Record (default)</strong>: Unless we agree otherwise in advance, everything you say is on the record. That means it can be quoted and attributed to you by name. This is the default for all conversations.</li>
-                  <li><strong>Off the Record</strong>: Off the record means just that: we won't publish it, quote it, paraphrase it, or use it to chase confirmation elsewhere. It stays in the vault.
-                  <br>
-                  Use this sparingly. If you want us to understand something without being able to report it, “background” is usually the better fit.</li>
-                  <li><strong>Background/Not for Attribution</strong>: We can use the information, but we won't identify you as the source. We'll describe you using language we agree on (“a federal law enforcement official,” “a former prosecutor,” “a source familiar with the investigation”).<br>
-                  We'll negotiate the description with you. If it risks identifying you, we'll revise—or we won't use it.</li>
-                  <li><strong>Deep Background</strong>: We can use the information to guide our reporting, but we won't quote or attribute it in any form. It helps us ask better questions, file better records requests, and understand the landscape.</li>
-                </ul>
-              </div><!-- End /The Rules -->
-            </div><!-- End /The Rules Column -->
-          </div><!-- End /The Rules Row -->
-        </div><!-- End /The Rules Container -->
-      </section><!-- End /The Rules Section -->
-
-      <!-- How This Works in Practice Section -->
-      <section id="portfolio-details" class="portfolio-details section">
-
-        <!-- How This Works in Practice Container -->
-        <div class="container">
-
-          <!-- How This Works in Practice Row -->
-          <div>
-            <!-- How This Works in Practice Column -->
-            <div>
-              <!-- How This Works in Practice -->
-              <div class="portfolio-info">
-              <h3>How This Works in Practice</h3>
-                <ul>
-                  <li><strong>Before the conversation</strong>: We establish ground rules up front. If you don't specify, it's on the record.</li>
-                  <li><strong>During the conversation</strong>: You can't retroactively go off the record. If you say something on the record, then ask to walk it back, we'll consider it—but we're not obligated to agree. Set the terms before you speak.</li>
-                  <li><strong>If terms shift mid-conversation</strong>: We'll confirm the change explicitly before you continue. When we return to on-the-record, we'll say so clearly.</li>
-                  <li><strong>If you're unsure</strong>: Ask. We'd rather clarify than burn a source.</li>
-                </ul>
-              </div><!-- End /How This Works in Practice -->
-            </div><!-- End /How This Works in Practice Column -->
-          </div><!-- End /How This Works in Practice Row -->
-        </div><!-- End /How This Works in Practice Container -->
-      </section><!-- End /How This Works in Practice Section -->
-
-      <!-- What We Don’t Do Section -->
-      <section id="portfolio-details" class="portfolio-details section">
-
-        <!-- What We Don’t Do Container -->
-        <div class="container">
-
-          <!-- What We Don’t Do Row -->
-          <div>
-            <!-- What We Don’t Do Column -->
-            <div>
-              <!-- What We Don’t Do -->
-              <div class="portfolio-info">
-              <h3>What We Don't Do</h3>
-                <ul>
-                  <li>• We're not a bulletin board. We don't play games with attribution. If you're trying to float trial balloons or manipulate coverage behind anonymity—go elsewhere.</li>
-                  <li>• We don't honor retroactive requests from public officials or spokespeople trying to walk back statements. If you're speaking in an official capacity, you're on the record unless we agree otherwise in advance.</li>
-                  <li>• We don't burn sources. If we agree to protect your identity, we will—period. That includes under legal pressure. We have protocols in place to back that up.</li>
-                </ul>
-              </div><!-- End /What We Don’t Do -->
-            </div><!-- End /What We Don’t Do Column -->
-          </div><!-- End /What We Don’t Do Row -->
-        </div><!-- End /What We Don’t Do Container -->
-      </section><!-- End /What We Don’t Do Section -->
-
-      <!-- Bottom Line Section -->
-      <section id="portfolio-details" class="portfolio-details section">
-
-        <!-- Bottom Line Container -->
-        <div class="container">
-
-          <!-- Bottom Line Row -->
-          <div>
-            <!-- Bottom Line Column -->
-            <div>
-              <!-- Bottom Line -->
-              <div class="portfolio-info">
-              <h3>Bottom Line</h3>
-                <ul>
-                  <li>• We're here to report verified information—either from people willing to stand behind it, or from people who need protection to tell the truth.</li>
-                  <li>• If you're the former, let's talk on the record. If you're the latter, let's talk about how to keep you safe while getting the truth out.</li>
-                  <li>• Either way, we'll establish the rules before we begin.</li>
-                </ul>
-              </div><!-- End /Bottom Line -->
-            </div><!-- End /Bottom Line Column -->
-          </div><!-- End /Bottom Line Row -->
-        </div><!-- End /Bottom Line Container -->
-      </section><!-- End /Bottom Line Section -->
-
-  </main>
+  <!-- Footer -->
+  <footer class="site-footer">
+    <span class="footer-brand">Subtxt Press</span>
+    <div class="footer-social">
+      <a href="https://substack.com/@subtxtpress" aria-label="Substack"><i class="bi bi-substack"></i></a>
+      <a href="https://www.tiktok.com/@subtxtpress" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+      <a href="https://vimeo.com/user253808178?fl=pp&fe=sh" aria-label="Vimeo"><i class="bi bi-vimeo"></i></a>
+      <a href="https://www.youtube.com/@subtxtpress" aria-label="YouTube"><i class="bi bi-youtube"></i></a>
+      <a href="https://x.com/subtxtpress" aria-label="X / Twitter"><i class="bi bi-twitter-x"></i></a>
+    </div>
+  </footer>
 
   <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" class="scroll-top" id="scrollTop"><i class="bi bi-arrow-up-short"></i></a>
 
-  <!-- Preloader -->
-  <div id="preloader"></div>
-
-  <!-- Vendor JS Files -->
-  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS -->
   <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/typed.js/typed.umd.js"></script>
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
 
-  <!-- Main JS File -->
-  <script src="assets/js/main.js"></script>
+  <script>
+    AOS.init({ duration: 600, easing: 'ease-out-quart', once: true, offset: 50 });
+
+    const nav = document.getElementById('siteNav');
+    const scrollBtn = document.getElementById('scrollTop');
+
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      nav.classList.toggle('scrolled', y > 60);
+      scrollBtn.classList.toggle('visible', y > 300);
+    }, { passive: true });
+  </script>
 
 </body>
 
