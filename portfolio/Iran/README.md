@@ -2,7 +2,7 @@
 
 **Middle East Regional Intelligence Dashboard for Infrared Anomaly Notification**
 
-A zero-dependency, single-file OSINT tool for monitoring thermal anomalies, infrastructure impact, conflict events, and maritime activity across the Middle East theater. Built for investigative journalists, OSINT analysts, and geoscientific researchers.
+A zero-dependency, single-file OSINT tool for monitoring thermal anomalies, infrastructure impact, conflict events, and maritime activity across the Middle East theater. Built for investigative journalists, OSINT analysts, and GIS researchers.
 
 ![MERIDIAN](img/meridian.png)
 
