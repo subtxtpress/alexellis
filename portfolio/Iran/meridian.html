@@ -314,6 +314,37 @@
             color: var(--accent-fire);
         }
 
+        /* BASEMAP CHIPS */
+        .basemap-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .basemap-chip {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            padding: 4px 8px;
+            border-radius: 3px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .basemap-chip:hover {
+            border-color: var(--accent-info);
+            color: var(--accent-info);
+        }
+
+        .basemap-chip.active {
+            background: rgba(64, 196, 255, 0.1);
+            border-color: var(--accent-info);
+            color: var(--accent-info);
+        }
+
         /* DAY RANGE */
         .range-row {
             display: flex;
@@ -975,6 +1006,7 @@
             .conf-btn { padding: 12px 0; }
             .region-btn { padding: 10px 12px; }
             .source-chip { padding: 10px 12px; }
+            .basemap-chip { padding: 10px 12px; }
             .sidebar-toggle { min-height: 44px; min-width: 44px; display: flex; align-items: center; justify-content: center; }
             .ind-chip { padding: 8px 10px; }
             .acled-chip { padding: 8px 10px; }
@@ -1162,6 +1194,16 @@
                 <div class="data-note" style="margin-top: 8px;">
                     Weekly aggregated data via ACLED. Markers at admin-1 centroids — not precise event locations. Upgrade to event-level data requires API access.
                 </div>
+            </div>
+        </div>
+
+        <!-- BASEMAP -->
+        <div class="panel-section">
+            <div class="panel-label">Basemap</div>
+            <div class="basemap-chips">
+                <div class="basemap-chip active" data-basemap="dark" onclick="setBasemap('dark')">Dark</div>
+                <div class="basemap-chip" data-basemap="satellite" onclick="setBasemap('satellite')">Satellite</div>
+                <div class="basemap-chip" data-basemap="street" onclick="setBasemap('street')">Street</div>
             </div>
         </div>
 
@@ -1816,6 +1858,40 @@
             if (t==='refinery') return 'refinery';
             if (t==='gas_processing'||t==='gas_field') return 'gas';
             return 'other';
+        }
+
+        // ═══════════════════════════════════════════
+        // BASEMAP SWITCHER
+        // ═══════════════════════════════════════════
+
+        const BASEMAPS = {
+            dark: {
+                tiles: ['https://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png'],
+                attribution: '&copy; OpenStreetMap contributors, &copy; CARTO'
+            },
+            satellite: {
+                tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
+                attribution: '&copy; Esri, Maxar, Earthstar Geographics'
+            },
+            street: {
+                tiles: ['https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}@2x.png'],
+                attribution: '&copy; OpenStreetMap contributors, &copy; CARTO'
+            }
+        };
+
+        function setBasemap(key) {
+            const bm = BASEMAPS[key];
+            if (!bm || !map) return;
+
+            // update chip UI
+            document.querySelectorAll('.basemap-chip').forEach(c => c.classList.remove('active'));
+            document.querySelector(`.basemap-chip[data-basemap="${key}"]`).classList.add('active');
+
+            // swap tiles on the existing raster source
+            const src = map.getSource('carto-dark');
+            if (src) {
+                src.setTiles(bm.tiles);
+            }
         }
 
         function toggleIndustrial() {
