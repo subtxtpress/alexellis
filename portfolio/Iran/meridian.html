@@ -1722,13 +1722,13 @@
         </div>
         <div id="satpassLegend" style="display:none; margin-top:8px;">
             <div class="legend-title">Satellite Passes</div>
-            <div class="legend-item"><div class="legend-dot" style="background:#e91e63;"></div><span class="legend-label">NOAA-20 (VIIRS)</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background:#ff5722;"></div><span class="legend-label">NOAA-21 (VIIRS)</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background:#ff9800;"></div><span class="legend-label">Suomi-NPP (VIIRS)</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background:#ab47bc;"></div><span class="legend-label">Terra (MODIS)</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background:#26c6da;"></div><span class="legend-label">Aqua (MODIS)</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background:#66bb6a;"></div><span class="legend-label">Sentinel-2A (MSI)</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background:#42a5f5;"></div><span class="legend-label">Sentinel-2B (MSI)</span></div>
+            <div class="legend-item"><svg width="14" height="14" viewBox="0 0 32 32" style="margin-right:6px;flex-shrink:0;"><path fill="#e91e63" d="M16 5 L21 11 L26 11 L26 8 L32 8 L32 24 L26 24 L26 21 L21 21 L16 27 L11 21 L6 21 L6 24 L0 24 L0 8 L6 8 L6 11 L11 11 Z"/></svg><span class="legend-label">NOAA-20 (VIIRS)</span></div>
+            <div class="legend-item"><svg width="14" height="14" viewBox="0 0 32 32" style="margin-right:6px;flex-shrink:0;"><path fill="#ff5722" d="M16 5 L21 11 L26 11 L26 8 L32 8 L32 24 L26 24 L26 21 L21 21 L16 27 L11 21 L6 21 L6 24 L0 24 L0 8 L6 8 L6 11 L11 11 Z"/></svg><span class="legend-label">NOAA-21 (VIIRS)</span></div>
+            <div class="legend-item"><svg width="14" height="14" viewBox="0 0 32 32" style="margin-right:6px;flex-shrink:0;"><path fill="#ff9800" d="M16 5 L21 11 L26 11 L26 8 L32 8 L32 24 L26 24 L26 21 L21 21 L16 27 L11 21 L6 21 L6 24 L0 24 L0 8 L6 8 L6 11 L11 11 Z"/></svg><span class="legend-label">Suomi-NPP (VIIRS)</span></div>
+            <div class="legend-item"><svg width="14" height="14" viewBox="0 0 32 32" style="margin-right:6px;flex-shrink:0;"><path fill="#ab47bc" d="M16 5 L21 11 L26 11 L26 8 L32 8 L32 24 L26 24 L26 21 L21 21 L16 27 L11 21 L6 21 L6 24 L0 24 L0 8 L6 8 L6 11 L11 11 Z"/></svg><span class="legend-label">Terra (MODIS)</span></div>
+            <div class="legend-item"><svg width="14" height="14" viewBox="0 0 32 32" style="margin-right:6px;flex-shrink:0;"><path fill="#26c6da" d="M16 5 L21 11 L26 11 L26 8 L32 8 L32 24 L26 24 L26 21 L21 21 L16 27 L11 21 L6 21 L6 24 L0 24 L0 8 L6 8 L6 11 L11 11 Z"/></svg><span class="legend-label">Aqua (MODIS)</span></div>
+            <div class="legend-item"><svg width="14" height="14" viewBox="0 0 32 32" style="margin-right:6px;flex-shrink:0;"><path fill="#66bb6a" d="M16 5 L21 11 L26 11 L26 8 L32 8 L32 24 L26 24 L26 21 L21 21 L16 27 L11 21 L6 21 L6 24 L0 24 L0 8 L6 8 L6 11 L11 11 Z"/></svg><span class="legend-label">Sentinel-2A (MSI)</span></div>
+            <div class="legend-item"><svg width="14" height="14" viewBox="0 0 32 32" style="margin-right:6px;flex-shrink:0;"><path fill="#42a5f5" d="M16 5 L21 11 L26 11 L26 8 L32 8 L32 24 L26 24 L26 21 L21 21 L16 27 L11 21 L6 21 L6 24 L0 24 L0 8 L6 8 L6 11 L11 11 Z"/></svg><span class="legend-label">Sentinel-2B (MSI)</span></div>
             <div class="legend-item"><div style="width:16px;height:2px;margin-right:8px;opacity:0.6;border-top:2px dashed #aaa;"></div><span class="legend-label">Ground track (90 min)</span></div>
         </div>
         <div id="aircraftLegend" style="display:none; margin-top:8px;">
@@ -4021,6 +4021,7 @@
                 }, 5000);
                 if (map.getLayer('satpass-dots')) map.setLayoutProperty('satpass-dots', 'visibility', 'visible');
                 if (map.getLayer('satpass-pulse')) map.setLayoutProperty('satpass-pulse', 'visibility', 'visible');
+                if (map.getLayer('satpass-labels')) map.setLayoutProperty('satpass-labels', 'visibility', 'visible');
                 if (map.getLayer('satpass-tracks-line')) map.setLayoutProperty('satpass-tracks-line', 'visibility', 'visible');
             } else {
                 sw.classList.remove('active');
@@ -4029,6 +4030,7 @@
                 if (satpassUpdateInterval) { clearInterval(satpassUpdateInterval); satpassUpdateInterval = null; }
                 if (map.getLayer('satpass-dots')) map.setLayoutProperty('satpass-dots', 'visibility', 'none');
                 if (map.getLayer('satpass-pulse')) map.setLayoutProperty('satpass-pulse', 'visibility', 'none');
+                if (map.getLayer('satpass-labels')) map.setLayoutProperty('satpass-labels', 'visibility', 'none');
                 if (map.getLayer('satpass-tracks-line')) map.setLayoutProperty('satpass-tracks-line', 'visibility', 'none');
             }
         }
@@ -4049,8 +4051,8 @@
                 'aircraft-icon': `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="#fff" d="M16 2L18 10L18 14L29 18L29 20L18 18L18 24L23 28L23 30L18 27L16 30L14 27L9 30L9 28L14 24L14 18L3 20L3 18L14 14L14 10Z"/></svg>`,
                 // Vessel — ship silhouette pointing north (for heading rotation)
                 'vessel-icon': `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="#fff" d="M16 3L21 12L22 14L22 24L20 28L12 28L10 24L10 14L11 12Z"/><rect fill="#fff" x="13" y="14" width="6" height="5"/></svg>`,
-                // Satellite — diamond body with solar panel wings
-                'satellite-icon': `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="#fff" d="M16 10L22 16L16 22L10 16Z"/><rect fill="#fff" x="1" y="13" width="8" height="6"/><rect fill="#fff" x="23" y="13" width="8" height="6"/><rect fill="#fff" x="9" y="15" width="2" height="2"/><rect fill="#fff" x="21" y="15" width="2" height="2"/></svg>`,
+                // Satellite — diamond body + rectangular solar panels, ONE connected path for reliable SDF
+                'satellite-icon': `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="#fff" d="M16 5 L21 11 L26 11 L26 8 L32 8 L32 24 L26 24 L26 21 L21 21 L16 27 L11 21 L6 21 L6 24 L0 24 L0 8 L6 8 L6 11 L11 11 Z"/></svg>`,
                 // Industrial — factory with smokestack
                 'industrial-icon': `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="#fff" d="M4 28L4 18L10 18L10 12L16 18L16 12L22 18L22 10L26 10L26 4L28 4L28 28Z"/></svg>`,
                 // Conflict — 6-pointed starburst (distinguishes from thermal circles)
@@ -4085,10 +4087,12 @@
                 source: 'satpass-positions',
                 layout: { visibility: 'none' },
                 paint: {
-                    'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 12, 8, 22],
+                    'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 14, 8, 26],
                     'circle-color': ['get', 'color'],
-                    'circle-opacity': 0.2,
-                    'circle-stroke-width': 0
+                    'circle-opacity': 0.35,
+                    'circle-stroke-width': 1.5,
+                    'circle-stroke-color': ['get', 'color'],
+                    'circle-stroke-opacity': 0.5
                 }
             });
 
@@ -4100,13 +4104,35 @@
                 layout: {
                     visibility: 'none',
                     'icon-image': 'satellite-icon',
-                    'icon-size': ['interpolate', ['linear'], ['zoom'], 3, 0.55, 8, 1.0],
+                    'icon-size': ['interpolate', ['linear'], ['zoom'], 3, 0.75, 8, 1.2],
                     'icon-allow-overlap': true,
                     'icon-ignore-placement': true
                 },
                 paint: {
                     'icon-color': ['get', 'color'],
-                    'icon-opacity': 0.95
+                    'icon-opacity': 1.0
+                }
+            });
+
+            // Satellite name labels at higher zoom
+            map.addLayer({
+                id: 'satpass-labels',
+                type: 'symbol',
+                source: 'satpass-positions',
+                layout: {
+                    visibility: 'none',
+                    'text-field': ['get', 'name'],
+                    'text-font': ['Open Sans Bold'],
+                    'text-size': 10,
+                    'text-offset': [0, 1.8],
+                    'text-anchor': 'top',
+                    'text-allow-overlap': true,
+                    'text-ignore-placement': true
+                },
+                paint: {
+                    'text-color': ['get', 'color'],
+                    'text-halo-color': 'rgba(0,0,0,0.8)',
+                    'text-halo-width': 1.5
                 }
             });
 
