@@ -1954,6 +1954,9 @@
                 map.on('mouseenter', 'detections-circle', () => map.getCanvas().style.cursor = 'pointer');
                 map.on('mouseleave', 'detections-circle', () => map.getCanvas().style.cursor = '');
 
+                // Create canvas-drawn SDF icons for symbol layers
+                createMapIcons();
+
                 // Init Industrial layer
                 initIndustrialLayer();
 
@@ -3228,18 +3231,23 @@
             // Vessel dots
             map.addLayer({
                 id: 'ais-vessels',
-                type: 'circle',
+                type: 'symbol',
                 source: 'ais-vessels',
-                layout: { visibility: 'none' },
-                paint: {
-                    'circle-radius': ['interpolate', ['linear'], ['zoom'],
-                        5, ['match', ['get', 'type'], 'naval', 4, 'tanker', 4, 3],
-                        10, ['match', ['get', 'type'], 'naval', 8, 'tanker', 7, 5]
+                layout: {
+                    visibility: 'none',
+                    'icon-image': 'vessel-icon',
+                    'icon-size': ['interpolate', ['linear'], ['zoom'],
+                        5, ['match', ['get', 'type'], 'naval', 0.45, 'tanker', 0.45, 0.35],
+                        10, ['match', ['get', 'type'], 'naval', 0.8, 'tanker', 0.75, 0.6]
                     ],
-                    'circle-color': ['match', ['get', 'type'], 'tanker','#ff9100', 'cargo','#00e5ff', 'naval','#ff1744', '#b388ff'],
-                    'circle-opacity': 0.85,
-                    'circle-stroke-width': 1.5,
-                    'circle-stroke-color': 'rgba(255,255,255,0.3)'
+                    'icon-rotate': ['coalesce', ['get', 'heading'], 0],
+                    'icon-rotation-alignment': 'map',
+                    'icon-allow-overlap': true,
+                    'icon-ignore-placement': true
+                },
+                paint: {
+                    'icon-color': ['match', ['get', 'type'], 'tanker','#ff9100', 'cargo','#00e5ff', 'naval','#ff1744', '#b388ff'],
+                    'icon-opacity': 0.9
                 }
             });
 
@@ -3999,6 +4007,97 @@
             updatePassList();
         }
 
+        // ── Canvas-drawn SDF icons for map layers ──
+        function createMapIcons() {
+            // Aircraft icon — plane silhouette pointing UP (north), 32x32
+            const acSize = 32;
+            const acCanvas = document.createElement('canvas');
+            acCanvas.width = acSize; acCanvas.height = acSize;
+            const ac = acCanvas.getContext('2d');
+            ac.clearRect(0, 0, acSize, acSize);
+            ac.fillStyle = '#ffffff';
+            ac.beginPath();
+            // Fuselage
+            ac.moveTo(16, 2);   // nose
+            ac.lineTo(18, 10);
+            ac.lineTo(18, 14);
+            // Right wing
+            ac.lineTo(29, 18);
+            ac.lineTo(29, 20);
+            ac.lineTo(18, 18);
+            // Body to tail
+            ac.lineTo(18, 24);
+            // Right tail
+            ac.lineTo(23, 28);
+            ac.lineTo(23, 30);
+            ac.lineTo(18, 27);
+            ac.lineTo(16, 30); // tail tip
+            ac.lineTo(14, 27);
+            ac.lineTo(9, 30);
+            ac.lineTo(9, 28);
+            ac.lineTo(14, 24);
+            // Body back up
+            ac.lineTo(14, 18);
+            // Left wing
+            ac.lineTo(3, 20);
+            ac.lineTo(3, 18);
+            ac.lineTo(14, 14);
+            ac.lineTo(14, 10);
+            ac.closePath();
+            ac.fill();
+            map.addImage('aircraft-icon', acCanvas, { sdf: true });
+
+            // Vessel icon — ship/boat silhouette pointing UP (north), 32x32
+            const vsSize = 32;
+            const vsCanvas = document.createElement('canvas');
+            vsCanvas.width = vsSize; vsCanvas.height = vsSize;
+            const vs = vsCanvas.getContext('2d');
+            vs.clearRect(0, 0, vsSize, vsSize);
+            vs.fillStyle = '#ffffff';
+            vs.beginPath();
+            // Bow (pointed top)
+            vs.moveTo(16, 3);
+            vs.lineTo(21, 12);
+            // Right hull
+            vs.lineTo(22, 14);
+            vs.lineTo(22, 24);
+            // Stern right
+            vs.lineTo(20, 28);
+            // Stern flat
+            vs.lineTo(12, 28);
+            // Stern left
+            vs.lineTo(10, 24);
+            vs.lineTo(10, 14);
+            vs.lineTo(11, 12);
+            vs.closePath();
+            vs.fill();
+            // Bridge/superstructure
+            vs.fillRect(13, 14, 6, 5);
+            map.addImage('vessel-icon', vsCanvas, { sdf: true });
+
+            // Satellite icon — small stylized satellite, 32x32
+            const stSize = 32;
+            const stCanvas = document.createElement('canvas');
+            stCanvas.width = stSize; stCanvas.height = stSize;
+            const st = stCanvas.getContext('2d');
+            st.clearRect(0, 0, stSize, stSize);
+            st.fillStyle = '#ffffff';
+            // Body (center rectangle, rotated diamond)
+            st.save();
+            st.translate(16, 16);
+            st.rotate(Math.PI / 4);
+            st.fillRect(-4, -4, 8, 8);
+            st.restore();
+            // Left solar panel
+            st.fillRect(2, 13, 8, 6);
+            // Right solar panel
+            st.fillRect(22, 13, 8, 6);
+            // Panel connectors
+            st.fillRect(10, 15, 4, 2);
+            st.fillRect(18, 15, 4, 2);
+            map.addImage('satellite-icon', stCanvas, { sdf: true });
+        }
+
         function initSatPassLayer() {
             map.addSource('satpass-positions', {
                 type: 'geojson',
@@ -4009,32 +4108,35 @@
                 data: { type: 'FeatureCollection', features: [] }
             });
 
-            // Pulsing halo behind satellite dots
+            // Pulsing halo behind satellite icons
             map.addLayer({
                 id: 'satpass-pulse',
                 type: 'circle',
                 source: 'satpass-positions',
                 layout: { visibility: 'none' },
                 paint: {
-                    'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 8, 8, 14],
+                    'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 10, 8, 18],
                     'circle-color': ['get', 'color'],
-                    'circle-opacity': 0.2,
+                    'circle-opacity': 0.15,
                     'circle-stroke-width': 0
                 }
             });
 
-            // Main satellite position dots
+            // Satellite icons
             map.addLayer({
                 id: 'satpass-dots',
-                type: 'circle',
+                type: 'symbol',
                 source: 'satpass-positions',
-                layout: { visibility: 'none' },
+                layout: {
+                    visibility: 'none',
+                    'icon-image': 'satellite-icon',
+                    'icon-size': ['interpolate', ['linear'], ['zoom'], 3, 0.45, 8, 0.8],
+                    'icon-allow-overlap': true,
+                    'icon-ignore-placement': true
+                },
                 paint: {
-                    'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 4, 8, 8],
-                    'circle-color': ['get', 'color'],
-                    'circle-opacity': 0.9,
-                    'circle-stroke-width': 2,
-                    'circle-stroke-color': 'rgba(255,255,255,0.6)'
+                    'icon-color': ['get', 'color'],
+                    'icon-opacity': 0.95
                 }
             });
 
@@ -4250,18 +4352,23 @@
                 data: { type: 'FeatureCollection', features: [] }
             });
 
-            // Aircraft circle dots
+            // Aircraft icons with heading rotation
             map.addLayer({
                 id: 'aircraft-circles',
-                type: 'circle',
+                type: 'symbol',
                 source: 'aircraft-positions',
-                layout: { visibility: 'none' },
+                layout: {
+                    visibility: 'none',
+                    'icon-image': 'aircraft-icon',
+                    'icon-size': ['interpolate', ['linear'], ['zoom'], 3, 0.35, 6, 0.5, 10, 0.8],
+                    'icon-rotate': ['coalesce', ['get', 'heading'], 0],
+                    'icon-rotation-alignment': 'map',
+                    'icon-allow-overlap': true,
+                    'icon-ignore-placement': true
+                },
                 paint: {
-                    'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 2.5, 6, 4, 10, 7],
-                    'circle-color': ['get', 'color'],
-                    'circle-opacity': 0.85,
-                    'circle-stroke-width': 1,
-                    'circle-stroke-color': 'rgba(0,0,0,0.4)'
+                    'icon-color': ['get', 'color'],
+                    'icon-opacity': 0.9
                 }
             });
 
