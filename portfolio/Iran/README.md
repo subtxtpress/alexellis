@@ -19,7 +19,7 @@ MERIDIAN fuses ten open-source intelligence layers into a single interactive map
 - **Sentinel-2 Optical** — On-demand 10m true-color imagery via AWS Earth Search STAC API. Queries recent cloud-free scenes for the current map view, with clickable footprints and COG tile rendering.
 - **Maxar Crisis Imagery** — High-resolution event-driven imagery from the Maxar Open Data Program (CC-BY-NC 4.0). Displays available crisis imagery footprints with metadata and optional COG overlay loading.
 - **Satellite Pass Predictor** — Real-time orbital tracking of the seven EO satellites behind MERIDIAN's data (NOAA-20, NOAA-21, Suomi-NPP, Terra, Aqua, Sentinel-2A/2B). CelesTrak TLE data with SGP4 propagation shows live positions, 90-minute ground tracks, and next-pass predictions for the current map center.
-- **Aircraft Tracking** — Live ADS-B aircraft positions from OpenSky Network across the Middle East bounding box. Filterable by aircraft type (large, medium, rotorcraft, ground vehicle), with 30-second auto-refresh, click popups showing callsign, altitude, velocity, heading, and squawk code.
+- **Aircraft Tracking** — Live ADS-B aircraft positions from airplanes.live, adsb.lol, and OpenSky Network (automatic fallback chain) across the Middle East bounding box. Filterable by aircraft type (large, medium, rotorcraft, ground vehicle), with 30-second auto-refresh, click popups showing callsign, altitude, velocity, heading, and squawk code.
 
 ## Key Features
 
@@ -52,7 +52,7 @@ The entire application is a single HTML file (~4,600 lines). No build step, no b
 | Sentinel-2 | [AWS Earth Search](https://earth-search.aws.element84.com/v1) STAC | On-demand query |
 | Maxar Crisis | [Maxar Open Data](https://www.maxar.com/open-data) | Event-driven |
 | Satellite Passes | [CelesTrak](https://celestrak.org) TLE + [satellite.js](https://github.com/shashwatak/satellite-js) SGP4 | TLE cached 24h, positions every 5s |
-| Aircraft | [OpenSky Network](https://opensky-network.org) ADS-B | Live, 30-second refresh |
+| Aircraft | [airplanes.live](https://airplanes.live), [adsb.lol](https://adsb.lol), [OpenSky](https://opensky-network.org) ADS-B | Live, 30-second refresh |
 
 ## Usage
 
@@ -69,6 +69,6 @@ open meridian.html
 
 ## License
 
-Data attributions: NASA FIRMS, NASA GIBS, ACLED, EOG/VIIRS Nightfire, World Bank GGFR, ESA Copernicus Sentinel-2, Maxar Open Data (CC-BY-NC 4.0), CelesTrak, OpenSky Network, OpenStreetMap.
+Data attributions: NASA FIRMS, NASA GIBS, ACLED, EOG/VIIRS Nightfire, World Bank GGFR, ESA Copernicus Sentinel-2, Maxar Open Data (CC-BY-NC 4.0), CelesTrak, airplanes.live, adsb.lol, OpenSky Network, OpenStreetMap.
 
 Built by [Subtxt Press](https://subtxtpress.github.io/home/)

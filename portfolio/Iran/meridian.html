@@ -1613,7 +1613,7 @@
                     <button style="width:100%;font-family:var(--font-mono);font-size:9px;padding:5px 8px;background:rgba(255,235,59,0.08);border:1px solid rgba(255,235,59,0.25);color:#ffeb3b;border-radius:3px;cursor:pointer;letter-spacing:0.3px;" onclick="zoomToAircraftBbox()">Zoom to Coverage Area</button>
                 </div>
                 <div class="data-note" style="margin-top:8px;">
-                    Live aircraft positions from <a href="https://opensky-network.org" target="_blank" style="color:#ffeb3b;">OpenSky Network</a> ADS-B data. Middle East bounding box (12–42°N, 25–65°E). Anonymous access with 30-second auto-refresh. Categories based on ADS-B emitter type where available. Not all aircraft broadcast ADS-B.
+                    Live ADS-B aircraft positions from <a href="https://airplanes.live" target="_blank" style="color:#ffeb3b;">airplanes.live</a>, <a href="https://adsb.lol" target="_blank" style="color:#ffeb3b;">adsb.lol</a>, and <a href="https://opensky-network.org" target="_blank" style="color:#ffeb3b;">OpenSky Network</a> (fallback chain). Middle East bounding box (12–42°N, 25–65°E). 30-second auto-refresh, no API key required. Not all aircraft broadcast ADS-B.
                 </div>
             </div>
         </div>
@@ -1666,7 +1666,7 @@
             Maritime: AIS pattern data via <a href="https://www.marinetraffic.com" target="_blank">OSINT</a> reporting<br>
             Optical: <a href="https://earthdata.nasa.gov/gibs" target="_blank">NASA GIBS</a> MODIS, <a href="https://earth-search.aws.element84.com/v1" target="_blank">Sentinel-2 L2A</a>, <a href="https://www.maxar.com/open-data" target="_blank">Maxar Open Data</a><br>
             Orbits: <a href="https://celestrak.org" target="_blank">CelesTrak</a> TLE data + <a href="https://github.com/shashwatak/satellite-js" target="_blank">satellite.js</a> SGP4<br>
-            Aircraft: <a href="https://opensky-network.org" target="_blank">OpenSky Network</a> ADS-B live data<br>
+            Aircraft: <a href="https://airplanes.live" target="_blank">airplanes.live</a> / <a href="https://adsb.lol" target="_blank">adsb.lol</a> / <a href="https://opensky-network.org" target="_blank">OpenSky Network</a> ADS-B<br>
             Built by <a href="https://subtxtpress.github.io/home/" target="_blank">Subtxt Press</a>
         </div>
     </div>
@@ -4173,16 +4173,51 @@
         let aircraftLastFetch = 0;
         let aircraftBackoffMs = 15000;
 
-        const OPENSKY_BBOX = { lamin: 12, lomin: 25, lamax: 42, lomax: 65 };
-        const OPENSKY_URL = `https://opensky-network.org/api/states/all?lamin=${OPENSKY_BBOX.lamin}&lomin=${OPENSKY_BBOX.lomin}&lamax=${OPENSKY_BBOX.lamax}&lomax=${OPENSKY_BBOX.lomax}`;
+        // Middle East bounding box — center point + radius for ADS-B APIs
+        const AC_BBOX = { lamin: 12, lomin: 25, lamax: 42, lomax: 65 };
+        const AC_CENTER_LAT = (AC_BBOX.lamin + AC_BBOX.lamax) / 2;   // ~27
+        const AC_CENTER_LON = (AC_BBOX.lomin + AC_BBOX.lomax) / 2;   // ~45
+        const AC_RADIUS_NM = 1100; // nautical miles — covers full Middle East bbox
         const AIRCRAFT_REFRESH_MS = 30000;
 
-        function classifyAircraft(category) {
+        // Data sources in priority order — no rate limit issues with primary sources
+        const AIRCRAFT_SOURCES = [
+            {
+                name: 'airplanes.live',
+                url: `https://api.airplanes.live/v2/point/${AC_CENTER_LAT}/${AC_CENTER_LON}/${AC_RADIUS_NM}`,
+                format: 'adsbx'
+            },
+            {
+                name: 'adsb.lol',
+                url: `https://api.adsb.lol/v2/point/${AC_CENTER_LAT}/${AC_CENTER_LON}/${AC_RADIUS_NM}`,
+                format: 'adsbx'
+            },
+            {
+                name: 'OpenSky',
+                url: `https://opensky-network.org/api/states/all?lamin=${AC_BBOX.lamin}&lomin=${AC_BBOX.lomin}&lamax=${AC_BBOX.lamax}&lomax=${AC_BBOX.lomax}`,
+                format: 'opensky'
+            }
+        ];
+        let aircraftSourceIndex = 0; // tracks which source is active
+
+        // ADS-B Exchange category codes → type classification
+        function classifyAdsbxCategory(cat) {
+            if (!cat) return 'other';
+            const c = cat.toUpperCase();
+            if (c === 'A5' || c === 'A4' || c === 'A3') return 'large';    // heavy, B757, large
+            if (c === 'A2' || c === 'A1') return 'medium';                  // small, light
+            if (c === 'A7') return 'rotary';                                 // rotorcraft
+            if (c === 'C1' || c === 'C2' || c === 'C3') return 'ground';    // surface vehicles
+            if (c === 'B1' || c === 'B2' || c === 'B4') return 'other';     // glider, balloon, UAV
+            return 'other';
+        }
+
+        // OpenSky emitter category (numeric) → type classification
+        function classifyOpenSkyCategory(category) {
             if (category === null || category === undefined || category === 0) return 'other';
             if (category >= 1 && category <= 2) return 'medium';
             if (category >= 3 && category <= 6) return 'large';
             if (category === 7) return 'rotary';
-            if (category === 10 || category === 11) return 'other';
             if (category === 14 || category === 15) return 'ground';
             return 'other';
         }
@@ -4192,65 +4227,111 @@
             return colors[type] || '#9e9e9e';
         }
 
+        // Parse ADS-B Exchange format (airplanes.live, adsb.lol)
+        function parseAdsbxResponse(data) {
+            const ac = data.ac || data.aircraft || [];
+            if (!Array.isArray(ac) || ac.length === 0) return [];
+            const features = [];
+            for (const a of ac) {
+                const lat = a.lat, lng = a.lon;
+                if (lat === undefined || lng === undefined || lat === null || lng === null) continue;
+                // Filter to Middle East bbox
+                if (lat < AC_BBOX.lamin || lat > AC_BBOX.lamax || lng < AC_BBOX.lomin || lng > AC_BBOX.lomax) continue;
+                const type = classifyAdsbxCategory(a.category || a.t);
+                const altFt = a.alt_baro || a.alt_geom || null;
+                const altM = altFt && altFt !== 'ground' ? Math.round(altFt * 0.3048) : null;
+                const spdKts = a.gs || a.tas || null;
+                const spdMs = spdKts ? Math.round(spdKts * 0.5144) : null;
+                features.push({
+                    type: 'Feature',
+                    geometry: { type: 'Point', coordinates: [lng, lat] },
+                    properties: {
+                        icao24: a.hex || '',
+                        callsign: (a.flight || a.call || '').trim(),
+                        origin_country: a.ownOp || a.r || '',
+                        altitude: altM,
+                        on_ground: altFt === 'ground' || a.alt_baro === 'ground' || false,
+                        velocity: spdMs,
+                        heading: a.track != null ? Math.round(a.track) : (a.true_heading != null ? Math.round(a.true_heading) : null),
+                        vertical_rate: a.baro_rate ? (a.baro_rate * 0.00508).toFixed(1) : null,
+                        geo_altitude: a.alt_geom ? Math.round(a.alt_geom * 0.3048) : null,
+                        squawk: a.squawk || '',
+                        type: type,
+                        color: getAircraftColor(type),
+                        aircraft_type: a.t || a.desc || ''
+                    }
+                });
+            }
+            return features;
+        }
+
+        // Parse OpenSky Network format (fallback)
+        function parseOpenSkyResponse(data) {
+            if (!data.states || !Array.isArray(data.states)) return [];
+            const features = [];
+            for (const s of data.states) {
+                const lng = s[5], lat = s[6];
+                if (lng === null || lat === null) continue;
+                const type = classifyOpenSkyCategory(s[17]);
+                features.push({
+                    type: 'Feature',
+                    geometry: { type: 'Point', coordinates: [lng, lat] },
+                    properties: {
+                        icao24: s[0] || '',
+                        callsign: (s[1] || '').trim(),
+                        origin_country: s[2] || '',
+                        altitude: s[7] !== null ? Math.round(s[7]) : null,
+                        on_ground: s[8] || false,
+                        velocity: s[9] !== null ? Math.round(s[9]) : null,
+                        heading: s[10] !== null ? Math.round(s[10]) : null,
+                        vertical_rate: s[11] !== null ? s[11].toFixed(1) : null,
+                        geo_altitude: s[13] !== null ? Math.round(s[13]) : null,
+                        squawk: s[14] || '',
+                        type: type,
+                        color: getAircraftColor(type)
+                    }
+                });
+            }
+            return features;
+        }
+
         async function fetchAircraftData() {
             const statsEl = document.getElementById('aircraftStats');
-            try {
-                const text = await proxyFetch(OPENSKY_URL);
-                // Proxy may relay rate-limit or error as 200 with non-JSON body
-                const trimmed = text.trim();
-                if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) {
-                    throw new Error('429 ' + trimmed.substring(0, 80));
-                }
-                aircraftBackoffMs = AIRCRAFT_REFRESH_MS;
-                const data = JSON.parse(trimmed);
-                if (!data.states || !Array.isArray(data.states)) {
-                    console.warn('[AIRCRAFT] No states in response');
-                    return;
-                }
-                const features = [];
-                for (const s of data.states) {
-                    const lng = s[5], lat = s[6];
-                    if (lng === null || lat === null) continue;
-                    const category = s[17];
-                    const type = classifyAircraft(category);
-                    features.push({
-                        type: 'Feature',
-                        geometry: { type: 'Point', coordinates: [lng, lat] },
-                        properties: {
-                            icao24: s[0] || '',
-                            callsign: (s[1] || '').trim(),
-                            origin_country: s[2] || '',
-                            altitude: s[7] !== null ? Math.round(s[7]) : null,
-                            on_ground: s[8] || false,
-                            velocity: s[9] !== null ? Math.round(s[9]) : null,
-                            heading: s[10] !== null ? Math.round(s[10]) : null,
-                            vertical_rate: s[11] !== null ? s[11].toFixed(1) : null,
-                            geo_altitude: s[13] !== null ? Math.round(s[13]) : null,
-                            squawk: s[14] || '',
-                            category: category,
-                            type: type,
-                            color: getAircraftColor(type)
-                        }
-                    });
-                }
-                aircraftData = { type: 'FeatureCollection', features };
-                aircraftLastFetch = Date.now();
-                console.log(`[AIRCRAFT] Loaded ${features.length} aircraft`);
-                renderAircraft();
-            } catch (e) {
-                console.error('[AIRCRAFT] Fetch error:', e);
-                if (e.message && (e.message.includes('429') || e.message.toLowerCase().includes('too many') || e.message.toLowerCase().includes('rate'))) {
-                    aircraftBackoffMs = Math.min(aircraftBackoffMs * 2, 120000);
-                    console.warn(`[AIRCRAFT] Rate limited. Backing off to ${aircraftBackoffMs / 1000}s`);
-                    statsEl.innerHTML = `<div class="aircraft-stat" style="grid-column:1/-1;"><div class="aircraft-stat-val" style="font-size:10px;color:#ff9800;">Rate limited — retrying in ${Math.round(aircraftBackoffMs / 1000)}s</div></div>`;
-                    if (aircraftRefreshInterval) {
-                        clearInterval(aircraftRefreshInterval);
-                        aircraftRefreshInterval = setInterval(fetchAndRender, aircraftBackoffMs);
+            // Try each source in priority order
+            for (let i = 0; i < AIRCRAFT_SOURCES.length; i++) {
+                const srcIdx = (aircraftSourceIndex + i) % AIRCRAFT_SOURCES.length;
+                const src = AIRCRAFT_SOURCES[srcIdx];
+                try {
+                    // Primary sources support CORS — try direct first, proxy fallback
+                    const text = src.format === 'opensky'
+                        ? await proxyFetch(src.url)
+                        : await corsFetch(src.url);
+                    const trimmed = text.trim();
+                    if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) {
+                        throw new Error('Non-JSON response: ' + trimmed.substring(0, 80));
                     }
-                } else {
-                    statsEl.innerHTML = `<div class="aircraft-stat" style="grid-column:1/-1;"><div class="aircraft-stat-val" style="font-size:10px;color:#ff5252;">Fetch failed — retrying...</div></div>`;
+                    const data = JSON.parse(trimmed);
+                    const features = src.format === 'adsbx'
+                        ? parseAdsbxResponse(data)
+                        : parseOpenSkyResponse(data);
+                    if (features.length === 0 && i < AIRCRAFT_SOURCES.length - 1) {
+                        console.warn(`[AIRCRAFT] ${src.name}: empty response, trying next source`);
+                        continue;
+                    }
+                    aircraftData = { type: 'FeatureCollection', features };
+                    aircraftLastFetch = Date.now();
+                    aircraftSourceIndex = srcIdx; // remember working source
+                    console.log(`[AIRCRAFT] ${src.name}: loaded ${features.length} aircraft`);
+                    renderAircraft();
+                    return;
+                } catch (e) {
+                    console.warn(`[AIRCRAFT] ${src.name} failed:`, e.message);
+                    continue;
                 }
             }
+            // All sources failed
+            console.error('[AIRCRAFT] All sources failed');
+            statsEl.innerHTML = '<div class="aircraft-stat" style="grid-column:1/-1;"><div class="aircraft-stat-val" style="font-size:10px;color:#ff5252;">All data sources unavailable — retrying...</div></div>';
         }
 
         function renderAircraft() {
