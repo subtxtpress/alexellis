@@ -944,64 +944,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* ACLED LIVE CONNECTION */
-        .acled-cred-panel {
-            margin-top: 10px;
-            padding: 10px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-        }
-        .acled-cred-row {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            margin-bottom: 8px;
-        }
-        .acled-cred-input {
-            width: 100%;
-            padding: 6px 8px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            color: var(--text-primary);
-            font-family: var(--font-mono);
-            font-size: 10px;
-            box-sizing: border-box;
-        }
-        .acled-cred-input::placeholder { color: var(--text-muted); opacity: 0.6; }
-        .acled-cred-input:focus { outline: none; border-color: rgba(224,64,251,0.4); }
-        .acled-connect-btn {
-            width: 100%;
-            padding: 7px 10px;
-            background: rgba(224,64,251,0.1);
-            border: 1px solid rgba(224,64,251,0.3);
-            border-radius: 4px;
-            color: #e040fb;
-            font-family: var(--font-mono);
-            font-size: 10px;
-            cursor: pointer;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            transition: all 0.15s;
-        }
-        .acled-connect-btn:hover { background: rgba(224,64,251,0.18); border-color: rgba(224,64,251,0.5); }
-        .acled-connect-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-        .acled-live-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-family: var(--font-mono);
-            font-size: 9px;
-            color: #00e676;
-            margin-top: 6px;
-        }
-        .acled-live-dot {
-            width: 6px; height: 6px; border-radius: 50%;
-            background: #00e676;
-            animation: acledPulse 2s ease-in-out infinite;
-        }
-        @keyframes acledPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
         .acled-chip[data-type="riots"] { border-color: rgba(0,229,255,0.3); color: #00e5ff; }
         .acled-chip[data-type="riots"].off { opacity: 0.3; border-color: var(--border); color: var(--text-muted); }
         .acled-chip[data-type="protests"] { border-color: rgba(255,214,0,0.3); color: #ffd600; }
@@ -1051,6 +993,22 @@
         .ais-stat { background:var(--bg-tertiary); border:1px solid var(--border); border-radius:3px; padding:6px 8px; text-align:center; }
         .ais-stat-val { font-family:var(--font-mono); font-size:14px; font-weight:600; color:var(--text-primary); }
         .ais-stat-label { font-family:var(--font-mono); font-size:8px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; }
+
+        /* SATELLITE IMAGERY SWITCHES */
+        .sat-switch { position:relative; width:36px; height:18px; background:var(--bg-tertiary); border:1px solid var(--border); border-radius:9px; cursor:pointer; transition:all 0.2s; display:inline-block; }
+        .sat-switch.active { background:rgba(76,175,80,0.15); border-color:#4caf50; }
+        .sat-switch::after { content:''; position:absolute; top:2px; left:2px; width:12px; height:12px; background:var(--text-muted); border-radius:50%; transition:all 0.2s; }
+        .sat-switch.active::after { left:20px; background:#4caf50; }
+        .sat-section-divider { border-top:1px solid var(--border); margin:6px 0 10px; opacity:0.5; }
+        .sat-date-badge { font-family:var(--font-mono); font-size:8px; color:#4caf50; background:rgba(76,175,80,0.1); border:1px solid rgba(76,175,80,0.2); padding:1px 5px; border-radius:2px; margin-left:6px; }
+        .sat-opacity-row { display:flex; align-items:center; gap:8px; margin-top:8px; }
+        .sat-opacity-row label { font-family:var(--font-mono); font-size:9px; color:var(--text-muted); min-width:42px; }
+        .sat-opacity-row input[type="range"] { flex:1; height:3px; -webkit-appearance:none; background:var(--border); border-radius:2px; outline:none; }
+        .sat-opacity-row input[type="range"]::-webkit-slider-thumb { -webkit-appearance:none; width:10px; height:10px; border-radius:50%; background:#4caf50; cursor:pointer; }
+        .sat-load-btn { width:100%; font-family:var(--font-mono); font-size:9px; padding:5px 8px; background:rgba(76,175,80,0.08); border:1px solid rgba(76,175,80,0.25); color:#4caf50; border-radius:3px; cursor:pointer; letter-spacing:0.3px; transition:all 0.2s; }
+        .sat-load-btn:hover { background:rgba(76,175,80,0.15); }
+        .sat-load-btn:disabled { opacity:0.4; cursor:not-allowed; }
+        .sat-footprint-info { font-family:var(--font-mono); font-size:9px; color:var(--text-secondary); margin-top:6px; }
 
         /* UTILITY BAR */
         .util-bar {
@@ -1455,21 +1413,7 @@
                 </div>
                 <div id="acledStats" class="acled-stats"></div>
                 <div id="acledDataNote" class="data-note" style="margin-top: 8px;">
-                    Static snapshot — weekly aggregated data (Nov 2025 – Feb 2026). Markers at admin-1 centroids, not precise event locations. Connect your ACLED account below for live event-level data.
-                </div>
-
-                <!-- ACLED API credentials -->
-                <div id="acledCredPanel" class="acled-cred-panel">
-                    <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">ACLED API Connection</div>
-                    <div class="acled-cred-row">
-                        <input type="email" id="acledEmail" class="acled-cred-input" placeholder="ACLED account email" autocomplete="email">
-                        <input type="password" id="acledKey" class="acled-cred-input" placeholder="ACLED account password" autocomplete="current-password">
-                    </div>
-                    <button id="acledConnectBtn" class="acled-connect-btn" onclick="connectAcled()">Connect &amp; Load Live Data</button>
-                    <div id="acledLiveStatus"></div>
-                    <div class="data-note" style="margin-top:6px;font-size:8px;">
-                        Credentials are stored in your browser only (localStorage). Register at <a href="https://acleddata.com/register/" target="_blank" style="color:#e040fb;">acleddata.com</a>. Your email and password are sent directly to ACLED's OAuth endpoint to obtain a session token.
-                    </div>
+                    Bundled snapshot of <a href="https://acleddata.com" target="_blank" style="color:#e040fb;">ACLED</a> conflict data (Nov 2025 – Feb 2026). Events are aggregated weekly and placed at admin-1 centroids — not precise locations. No account or API key needed; this data is embedded directly in MERIDIAN and works offline.
                 </div>
             </div>
         </div>
@@ -1537,6 +1481,74 @@
             </div>
         </div>
 
+        <!-- SATELLITE IMAGERY -->
+        <div class="panel-section">
+            <div class="panel-label">Satellite Imagery</div>
+            <div class="sat-section-divider"></div>
+
+            <!-- Layer 1: MODIS True-Color -->
+            <div style="margin-bottom:12px;">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                    <div id="modisSwitch" class="sat-switch" onclick="toggleModis()"></div>
+                    <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-secondary);">MODIS True-Color</span>
+                    <span id="modisDateBadge" class="sat-date-badge" style="display:none;"></span>
+                </div>
+                <div id="modisControls" style="display:none;">
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <label style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);min-width:32px;">Date</label>
+                        <input type="date" id="modisDate" onchange="updateModisTiles()" style="flex:1;font-family:var(--font-mono);font-size:9px;padding:3px 6px;background:var(--bg-tertiary);border:1px solid var(--border);color:var(--text-primary);border-radius:3px;">
+                    </div>
+                    <div class="sat-opacity-row">
+                        <label>Opacity</label>
+                        <input type="range" id="modisOpacity" min="0" max="100" value="70" oninput="setModisOpacity(this.value)">
+                        <span id="modisOpacityVal" style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);min-width:28px;text-align:right;">70%</span>
+                    </div>
+                    <div class="data-note" style="margin-top:8px;">
+                        NASA GIBS MODIS Terra Corrected Reflectance. Daily true-color composites at 250m. ~1 day latency. Use to visually corroborate thermal detections with optical imagery.
+                    </div>
+                </div>
+            </div>
+
+            <div class="sat-section-divider"></div>
+
+            <!-- Layer 2: Sentinel-2 -->
+            <div style="margin-bottom:12px;">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                    <div id="s2Switch" class="sat-switch" onclick="toggleSentinel2()"></div>
+                    <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-secondary);">Sentinel-2 Optical</span>
+                </div>
+                <div id="s2Controls" style="display:none;">
+                    <button id="s2LoadBtn" class="sat-load-btn" onclick="loadSentinel2()">Search Sentinel-2 for Current View</button>
+                    <div id="s2Status" class="sat-footprint-info" style="display:none;"></div>
+                    <div class="sat-opacity-row" id="s2OpacityRow" style="display:none;">
+                        <label>Opacity</label>
+                        <input type="range" id="s2Opacity" min="0" max="100" value="70" oninput="setS2Opacity(this.value)">
+                        <span id="s2OpacityVal" style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);min-width:28px;text-align:right;">70%</span>
+                    </div>
+                    <div class="data-note" style="margin-top:8px;">
+                        ESA Sentinel-2 L2A via AWS Earth Search STAC. 10m resolution true-color. Queries last 30 days, &lt;20% cloud cover. Click footprints to load imagery or view on Copernicus Browser.
+                    </div>
+                </div>
+            </div>
+
+            <div class="sat-section-divider"></div>
+
+            <!-- Layer 3: Maxar Open Data -->
+            <div>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                    <div id="maxarSwitch" class="sat-switch" onclick="toggleMaxar()"></div>
+                    <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-secondary);">Maxar Crisis Imagery</span>
+                </div>
+                <div id="maxarControls" style="display:none;">
+                    <button id="maxarLoadBtn" class="sat-load-btn" onclick="loadMaxarEvents()">Search Maxar Open Data</button>
+                    <div id="maxarStatus" class="sat-footprint-info" style="display:none;"></div>
+                    <div class="data-note" style="margin-top:8px;">
+                        Maxar Open Data Program — high-res crisis imagery (CC-BY-NC 4.0). Event-driven coverage of conflicts and disasters. Click footprints to load COG overlays or view metadata.
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- BASEMAP -->
         <div class="panel-section">
             <div class="panel-label">Basemap</div>
@@ -1583,6 +1595,7 @@
             Conflict: <a href="https://acleddata.com" target="_blank">ACLED</a> (Armed Conflict Location &amp; Event Data)<br>
             Nighttime: <a href="https://earthdata.nasa.gov/gibs" target="_blank">NASA GIBS</a> VIIRS Day/Night Band<br>
             Maritime: AIS pattern data via <a href="https://www.marinetraffic.com" target="_blank">OSINT</a> reporting<br>
+            Optical: <a href="https://earthdata.nasa.gov/gibs" target="_blank">NASA GIBS</a> MODIS, <a href="https://earth-search.aws.element84.com/v1" target="_blank">Sentinel-2 L2A</a>, <a href="https://www.maxar.com/open-data" target="_blank">Maxar Open Data</a><br>
             Built by <a href="https://subtxtpress.github.io/home/" target="_blank">Subtxt Press</a>
         </div>
     </div>
@@ -1627,6 +1640,14 @@
             <div class="legend-item"><div class="legend-dot" style="background:#ff1744; border:2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Naval</span></div>
             <div class="legend-item"><div class="legend-dot" style="background:#b388ff; border:2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Other</span></div>
             <div class="legend-item"><div style="width:16px;height:2px;background:rgba(0,229,255,0.5);margin-right:8px;border-top:1px dashed #00e5ff;"></div><span class="legend-label">TSS Lane</span></div>
+        </div>
+        <div id="satLegend" style="display:none; margin-top:8px;">
+            <div class="legend-title">Satellite Imagery</div>
+            <div class="legend-item" id="modisLegendItem" style="display:none;"><div class="legend-dot" style="background:#4caf50; box-shadow:0 0 4px rgba(76,175,80,0.5);"></div><span class="legend-label">MODIS True-Color</span></div>
+            <div class="legend-item" id="s2LegendItem" style="display:none;"><div class="legend-dot" style="background:#2196f3; box-shadow:0 0 4px rgba(33,150,243,0.5);"></div><span class="legend-label">Sentinel-2 Optical</span></div>
+            <div class="legend-item" id="maxarLegendItem" style="display:none;"><div class="legend-dot" style="background:#ff9800; box-shadow:0 0 4px rgba(255,152,0,0.5);"></div><span class="legend-label">Maxar Crisis Imagery</span></div>
+            <div class="legend-item" id="s2FootprintLegendItem" style="display:none;"><div style="width:12px;height:12px;background:transparent;border:2px solid #2196f3;margin-right:8px;"></div><span class="legend-label">S2 Footprint</span></div>
+            <div class="legend-item" id="maxarFootprintLegendItem" style="display:none;"><div style="width:12px;height:12px;background:transparent;border:2px solid #ff9800;margin-right:8px;"></div><span class="legend-label">Maxar Footprint</span></div>
         </div>
     </div>
 
@@ -1859,6 +1880,11 @@
 
                 // Init AIS vessel layer
                 initAISLayer();
+
+                // Init Satellite Imagery layers
+                initModisLayer();
+                initSentinel2Layer();
+                initMaxarLayer();
             });
         }
 
@@ -2430,8 +2456,7 @@
 
         let acledVisible = false;
         let acledTypeFilter = { battles: true, explosions: true, violence: true, riots: true, protests: false, strategic: false };
-        let acledLiveData = null;  // null = use static ACLED_DATA; FeatureCollection = live
-        let acledToken = null;
+        let acledLiveData = null;  // null = use static ACLED_DATA
 
         function getAcledTypeKey(eventType) {
             if (eventType === 'Battles') return 'battles';
@@ -2456,194 +2481,9 @@
         function isAcledLive() { return acledLiveData !== null; }
         function getAcledSource() { return acledLiveData || ACLED_DATA; }
 
-        // Restore saved ACLED credentials on load
-        function initAcledCreds() {
-            const saved = localStorage.getItem('acled_creds');
-            if (saved) {
-                try {
-                    const { email } = JSON.parse(saved);
-                    const el = document.getElementById('acledEmail');
-                    if (el) el.value = email;
-                } catch(e) {}
-            }
-        }
+        // ACLED live API removed — static snapshot only, no registration needed
 
-        async function connectAcled() {
-            const email = document.getElementById('acledEmail').value.trim();
-            const password = document.getElementById('acledKey').value.trim();
-            if (!email || !password) return;
 
-            const btn = document.getElementById('acledConnectBtn');
-            const status = document.getElementById('acledLiveStatus');
-            btn.disabled = true;
-            btn.textContent = 'AUTHENTICATING...';
-            status.innerHTML = '';
-
-            try {
-                // Step 1: Get OAuth token
-                const PROXY = 'https://api.codetabs.com/v1/proxy/';
-                const tokenUrl = 'https://acleddata.com/oauth/token';
-
-                let tokenRes;
-                try {
-                    tokenRes = await fetch(tokenUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: new URLSearchParams({ username: email, password: password, grant_type: 'password', client_id: 'acled' })
-                    });
-                } catch(corsErr) {
-                    // CORS blocked — try proxy
-                    tokenRes = await fetch(PROXY + tokenUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                        body: new URLSearchParams({ username: email, password: password, grant_type: 'password', client_id: 'acled' })
-                    });
-                }
-
-                if (!tokenRes.ok) {
-                    const errText = await tokenRes.text();
-                    throw new Error(tokenRes.status === 400 ? 'Invalid email or password' : `Auth failed (${tokenRes.status})`);
-                }
-
-                const tokenData = await tokenRes.json();
-                acledToken = tokenData.access_token;
-
-                // Save credentials (email only — password stays in memory during session)
-                localStorage.setItem('acled_creds', JSON.stringify({ email }));
-
-                btn.textContent = 'LOADING EVENTS...';
-
-                // Step 2: Fetch live event data
-                await fetchAcledLive();
-
-                btn.textContent = 'CONNECTED ✓';
-                btn.style.borderColor = 'rgba(0,230,118,0.4)';
-                btn.style.color = '#00e676';
-                btn.style.background = 'rgba(0,230,118,0.08)';
-
-                status.innerHTML = '<div class="acled-live-badge"><div class="acled-live-dot"></div>Live — event-level data with precise coordinates</div>';
-
-                // Update label and note
-                const dates = [...new Set(acledLiveData.features.map(f => f.properties.event_date))].sort();
-                const range = dates.length > 0 ? `${dates[0]} → ${dates[dates.length - 1]}` : '';
-                document.getElementById('acledLabel').textContent = `Live conflict events (${range})`;
-                document.getElementById('acledDataNote').innerHTML = `Live event-level data via ACLED API — ${acledLiveData.features.length.toLocaleString()} events with precise coordinates, actor names, fatality counts. Token valid 24h.`;
-
-                // Show expanded filter chips and legend items
-                document.querySelectorAll('.acled-chip[data-type="riots"], .acled-chip[data-type="protests"], .acled-chip[data-type="strategic"]').forEach(c => c.style.display = '');
-                document.querySelectorAll('.acled-live-legend').forEach(el => el.style.display = '');
-
-                // Re-render if layer is visible
-                if (acledVisible) renderAcled();
-
-            } catch (err) {
-                btn.disabled = false;
-                btn.textContent = 'CONNECT & LOAD LIVE DATA';
-                status.innerHTML = `<div style="color:#ff1744;font-family:var(--font-mono);font-size:9px;margin-top:6px;">${err.message}</div>`;
-            }
-        }
-
-        async function fetchAcledLive() {
-            const PROXY = 'https://api.codetabs.com/v1/proxy/';
-
-            // Build query: Middle East region, last 90 days, event-level
-            const endDate = new Date().toISOString().slice(0, 10);
-            const startDate = new Date(Date.now() - 90 * 86400000).toISOString().slice(0, 10);
-
-            const params = new URLSearchParams({
-                _format: 'json',
-                region: '11',
-                event_date: `${startDate}|${endDate}`,
-                event_date_where: 'BETWEEN',
-                fields: 'event_id_cnty|event_date|event_type|sub_event_type|actor1|actor2|interaction|country|admin1|admin2|location|latitude|longitude|geo_precision|source|source_scale|notes|fatalities|tags',
-                limit: '10000',
-                page: '1'
-            });
-
-            const apiUrl = `https://acleddata.com/api/acled/read?${params.toString()}`;
-            let res;
-            try {
-                res = await fetch(apiUrl, { headers: { Authorization: `Bearer ${acledToken}` } });
-            } catch(corsErr) {
-                res = await fetch(PROXY + apiUrl, { headers: { Authorization: `Bearer ${acledToken}` } });
-            }
-
-            if (!res.ok) throw new Error(`ACLED API error (${res.status})`);
-            const json = await res.json();
-
-            if (!json.data || !Array.isArray(json.data)) throw new Error('Unexpected ACLED response format');
-
-            // Convert to GeoJSON
-            acledLiveData = {
-                type: 'FeatureCollection',
-                features: json.data
-                    .filter(d => d.latitude && d.longitude && d.latitude !== '0' && d.longitude !== '0')
-                    .map(d => ({
-                        type: 'Feature',
-                        geometry: {
-                            type: 'Point',
-                            coordinates: [parseFloat(d.longitude), parseFloat(d.latitude)]
-                        },
-                        properties: {
-                            event_date: d.event_date,
-                            week: d.event_date,  // alias for time filter compatibility
-                            event_type: d.event_type,
-                            sub_event_type: d.sub_event_type,
-                            actor1: d.actor1 || '',
-                            actor2: d.actor2 || '',
-                            country: d.country,
-                            admin1: d.admin1 || '',
-                            admin2: d.admin2 || '',
-                            location: d.location || '',
-                            fatalities: parseInt(d.fatalities) || 0,
-                            events: 1,
-                            notes: d.notes || '',
-                            source: d.source || '',
-                            source_scale: d.source_scale || '',
-                            geo_precision: parseInt(d.geo_precision) || 0,
-                            tags: d.tags || '',
-                            disorder_type: d.event_type,
-                            _live: true
-                        }
-                    }))
-            };
-
-            // If there are more pages, fetch them
-            let page = 2;
-            while (json.data.length >= 10000) {
-                params.set('page', page.toString());
-                const nextUrl = `https://acleddata.com/api/acled/read?${params.toString()}`;
-                let nextRes;
-                try {
-                    nextRes = await fetch(nextUrl, { headers: { Authorization: `Bearer ${acledToken}` } });
-                } catch(e) {
-                    nextRes = await fetch(PROXY + nextUrl, { headers: { Authorization: `Bearer ${acledToken}` } });
-                }
-                if (!nextRes.ok) break;
-                const nextJson = await nextRes.json();
-                if (!nextJson.data || nextJson.data.length === 0) break;
-
-                const moreFeatures = nextJson.data
-                    .filter(d => d.latitude && d.longitude && d.latitude !== '0' && d.longitude !== '0')
-                    .map(d => ({
-                        type: 'Feature',
-                        geometry: { type: 'Point', coordinates: [parseFloat(d.longitude), parseFloat(d.latitude)] },
-                        properties: {
-                            event_date: d.event_date, week: d.event_date,
-                            event_type: d.event_type, sub_event_type: d.sub_event_type,
-                            actor1: d.actor1 || '', actor2: d.actor2 || '',
-                            country: d.country, admin1: d.admin1 || '', admin2: d.admin2 || '',
-                            location: d.location || '', fatalities: parseInt(d.fatalities) || 0,
-                            events: 1, notes: d.notes || '', source: d.source || '',
-                            source_scale: d.source_scale || '', geo_precision: parseInt(d.geo_precision) || 0,
-                            tags: d.tags || '', disorder_type: d.event_type, _live: true
-                        }
-                    }));
-                acledLiveData.features.push(...moreFeatures);
-                if (nextJson.data.length < 10000) break;
-                page++;
-            }
-        }
 
         function toggleAcled() {
             acledVisible = !acledVisible;
@@ -3346,6 +3186,466 @@
         }
 
         // ═══════════════════════════════════════════
+        // PHASE 4: SATELLITE IMAGERY LAYERS
+        // ═══════════════════════════════════════════
+
+        // --- Layer 1: MODIS True-Color (GIBS WMTS) ---
+        let modisVisible = false;
+        const MODIS_TC_URL = 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/MODIS_Terra_CorrectedReflectance_TrueColor/default/{date}/GoogleMapsCompatible_Level9/{z}/{y}/{x}.jpg';
+
+        function getModisDateStr(daysAgo) {
+            const d = new Date();
+            d.setDate(d.getDate() - daysAgo);
+            return d.toISOString().split('T')[0];
+        }
+
+        function initModisLayer() {
+            const defaultDate = getModisDateStr(1); // yesterday
+            map.addSource('modis-truecolor', {
+                type: 'raster',
+                tiles: [MODIS_TC_URL.replace('{date}', defaultDate)],
+                tileSize: 256,
+                maxzoom: 9
+            });
+            map.addLayer({
+                id: 'modis-truecolor-layer',
+                type: 'raster',
+                source: 'modis-truecolor',
+                layout: { visibility: 'none' },
+                paint: { 'raster-opacity': 0.7 }
+            }, 'detections-heat');
+
+            document.getElementById('modisDate').value = defaultDate;
+            document.getElementById('modisDateBadge').textContent = defaultDate;
+        }
+
+        function toggleModis() {
+            modisVisible = !modisVisible;
+            document.getElementById('modisSwitch').classList.toggle('active', modisVisible);
+            document.getElementById('modisControls').style.display = modisVisible ? 'block' : 'none';
+            document.getElementById('modisDateBadge').style.display = modisVisible ? 'inline' : 'none';
+            map.setLayoutProperty('modis-truecolor-layer', 'visibility', modisVisible ? 'visible' : 'none');
+            updateSatLegend();
+        }
+
+        function updateModisTiles() {
+            const date = document.getElementById('modisDate').value;
+            if (!date) return;
+            const src = map.getSource('modis-truecolor');
+            if (src) src.setTiles([MODIS_TC_URL.replace('{date}', date)]);
+            document.getElementById('modisDateBadge').textContent = date;
+        }
+
+        function setModisOpacity(val) {
+            document.getElementById('modisOpacityVal').textContent = val + '%';
+            if (map.getLayer('modis-truecolor-layer')) {
+                map.setPaintProperty('modis-truecolor-layer', 'raster-opacity', parseInt(val) / 100);
+            }
+        }
+
+        // --- Layer 2: Sentinel-2 via STAC + titiler ---
+        let s2Visible = false;
+        let s2Loading = false;
+        const STAC_API = 'https://earth-search.aws.element84.com/v1';
+        const TITILER_BASE = 'https://titiler.xyz/cog/tiles/{z}/{x}/{y}';
+
+        function initSentinel2Layer() {
+            // GeoJSON source for footprints
+            map.addSource('s2-footprints', {
+                type: 'geojson',
+                data: { type: 'FeatureCollection', features: [] }
+            });
+            map.addLayer({
+                id: 's2-footprints-fill',
+                type: 'fill',
+                source: 's2-footprints',
+                layout: { visibility: 'none' },
+                paint: { 'fill-color': '#2196f3', 'fill-opacity': 0.08 }
+            });
+            map.addLayer({
+                id: 's2-footprints-line',
+                type: 'line',
+                source: 's2-footprints',
+                layout: { visibility: 'none' },
+                paint: { 'line-color': '#2196f3', 'line-width': 1.5, 'line-opacity': 0.6 }
+            });
+
+            // Click handler for footprints
+            map.on('click', 's2-footprints-fill', (e) => {
+                if (!e.features.length) return;
+                const f = e.features[0];
+                const p = f.properties;
+                const coords = e.lngLat;
+
+                const cogUrl = p.visual_href || '';
+                const copLink = `https://browser.dataspace.copernicus.eu/?zoom=10&lat=${coords.lat}&lng=${coords.lng}`;
+                const loadBtn = cogUrl ? `<div style="margin-top:6px;"><button onclick="loadS2Cog('${encodeURIComponent(cogUrl)}')" style="font-family:var(--font-mono);font-size:9px;padding:4px 8px;background:rgba(33,150,243,0.15);border:1px solid rgba(33,150,243,0.3);color:#2196f3;border-radius:3px;cursor:pointer;">Load Imagery</button></div>` : '';
+
+                new maplibregl.Popup({ offset: 12 })
+                    .setLngLat(coords)
+                    .setHTML(`
+                        <div class="popup-header">Sentinel-2 Scene</div>
+                        <div class="popup-row"><span class="popup-key">Date</span><span class="popup-val">${p.datetime || 'N/A'}</span></div>
+                        <div class="popup-row"><span class="popup-key">Cloud</span><span class="popup-val">${p.cloud_cover != null ? p.cloud_cover.toFixed(1) + '%' : 'N/A'}</span></div>
+                        <div class="popup-row"><span class="popup-key">ID</span><span class="popup-val" style="font-size:8px;">${p.id || 'N/A'}</span></div>
+                        ${loadBtn}
+                        <div style="margin-top:4px;"><a href="${copLink}" target="_blank" style="font-family:var(--font-mono);font-size:8px;color:#2196f3;">Open in Copernicus Browser →</a></div>
+                    `)
+                    .addTo(map);
+            });
+            map.on('mouseenter', 's2-footprints-fill', () => map.getCanvas().style.cursor = 'pointer');
+            map.on('mouseleave', 's2-footprints-fill', () => map.getCanvas().style.cursor = '');
+        }
+
+        function toggleSentinel2() {
+            s2Visible = !s2Visible;
+            document.getElementById('s2Switch').classList.toggle('active', s2Visible);
+            document.getElementById('s2Controls').style.display = s2Visible ? 'block' : 'none';
+
+            const vis = s2Visible ? 'visible' : 'none';
+            ['s2-footprints-fill', 's2-footprints-line'].forEach(id => {
+                if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', vis);
+            });
+            // Also toggle raster layer if loaded
+            if (map.getLayer('s2-raster-layer')) {
+                map.setLayoutProperty('s2-raster-layer', 'visibility', vis);
+            }
+            updateSatLegend();
+        }
+
+        async function loadSentinel2() {
+            if (s2Loading) return;
+            s2Loading = true;
+            const btn = document.getElementById('s2LoadBtn');
+            const status = document.getElementById('s2Status');
+            btn.disabled = true;
+            btn.textContent = 'Searching...';
+            status.style.display = 'block';
+            status.textContent = 'Querying STAC API...';
+
+            try {
+                const bounds = map.getBounds();
+                const bbox = [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()];
+                const now = new Date();
+                const monthAgo = new Date(now);
+                monthAgo.setDate(monthAgo.getDate() - 30);
+                const dateRange = `${monthAgo.toISOString().split('T')[0]}T00:00:00Z/${now.toISOString().split('T')[0]}T23:59:59Z`;
+
+                const searchBody = {
+                    collections: ['sentinel-2-l2a'],
+                    bbox: bbox,
+                    datetime: dateRange,
+                    query: { 'eo:cloud_cover': { lt: 20 } },
+                    sortby: [{ field: 'properties.datetime', direction: 'desc' }],
+                    limit: 10
+                };
+
+                const resp = await fetch(`${STAC_API}/search`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(searchBody)
+                });
+
+                if (!resp.ok) throw new Error(`STAC API returned ${resp.status}`);
+                const data = await resp.json();
+                const features = data.features || [];
+
+                if (features.length === 0) {
+                    status.textContent = 'No scenes found for this area (last 30 days, <20% cloud). Try zooming to a smaller area.';
+                    return;
+                }
+
+                // Build footprint GeoJSON
+                const footprints = {
+                    type: 'FeatureCollection',
+                    features: features.map(f => ({
+                        type: 'Feature',
+                        geometry: f.geometry,
+                        properties: {
+                            id: f.id,
+                            datetime: f.properties.datetime?.split('T')[0] || '',
+                            cloud_cover: f.properties['eo:cloud_cover'],
+                            visual_href: f.assets?.visual?.href || ''
+                        }
+                    }))
+                };
+
+                map.getSource('s2-footprints').setData(footprints);
+                ['s2-footprints-fill', 's2-footprints-line'].forEach(id => {
+                    if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', 'visible');
+                });
+
+                status.textContent = `Found ${features.length} scene${features.length > 1 ? 's' : ''}. Click a footprint to load imagery.`;
+                document.getElementById('s2OpacityRow').style.display = 'flex';
+                updateSatLegend();
+
+            } catch (err) {
+                console.warn('Sentinel-2 STAC search failed:', err);
+                status.textContent = `Search failed: ${err.message}. Try again or zoom to a smaller area.`;
+            } finally {
+                s2Loading = false;
+                btn.disabled = false;
+                btn.textContent = 'Search Sentinel-2 for Current View';
+            }
+        }
+
+        function loadS2Cog(encodedUrl) {
+            const cogUrl = decodeURIComponent(encodedUrl);
+            try {
+                // Remove existing S2 raster layer if present
+                if (map.getLayer('s2-raster-layer')) map.removeLayer('s2-raster-layer');
+                if (map.getSource('s2-raster')) map.removeSource('s2-raster');
+
+                const tileUrl = TITILER_BASE + '?url=' + encodeURIComponent(cogUrl);
+                map.addSource('s2-raster', {
+                    type: 'raster',
+                    tiles: [tileUrl],
+                    tileSize: 256,
+                    maxzoom: 14
+                });
+                map.addLayer({
+                    id: 's2-raster-layer',
+                    type: 'raster',
+                    source: 's2-raster',
+                    layout: { visibility: 'visible' },
+                    paint: { 'raster-opacity': parseInt(document.getElementById('s2Opacity').value) / 100 }
+                }, 'detections-heat');
+
+                document.getElementById('s2Status').textContent = 'Sentinel-2 imagery loaded. Adjust opacity below.';
+                document.getElementById('s2OpacityRow').style.display = 'flex';
+                updateSatLegend();
+            } catch (err) {
+                console.warn('Failed to load S2 COG via titiler:', err);
+                document.getElementById('s2Status').textContent = 'COG load failed — click footprints for Copernicus Browser links instead.';
+            }
+        }
+
+        function setS2Opacity(val) {
+            document.getElementById('s2OpacityVal').textContent = val + '%';
+            if (map.getLayer('s2-raster-layer')) {
+                map.setPaintProperty('s2-raster-layer', 'raster-opacity', parseInt(val) / 100);
+            }
+        }
+
+        // --- Layer 3: Maxar Open Data Program ---
+        let maxarVisible = false;
+        let maxarLoading = false;
+        let maxarCatalogCache = null;
+        const MAXAR_CATALOG_URL = 'https://maxar-opendata.s3.amazonaws.com/events/catalog.json';
+
+        function initMaxarLayer() {
+            map.addSource('maxar-footprints', {
+                type: 'geojson',
+                data: { type: 'FeatureCollection', features: [] }
+            });
+            map.addLayer({
+                id: 'maxar-footprints-fill',
+                type: 'fill',
+                source: 'maxar-footprints',
+                layout: { visibility: 'none' },
+                paint: { 'fill-color': '#ff9800', 'fill-opacity': 0.08 }
+            });
+            map.addLayer({
+                id: 'maxar-footprints-line',
+                type: 'line',
+                source: 'maxar-footprints',
+                layout: { visibility: 'none' },
+                paint: { 'line-color': '#ff9800', 'line-width': 1.5, 'line-opacity': 0.6 }
+            });
+
+            map.on('click', 'maxar-footprints-fill', (e) => {
+                if (!e.features.length) return;
+                const f = e.features[0];
+                const p = f.properties;
+                const coords = e.lngLat;
+
+                const cogUrl = p.cog_href || '';
+                const loadBtn = cogUrl ? `<div style="margin-top:6px;"><button onclick="loadMaxarCog('${encodeURIComponent(cogUrl)}')" style="font-family:var(--font-mono);font-size:9px;padding:4px 8px;background:rgba(255,152,0,0.15);border:1px solid rgba(255,152,0,0.3);color:#ff9800;border-radius:3px;cursor:pointer;">Load Imagery</button></div>` : '';
+
+                new maplibregl.Popup({ offset: 12 })
+                    .setLngLat(coords)
+                    .setHTML(`
+                        <div class="popup-header">Maxar Crisis Imagery</div>
+                        <div class="popup-row"><span class="popup-key">Event</span><span class="popup-val">${p.event_name || 'N/A'}</span></div>
+                        <div class="popup-row"><span class="popup-key">Date</span><span class="popup-val">${p.datetime || 'N/A'}</span></div>
+                        <div class="popup-row"><span class="popup-key">GSD</span><span class="popup-val">${p.gsd ? p.gsd + 'm' : 'N/A'}</span></div>
+                        <div class="popup-row"><span class="popup-key">License</span><span class="popup-val">CC-BY-NC 4.0</span></div>
+                        ${loadBtn}
+                    `)
+                    .addTo(map);
+            });
+            map.on('mouseenter', 'maxar-footprints-fill', () => map.getCanvas().style.cursor = 'pointer');
+            map.on('mouseleave', 'maxar-footprints-fill', () => map.getCanvas().style.cursor = '');
+        }
+
+        function toggleMaxar() {
+            maxarVisible = !maxarVisible;
+            document.getElementById('maxarSwitch').classList.toggle('active', maxarVisible);
+            document.getElementById('maxarControls').style.display = maxarVisible ? 'block' : 'none';
+
+            const vis = maxarVisible ? 'visible' : 'none';
+            ['maxar-footprints-fill', 'maxar-footprints-line'].forEach(id => {
+                if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', vis);
+            });
+            if (map.getLayer('maxar-raster-layer')) {
+                map.setLayoutProperty('maxar-raster-layer', 'visibility', vis);
+            }
+            updateSatLegend();
+        }
+
+        async function loadMaxarEvents() {
+            if (maxarLoading) return;
+            maxarLoading = true;
+            const btn = document.getElementById('maxarLoadBtn');
+            const status = document.getElementById('maxarStatus');
+            btn.disabled = true;
+            btn.textContent = 'Loading catalog...';
+            status.style.display = 'block';
+            status.textContent = 'Fetching Maxar Open Data catalog...';
+
+            try {
+                // Fetch root catalog
+                if (!maxarCatalogCache) {
+                    const resp = await fetch(MAXAR_CATALOG_URL);
+                    if (!resp.ok) throw new Error(`Catalog fetch failed: ${resp.status}`);
+                    maxarCatalogCache = await resp.json();
+                }
+
+                const catalog = maxarCatalogCache;
+                const childLinks = (catalog.links || []).filter(l => l.rel === 'child');
+
+                if (childLinks.length === 0) {
+                    status.textContent = 'No events found in Maxar catalog.';
+                    return;
+                }
+
+                // Get current map bounds for filtering
+                const bounds = map.getBounds();
+                const mapBbox = [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()];
+
+                status.textContent = `Found ${childLinks.length} events. Scanning for imagery in current view...`;
+
+                // Fetch each event collection to find items in view
+                // Limit to first 30 events to avoid excessive fetching
+                const eventsToCheck = childLinks.slice(0, 30);
+                const allFootprints = [];
+
+                for (const link of eventsToCheck) {
+                    try {
+                        const eventUrl = link.href.startsWith('http') ? link.href : new URL(link.href, MAXAR_CATALOG_URL).href;
+                        const eventResp = await fetch(eventUrl);
+                        if (!eventResp.ok) continue;
+                        const eventCatalog = await eventResp.json();
+
+                        // Check if event has a spatial extent that overlaps our view
+                        const extent = eventCatalog.extent?.spatial?.bbox?.[0];
+                        if (extent && extent.length >= 4) {
+                            // Check bbox overlap
+                            if (extent[2] < mapBbox[0] || extent[0] > mapBbox[2] ||
+                                extent[3] < mapBbox[1] || extent[1] > mapBbox[3]) {
+                                continue; // No overlap
+                            }
+                        }
+
+                        // Find item links in this event
+                        const itemLinks = (eventCatalog.links || []).filter(l => l.rel === 'child' || l.rel === 'item');
+                        const eventTitle = eventCatalog.title || link.title || 'Unknown Event';
+
+                        // Create a footprint from the event bbox
+                        if (extent && extent.length >= 4) {
+                            allFootprints.push({
+                                type: 'Feature',
+                                geometry: {
+                                    type: 'Polygon',
+                                    coordinates: [[
+                                        [extent[0], extent[1]],
+                                        [extent[2], extent[1]],
+                                        [extent[2], extent[3]],
+                                        [extent[0], extent[3]],
+                                        [extent[0], extent[1]]
+                                    ]]
+                                },
+                                properties: {
+                                    event_name: eventTitle,
+                                    datetime: eventCatalog.extent?.temporal?.interval?.[0]?.[0]?.split('T')[0] || '',
+                                    gsd: eventCatalog['gsd'] || '',
+                                    catalog_url: eventUrl,
+                                    cog_href: '' // Will be empty until user drills into items
+                                }
+                            });
+                        }
+                    } catch (e) {
+                        // Skip failed event fetches silently
+                    }
+                }
+
+                if (allFootprints.length === 0) {
+                    status.textContent = 'No Maxar crisis imagery found covering the current map view. Try panning to a conflict zone.';
+                    return;
+                }
+
+                map.getSource('maxar-footprints').setData({
+                    type: 'FeatureCollection',
+                    features: allFootprints
+                });
+                ['maxar-footprints-fill', 'maxar-footprints-line'].forEach(id => {
+                    if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', 'visible');
+                });
+
+                status.textContent = `Found ${allFootprints.length} event${allFootprints.length > 1 ? 's' : ''} with imagery. Click footprints for details.`;
+                updateSatLegend();
+
+            } catch (err) {
+                console.warn('Maxar catalog fetch failed:', err);
+                status.textContent = `Failed: ${err.message}. The Maxar catalog may be temporarily unavailable.`;
+            } finally {
+                maxarLoading = false;
+                btn.disabled = false;
+                btn.textContent = 'Search Maxar Open Data';
+            }
+        }
+
+        function loadMaxarCog(encodedUrl) {
+            const cogUrl = decodeURIComponent(encodedUrl);
+            try {
+                if (map.getLayer('maxar-raster-layer')) map.removeLayer('maxar-raster-layer');
+                if (map.getSource('maxar-raster')) map.removeSource('maxar-raster');
+
+                const tileUrl = TITILER_BASE + '?url=' + encodeURIComponent(cogUrl);
+                map.addSource('maxar-raster', {
+                    type: 'raster',
+                    tiles: [tileUrl],
+                    tileSize: 256,
+                    maxzoom: 18
+                });
+                map.addLayer({
+                    id: 'maxar-raster-layer',
+                    type: 'raster',
+                    source: 'maxar-raster',
+                    layout: { visibility: 'visible' },
+                    paint: { 'raster-opacity': 0.8 }
+                }, 'detections-heat');
+
+                document.getElementById('maxarStatus').textContent = 'Maxar imagery loaded.';
+                updateSatLegend();
+            } catch (err) {
+                console.warn('Failed to load Maxar COG:', err);
+                document.getElementById('maxarStatus').textContent = 'COG load failed. Image may require direct download.';
+            }
+        }
+
+        // Satellite legend visibility helper
+        function updateSatLegend() {
+            const anyVisible = modisVisible || s2Visible || maxarVisible;
+            document.getElementById('satLegend').style.display = anyVisible ? 'block' : 'none';
+            document.getElementById('modisLegendItem').style.display = modisVisible ? 'flex' : 'none';
+            document.getElementById('s2LegendItem').style.display = s2Visible && map.getLayer('s2-raster-layer') ? 'flex' : 'none';
+            document.getElementById('s2FootprintLegendItem').style.display = s2Visible ? 'flex' : 'none';
+            document.getElementById('maxarLegendItem').style.display = maxarVisible && map.getLayer('maxar-raster-layer') ? 'flex' : 'none';
+            document.getElementById('maxarFootprintLegendItem').style.display = maxarVisible ? 'flex' : 'none';
+        }
+
+        // ═══════════════════════════════════════════
         // URL STATE SHARING
         // ═══════════════════════════════════════════
 
@@ -3621,7 +3921,6 @@
         // INIT
         // ═══════════════════════════════════════════
         initMap();
-        initAcledCreds();
         checkHashState();
 
         // Auto-collapse sidebar on tablet/phone
