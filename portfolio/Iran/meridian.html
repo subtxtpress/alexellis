@@ -1851,6 +1851,7 @@
                 container: 'map',
                 style: {
                     version: 8,
+                    glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
                     sources: {
                         'carto-dark': {
                             type: 'raster',
@@ -4510,7 +4511,9 @@
                 ind: indVisible ? 1 : 0,
                 acl: acledVisible ? 1 : 0,
                 nl: nlVisible ? 1 : 0,
-                ais: aisVisible ? 1 : 0
+                ais: aisVisible ? 1 : 0,
+                sp: satpassVisible ? 1 : 0,
+                ac: aircraftVisible ? 1 : 0
             };
             if (timeFilterFrom) state.tf = timeFilterFrom;
             if (timeFilterTo) state.tt = timeFilterTo;
@@ -4568,12 +4571,20 @@
                 if (toEl) toEl.value = state.tt;
             }
 
+            // Re-render with restored filters
+            if (allDetections.length > 0) {
+                renderDetections();
+                updateStats();
+            }
+
             // Toggle layers (defer to after map load)
             setTimeout(() => {
                 if (state.ind && !indVisible) toggleIndustrial();
                 if (state.acl && !acledVisible) toggleAcled();
                 if (state.nl && !nlVisible) toggleNightlights();
                 if (state.ais && !aisVisible) toggleAIS();
+                if (state.sp && !satpassVisible) toggleSatPass();
+                if (state.ac && !aircraftVisible) toggleAircraft();
             }, 500);
         }
 
@@ -4738,25 +4749,35 @@
             if (hash.startsWith('#v=')) {
                 const state = decodeViewState(hash.substring(3));
                 if (state) {
-                    // Apply after data loads
-                    const origLoadData = loadData;
-                    const applyOnce = () => {
-                        setTimeout(() => applyViewState(state), 300);
-                    };
-                    // Watch for first data load completion
-                    const observer = new MutationObserver((mutations) => {
-                        const overlay = document.getElementById('loadingOverlay');
-                        if (!overlay.classList.contains('active')) {
-                            observer.disconnect();
-                            applyOnce();
-                        }
-                    });
-                    observer.observe(document.getElementById('loadingOverlay'), { attributes: true, attributeFilter: ['class'] });
+                    // Wait for map to be ready, then auto-load data and apply state
+                    const waitForMap = () => {
+                        if (!map) { setTimeout(waitForMap, 100); return; }
 
-                    // Also apply position immediately (before data loads)
-                    if (state.lat && state.lng && state.z) {
-                        // Will be applied when map loads via applyViewState
-                    }
+                        // Apply map position immediately
+                        const applyWhenReady = () => {
+                            if (state.lat && state.lng && state.z) {
+                                map.jumpTo({ center: [parseFloat(state.lng), parseFloat(state.lat)], zoom: parseFloat(state.z) });
+                            }
+                            if (state.bm) setBasemap(state.bm);
+
+                            // Auto-load data and apply full state after it completes
+                            const origOnLoad = window._shareStateLoading;
+                            window._shareStatePending = state;
+                            loadData().then(() => {
+                                setTimeout(() => applyViewState(state), 300);
+                            }).catch(() => {
+                                // Even if load fails, try to apply position/filter state
+                                setTimeout(() => applyViewState(state), 300);
+                            });
+                        };
+
+                        if (map.loaded()) {
+                            applyWhenReady();
+                        } else {
+                            map.on('load', applyWhenReady);
+                        }
+                    };
+                    waitForMap();
                 }
             }
         }
