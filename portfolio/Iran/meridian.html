@@ -4045,7 +4045,7 @@
             ac.lineTo(14, 10);
             ac.closePath();
             ac.fill();
-            map.addImage('aircraft-icon', acCanvas, { sdf: true });
+            map.addImage('aircraft-icon', ac.getImageData(0, 0, acSize, acSize), { sdf: true });
 
             // Vessel icon — ship/boat silhouette pointing UP (north), 32x32
             const vsSize = 32;
@@ -4073,7 +4073,7 @@
             vs.fill();
             // Bridge/superstructure
             vs.fillRect(13, 14, 6, 5);
-            map.addImage('vessel-icon', vsCanvas, { sdf: true });
+            map.addImage('vessel-icon', vs.getImageData(0, 0, vsSize, vsSize), { sdf: true });
 
             // Satellite icon — small stylized satellite, 32x32
             const stSize = 32;
@@ -4095,7 +4095,7 @@
             // Panel connectors
             st.fillRect(10, 15, 4, 2);
             st.fillRect(18, 15, 4, 2);
-            map.addImage('satellite-icon', stCanvas, { sdf: true });
+            map.addImage('satellite-icon', st.getImageData(0, 0, stSize, stSize), { sdf: true });
         }
 
         function initSatPassLayer() {
