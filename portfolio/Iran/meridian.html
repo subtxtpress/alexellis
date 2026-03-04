@@ -3785,7 +3785,7 @@
             try {
                 let allTleText = '';
                 for (const url of TLE_URLS) {
-                    const text = await proxyFetch(url);
+                    const text = await corsFetch(url);
                     allTleText += text + '\n';
                 }
                 const lines = allTleText.trim().split('\n').map(l => l.trim()).filter(l => l.length > 0);
