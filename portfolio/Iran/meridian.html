@@ -4102,26 +4102,29 @@
             vs.fillRect(13, 14, 6, 5);
             map.addImage('vessel-icon', vs.getImageData(0, 0, vsSize, vsSize), { sdf: true });
 
-            // Satellite icon — small stylized satellite, 32x32
+            // Satellite icon — stylized satellite with diamond body + solar panels, 32x32
+            // Uses only path commands (no canvas transforms) for clean SDF pixels
             const stSize = 32;
             const stCanvas = document.createElement('canvas');
             stCanvas.width = stSize; stCanvas.height = stSize;
             const st = stCanvas.getContext('2d');
             st.clearRect(0, 0, stSize, stSize);
             st.fillStyle = '#ffffff';
-            // Body (center rectangle, rotated diamond)
-            st.save();
-            st.translate(16, 16);
-            st.rotate(Math.PI / 4);
-            st.fillRect(-4, -4, 8, 8);
-            st.restore();
+            // Diamond body (path, no rotation)
+            st.beginPath();
+            st.moveTo(16, 10);
+            st.lineTo(22, 16);
+            st.lineTo(16, 22);
+            st.lineTo(10, 16);
+            st.closePath();
+            st.fill();
             // Left solar panel
-            st.fillRect(2, 13, 8, 6);
+            st.fillRect(1, 13, 8, 6);
             // Right solar panel
-            st.fillRect(22, 13, 8, 6);
+            st.fillRect(23, 13, 8, 6);
             // Panel connectors
-            st.fillRect(10, 15, 4, 2);
-            st.fillRect(18, 15, 4, 2);
+            st.fillRect(9, 15, 2, 2);
+            st.fillRect(21, 15, 2, 2);
             map.addImage('satellite-icon', st.getImageData(0, 0, stSize, stSize), { sdf: true });
         }
 
