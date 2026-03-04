@@ -1613,7 +1613,7 @@
                     <button style="width:100%;font-family:var(--font-mono);font-size:9px;padding:5px 8px;background:rgba(255,235,59,0.08);border:1px solid rgba(255,235,59,0.25);color:#ffeb3b;border-radius:3px;cursor:pointer;letter-spacing:0.3px;" onclick="zoomToAircraftBbox()">Zoom to Coverage Area</button>
                 </div>
                 <div class="data-note" style="margin-top:8px;">
-                    Live aircraft positions from <a href="https://opensky-network.org" target="_blank" style="color:#ffeb3b;">OpenSky Network</a> ADS-B data. Middle East bounding box (12–42°N, 25–65°E). Anonymous access with 15-second auto-refresh. Categories based on ADS-B emitter type where available. Not all aircraft broadcast ADS-B.
+                    Live aircraft positions from <a href="https://opensky-network.org" target="_blank" style="color:#ffeb3b;">OpenSky Network</a> ADS-B data. Middle East bounding box (12–42°N, 25–65°E). Anonymous access with 30-second auto-refresh. Categories based on ADS-B emitter type where available. Not all aircraft broadcast ADS-B.
                 </div>
             </div>
         </div>
@@ -2068,7 +2068,14 @@
                 try {
                     const r = await fetch(proxy + encodeURIComponent(url));
                     if (!r.ok) { lastErr = new Error(`Proxy HTTP ${r.status}`); continue; }
-                    return await r.text();
+                    const text = await r.text();
+                    // If proxy relays a rate-limit or error page, try the next proxy
+                    const lower = text.trim().toLowerCase();
+                    if (lower.includes('too many') || lower.includes('rate limit') || lower.includes('<!doctype')) {
+                        lastErr = new Error('429 ' + text.substring(0, 80));
+                        continue;
+                    }
+                    return text;
                 } catch (e) { lastErr = e; continue; }
             }
             throw lastErr || new Error('All proxies failed');
@@ -4225,7 +4232,7 @@
 
         const OPENSKY_BBOX = { lamin: 12, lomin: 25, lamax: 42, lomax: 65 };
         const OPENSKY_URL = `https://opensky-network.org/api/states/all?lamin=${OPENSKY_BBOX.lamin}&lomin=${OPENSKY_BBOX.lomin}&lamax=${OPENSKY_BBOX.lamax}&lomax=${OPENSKY_BBOX.lomax}`;
-        const AIRCRAFT_REFRESH_MS = 15000;
+        const AIRCRAFT_REFRESH_MS = 30000;
 
         function classifyAircraft(category) {
             if (category === null || category === undefined || category === 0) return 'other';
