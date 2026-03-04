@@ -1688,16 +1688,16 @@
 
         <div id="indLegend" style="display:none;margin-top:8px;">
             <div class="legend-title">Industrial Sites</div>
-            <div class="legend-item"><div class="legend-dot" style="background:transparent;border:2px solid #00e676;"></div><span class="legend-label">Oil/Gas/Refinery</span></div>
+            <div class="legend-item"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#00e676" d="M4 28L4 18L10 18L10 12L16 18L16 12L22 18L22 10L26 10L26 4L28 4L28 28Z"/></svg><span class="legend-label">Oil/Gas/Refinery</span></div>
         </div>
         <div id="acledLegend" style="display:none; margin-top:8px;">
             <div class="legend-title">ACLED Conflict</div>
-            <div class="legend-item"><div class="legend-dot" style="background: #ff1744; border: 2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Battles</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background: #ff9100; border: 2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Explosions/Remote</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background: #b388ff; border: 2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Violence vs Civilians</span></div>
-            <div class="legend-item acled-live-legend" style="display:none;"><div class="legend-dot" style="background: #00e5ff; border: 2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Riots</span></div>
-            <div class="legend-item acled-live-legend" style="display:none;"><div class="legend-dot" style="background: #ffd600; border: 2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Protests</span></div>
-            <div class="legend-item acled-live-legend" style="display:none;"><div class="legend-dot" style="background: #888; border: 2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Strategic Dev.</span></div>
+            <div class="legend-item"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#ff1744" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Battles</span></div>
+            <div class="legend-item"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#ff9100" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Explosions/Remote</span></div>
+            <div class="legend-item"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#b388ff" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Violence vs Civilians</span></div>
+            <div class="legend-item acled-live-legend" style="display:none;"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#00e5ff" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Riots</span></div>
+            <div class="legend-item acled-live-legend" style="display:none;"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#ffd600" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Protests</span></div>
+            <div class="legend-item acled-live-legend" style="display:none;"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#888" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Strategic Dev.</span></div>
         </div>
         <div id="nlLegend" style="display:none; margin-top:8px;">
             <div class="legend-title">Nighttime Lights</div>
@@ -1875,7 +1875,7 @@
 
             map.addControl(new maplibregl.NavigationControl(), 'top-right');
 
-            map.on('load', () => {
+            map.on('load', async () => {
                 map.addSource('detections', {
                     type: 'geojson',
                     data: { type: 'FeatureCollection', features: [] }
@@ -1960,8 +1960,8 @@
                 map.on('mouseenter', 'detections-circle', () => map.getCanvas().style.cursor = 'pointer');
                 map.on('mouseleave', 'detections-circle', () => map.getCanvas().style.cursor = '');
 
-                // Create canvas-drawn SDF icons for symbol layers
-                createMapIcons();
+                // Load SVG SDF icons — must complete before symbol layers init
+                await createMapIcons();
 
                 // Init Industrial layer
                 initIndustrialLayer();
@@ -2538,15 +2538,19 @@
                 }
             }, 'detections-heat');
 
-            // Site dots
+            // Site icons (factory shape)
             map.addLayer({
-                id:'ind-sites', type:'circle', source:'industrial',
-                layout:{visibility:'none'},
+                id:'ind-sites', type:'symbol', source:'industrial',
+                layout:{
+                    visibility:'none',
+                    'icon-image':'industrial-icon',
+                    'icon-size':['interpolate',['linear'],['zoom'], 3,0.3, 6,0.45, 10,0.7],
+                    'icon-allow-overlap':true,
+                    'icon-ignore-placement':true
+                },
                 paint:{
-                    'circle-radius':3.5,
-                    'circle-color':'transparent',
-                    'circle-stroke-width':1.5,
-                    'circle-stroke-color':'#00e676'
+                    'icon-color':'#00e676',
+                    'icon-opacity':0.85
                 }
             });
 
@@ -2711,18 +2715,23 @@
                 }
             });
 
-            // Core circles
+            // Core conflict icons (starburst shape — distinct from thermal circles)
             map.addLayer({
                 id: 'acled-circles',
-                type: 'circle',
+                type: 'symbol',
                 source: 'acled',
-                layout: { visibility: 'none' },
-                paint: {
-                    'circle-radius': [
+                layout: {
+                    visibility: 'none',
+                    'icon-image': 'conflict-icon',
+                    'icon-size': [
                         'interpolate', ['linear'], ['get', 'fatalities'],
-                        0, 4, 1, 6, 5, 10, 20, 16, 100, 22
+                        0, 0.35, 1, 0.45, 5, 0.6, 20, 0.8, 100, 1.1
                     ],
-                    'circle-color': [
+                    'icon-allow-overlap': true,
+                    'icon-ignore-placement': true
+                },
+                paint: {
+                    'icon-color': [
                         'match', ['get', 'event_type'],
                         'Battles', '#ff1744',
                         'Explosions/Remote violence', '#ff9100',
@@ -2732,9 +2741,7 @@
                         'Strategic developments', '#888',
                         '#888'
                     ],
-                    'circle-opacity': 0.7,
-                    'circle-stroke-width': 1.5,
-                    'circle-stroke-color': 'rgba(255,255,255,0.25)'
+                    'icon-opacity': 0.8
                 }
             });
 
@@ -4035,97 +4042,30 @@
         }
 
         // ── Canvas-drawn SDF icons for map layers ──
-        function createMapIcons() {
-            // Aircraft icon — plane silhouette pointing UP (north), 32x32
-            const acSize = 32;
-            const acCanvas = document.createElement('canvas');
-            acCanvas.width = acSize; acCanvas.height = acSize;
-            const ac = acCanvas.getContext('2d');
-            ac.clearRect(0, 0, acSize, acSize);
-            ac.fillStyle = '#ffffff';
-            ac.beginPath();
-            // Fuselage
-            ac.moveTo(16, 2);   // nose
-            ac.lineTo(18, 10);
-            ac.lineTo(18, 14);
-            // Right wing
-            ac.lineTo(29, 18);
-            ac.lineTo(29, 20);
-            ac.lineTo(18, 18);
-            // Body to tail
-            ac.lineTo(18, 24);
-            // Right tail
-            ac.lineTo(23, 28);
-            ac.lineTo(23, 30);
-            ac.lineTo(18, 27);
-            ac.lineTo(16, 30); // tail tip
-            ac.lineTo(14, 27);
-            ac.lineTo(9, 30);
-            ac.lineTo(9, 28);
-            ac.lineTo(14, 24);
-            // Body back up
-            ac.lineTo(14, 18);
-            // Left wing
-            ac.lineTo(3, 20);
-            ac.lineTo(3, 18);
-            ac.lineTo(14, 14);
-            ac.lineTo(14, 10);
-            ac.closePath();
-            ac.fill();
-            map.addImage('aircraft-icon', ac.getImageData(0, 0, acSize, acSize), { sdf: true });
+        // Load SVG icons as Image elements — reliable SDF rendering, no canvas issues
+        async function createMapIcons() {
+            const svgIcons = {
+                // Aircraft — plane silhouette pointing north (for heading rotation)
+                'aircraft-icon': `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="#fff" d="M16 2L18 10L18 14L29 18L29 20L18 18L18 24L23 28L23 30L18 27L16 30L14 27L9 30L9 28L14 24L14 18L3 20L3 18L14 14L14 10Z"/></svg>`,
+                // Vessel — ship silhouette pointing north (for heading rotation)
+                'vessel-icon': `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="#fff" d="M16 3L21 12L22 14L22 24L20 28L12 28L10 24L10 14L11 12Z"/><rect fill="#fff" x="13" y="14" width="6" height="5"/></svg>`,
+                // Satellite — diamond body with solar panel wings
+                'satellite-icon': `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="#fff" d="M16 10L22 16L16 22L10 16Z"/><rect fill="#fff" x="1" y="13" width="8" height="6"/><rect fill="#fff" x="23" y="13" width="8" height="6"/><rect fill="#fff" x="9" y="15" width="2" height="2"/><rect fill="#fff" x="21" y="15" width="2" height="2"/></svg>`,
+                // Industrial — factory with smokestack
+                'industrial-icon': `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="#fff" d="M4 28L4 18L10 18L10 12L16 18L16 12L22 18L22 10L26 10L26 4L28 4L28 28Z"/></svg>`,
+                // Conflict — 6-pointed starburst (distinguishes from thermal circles)
+                'conflict-icon': `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="#fff" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg>`
+            };
 
-            // Vessel icon — ship/boat silhouette pointing UP (north), 32x32
-            const vsSize = 32;
-            const vsCanvas = document.createElement('canvas');
-            vsCanvas.width = vsSize; vsCanvas.height = vsSize;
-            const vs = vsCanvas.getContext('2d');
-            vs.clearRect(0, 0, vsSize, vsSize);
-            vs.fillStyle = '#ffffff';
-            vs.beginPath();
-            // Bow (pointed top)
-            vs.moveTo(16, 3);
-            vs.lineTo(21, 12);
-            // Right hull
-            vs.lineTo(22, 14);
-            vs.lineTo(22, 24);
-            // Stern right
-            vs.lineTo(20, 28);
-            // Stern flat
-            vs.lineTo(12, 28);
-            // Stern left
-            vs.lineTo(10, 24);
-            vs.lineTo(10, 14);
-            vs.lineTo(11, 12);
-            vs.closePath();
-            vs.fill();
-            // Bridge/superstructure
-            vs.fillRect(13, 14, 6, 5);
-            map.addImage('vessel-icon', vs.getImageData(0, 0, vsSize, vsSize), { sdf: true });
-
-            // Satellite icon — stylized satellite with diamond body + solar panels, 32x32
-            // Uses only path commands (no canvas transforms) for clean SDF pixels
-            const stSize = 32;
-            const stCanvas = document.createElement('canvas');
-            stCanvas.width = stSize; stCanvas.height = stSize;
-            const st = stCanvas.getContext('2d');
-            st.clearRect(0, 0, stSize, stSize);
-            st.fillStyle = '#ffffff';
-            // Diamond body (path, no rotation)
-            st.beginPath();
-            st.moveTo(16, 10);
-            st.lineTo(22, 16);
-            st.lineTo(16, 22);
-            st.lineTo(10, 16);
-            st.closePath();
-            st.fill();
-            // Left solar panel
-            st.fillRect(1, 13, 8, 6);
-            // Right solar panel
-            st.fillRect(23, 13, 8, 6);
-            // Panel connectors
-            st.fillRect(9, 15, 2, 2);
-            st.fillRect(21, 15, 2, 2);
-            map.addImage('satellite-icon', st.getImageData(0, 0, stSize, stSize), { sdf: true });
+            await Promise.all(Object.entries(svgIcons).map(([name, svg]) =>
+                new Promise((resolve) => {
+                    const img = new Image(32, 32);
+                    img.onload = () => { map.addImage(name, img, { sdf: true }); resolve(); };
+                    img.onerror = () => { console.warn('[ICONS] Failed to load', name); resolve(); };
+                    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+                })
+            ));
+            console.log('[ICONS] All SVG icons loaded');
         }
 
         function initSatPassLayer() {
