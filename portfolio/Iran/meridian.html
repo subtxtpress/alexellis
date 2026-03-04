@@ -1010,6 +1010,31 @@
         .sat-load-btn:disabled { opacity:0.4; cursor:not-allowed; }
         .sat-footprint-info { font-family:var(--font-mono); font-size:9px; color:var(--text-secondary); margin-top:6px; }
 
+        /* SATELLITE PASS PREDICTOR */
+        .satpass-switch { position:relative; width:36px; height:18px; background:var(--bg-tertiary); border:1px solid var(--border); border-radius:9px; cursor:pointer; transition:all 0.2s; display:inline-block; }
+        .satpass-switch.active { background:rgba(233,30,99,0.15); border-color:#e91e63; }
+        .satpass-switch::after { content:''; position:absolute; top:2px; left:2px; width:12px; height:12px; background:var(--text-muted); border-radius:50%; transition:all 0.2s; }
+        .satpass-switch.active::after { left:20px; background:#e91e63; }
+        .satpass-list { margin-top:8px; max-height:220px; overflow-y:auto; }
+        .satpass-item { display:flex; justify-content:space-between; align-items:center; padding:5px 8px; border:1px solid var(--border); border-radius:3px; margin-bottom:4px; background:var(--bg-tertiary); font-family:var(--font-mono); font-size:9px; }
+        .satpass-item-name { color:var(--text-secondary); font-weight:500; display:flex; align-items:center; gap:5px; }
+        .satpass-item-info { text-align:right; }
+        .satpass-item-time { color:#e91e63; font-size:8px; display:block; }
+        .satpass-item-elev { color:var(--text-muted); font-size:8px; }
+        .satpass-dot { display:inline-block; width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+        /* AIRCRAFT TRACKING */
+        .aircraft-switch { position:relative; width:36px; height:18px; background:var(--bg-tertiary); border:1px solid var(--border); border-radius:9px; cursor:pointer; transition:all 0.2s; display:inline-block; }
+        .aircraft-switch.active { background:rgba(255,235,59,0.15); border-color:#ffeb3b; }
+        .aircraft-switch::after { content:''; position:absolute; top:2px; left:2px; width:12px; height:12px; background:var(--text-muted); border-radius:50%; transition:all 0.2s; }
+        .aircraft-switch.active::after { left:20px; background:#ffeb3b; }
+        .aircraft-chip { font-family:var(--font-mono); font-size:9px; padding:3px 7px; border-radius:3px; cursor:pointer; transition:all 0.2s; letter-spacing:0.3px; background:rgba(255,235,59,0.12); border:1px solid rgba(255,235,59,0.3); color:#ffeb3b; }
+        .aircraft-chip.off { background:var(--bg-tertiary); border-color:var(--border); color:var(--text-muted); }
+        .aircraft-stats { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:10px; }
+        .aircraft-stat { background:var(--bg-tertiary); border:1px solid var(--border); border-radius:3px; padding:6px 8px; text-align:center; }
+        .aircraft-stat-val { font-family:var(--font-mono); font-size:14px; font-weight:600; color:var(--text-primary); }
+        .aircraft-stat-label { font-family:var(--font-mono); font-size:8px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; }
+
         /* UTILITY BAR */
         .util-bar {
             display: flex;
@@ -1549,6 +1574,50 @@
             </div>
         </div>
 
+        <!-- SATELLITE PASS PREDICTOR -->
+        <div class="panel-section">
+            <div class="panel-label" onclick="document.getElementById('satpassContent').style.display = document.getElementById('satpassContent').style.display === 'none' ? 'block' : 'none'; this.querySelector('.section-toggle').textContent = document.getElementById('satpassContent').style.display === 'none' ? '▸' : '▾';" style="cursor:pointer;">
+                <span class="section-toggle">▸</span> Satellite Pass Predictor
+                <div id="satpassSwitch" class="satpass-switch" onclick="event.stopPropagation(); toggleSatPass();" style="margin-left:auto;"></div>
+            </div>
+            <div id="satpassContent" style="display:none;">
+                <div id="satpassList" class="satpass-list">
+                    <div style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);text-align:center;padding:12px;">Enable layer to load TLE data</div>
+                </div>
+                <div id="satpassStats" style="margin-top:8px;"></div>
+                <div style="margin-top:8px;">
+                    <button style="width:100%;font-family:var(--font-mono);font-size:9px;padding:5px 8px;background:rgba(233,30,99,0.08);border:1px solid rgba(233,30,99,0.25);color:#e91e63;border-radius:3px;cursor:pointer;letter-spacing:0.3px;" onclick="refreshSatPasses()">Refresh Pass Predictions</button>
+                </div>
+                <div class="data-note" style="margin-top:8px;">
+                    Orbital positions computed from <a href="https://celestrak.org" target="_blank" style="color:#e91e63;">CelesTrak</a> TLE data using SGP4 propagation. Tracks NOAA-20, NOAA-21, Suomi-NPP, Terra, Aqua, Sentinel-2A/2B — the satellites behind MERIDIAN's thermal and optical data. Pass times calculated for map center. Positions update every 5 seconds.
+                </div>
+            </div>
+        </div>
+
+        <!-- AIRCRAFT TRACKING -->
+        <div class="panel-section">
+            <div class="panel-label" onclick="document.getElementById('aircraftContent').style.display = document.getElementById('aircraftContent').style.display === 'none' ? 'block' : 'none'; this.querySelector('.section-toggle').textContent = document.getElementById('aircraftContent').style.display === 'none' ? '▸' : '▾';" style="cursor:pointer;">
+                <span class="section-toggle">▸</span> Aircraft Tracking — ADS-B
+                <div id="aircraftSwitch" class="aircraft-switch" onclick="event.stopPropagation(); toggleAircraft();" style="margin-left:auto;"></div>
+            </div>
+            <div id="aircraftContent" style="display:none;">
+                <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;">
+                    <div class="aircraft-chip" data-actype="large" onclick="toggleAircraftType(this)">Large</div>
+                    <div class="aircraft-chip" data-actype="medium" onclick="toggleAircraftType(this)">Medium</div>
+                    <div class="aircraft-chip" data-actype="rotary" onclick="toggleAircraftType(this)">Rotorcraft</div>
+                    <div class="aircraft-chip" data-actype="ground" onclick="toggleAircraftType(this)">Ground</div>
+                    <div class="aircraft-chip" data-actype="other" onclick="toggleAircraftType(this)">Other</div>
+                </div>
+                <div id="aircraftStats" class="aircraft-stats"></div>
+                <div style="margin-top:8px;">
+                    <button style="width:100%;font-family:var(--font-mono);font-size:9px;padding:5px 8px;background:rgba(255,235,59,0.08);border:1px solid rgba(255,235,59,0.25);color:#ffeb3b;border-radius:3px;cursor:pointer;letter-spacing:0.3px;" onclick="zoomToAircraftBbox()">Zoom to Coverage Area</button>
+                </div>
+                <div class="data-note" style="margin-top:8px;">
+                    Live aircraft positions from <a href="https://opensky-network.org" target="_blank" style="color:#ffeb3b;">OpenSky Network</a> ADS-B data. Middle East bounding box (12–42°N, 25–65°E). Anonymous access with 15-second auto-refresh. Categories based on ADS-B emitter type where available. Not all aircraft broadcast ADS-B.
+                </div>
+            </div>
+        </div>
+
         <!-- BASEMAP -->
         <div class="panel-section">
             <div class="panel-label">Basemap</div>
@@ -1596,6 +1665,8 @@
             Nighttime: <a href="https://earthdata.nasa.gov/gibs" target="_blank">NASA GIBS</a> VIIRS Day/Night Band<br>
             Maritime: AIS pattern data via <a href="https://www.marinetraffic.com" target="_blank">OSINT</a> reporting<br>
             Optical: <a href="https://earthdata.nasa.gov/gibs" target="_blank">NASA GIBS</a> MODIS, <a href="https://earth-search.aws.element84.com/v1" target="_blank">Sentinel-2 L2A</a>, <a href="https://www.maxar.com/open-data" target="_blank">Maxar Open Data</a><br>
+            Orbits: <a href="https://celestrak.org" target="_blank">CelesTrak</a> TLE data + <a href="https://github.com/shashwatak/satellite-js" target="_blank">satellite.js</a> SGP4<br>
+            Aircraft: <a href="https://opensky-network.org" target="_blank">OpenSky Network</a> ADS-B live data<br>
             Built by <a href="https://subtxtpress.github.io/home/" target="_blank">Subtxt Press</a>
         </div>
     </div>
@@ -1649,6 +1720,19 @@
             <div class="legend-item" id="s2FootprintLegendItem" style="display:none;"><div style="width:12px;height:12px;background:transparent;border:2px solid #2196f3;margin-right:8px;"></div><span class="legend-label">S2 Footprint</span></div>
             <div class="legend-item" id="maxarFootprintLegendItem" style="display:none;"><div style="width:12px;height:12px;background:transparent;border:2px solid #ff9800;margin-right:8px;"></div><span class="legend-label">Maxar Footprint</span></div>
         </div>
+        <div id="satpassLegend" style="display:none; margin-top:8px;">
+            <div class="legend-title">Satellite Passes</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#e91e63; box-shadow:0 0 6px rgba(233,30,99,0.6);"></div><span class="legend-label">Satellite position</span></div>
+            <div class="legend-item"><div style="width:16px;height:2px;background:#e91e63;margin-right:8px;opacity:0.5;border-top:1px dashed #e91e63;"></div><span class="legend-label">Ground track (90 min)</span></div>
+        </div>
+        <div id="aircraftLegend" style="display:none; margin-top:8px;">
+            <div class="legend-title">Aircraft (ADS-B)</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ffeb3b; border:2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Large (airline/cargo)</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ffc107; border:2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Medium</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#ff9800; border:2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Rotorcraft</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#8d6e63; border:2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Ground vehicle</span></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#9e9e9e; border:2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Other / Unknown</span></div>
+        </div>
     </div>
 
     <!-- TIME ANIMATION PLAYER -->
@@ -1682,6 +1766,7 @@
 
     <script src="https://unpkg.com/maplibre-gl@4.1.2/dist/maplibre-gl.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@7/turf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/satellite.js@5/dist/satellite.min.js"></script>
     <script>
         // ═══════════════════════════════════════════
         // CONFIGURATION
@@ -1885,6 +1970,12 @@
                 initModisLayer();
                 initSentinel2Layer();
                 initMaxarLayer();
+
+                // Init Satellite Pass Predictor
+                initSatPassLayer();
+
+                // Init Aircraft Tracking layer
+                initAircraftLayer();
             });
         }
 
@@ -3643,6 +3734,590 @@
             document.getElementById('s2FootprintLegendItem').style.display = s2Visible ? 'flex' : 'none';
             document.getElementById('maxarLegendItem').style.display = maxarVisible && map.getLayer('maxar-raster-layer') ? 'flex' : 'none';
             document.getElementById('maxarFootprintLegendItem').style.display = maxarVisible ? 'flex' : 'none';
+        }
+
+        // ═══════════════════════════════════════════
+        // PHASE 5: SATELLITE PASS PREDICTOR
+        // ═══════════════════════════════════════════
+
+        let satpassVisible = false;
+        let satpassTleCache = null;
+        let satpassTleFetchTime = 0;
+        let satpassUpdateInterval = null;
+        let satpassSatellites = [];
+
+        const SATPASS_TARGETS = {
+            'NOAA 20':      { noradId: 43013, color: '#e91e63', sensor: 'VIIRS' },
+            'NOAA 21':      { noradId: 54234, color: '#f06292', sensor: 'VIIRS' },
+            'SUOMI NPP':    { noradId: 37849, color: '#ec407a', sensor: 'VIIRS' },
+            'TERRA':        { noradId: 25994, color: '#ab47bc', sensor: 'MODIS' },
+            'AQUA':         { noradId: 27424, color: '#7e57c2', sensor: 'MODIS' },
+            'SENTINEL-2A':  { noradId: 40697, color: '#42a5f5', sensor: 'MSI' },
+            'SENTINEL-2B':  { noradId: 42063, color: '#29b6f6', sensor: 'MSI' }
+        };
+
+        const TLE_URLS = [
+            'https://celestrak.org/NORAD/elements/gp.php?GROUP=weather&FORMAT=tle',
+            'https://celestrak.org/NORAD/elements/gp.php?GROUP=resource&FORMAT=tle'
+        ];
+        const TLE_CACHE_DURATION = 24 * 60 * 60 * 1000;
+
+        async function fetchTLEData() {
+            const now = Date.now();
+            if (satpassTleCache && (now - satpassTleFetchTime) < TLE_CACHE_DURATION) {
+                return satpassTleCache;
+            }
+            const listEl = document.getElementById('satpassList');
+            listEl.innerHTML = '<div style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);text-align:center;padding:12px;">Fetching TLE data from CelesTrak...</div>';
+            try {
+                let allTleText = '';
+                for (const url of TLE_URLS) {
+                    const resp = await corsFetch(url);
+                    const text = await resp.text();
+                    allTleText += text + '\n';
+                }
+                const lines = allTleText.trim().split('\n').map(l => l.trim()).filter(l => l.length > 0);
+                satpassSatellites = [];
+                for (let i = 0; i < lines.length - 2; i++) {
+                    if (lines[i + 1].startsWith('1 ') && lines[i + 2].startsWith('2 ')) {
+                        const name = lines[i].replace(/^0 /, '').trim();
+                        const upperName = name.toUpperCase();
+                        for (const [targetName, config] of Object.entries(SATPASS_TARGETS)) {
+                            if (upperName.includes(targetName) || (targetName === 'NOAA 20' && upperName.includes('NOAA-20')) || (targetName === 'NOAA 21' && upperName.includes('NOAA-21') || upperName.includes('JPSS-2')) || (targetName === 'SUOMI NPP' && (upperName.includes('SUOMI') || upperName.includes('NPP')))) {
+                                try {
+                                    const satrec = satellite.twoline2satrec(lines[i + 1], lines[i + 2]);
+                                    if (!satpassSatellites.find(s => s.name === targetName)) {
+                                        satpassSatellites.push({ name: targetName, satrec, config, displayName: name });
+                                    }
+                                } catch (e) { console.warn('TLE parse error for', name, e); }
+                            }
+                        }
+                        i += 2;
+                    }
+                }
+                satpassTleCache = satpassSatellites;
+                satpassTleFetchTime = now;
+                console.log(`[SATPASS] Loaded TLE for ${satpassSatellites.length} satellites`);
+                return satpassSatellites;
+            } catch (e) {
+                console.error('[SATPASS] TLE fetch error:', e);
+                listEl.innerHTML = '<div style="font-family:var(--font-mono);font-size:9px;color:#ff5252;text-align:center;padding:12px;">Failed to fetch TLE data. Check console.</div>';
+                return [];
+            }
+        }
+
+        function computeSatPosition(satrec, date) {
+            const posVel = satellite.propagate(satrec, date);
+            if (!posVel.position) return null;
+            const gmst = satellite.gstime(date);
+            const geo = satellite.eciToGeodetic(posVel.position, gmst);
+            return {
+                lng: satellite.degreesLong(geo.longitude),
+                lat: satellite.degreesLat(geo.latitude),
+                alt: geo.height
+            };
+        }
+
+        function computeGroundTrack(satrec, startDate, durationMinutes) {
+            const coords = [];
+            const segments = [[]];
+            let prevLng = null;
+            for (let m = 0; m <= durationMinutes; m += 0.5) {
+                const t = new Date(startDate.getTime() + m * 60000);
+                const pos = computeSatPosition(satrec, t);
+                if (!pos) continue;
+                if (prevLng !== null && Math.abs(pos.lng - prevLng) > 180) {
+                    segments.push([]);
+                }
+                segments[segments.length - 1].push([pos.lng, pos.lat]);
+                prevLng = pos.lng;
+            }
+            return segments.filter(s => s.length > 1);
+        }
+
+        function computeNextPass(satrec, obsLat, obsLng, obsAlt) {
+            const observerGd = {
+                longitude: satellite.degreesToRadians(obsLng),
+                latitude: satellite.degreesToRadians(obsLat),
+                height: (obsAlt || 0) / 1000
+            };
+            const now = new Date();
+            let passStart = null, maxElev = 0, passEnd = null;
+            const stepSec = 30;
+            const maxHours = 24;
+            const maxSteps = (maxHours * 3600) / stepSec;
+
+            for (let i = 0; i < maxSteps; i++) {
+                const t = new Date(now.getTime() + i * stepSec * 1000);
+                const posVel = satellite.propagate(satrec, t);
+                if (!posVel.position) continue;
+                const gmst = satellite.gstime(t);
+                const posEcf = satellite.eciToEcf(posVel.position, gmst);
+                const lookAngles = satellite.ecfToLookAngles(observerGd, posEcf);
+                const elevDeg = satellite.radiansToDegrees(lookAngles.elevation);
+
+                if (elevDeg > 0) {
+                    if (!passStart) passStart = t;
+                    if (elevDeg > maxElev) maxElev = elevDeg;
+                    passEnd = t;
+                } else if (passStart) {
+                    break;
+                }
+            }
+            if (!passStart) return null;
+            return {
+                startTime: passStart,
+                endTime: passEnd,
+                maxElevation: maxElev,
+                duration: (passEnd - passStart) / 1000
+            };
+        }
+
+        function updateSatPositions() {
+            if (!satpassVisible || satpassSatellites.length === 0) return;
+            const now = new Date();
+            const posFeatures = [];
+            const trackSegments = [];
+
+            for (const sat of satpassSatellites) {
+                const pos = computeSatPosition(sat.satrec, now);
+                if (!pos) continue;
+                posFeatures.push({
+                    type: 'Feature',
+                    geometry: { type: 'Point', coordinates: [pos.lng, pos.lat] },
+                    properties: {
+                        name: sat.name,
+                        sensor: sat.config.sensor,
+                        color: sat.config.color,
+                        altitude: Math.round(pos.alt),
+                        lat: pos.lat.toFixed(2),
+                        lng: pos.lng.toFixed(2)
+                    }
+                });
+                const segments = computeGroundTrack(sat.satrec, now, 90);
+                for (const seg of segments) {
+                    trackSegments.push({
+                        type: 'Feature',
+                        geometry: { type: 'LineString', coordinates: seg },
+                        properties: { name: sat.name, color: sat.config.color }
+                    });
+                }
+            }
+
+            const posSource = map.getSource('satpass-positions');
+            if (posSource) posSource.setData({ type: 'FeatureCollection', features: posFeatures });
+            const trackSource = map.getSource('satpass-tracks');
+            if (trackSource) trackSource.setData({ type: 'FeatureCollection', features: trackSegments });
+        }
+
+        function updatePassList() {
+            if (satpassSatellites.length === 0) return;
+            const center = map.getCenter();
+            const passes = [];
+
+            for (const sat of satpassSatellites) {
+                const pass = computeNextPass(sat.satrec, center.lat, center.lng, 0);
+                passes.push({ sat, pass });
+            }
+            passes.sort((a, b) => {
+                if (!a.pass && !b.pass) return 0;
+                if (!a.pass) return 1;
+                if (!b.pass) return -1;
+                return a.pass.startTime - b.pass.startTime;
+            });
+
+            const listEl = document.getElementById('satpassList');
+            const now = Date.now();
+            listEl.innerHTML = passes.map(({ sat, pass }) => {
+                const dot = `<span class="satpass-dot" style="background:${sat.config.color};"></span>`;
+                const timeStr = pass ? formatRelativeTime(pass.startTime.getTime() - now) : 'No pass (24h)';
+                const elevStr = pass ? `Max ${pass.maxElevation.toFixed(0)}°` : '';
+                const durStr = pass ? `${Math.round(pass.duration / 60)} min` : '';
+                return `<div class="satpass-item">
+                    <div class="satpass-item-name">${dot}${sat.name}<br><span style="font-size:7px;color:var(--text-muted);">${sat.config.sensor}</span></div>
+                    <div class="satpass-item-info">
+                        <span class="satpass-item-time">${timeStr}</span>
+                        <span class="satpass-item-elev">${elevStr} ${durStr}</span>
+                    </div>
+                </div>`;
+            }).join('');
+
+            const statsEl = document.getElementById('satpassStats');
+            const upcoming = passes.filter(p => p.pass).length;
+            const nextPass = passes.find(p => p.pass);
+            const nextStr = nextPass ? formatRelativeTime(nextPass.pass.startTime.getTime() - now) : '—';
+            statsEl.innerHTML = `<div style="display:flex;gap:8px;font-family:var(--font-mono);font-size:9px;">
+                <span style="color:var(--text-muted);">Tracking: <span style="color:#e91e63;">${satpassSatellites.length}</span></span>
+                <span style="color:var(--text-muted);">Passes (24h): <span style="color:#e91e63;">${upcoming}</span></span>
+                <span style="color:var(--text-muted);">Next: <span style="color:#e91e63;">${nextStr}</span></span>
+            </div>`;
+        }
+
+        function formatRelativeTime(ms) {
+            if (ms < 0) return 'overhead now';
+            const min = Math.floor(ms / 60000);
+            if (min < 60) return `in ${min} min`;
+            const hrs = Math.floor(min / 60);
+            const remMin = min % 60;
+            return `in ${hrs}h ${remMin}m`;
+        }
+
+        async function toggleSatPass() {
+            satpassVisible = !satpassVisible;
+            const sw = document.getElementById('satpassSwitch');
+            const content = document.getElementById('satpassContent');
+            const legend = document.getElementById('satpassLegend');
+
+            if (satpassVisible) {
+                sw.classList.add('active');
+                content.style.display = 'block';
+                legend.style.display = 'block';
+                await fetchTLEData();
+                updateSatPositions();
+                updatePassList();
+                satpassUpdateInterval = setInterval(() => {
+                    updateSatPositions();
+                }, 5000);
+                if (map.getLayer('satpass-dots')) map.setLayoutProperty('satpass-dots', 'visibility', 'visible');
+                if (map.getLayer('satpass-pulse')) map.setLayoutProperty('satpass-pulse', 'visibility', 'visible');
+                if (map.getLayer('satpass-tracks-line')) map.setLayoutProperty('satpass-tracks-line', 'visibility', 'visible');
+            } else {
+                sw.classList.remove('active');
+                content.style.display = 'none';
+                legend.style.display = 'none';
+                if (satpassUpdateInterval) { clearInterval(satpassUpdateInterval); satpassUpdateInterval = null; }
+                if (map.getLayer('satpass-dots')) map.setLayoutProperty('satpass-dots', 'visibility', 'none');
+                if (map.getLayer('satpass-pulse')) map.setLayoutProperty('satpass-pulse', 'visibility', 'none');
+                if (map.getLayer('satpass-tracks-line')) map.setLayoutProperty('satpass-tracks-line', 'visibility', 'none');
+            }
+        }
+
+        async function refreshSatPasses() {
+            satpassTleCache = null;
+            satpassTleFetchTime = 0;
+            await fetchTLEData();
+            updateSatPositions();
+            updatePassList();
+        }
+
+        function initSatPassLayer() {
+            map.addSource('satpass-positions', {
+                type: 'geojson',
+                data: { type: 'FeatureCollection', features: [] }
+            });
+            map.addSource('satpass-tracks', {
+                type: 'geojson',
+                data: { type: 'FeatureCollection', features: [] }
+            });
+
+            // Pulsing halo behind satellite dots
+            map.addLayer({
+                id: 'satpass-pulse',
+                type: 'circle',
+                source: 'satpass-positions',
+                layout: { visibility: 'none' },
+                paint: {
+                    'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 8, 8, 14],
+                    'circle-color': ['get', 'color'],
+                    'circle-opacity': 0.2,
+                    'circle-stroke-width': 0
+                }
+            });
+
+            // Main satellite position dots
+            map.addLayer({
+                id: 'satpass-dots',
+                type: 'circle',
+                source: 'satpass-positions',
+                layout: { visibility: 'none' },
+                paint: {
+                    'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 4, 8, 8],
+                    'circle-color': ['get', 'color'],
+                    'circle-opacity': 0.9,
+                    'circle-stroke-width': 2,
+                    'circle-stroke-color': 'rgba(255,255,255,0.6)'
+                }
+            });
+
+            // Ground track lines
+            map.addLayer({
+                id: 'satpass-tracks-line',
+                type: 'line',
+                source: 'satpass-tracks',
+                layout: { visibility: 'none' },
+                paint: {
+                    'line-color': ['get', 'color'],
+                    'line-width': 1.5,
+                    'line-opacity': 0.35,
+                    'line-dasharray': [4, 4]
+                }
+            });
+
+            // Click handler for satellite dots
+            map.on('click', 'satpass-dots', (e) => {
+                const f = e.features[0];
+                const p = f.properties;
+                const center = map.getCenter();
+                const sat = satpassSatellites.find(s => s.name === p.name);
+                let passInfo = '';
+                if (sat) {
+                    const pass = computeNextPass(sat.satrec, center.lat, center.lng, 0);
+                    if (pass) {
+                        const relTime = formatRelativeTime(pass.startTime.getTime() - Date.now());
+                        passInfo = `<br><b>Next pass over view:</b> ${relTime}<br>Max elev: ${pass.maxElevation.toFixed(1)}° / Duration: ${Math.round(pass.duration / 60)} min`;
+                    } else {
+                        passInfo = '<br>No pass over current view in next 24h';
+                    }
+                }
+                new maplibregl.Popup({ className: 'fire-popup', maxWidth: '280px' })
+                    .setLngLat(e.lngLat)
+                    .setHTML(`<div style="font-family:var(--font-mono);">
+                        <div style="font-size:11px;font-weight:600;color:${p.color};margin-bottom:4px;">${p.name}</div>
+                        <div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">
+                            <b>Sensor:</b> ${p.sensor}<br>
+                            <b>Altitude:</b> ${p.altitude} km<br>
+                            <b>Position:</b> ${p.lat}°, ${p.lng}°${passInfo}
+                        </div>
+                    </div>`)
+                    .addTo(map);
+            });
+
+            map.on('mouseenter', 'satpass-dots', () => map.getCanvas().style.cursor = 'pointer');
+            map.on('mouseleave', 'satpass-dots', () => map.getCanvas().style.cursor = '');
+
+            // Update pass list when map moves
+            map.on('moveend', () => {
+                if (satpassVisible) updatePassList();
+            });
+        }
+
+        // ═══════════════════════════════════════════
+        // PHASE 6: AIRCRAFT TRACKING — OPENSKY NETWORK
+        // ═══════════════════════════════════════════
+
+        let aircraftVisible = false;
+        let aircraftRefreshInterval = null;
+        let aircraftData = { type: 'FeatureCollection', features: [] };
+        let aircraftTypeFilter = { large: true, medium: true, rotary: true, ground: true, other: true };
+        let aircraftLastFetch = 0;
+        let aircraftBackoffMs = 15000;
+
+        const OPENSKY_BBOX = { lamin: 12, lomin: 25, lamax: 42, lomax: 65 };
+        const OPENSKY_URL = `https://opensky-network.org/api/states/all?lamin=${OPENSKY_BBOX.lamin}&lomin=${OPENSKY_BBOX.lomin}&lamax=${OPENSKY_BBOX.lamax}&lomax=${OPENSKY_BBOX.lomax}`;
+        const AIRCRAFT_REFRESH_MS = 15000;
+
+        function classifyAircraft(category) {
+            if (category === null || category === undefined || category === 0) return 'other';
+            if (category >= 1 && category <= 2) return 'medium';
+            if (category >= 3 && category <= 6) return 'large';
+            if (category === 7) return 'rotary';
+            if (category === 10 || category === 11) return 'other';
+            if (category === 14 || category === 15) return 'ground';
+            return 'other';
+        }
+
+        function getAircraftColor(type) {
+            const colors = { large: '#ffeb3b', medium: '#ffc107', rotary: '#ff9800', ground: '#8d6e63', other: '#9e9e9e' };
+            return colors[type] || '#9e9e9e';
+        }
+
+        async function fetchAircraftData() {
+            const statsEl = document.getElementById('aircraftStats');
+            try {
+                const resp = await corsFetch(OPENSKY_URL);
+                if (resp.status === 429) {
+                    aircraftBackoffMs = Math.min(aircraftBackoffMs * 2, 120000);
+                    console.warn(`[AIRCRAFT] Rate limited. Backing off to ${aircraftBackoffMs / 1000}s`);
+                    statsEl.innerHTML = `<div class="aircraft-stat" style="grid-column:1/-1;"><div class="aircraft-stat-val" style="font-size:10px;color:#ff9800;">Rate limited — retrying in ${Math.round(aircraftBackoffMs / 1000)}s</div></div>`;
+                    if (aircraftRefreshInterval) {
+                        clearInterval(aircraftRefreshInterval);
+                        aircraftRefreshInterval = setInterval(fetchAndRender, aircraftBackoffMs);
+                    }
+                    return;
+                }
+                aircraftBackoffMs = AIRCRAFT_REFRESH_MS;
+                const data = await resp.json();
+                if (!data.states || !Array.isArray(data.states)) {
+                    console.warn('[AIRCRAFT] No states in response');
+                    return;
+                }
+                const features = [];
+                for (const s of data.states) {
+                    const lng = s[5], lat = s[6];
+                    if (lng === null || lat === null) continue;
+                    const category = s[17];
+                    const type = classifyAircraft(category);
+                    features.push({
+                        type: 'Feature',
+                        geometry: { type: 'Point', coordinates: [lng, lat] },
+                        properties: {
+                            icao24: s[0] || '',
+                            callsign: (s[1] || '').trim(),
+                            origin_country: s[2] || '',
+                            altitude: s[7] !== null ? Math.round(s[7]) : null,
+                            on_ground: s[8] || false,
+                            velocity: s[9] !== null ? Math.round(s[9]) : null,
+                            heading: s[10] !== null ? Math.round(s[10]) : null,
+                            vertical_rate: s[11] !== null ? s[11].toFixed(1) : null,
+                            geo_altitude: s[13] !== null ? Math.round(s[13]) : null,
+                            squawk: s[14] || '',
+                            category: category,
+                            type: type,
+                            color: getAircraftColor(type)
+                        }
+                    });
+                }
+                aircraftData = { type: 'FeatureCollection', features };
+                aircraftLastFetch = Date.now();
+                console.log(`[AIRCRAFT] Loaded ${features.length} aircraft`);
+                renderAircraft();
+            } catch (e) {
+                console.error('[AIRCRAFT] Fetch error:', e);
+                statsEl.innerHTML = `<div class="aircraft-stat" style="grid-column:1/-1;"><div class="aircraft-stat-val" style="font-size:10px;color:#ff5252;">Fetch failed — retrying...</div></div>`;
+            }
+        }
+
+        function renderAircraft() {
+            const filtered = {
+                type: 'FeatureCollection',
+                features: aircraftData.features.filter(f => aircraftTypeFilter[f.properties.type])
+            };
+            const src = map.getSource('aircraft-positions');
+            if (src) src.setData(filtered);
+
+            // Stats
+            const total = filtered.features.length;
+            const airborne = filtered.features.filter(f => !f.properties.on_ground).length;
+            const alts = filtered.features.filter(f => f.properties.altitude !== null && !f.properties.on_ground).map(f => f.properties.altitude);
+            const avgAlt = alts.length > 0 ? Math.round(alts.reduce((a, b) => a + b, 0) / alts.length) : 0;
+            const statsEl = document.getElementById('aircraftStats');
+            statsEl.innerHTML = `
+                <div class="aircraft-stat">
+                    <div class="aircraft-stat-val">${total}</div>
+                    <div class="aircraft-stat-label">Visible</div>
+                </div>
+                <div class="aircraft-stat">
+                    <div class="aircraft-stat-val">${airborne}</div>
+                    <div class="aircraft-stat-label">Airborne</div>
+                </div>
+                <div class="aircraft-stat">
+                    <div class="aircraft-stat-val">${avgAlt > 0 ? (avgAlt / 1000).toFixed(1) + 'k' : '—'}</div>
+                    <div class="aircraft-stat-label">Avg Alt (m)</div>
+                </div>`;
+        }
+
+        function toggleAircraftType(el) {
+            const type = el.dataset.actype;
+            aircraftTypeFilter[type] = !aircraftTypeFilter[type];
+            el.classList.toggle('off', !aircraftTypeFilter[type]);
+            renderAircraft();
+        }
+
+        function fetchAndRender() {
+            fetchAircraftData();
+        }
+
+        async function toggleAircraft() {
+            aircraftVisible = !aircraftVisible;
+            const sw = document.getElementById('aircraftSwitch');
+            const content = document.getElementById('aircraftContent');
+            const legend = document.getElementById('aircraftLegend');
+
+            if (aircraftVisible) {
+                sw.classList.add('active');
+                content.style.display = 'block';
+                legend.style.display = 'block';
+                if (map.getLayer('aircraft-circles')) map.setLayoutProperty('aircraft-circles', 'visibility', 'visible');
+                if (map.getLayer('aircraft-labels')) map.setLayoutProperty('aircraft-labels', 'visibility', 'visible');
+                await fetchAircraftData();
+                aircraftRefreshInterval = setInterval(fetchAndRender, AIRCRAFT_REFRESH_MS);
+            } else {
+                sw.classList.remove('active');
+                content.style.display = 'none';
+                legend.style.display = 'none';
+                if (aircraftRefreshInterval) { clearInterval(aircraftRefreshInterval); aircraftRefreshInterval = null; }
+                if (map.getLayer('aircraft-circles')) map.setLayoutProperty('aircraft-circles', 'visibility', 'none');
+                if (map.getLayer('aircraft-labels')) map.setLayoutProperty('aircraft-labels', 'visibility', 'none');
+            }
+        }
+
+        function zoomToAircraftBbox() {
+            map.fitBounds([[OPENSKY_BBOX.lomin, OPENSKY_BBOX.lamin], [OPENSKY_BBOX.lomax, OPENSKY_BBOX.lamax]], { padding: 20, duration: 2000 });
+        }
+
+        function initAircraftLayer() {
+            map.addSource('aircraft-positions', {
+                type: 'geojson',
+                data: { type: 'FeatureCollection', features: [] }
+            });
+
+            // Aircraft circle dots
+            map.addLayer({
+                id: 'aircraft-circles',
+                type: 'circle',
+                source: 'aircraft-positions',
+                layout: { visibility: 'none' },
+                paint: {
+                    'circle-radius': ['interpolate', ['linear'], ['zoom'], 3, 2.5, 6, 4, 10, 7],
+                    'circle-color': ['get', 'color'],
+                    'circle-opacity': 0.85,
+                    'circle-stroke-width': 1,
+                    'circle-stroke-color': 'rgba(0,0,0,0.4)'
+                }
+            });
+
+            // Callsign labels at higher zoom
+            map.addLayer({
+                id: 'aircraft-labels',
+                type: 'symbol',
+                source: 'aircraft-positions',
+                layout: {
+                    visibility: 'none',
+                    'text-field': ['get', 'callsign'],
+                    'text-size': 9,
+                    'text-offset': [0, 1.3],
+                    'text-anchor': 'top',
+                    'text-allow-overlap': false,
+                    'text-font': ['Open Sans Regular']
+                },
+                paint: {
+                    'text-color': '#ffeb3b',
+                    'text-halo-color': 'rgba(0,0,0,0.8)',
+                    'text-halo-width': 1
+                },
+                minzoom: 7
+            });
+
+            // Click popup
+            map.on('click', 'aircraft-circles', (e) => {
+                const f = e.features[0];
+                const p = f.properties;
+                const altFt = p.altitude !== null ? Math.round(p.altitude * 3.281) : '—';
+                const velKn = p.velocity !== null ? Math.round(p.velocity * 1.944) : '—';
+                const vr = p.vertical_rate !== null && p.vertical_rate !== 'null' ? `${p.vertical_rate} m/s` : '—';
+                const typeLabel = { large: 'Large', medium: 'Medium', rotary: 'Rotorcraft', ground: 'Ground Vehicle', other: 'Other/Unknown' };
+
+                new maplibregl.Popup({ className: 'fire-popup', maxWidth: '280px' })
+                    .setLngLat(e.lngLat)
+                    .setHTML(`<div style="font-family:var(--font-mono);">
+                        <div style="font-size:11px;font-weight:600;color:${p.color};margin-bottom:4px;">${p.callsign || p.icao24}</div>
+                        <div style="font-size:9px;color:var(--text-secondary);line-height:1.6;">
+                            <b>Country:</b> ${p.origin_country}<br>
+                            <b>Type:</b> ${typeLabel[p.type] || p.type}<br>
+                            <b>Altitude:</b> ${p.altitude !== null ? p.altitude + ' m' : '—'} (${altFt} ft)<br>
+                            <b>Velocity:</b> ${p.velocity !== null ? p.velocity + ' m/s' : '—'} (${velKn} kn)<br>
+                            <b>Heading:</b> ${p.heading !== null ? p.heading + '°' : '—'}<br>
+                            <b>Vertical rate:</b> ${vr}<br>
+                            <b>Squawk:</b> ${p.squawk || '—'}<br>
+                            <b>On ground:</b> ${p.on_ground === true || p.on_ground === 'true' ? 'Yes' : 'No'}<br>
+                            <b>ICAO24:</b> ${p.icao24}
+                        </div>
+                    </div>`)
+                    .addTo(map);
+            });
+
+            map.on('mouseenter', 'aircraft-circles', () => map.getCanvas().style.cursor = 'pointer');
+            map.on('mouseleave', 'aircraft-circles', () => map.getCanvas().style.cursor = '');
         }
 
         // ═══════════════════════════════════════════
