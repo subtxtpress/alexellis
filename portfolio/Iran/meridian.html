@@ -4231,8 +4231,13 @@
             const statsEl = document.getElementById('aircraftStats');
             try {
                 const text = await proxyFetch(OPENSKY_URL);
+                // Proxy may relay rate-limit or error as 200 with non-JSON body
+                const trimmed = text.trim();
+                if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) {
+                    throw new Error('429 ' + trimmed.substring(0, 80));
+                }
                 aircraftBackoffMs = AIRCRAFT_REFRESH_MS;
-                const data = JSON.parse(text);
+                const data = JSON.parse(trimmed);
                 if (!data.states || !Array.isArray(data.states)) {
                     console.warn('[AIRCRAFT] No states in response');
                     return;
@@ -4269,7 +4274,7 @@
                 renderAircraft();
             } catch (e) {
                 console.error('[AIRCRAFT] Fetch error:', e);
-                if (e.message && e.message.includes('429')) {
+                if (e.message && (e.message.includes('429') || e.message.toLowerCase().includes('too many') || e.message.toLowerCase().includes('rate'))) {
                     aircraftBackoffMs = Math.min(aircraftBackoffMs * 2, 120000);
                     console.warn(`[AIRCRAFT] Rate limited. Backing off to ${aircraftBackoffMs / 1000}s`);
                     statsEl.innerHTML = `<div class="aircraft-stat" style="grid-column:1/-1;"><div class="aircraft-stat-val" style="font-size:10px;color:#ff9800;">Rate limited — retrying in ${Math.round(aircraftBackoffMs / 1000)}s</div></div>`;
