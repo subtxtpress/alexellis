@@ -944,8 +944,6 @@
             letter-spacing: 0.5px;
         }
 
-        .acled-chip[data-type="riots"] { border-color: rgba(0,229,255,0.3); color: #00e5ff; }
-        .acled-chip[data-type="riots"].off { opacity: 0.3; border-color: var(--border); color: var(--text-muted); }
         .acled-chip[data-type="protests"] { border-color: rgba(255,214,0,0.3); color: #ffd600; }
         .acled-chip[data-type="protests"].off { opacity: 0.3; border-color: var(--border); color: var(--text-muted); }
         .acled-chip[data-type="strategic"] { border-color: rgba(255,255,255,0.15); color: var(--text-muted); }
@@ -1420,50 +1418,32 @@
             </div>
         </div>
 
-        <!-- ACLED CONFLICT LAYER -->
+        <!-- CONFLICT EVENT LAYER (GDELT) -->
         <div class="panel-section">
-            <div class="panel-label">Conflict Layer — ACLED</div>
+            <div class="panel-label">Conflict Events — GDELT</div>
             <div class="acled-toggle">
                 <div id="acledSwitch" class="acled-switch" onclick="toggleAcled()"></div>
-                <span id="acledLabel" class="acled-label">Conflict events</span>
+                <span id="acledLabel" class="acled-label">Live conflict & protest events (24h)</span>
             </div>
             <div id="acledControls" style="display:none;">
                 <div class="acled-filter-chips" id="acledChips">
-                    <div class="acled-chip" data-type="battles" onclick="toggleAcledType(this)">Battles</div>
-                    <div class="acled-chip" data-type="explosions" onclick="toggleAcledType(this)">Explosions</div>
-                    <div class="acled-chip" data-type="violence" onclick="toggleAcledType(this)">Civ. Violence</div>
-                    <div class="acled-chip" data-type="riots" onclick="toggleAcledType(this)">Riots</div>
+                    <div class="acled-chip" data-type="battles" onclick="toggleAcledType(this)">Armed Conflict</div>
+                    <div class="acled-chip" data-type="explosions" onclick="toggleAcledType(this)">Terror/Explosions</div>
+                    <div class="acled-chip" data-type="violence" onclick="toggleAcledType(this)">Violence</div>
                     <div class="acled-chip" data-type="protests" onclick="toggleAcledType(this)">Protests</div>
-                    <div class="acled-chip" data-type="strategic" onclick="toggleAcledType(this)">Strategic</div>
+                    <div class="acled-chip" data-type="strategic" onclick="toggleAcledType(this)">Military</div>
                 </div>
                 <div id="acledStats" class="acled-stats"></div>
-
-                <!-- ACLED API credentials -->
-                <div id="acledApiPanel" style="margin-top:10px; padding:8px; background:var(--bg-tertiary); border:1px solid var(--border); border-radius:4px;">
-                    <div style="font-family:var(--font-mono); font-size:9px; color:var(--text-muted); margin-bottom:6px; letter-spacing:0.5px;">ACLED API — <a href="https://developer.acleddata.com/" target="_blank" style="color:#e040fb;">free account required</a></div>
-                    <input type="email" id="acledEmail" placeholder="ACLED registered email" style="width:100%;box-sizing:border-box;padding:4px 6px;margin-bottom:4px;font-family:var(--font-mono);font-size:10px;background:var(--bg-primary);border:1px solid var(--border);color:var(--text-primary);border-radius:3px;">
-                    <input type="text" id="acledKey" placeholder="API key" style="width:100%;box-sizing:border-box;padding:4px 6px;margin-bottom:6px;font-family:var(--font-mono);font-size:10px;background:var(--bg-primary);border:1px solid var(--border);color:var(--text-primary);border-radius:3px;">
-                    <div style="display:flex;gap:4px;align-items:center;">
-                        <button id="acledFetchBtn" onclick="fetchAcledLive()" style="flex:1;font-family:var(--font-mono);font-size:9px;padding:5px 8px;background:#e040fb22;border:1px solid #e040fb44;color:#e040fb;border-radius:3px;cursor:pointer;letter-spacing:0.3px;">Fetch Live Data</button>
-                        <select id="acledDayRange" style="font-family:var(--font-mono);font-size:9px;padding:4px 4px;background:var(--bg-primary);border:1px solid var(--border);color:var(--text-secondary);border-radius:3px;">
-                            <option value="30">30 d</option>
-                            <option value="90">90 d</option>
-                            <option value="180" selected>180 d</option>
-                            <option value="365">1 yr</option>
-                        </select>
-                    </div>
-                    <div id="acledFetchStatus" style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);margin-top:4px;display:none;"></div>
-                </div>
-
+                <div id="acledFetchStatus" style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);margin-top:4px;display:none;"></div>
                 <div id="acledDataNote" class="data-note" style="margin-top: 8px;">
-                    Live conflict data from <a href="https://acleddata.com" target="_blank" style="color:#e040fb;">ACLED</a>. Register free at <a href="https://developer.acleddata.com/" target="_blank" style="color:#e040fb;">developer.acleddata.com</a> to get an API key. Events include precise locations, actors, fatalities, and source notes.
+                    Live from <a href="https://www.gdeltproject.org/" target="_blank" style="color:#e040fb;">GDELT</a> Global Knowledge Graph — updates every 15 min. Events extracted from worldwide news coverage, geolocated to mentioned places. No API key needed.
                 </div>
             </div>
         </div>
 
         <!-- NIGHTTIME LIGHTS LAYER -->
         <div class="panel-section">
-            <div class="panel-label">Nighttime Lights — VIIRS Black Marble</div>
+            <div class="panel-label">Nighttime Lights — VIIRS Day/Night Band</div>
             <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
                 <div id="nlSwitch" class="nl-switch" onclick="toggleNightlights()"></div>
                 <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-secondary);">VIIRS Day/Night Band imagery</span>
@@ -1495,7 +1475,7 @@
                 </div>
                 <div id="nlStats" class="ais-stats" style="margin-top:10px;"></div>
                 <div class="data-note" style="margin-top:8px;">
-                    NASA VIIRS Day/Night Band via GIBS. Daily composites at 500m resolution. Compare dates to identify infrastructure damage from power outages, destroyed facilities, or displaced populations. Max zoom level 8.
+                    NASA VIIRS Day/Night Band (NOAA-20) via GIBS. Daily at-sensor radiance at 500m resolution. Compare dates to identify infrastructure damage from power outages, destroyed facilities, or displaced populations. Max zoom level 8.
                 </div>
             </div>
         </div>
@@ -1679,7 +1659,7 @@
             Satellite: NOAA-20, NOAA-21, Suomi-NPP, Aqua/Terra<br>
             Map: <a href="https://www.openstreetmap.org/" target="_blank">OpenStreetMap</a> via MapLibre GL JS<br>
             Industrial: <a href="https://eogdata.mines.edu/products/vnf/global_gas_flare.html" target="_blank">EOG/VIIRS Nightfire</a>, <a href="https://www.worldbank.org/en/programs/gasflaringreduction" target="_blank">World Bank GGFR</a><br>
-            Conflict: <a href="https://acleddata.com" target="_blank">ACLED</a> (Armed Conflict Location &amp; Event Data)<br>
+            Conflict: <a href="https://www.gdeltproject.org/" target="_blank">GDELT</a> (Global Database of Events, Language &amp; Tone)<br>
             Nighttime: <a href="https://earthdata.nasa.gov/gibs" target="_blank">NASA GIBS</a> VIIRS Day/Night Band<br>
             Maritime: AIS pattern data via <a href="https://www.marinetraffic.com" target="_blank">OSINT</a> reporting<br>
             Optical: <a href="https://earthdata.nasa.gov/gibs" target="_blank">NASA GIBS</a> MODIS, <a href="https://earth-search.aws.element84.com/v1" target="_blank">Sentinel-2 L2A</a>, <a href="https://www.maxar.com/open-data" target="_blank">Maxar Open Data</a><br>
@@ -1709,13 +1689,12 @@
             <div class="legend-item"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#00e676" d="M4 28L4 18L10 18L10 12L16 18L16 12L22 18L22 10L26 10L26 4L28 4L28 28Z"/></svg><span class="legend-label">Oil/Gas/Refinery</span></div>
         </div>
         <div id="acledLegend" style="display:none; margin-top:8px;">
-            <div class="legend-title">ACLED Conflict</div>
-            <div class="legend-item"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#ff1744" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Battles</span></div>
-            <div class="legend-item"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#ff9100" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Explosions/Remote</span></div>
-            <div class="legend-item"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#b388ff" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Violence vs Civilians</span></div>
-            <div class="legend-item acled-live-legend" style="display:none;"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#00e5ff" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Riots</span></div>
-            <div class="legend-item acled-live-legend" style="display:none;"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#ffd600" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Protests</span></div>
-            <div class="legend-item acled-live-legend" style="display:none;"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#888" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Strategic Dev.</span></div>
+            <div class="legend-title">GDELT Conflict</div>
+            <div class="legend-item"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#ff1744" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Armed Conflict</span></div>
+            <div class="legend-item"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#ff9100" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Terror/Explosions</span></div>
+            <div class="legend-item"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#b388ff" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Violence</span></div>
+            <div class="legend-item"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#ffd600" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Protests</span></div>
+            <div class="legend-item"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#888" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Military</span></div>
         </div>
         <div id="nlLegend" style="display:none; margin-top:8px;">
             <div class="legend-title">Nighttime Lights</div>
@@ -1985,9 +1964,8 @@
                 // Init Industrial layer
                 initIndustrialLayer();
 
-                // Init ACLED conflict layer
+                // Init conflict event layer (GDELT)
                 initAcledLayer();
-                loadAcledCreds();
 
                 // Init Nighttime Lights layer
                 initNightlightsLayer();
@@ -2602,160 +2580,132 @@
         const ACLED_DATA = {"type": "FeatureCollection", "features": []};
 
         let acledVisible = false;
-        let acledTypeFilter = { battles: true, explosions: true, violence: true, riots: true, protests: true, strategic: true };
-        let acledLiveData = null;  // null = use static ACLED_DATA
+        let acledTypeFilter = { battles: true, explosions: true, violence: true, protests: true, strategic: true };
+        let acledLiveData = null;
+        let gdeltFetched = false;
 
-        // Persist ACLED credentials in localStorage
-        function loadAcledCreds() {
-            try {
-                const e = localStorage.getItem('meridian_acled_email');
-                const k = localStorage.getItem('meridian_acled_key');
-                if (e) document.getElementById('acledEmail').value = e;
-                if (k) document.getElementById('acledKey').value = k;
-            } catch(ex) {}
-        }
-        function saveAcledCreds(email, key) {
-            try {
-                localStorage.setItem('meridian_acled_email', email);
-                localStorage.setItem('meridian_acled_key', key);
-            } catch(ex) {}
+        // Map GDELT GKG themes to conflict categories
+        function classifyGdeltThemes(themes) {
+            if (!themes) return 'strategic';
+            const t = themes.toUpperCase();
+            if (t.includes('ARMEDCONFLICT') || t.includes('EPU_CATS_NATIONAL_SECURITY')) return 'battles';
+            if (t.includes('TERROR') || t.includes('TAX_WEAPONS') || t.includes('MANMADE_DISASTER_IMPLIED')) return 'explosions';
+            if (t.includes('KILL') || t.includes('CRISISLEX_T03_DEAD') || t.includes('CRISISLEX_T02_INJURED')) return 'violence';
+            if (t.includes('PROTEST') || t.includes('CRISISLEX_T11_REGIMECHANGE')) return 'protests';
+            if (t.includes('MILITARY') || t.includes('TAX_FNCACT_NAVY') || t.includes('MARITIME_INCIDENT')) return 'strategic';
+            return 'strategic';
         }
 
+        // Map category keys to display names
         function getAcledTypeKey(eventType) {
-            if (eventType === 'Battles') return 'battles';
-            if (eventType === 'Explosions/Remote violence') return 'explosions';
-            if (eventType === 'Violence against civilians') return 'violence';
-            if (eventType === 'Riots') return 'riots';
-            if (eventType === 'Protests') return 'protests';
-            if (eventType === 'Strategic developments') return 'strategic';
-            return null;
+            const map = {
+                'Armed Conflict': 'battles', 'Terror/Explosions': 'explosions',
+                'Violence': 'violence', 'Protests': 'protests', 'Military': 'strategic'
+            };
+            return map[eventType] || null;
         }
 
         function getAcledColor(eventType) {
-            if (eventType === 'Battles') return '#ff1744';
-            if (eventType === 'Explosions/Remote violence') return '#ff9100';
-            if (eventType === 'Violence against civilians') return '#b388ff';
-            if (eventType === 'Riots') return '#00e5ff';
-            if (eventType === 'Protests') return '#ffd600';
-            if (eventType === 'Strategic developments') return '#888';
-            return '#888';
+            const map = {
+                'Armed Conflict': '#ff1744', 'Terror/Explosions': '#ff9100',
+                'Violence': '#b388ff', 'Protests': '#ffd600', 'Military': '#888'
+            };
+            return map[eventType] || '#888';
         }
+
+        const GDELT_CATEGORY_LABELS = {
+            battles: 'Armed Conflict', explosions: 'Terror/Explosions',
+            violence: 'Violence', protests: 'Protests', strategic: 'Military'
+        };
 
         function isAcledLive() { return acledLiveData !== null; }
         function getAcledSource() { return acledLiveData || ACLED_DATA; }
 
-        // ACLED Live API — fetches conflict events via REST with email+key auth
-        const ACLED_API_BASE = 'https://acleddata.com/api/acled/read';
-        // Middle East countries covered by MERIDIAN
-        const ACLED_COUNTRIES = 'Iran|Iraq|Syria|Yemen|Saudi Arabia|Bahrain|Kuwait|Qatar|United Arab Emirates|Oman|Jordan|Lebanon|Israel|Palestine|Turkey|Egypt|Libya';
+        // GDELT GKG GeoJSON API — free, no auth, CORS-enabled, updates every 15 min
+        const GDELT_GKG_BASE = 'https://api.gdeltproject.org/api/v1/gkg_geojson';
+        // Conflict-related GKG themes to query
+        const GDELT_THEMES = ['ARMEDCONFLICT', 'KILL', 'PROTEST', 'TERROR', 'MILITARY'];
+        // Middle East bounding box: lon 25-65, lat 12-42
+        const ME_BBOX_CONFLICT = { w: 25, e: 65, s: 12, n: 42 };
 
-        async function fetchAcledLive() {
-            const email = document.getElementById('acledEmail').value.trim();
-            const key = document.getElementById('acledKey').value.trim();
-            if (!email || !key) {
-                setAcledStatus('Enter ACLED email & API key', '#ff5252');
-                return;
-            }
-            saveAcledCreds(email, key);
+        async function fetchGdeltConflict() {
+            if (gdeltFetched) { renderAcled(); return; }
 
-            const days = parseInt(document.getElementById('acledDayRange').value) || 180;
-            const dateTo = new Date();
-            const dateFrom = new Date(dateTo.getTime() - days * 86400000);
-            const fromStr = dateFrom.toISOString().slice(0, 10);
-            const toStr = dateTo.toISOString().slice(0, 10);
-
-            const btn = document.getElementById('acledFetchBtn');
-            btn.disabled = true;
-            btn.textContent = 'Fetching…';
-            setAcledStatus('Querying ACLED API…', '#e040fb');
+            setAcledStatus('Fetching GDELT conflict data…', '#e040fb');
 
             try {
-                const allEvents = [];
-                let page = 1;
-                let hasMore = true;
+                const allFeatures = [];
+                const seenKeys = new Set();
 
-                while (hasMore) {
-                    const url = `${ACLED_API_BASE}?key=${encodeURIComponent(key)}&email=${encodeURIComponent(email)}`
-                        + `&country=${encodeURIComponent(ACLED_COUNTRIES)}`
-                        + `&event_date=${encodeURIComponent(fromStr + '|' + toStr)}&event_date_where=BETWEEN`
-                        + `&limit=5000&page=${page}&_format=json`;
-
-                    setAcledStatus(`Fetching page ${page}…`, '#e040fb');
-                    const text = await corsFetch(url);
-                    let json;
-                    try { json = JSON.parse(text); } catch (e) {
-                        throw new Error('Invalid response from ACLED API');
+                for (const theme of GDELT_THEMES) {
+                    try {
+                        const url = `${GDELT_GKG_BASE}?QUERY=${theme}&TIMESPAN=1440&MAXROWS=5000`;
+                        const text = await fetch(url).then(r => r.text());
+                        const json = JSON.parse(text);
+                        if (json.features) allFeatures.push(...json.features);
+                    } catch (e) {
+                        console.warn(`GDELT ${theme} fetch failed:`, e.message);
                     }
-
-                    if (!json.success && json.message) {
-                        throw new Error(json.message);
-                    }
-
-                    if (!json.data || !Array.isArray(json.data)) {
-                        throw new Error('Unexpected ACLED response format');
-                    }
-
-                    allEvents.push(...json.data);
-
-                    // ACLED returns up to `limit` rows per page; if fewer, we're done
-                    if (json.data.length < 5000) {
-                        hasMore = false;
-                    } else {
-                        page++;
-                        if (page > 20) break; // safety cap at 100k events
-                    }
+                    // Rate limit: 1 req per 5 seconds
+                    await new Promise(r => setTimeout(r, 5500));
                 }
 
-                // Convert ACLED JSON to GeoJSON
-                const features = allEvents
-                    .filter(e => e.latitude && e.longitude)
-                    .map(e => ({
+                // Filter to Middle East bbox + deduplicate by url+location
+                const meFeatures = [];
+                for (const f of allFeatures) {
+                    const [lon, lat] = f.geometry.coordinates;
+                    if (lon < ME_BBOX_CONFLICT.w || lon > ME_BBOX_CONFLICT.e) continue;
+                    if (lat < ME_BBOX_CONFLICT.s || lat > ME_BBOX_CONFLICT.n) continue;
+
+                    const key = `${f.properties.url}|${lon},${lat}`;
+                    if (seenKeys.has(key)) continue;
+                    seenKeys.add(key);
+
+                    const themes = f.properties.mentionedthemes || '';
+                    const category = classifyGdeltThemes(themes);
+
+                    meFeatures.push({
                         type: 'Feature',
-                        geometry: {
-                            type: 'Point',
-                            coordinates: [parseFloat(e.longitude), parseFloat(e.latitude)]
-                        },
+                        geometry: f.geometry,
                         properties: {
-                            event_date: e.event_date,
-                            week: e.event_date, // use event_date as the date field for time filtering
-                            country: e.country,
-                            admin1: e.admin1,
-                            admin2: e.admin2 || '',
-                            location: e.location || '',
-                            event_type: e.event_type,
-                            sub_event_type: e.sub_event_type,
-                            disorder_type: e.disorder_type || '',
-                            actor1: e.actor1 || '',
-                            actor2: e.actor2 || '',
-                            fatalities: parseInt(e.fatalities) || 0,
+                            event_date: (f.properties.urlpubtimedate || '').slice(0, 10),
+                            week: (f.properties.urlpubtimedate || '').slice(0, 10),
+                            country: f.properties.name || '',
+                            admin1: f.properties.name || '',
+                            location: f.properties.name || '',
+                            event_type: GDELT_CATEGORY_LABELS[category],
+                            sub_event_type: category === 'battles' ? 'Armed conflict mention' :
+                                            category === 'explosions' ? 'Terror/explosion mention' :
+                                            category === 'violence' ? 'Killing/injury report' :
+                                            category === 'protests' ? 'Protest/unrest report' : 'Military activity',
+                            fatalities: 0,
                             events: 1,
-                            notes: e.notes || '',
-                            source: e.source || '',
+                            notes: '',
+                            source: f.properties.url || '',
+                            urltone: f.properties.urltone || 0,
                             _live: true
                         }
-                    }));
+                    });
+                }
 
-                acledLiveData = { type: 'FeatureCollection', features };
+                acledLiveData = { type: 'FeatureCollection', features: meFeatures };
+                gdeltFetched = true;
 
-                setAcledStatus(`${features.length.toLocaleString()} events loaded (${fromStr} → ${toStr})`, '#00e676');
-                document.getElementById('acledDataNote').innerHTML = `Live <a href="https://acleddata.com" target="_blank" style="color:#e040fb;">ACLED</a> data: ${features.length.toLocaleString()} events from ${fromStr} to ${toStr}. Precise locations with actor/source detail.`;
+                const dateStr = new Date().toISOString().slice(0, 10);
+                setAcledStatus(`${meFeatures.toLocaleString().length > 0 ? meFeatures.length.toLocaleString() : '0'} events (${dateStr}, 24h window)`, '#00e676');
 
-                // Update time filter range to include ACLED dates
                 initTimeFilterDefaults();
-
                 if (acledVisible) renderAcled();
 
             } catch (err) {
-                setAcledStatus('Error: ' + err.message, '#ff5252');
-                console.error('ACLED fetch error:', err);
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Fetch Live Data';
+                setAcledStatus('GDELT error: ' + err.message, '#ff5252');
+                console.error('GDELT fetch error:', err);
             }
         }
 
         function setAcledStatus(msg, color) {
             const el = document.getElementById('acledFetchStatus');
+            if (!el) return;
             el.style.display = 'block';
             el.style.color = color || 'var(--text-muted)';
             el.textContent = msg;
@@ -2778,7 +2728,7 @@
                 map.setLayoutProperty('acled-pulse', 'visibility', acledVisible ? 'visible' : 'none');
             }
 
-            if (acledVisible) renderAcled();
+            if (acledVisible) fetchGdeltConflict();
         }
 
         function toggleAcledType(el) {
@@ -2806,28 +2756,29 @@
             }
 
             // Update stats
-            let totalEvents = 0, totalFatal = 0;
+            let totalEvents = 0;
             const byCty = {};
             const byType = {};
+            let toneSum = 0;
             filtered.features.forEach(f => {
-                const evts = f.properties.events || 1;
-                totalEvents += evts;
-                totalFatal += f.properties.fatalities;
-                byCty[f.properties.country] = (byCty[f.properties.country] || 0) + evts;
-                byType[f.properties.event_type] = (byType[f.properties.event_type] || 0) + evts;
+                totalEvents++;
+                byCty[f.properties.country] = (byCty[f.properties.country] || 0) + 1;
+                byType[f.properties.event_type] = (byType[f.properties.event_type] || 0) + 1;
+                toneSum += f.properties.urltone || 0;
             });
 
             const topCountry = Object.entries(byCty).sort((a,b) => b[1] - a[1])[0];
-            const live = isAcledLive();
+            const avgTone = totalEvents > 0 ? (toneSum / totalEvents).toFixed(1) : '—';
+            const toneColor = avgTone < -3 ? '#ff5252' : avgTone < 0 ? '#ff9100' : '#00e676';
 
             document.getElementById('acledStats').innerHTML = `
                 <div class="acled-stat">
                     <div class="acled-stat-val">${totalEvents.toLocaleString()}</div>
-                    <div class="acled-stat-label">${live ? 'Events' : 'Aggregated'}</div>
+                    <div class="acled-stat-label">Events</div>
                 </div>
                 <div class="acled-stat">
-                    <div class="acled-stat-val" style="color: var(--accent-high);">${totalFatal.toLocaleString()}</div>
-                    <div class="acled-stat-label">Fatalities</div>
+                    <div class="acled-stat-val" style="color: ${toneColor};">${avgTone}</div>
+                    <div class="acled-stat-label">Avg Tone</div>
                 </div>
                 <div class="acled-stat">
                     <div class="acled-stat-val">${topCountry ? topCountry[0] : '—'}</div>
@@ -2849,18 +2800,14 @@
                 source: 'acled',
                 layout: { visibility: 'none' },
                 paint: {
-                    'circle-radius': [
-                        'interpolate', ['linear'], ['get', 'events'],
-                        1, 12, 10, 20, 50, 32, 200, 48
-                    ],
+                    'circle-radius': 14,
                     'circle-color': [
                         'match', ['get', 'event_type'],
-                        'Battles', '#ff1744',
-                        'Explosions/Remote violence', '#ff9100',
-                        'Violence against civilians', '#b388ff',
-                        'Riots', '#00e5ff',
+                        'Armed Conflict', '#ff1744',
+                        'Terror/Explosions', '#ff9100',
+                        'Violence', '#b388ff',
                         'Protests', '#ffd600',
-                        'Strategic developments', '#888',
+                        'Military', '#888',
                         '#888'
                     ],
                     'circle-opacity': 0.08,
@@ -2876,22 +2823,18 @@
                 layout: {
                     visibility: 'none',
                     'icon-image': 'conflict-icon',
-                    'icon-size': [
-                        'interpolate', ['linear'], ['get', 'fatalities'],
-                        0, 0.35, 1, 0.45, 5, 0.6, 20, 0.8, 100, 1.1
-                    ],
+                    'icon-size': 0.4,
                     'icon-allow-overlap': true,
                     'icon-ignore-placement': true
                 },
                 paint: {
                     'icon-color': [
                         'match', ['get', 'event_type'],
-                        'Battles', '#ff1744',
-                        'Explosions/Remote violence', '#ff9100',
-                        'Violence against civilians', '#b388ff',
-                        'Riots', '#00e5ff',
+                        'Armed Conflict', '#ff1744',
+                        'Terror/Explosions', '#ff9100',
+                        'Violence', '#b388ff',
                         'Protests', '#ffd600',
-                        'Strategic developments', '#888',
+                        'Military', '#888',
                         '#888'
                     ],
                     'icon-opacity': 0.8
@@ -2907,32 +2850,20 @@
                 const typeKey = getAcledTypeKey(p.event_type);
                 const colorClass = typeKey === 'battles' ? 'popup-acled-battles' :
                                    typeKey === 'explosions' ? 'popup-acled-explosions' :
-                                   typeKey === 'riots' ? 'popup-acled-battles' :
                                    typeKey === 'protests' ? 'popup-acled-explosions' : 'popup-acled-violence';
-                const live = p._live === true || p._live === 'true';
 
-                let html = `<div class="popup-acled-header ${colorClass}">ACLED — ${p.event_type}</div>`;
-                html += `<div class="popup-row"><span class="popup-key">${live ? 'Date' : 'Week'}</span><span class="popup-val">${p.event_date || p.week}</span></div>`;
-                if (live && p.location) {
-                    html += `<div class="popup-row"><span class="popup-key">Location</span><span class="popup-val">${p.location}${p.admin2 ? ', ' + p.admin2 : ''}</span></div>`;
-                }
-                html += `<div class="popup-row"><span class="popup-key">Country</span><span class="popup-val">${p.country}</span></div>`;
-                html += `<div class="popup-row"><span class="popup-key">Region</span><span class="popup-val">${p.admin1}</span></div>`;
-                html += `<div class="popup-row"><span class="popup-key">Sub-type</span><span class="popup-val">${p.sub_event_type}</span></div>`;
-                if (live && p.actor1) {
-                    html += `<div class="popup-row"><span class="popup-key">Actor 1</span><span class="popup-val">${p.actor1}</span></div>`;
-                    if (p.actor2) html += `<div class="popup-row"><span class="popup-key">Actor 2</span><span class="popup-val">${p.actor2}</span></div>`;
-                }
-                html += `<div class="popup-row"><span class="popup-key">Fatalities</span><span class="popup-val" style="color: ${(parseInt(p.fatalities) || 0) > 0 ? '#ff1744' : 'inherit'}">${p.fatalities}</span></div>`;
-                if (live && p.notes) {
-                    const truncated = p.notes.length > 200 ? p.notes.substring(0, 200) + '…' : p.notes;
-                    html += `<div class="popup-row" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:6px;margin-top:4px;"><span class="popup-val" style="font-size:9px;color:var(--text-muted);line-height:1.4;">${truncated}</span></div>`;
-                }
-                if (live && p.source) {
-                    html += `<div class="popup-row"><span class="popup-key" style="color:var(--text-muted);">Source</span><span class="popup-val" style="font-size:8px;color:var(--text-muted);">${p.source.length > 60 ? p.source.substring(0, 60) + '…' : p.source}</span></div>`;
-                }
-                if (!live) {
-                    html += `<div class="popup-row"><span class="popup-key">Events</span><span class="popup-val">${p.events}</span></div>`;
+                const tone = parseFloat(p.urltone) || 0;
+                const toneLabel = tone <= -5 ? 'Very negative' : tone <= -2 ? 'Negative' : tone <= 0 ? 'Slightly negative' : 'Neutral/positive';
+                const toneColor = tone <= -5 ? '#ff1744' : tone <= -2 ? '#ff9100' : tone <= 0 ? '#ffd600' : '#00e676';
+
+                let html = `<div class="popup-acled-header ${colorClass}">GDELT — ${p.event_type}</div>`;
+                html += `<div class="popup-row"><span class="popup-key">Date</span><span class="popup-val">${p.event_date || '—'}</span></div>`;
+                html += `<div class="popup-row"><span class="popup-key">Location</span><span class="popup-val">${p.location || p.country}</span></div>`;
+                html += `<div class="popup-row"><span class="popup-key">Category</span><span class="popup-val">${p.sub_event_type}</span></div>`;
+                html += `<div class="popup-row"><span class="popup-key">Tone</span><span class="popup-val" style="color:${toneColor}">${tone.toFixed(1)} (${toneLabel})</span></div>`;
+                if (p.source) {
+                    const domain = p.source.replace(/^https?:\/\//, '').split('/')[0];
+                    html += `<div class="popup-row"><span class="popup-key" style="color:var(--text-muted);">Source</span><span class="popup-val" style="font-size:8px;"><a href="${p.source}" target="_blank" style="color:#e040fb;">${domain.length > 40 ? domain.substring(0, 40) + '…' : domain}</a></span></div>`;
                 }
 
                 new maplibregl.Popup({ offset: 12, maxWidth: '320px' })
@@ -3073,7 +3004,7 @@
         let nlVisible = false;
         let nlMode = 'current'; // 'current' or 'compare'
 
-        const GIBS_TILE_URL = 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_SNPP_DayNightBand_ENCC/default/{date}/GoogleMapsCompatible_Level8/{z}/{y}/{x}.png';
+        const GIBS_TILE_URL = 'https://gibs.earthdata.nasa.gov/wmts/epsg3857/best/VIIRS_NOAA20_DayNightBand_At_Sensor_Radiance/default/{date}/GoogleMapsCompatible_Level8/{z}/{y}/{x}.png';
 
         function getNlDateStr(daysAgo) {
             const d = new Date();
@@ -4872,7 +4803,7 @@
             ctx.fillStyle = 'rgba(255,255,255,0.25)';
             ctx.textAlign = 'right';
             ctx.textBaseline = 'bottom';
-            ctx.fillText('MERIDIAN — NASA FIRMS / GIBS / ACLED / OSINT  |  subtxtpress.github.io', w - 12, h - 6);
+            ctx.fillText('MERIDIAN — NASA FIRMS / GIBS / GDELT / OSINT  |  subtxtpress.github.io', w - 12, h - 6);
             ctx.textAlign = 'left';
 
             // Download
