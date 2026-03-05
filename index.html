@@ -367,8 +367,18 @@
       color: var(--text-body);
     }
 
-    .info-link-body a { color: var(--carmine); font-weight: 600; }
-    .info-link-body a:hover { color: var(--accent); }
+    .info-link-body a {
+      color: var(--carmine);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-color: rgba(122, 80, 99, 0.3);
+      text-underline-offset: 3px;
+      transition: text-decoration-color 0.2s, color 0.2s;
+    }
+    .info-link-body a:hover {
+      color: var(--accent);
+      text-decoration-color: var(--accent);
+    }
 
     @media (max-width: 600px) {
       .about-dark { padding: 28px 22px 24px; }
