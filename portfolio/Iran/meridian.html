@@ -2510,7 +2510,7 @@
                 for (const theme of GDELT_THEMES) {
                     try {
                         const url = `${GDELT_GKG_BASE}?QUERY=${theme}&TIMESPAN=1440&MAXROWS=5000`;
-                        const text = await fetch(url).then(r => r.text());
+                        const text = await corsFetch(url);
                         const json = JSON.parse(text);
                         if (json.features) allFeatures.push(...json.features);
                     } catch (e) {
