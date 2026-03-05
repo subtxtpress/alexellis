@@ -227,22 +227,22 @@
 
     /* ─── Work Section ──────────────────────────────────────── */
     .work-section {
-      max-width: 1080px;
+      max-width: 100%;
       margin: 0 auto;
-      padding: 56px 56px 88px;
+      padding: 56px 5vw 88px;
     }
 
     /* ─── Work Grid ─────────────────────────────────────────── */
     .work-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
     }
 
     /* ─── Project card ──────────────────────────────────────── */
     .project-card {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       overflow: hidden;
       border-radius: 10px;
       background: var(--surface-card);
@@ -260,7 +260,8 @@
 
     /* ─── Thumbnail ─────────────────────────────────────────── */
     .card-thumb {
-      width: 38%;
+      width: 100%;
+      height: 320px;
       flex-shrink: 0;
       position: relative;
       overflow: hidden;
@@ -280,13 +281,13 @@
       content: attr(data-num);
       position: absolute;
       right: -6px;
-      bottom: -40px;
+      top: -40px;
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 190px;
       font-weight: 800;
       line-height: 1;
       letter-spacing: -0.04em;
-      color: rgba(255, 255, 255, 0.035);
+      color: rgba(255, 255, 255, 0.07);
       pointer-events: none;
       user-select: none;
     }
@@ -336,7 +337,7 @@
 
     .cover-cat {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 500;
       letter-spacing: 0.18em;
       text-transform: uppercase;
@@ -469,9 +470,9 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 12px;
-      max-width: 1080px;
+      max-width: 100%;
       margin: 0 auto;
-      padding: 24px 56px;
+      padding: 24px 5vw;
       border-top: 1px solid var(--border-light);
     }
 
@@ -497,6 +498,11 @@
 
     .footer-social a:hover { color: var(--carmine); }
 
+    /* ─── Tablet ─────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .work-grid          { grid-template-columns: 1fr; max-width: 600px; margin: 0 auto; }
+    }
+
     /* ─── Mobile ─────────────────────────────────────────────── */
     @media (max-width: 720px) {
       .site-nav,
@@ -504,8 +510,7 @@
       .nav-links          { gap: 20px; }
       .masthead-text      { left: 20px; bottom: 52px; }
       .work-section       { padding: 32px 16px 56px; }
-      .project-card       { flex-direction: column; }
-      .card-thumb         { width: 100%; height: 200px; }
+      .card-thumb         { height: 200px; }
       .card-thumb::before { font-size: 140px; }
       .cover-head         { font-size: 1.5rem; }
       .card-info          { padding: 18px 20px 22px; }
@@ -535,7 +540,7 @@
 
   <section class="work-section">
 
-    <div class="section-label">Portfolio · Four published works</div>
+    <div class="section-label">Portfolio · Six published works</div>
 
     <div class="work-grid">
 
@@ -546,7 +551,7 @@
           <div class="card-cover">
             <div class="cover-rule"></div>
             <span class="cover-cat">Surveillance · Dashboard · OSINT</span>
-            <h3 class="cover-head">DHS/ICE<br>Infrastructure</h3>
+            <h3 class="cover-head">DHS/ICE Infrastructure</h3>
           </div>
         </div>
         <div class="card-info">
@@ -574,7 +579,7 @@
           <div class="card-cover">
             <div class="cover-rule"></div>
             <span class="cover-cat">Investigation · Data Analysis</span>
-            <h3 class="cover-head">Jeffrey Epstein's<br>Amazon Account</h3>
+            <h3 class="cover-head">Jeffrey Epstein's Amazon Account</h3>
           </div>
         </div>
         <div class="card-info">
@@ -601,7 +606,7 @@
           <div class="card-cover">
             <div class="cover-rule"></div>
             <span class="cover-cat">Database · Policy · Investigation</span>
-            <h3 class="cover-head">TX Data<br>Centers</h3>
+            <h3 class="cover-head">TX Data Centers</h3>
           </div>
         </div>
         <div class="card-info">
@@ -680,7 +685,7 @@
 
       <!-- 06 TX GIS -->
       <div class="project-card" data-aos="fade-up" data-aos-delay="60">
-        <div class="card-thumb" data-num="05">
+        <div class="card-thumb" data-num="06">
           <div class="cover-glow" style="background: radial-gradient(circle, #3e2436, transparent);"></div>
           <div class="card-cover">
             <div class="cover-rule"></div>
