@@ -12,7 +12,7 @@ MERIDIAN fuses ten open-source intelligence layers into a single interactive map
 
 - **Thermal Anomalies** — Near real-time fire and heat detections from NASA FIRMS across four satellite sensors (VIIRS NOAA-20, NOAA-21, Suomi-NPP, MODIS Aqua/Terra). Filterable by confidence level, satellite source, time range, and geographic region.
 - **Industrial Sites** — 108 known refineries, power plants, gas processing facilities, and petrochemical complexes. Detections within ~2km of these sites are automatically tagged and visually de-emphasized to separate routine industrial flaring from conflict-relevant activity.
-- **Conflict Events** — ACLED armed conflict data (battles, explosions, violence against civilians) with event-type filtering and temporal alignment to thermal detections. Bundled snapshot — no registration required.
+- **Conflict Events** — Live GDELT Global Knowledge Graph data (armed conflict, terror/explosions, violence, protests, military activity) with event-type filtering and temporal alignment to thermal detections. Auto-fetched from GDELT's free API — no registration required.
 - **Nighttime Lights** — NASA GIBS VIIRS Day/Night Band imagery with before/after comparison mode for assessing infrastructure damage and power grid disruption.
 - **Maritime Traffic** — AIS vessel pattern data for the Strait of Hormuz, showing tanker, cargo, naval, and other vessel activity along Traffic Separation Scheme lanes.
 - **MODIS True-Color** — NASA GIBS MODIS Terra Corrected Reflectance daily imagery with date picker and opacity controls for visual corroboration of thermal detections.
@@ -45,7 +45,7 @@ The entire application is a single HTML file (~4,600 lines). No build step, no b
 |-------|--------|-----------------|
 | Thermal | [NASA FIRMS](https://firms.modaps.eosdis.nasa.gov/) | Near real-time (~3hr latency) |
 | Industrial | [EOG/VIIRS Nightfire](https://eogdata.mines.edu/products/vnf/global_gas_flare.html), [World Bank GGFR](https://www.worldbank.org/en/programs/gasflaringreduction) | Static catalog |
-| Conflict | [ACLED](https://acleddata.com) | Embedded dataset |
+| Conflict | [GDELT](https://www.gdeltproject.org/) GKG | Live, 24-hour rolling window |
 | Nighttime | [NASA GIBS](https://earthdata.nasa.gov/gibs) VIIRS DNB | Daily composites |
 | Maritime | OSINT AIS reporting | Representative patterns |
 | MODIS True-Color | [NASA GIBS](https://earthdata.nasa.gov/gibs) MODIS Terra | Daily composites |
@@ -69,6 +69,6 @@ open meridian.html
 
 ## License
 
-Data attributions: NASA FIRMS, NASA GIBS, ACLED, EOG/VIIRS Nightfire, World Bank GGFR, ESA Copernicus Sentinel-2, Maxar Open Data (CC-BY-NC 4.0), CelesTrak, airplanes.live, adsb.lol, OpenSky Network, OpenStreetMap.
+Data attributions: NASA FIRMS, NASA GIBS, GDELT (Global Database of Events, Language & Tone), EOG/VIIRS Nightfire, World Bank GGFR, ESA Copernicus Sentinel-2, Maxar Open Data (CC-BY-NC 4.0), CelesTrak, airplanes.live, adsb.lol, OpenSky Network, OpenStreetMap.
 
 Built by [Subtxt Press](https://subtxtpress.github.io/home/)

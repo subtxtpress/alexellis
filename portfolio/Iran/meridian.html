@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>MERIDIAN — Middle East Thermal Anomaly Monitor</title>
-    <meta name="description" content="Multi-layer satellite intelligence for the Middle East theater. NASA FIRMS thermal anomalies, VIIRS nighttime lights for infrastructure damage assessment, AIS vessel tracking in the Strait of Hormuz, ACLED conflict events, and 108 known oil/gas sites. Fully client-side — no API keys, no backend, no registration.">
+    <meta name="description" content="Multi-layer satellite intelligence for the Middle East theater. NASA FIRMS thermal anomalies, VIIRS nighttime lights for infrastructure damage assessment, AIS vessel tracking in the Strait of Hormuz, GDELT conflict events, and 108 known oil/gas sites. Fully client-side — no API keys, no backend, no registration.">
     <link rel="canonical" href="https://subtxtpress.github.io/home/portfolio/Iran/meridian.html">
     <!-- Open Graph -->
     <meta property="og:title" content="MERIDIAN – Middle East Thermal Anomaly Monitor">
-    <meta property="og:description" content="Real-time satellite thermal intelligence for the Middle East theater. Ingests NASA FIRMS data from four VIIRS and MODIS sensors, cross-references ACLED conflict events, and overlays 108 known oil/gas infrastructure sites to separate industrial activity from unexplained thermal anomalies. Fully client-side — no API keys, no backend, no registration.">
+    <meta property="og:description" content="Real-time satellite thermal intelligence for the Middle East theater. Ingests NASA FIRMS data from four VIIRS and MODIS sensors, cross-references GDELT conflict events, and overlays 108 known oil/gas infrastructure sites to separate industrial activity from unexplained thermal anomalies. Fully client-side — no API keys, no backend, no registration.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://subtxtpress.github.io/home/portfolio/Iran/meridian.html">
     <meta property="og:image" content="https://subtxtpress.github.io/home/portfolio/Iran/img/meridian.png">
@@ -19,7 +19,7 @@
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="MERIDIAN – Middle East Thermal Anomaly Monitor">
-    <meta name="twitter:description" content="Real-time satellite thermal intelligence for the Middle East theater. Ingests NASA FIRMS data from four VIIRS and MODIS sensors, cross-references ACLED conflict events, and overlays 108 known oil/gas infrastructure sites to separate industrial activity from unexplained thermal anomalies. Fully client-side — no API keys, no backend, no registration.">
+    <meta name="twitter:description" content="Real-time satellite thermal intelligence for the Middle East theater. Ingests NASA FIRMS data from four VIIRS and MODIS sensors, cross-references GDELT conflict events, and overlays 108 known oil/gas infrastructure sites to separate industrial activity from unexplained thermal anomalies. Fully client-side — no API keys, no backend, no registration.">
     <meta name="twitter:image" content="https://subtxtpress.github.io/home/portfolio/Iran/img/meridian.png">
     <!-- Favicons & Manifest -->
     <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
@@ -213,62 +213,6 @@
             margin-bottom: 10px;
         }
 
-        /* DATA MODE TOGGLE */
-        .mode-toggle {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 10px;
-        }
-
-        .mode-btn {
-            flex: 1;
-            font-family: var(--font-mono);
-            font-size: 9px;
-            padding: 6px 8px;
-            border-radius: 3px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .mode-btn.active {
-            background: rgba(255, 77, 26, 0.15);
-            border-color: var(--accent-fire);
-            color: var(--accent-fire);
-        }
-
-        /* API KEY INPUT */
-        .api-key-group {
-            display: flex;
-            gap: 6px;
-        }
-
-        .api-key-input {
-            flex: 1;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            font-family: var(--font-mono);
-            font-size: 11px;
-            padding: 7px 10px;
-            border-radius: 4px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .api-key-input:focus {
-            border-color: var(--accent-fire);
-        }
-
-        .api-key-input::placeholder {
-            color: var(--text-muted);
-        }
-
         .btn {
             background: var(--accent-fire);
             color: #fff;
@@ -292,17 +236,6 @@
             padding: 10px;
         }
 
-        .api-help {
-            margin-top: 8px;
-            font-size: 10px;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        .api-help a {
-            color: var(--accent-info);
-            text-decoration: none;
-        }
 
         .hidden { display: none !important; }
 
@@ -1297,30 +1230,13 @@
     <!-- SIDEBAR -->
     <div id="sidebar" class="sidebar">
 
-        <!-- DATA SOURCE MODE -->
+        <!-- DATA SOURCE -->
         <div class="panel-section">
             <div class="panel-label">Data Source</div>
-            <div class="mode-toggle">
-                <div class="mode-btn active" id="modeOpen" onclick="setMode('open')">Open Data (No Key)</div>
-                <div class="mode-btn" id="modeApi" onclick="setMode('api')">API (MAP_KEY)</div>
-            </div>
-
-            <!-- Open data controls -->
             <div id="openControls">
                 <button class="btn btn-full" onclick="loadData()">Load Satellite Data</button>
                 <div class="data-note">
-                    Pulls global CSV from NASA FIRMS (VIIRS + MODIS), filters to Middle East client-side. No registration required. Updated hourly.
-                </div>
-            </div>
-
-            <!-- API key controls (hidden by default) -->
-            <div id="apiControls" class="hidden">
-                <div class="api-key-group">
-                    <input type="text" id="apiKeyInput" class="api-key-input" placeholder="Paste MAP_KEY here">
-                    <button class="btn" onclick="loadData()">Load</button>
-                </div>
-                <div class="api-help">
-                    Free key from <a href="https://firms.modaps.eosdis.nasa.gov/api/area/" target="_blank">NASA FIRMS</a> — enables custom time ranges &amp; faster queries.
+                    Queries NASA FIRMS API (VIIRS + MODIS) for the selected region and time window. No registration required. Updated hourly.
                 </div>
             </div>
         </div>
@@ -1351,15 +1267,15 @@
             </div>
         </div>
 
-        <!-- TIME WINDOW (API mode only) -->
+        <!-- TIME WINDOW -->
         <div class="panel-section" id="dayRangeSection">
             <div class="panel-label">Time Window</div>
             <div class="range-row">
                 <input type="range" id="dayRange" class="range-slider" min="1" max="10" value="3" oninput="updateRangeLabel()">
                 <span id="rangeValue" class="range-value">3 days</span>
             </div>
-            <div id="openTimeNote" class="data-note" style="margin-top:8px;">
-                Open data mode provides 24h or 7-day windows. Slider applies in API mode. Currently loading: <strong id="timeWindowLabel">7 days</strong>
+            <div class="data-note" style="margin-top:8px;">
+                Loading: <strong id="timeWindowLabel">3 days</strong> of detections via NASA FIRMS API.
             </div>
         </div>
 
@@ -1802,32 +1718,21 @@
             return 'Other';
         }
 
-        // Public CSV URLs — no auth required, updated hourly by NASA
-        const OPEN_DATA_URLS = {
-            'VIIRS_NOAA20': {
-                '24h': 'https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-20-viirs-c2/csv/J1_VIIRS_C2_Global_24h.csv',
-                '7d':  'https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-20-viirs-c2/csv/J1_VIIRS_C2_Global_7d.csv'
-            },
-            'VIIRS_NOAA21': {
-                '24h': 'https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-21-viirs-c2/csv/J2_VIIRS_C2_Global_24h.csv',
-                '7d':  'https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-21-viirs-c2/csv/J2_VIIRS_C2_Global_7d.csv'
-            },
-            'VIIRS_SNPP': {
-                '24h': 'https://firms.modaps.eosdis.nasa.gov/data/active_fire/suomi-npp-viirs-c2/csv/SUOMI_VIIRS_C2_Global_24h.csv',
-                '7d':  'https://firms.modaps.eosdis.nasa.gov/data/active_fire/suomi-npp-viirs-c2/csv/SUOMI_VIIRS_C2_Global_7d.csv'
-            },
-            'MODIS': {
-                '24h': 'https://firms.modaps.eosdis.nasa.gov/data/active_fire/modis-c6.1/csv/MODIS_C6_1_Global_24h.csv',
-                '7d':  'https://firms.modaps.eosdis.nasa.gov/data/active_fire/modis-c6.1/csv/MODIS_C6_1_Global_7d.csv'
-            }
-        };
-
-        // API source names (for MAP_KEY mode)
-        const API_SOURCES = {
+        // NASA FIRMS API — free MAP_KEY, region-specific queries
+        const FIRMS_MAP_KEY = '9870dd61a3773655231d5e145ee90a42';
+        const FIRMS_API_SOURCES = {
             'VIIRS_NOAA20': 'VIIRS_NOAA20_NRT',
             'VIIRS_NOAA21': 'VIIRS_NOAA21_NRT',
             'VIIRS_SNPP':   'VIIRS_SNPP_NRT',
             'MODIS':        'MODIS_NRT'
+        };
+
+        // Fallback: public CSV URLs — no auth required
+        const OPEN_DATA_URLS = {
+            'VIIRS_NOAA20': 'https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-20-viirs-c2/csv/J1_VIIRS_C2_Global_7d.csv',
+            'VIIRS_NOAA21': 'https://firms.modaps.eosdis.nasa.gov/data/active_fire/noaa-21-viirs-c2/csv/J2_VIIRS_C2_Global_7d.csv',
+            'VIIRS_SNPP':   'https://firms.modaps.eosdis.nasa.gov/data/active_fire/suomi-npp-viirs-c2/csv/SUOMI_VIIRS_C2_Global_7d.csv',
+            'MODIS':        'https://firms.modaps.eosdis.nasa.gov/data/active_fire/modis-c6.1/csv/MODIS_C6_1_Global_7d.csv'
         };
 
         let currentRegion = 'middle-east';
@@ -1836,7 +1741,6 @@
         let allDetections = [];
         let timeFilterFrom = null;
         let timeFilterTo = null;
-        let dataMode = 'open'; // 'open' or 'api'
         let map;
 
         // ═══════════════════════════════════════════
@@ -1999,11 +1903,7 @@
             let loadErrors = [];
 
             try {
-                if (dataMode === 'open') {
-                    await loadOpenData(loadErrors);
-                } else {
-                    await loadApiData(loadErrors);
-                }
+                await loadOpenData(loadErrors);
 
                 tagIndustrialProximity();
                 renderDetections();
@@ -2080,63 +1980,49 @@
         }
 
         async function loadOpenData(errors) {
-            document.getElementById('loadingText').textContent = 'Downloading global CSV from NASA FIRMS...';
-
-            // Use 7-day files for richer data
-            const timeKey = '7d';
-            document.getElementById('timeWindowLabel').textContent = '7 days';
-
-            const fetches = activeSources.map(source => {
-                const url = OPEN_DATA_URLS[source]?.[timeKey];
-                if (!url) return Promise.resolve([]);
-
-                return corsFetch(url)
-                    .then(csv => {
-                        document.getElementById('loadingText').textContent = `Parsing ${source}...`;
-                        // Filter to Middle East bounding box client-side
-                        const all = parseCSV(csv, source);
-                        return all.filter(d =>
-                            d.longitude >= ME_BBOX.w && d.longitude <= ME_BBOX.e &&
-                            d.latitude >= ME_BBOX.s && d.latitude <= ME_BBOX.n
-                        );
-                    })
-                    .catch(err => {
-                        console.warn(`Failed to load ${source}:`, err);
-                        errors.push(`${source}: ${err.message}`);
-                        return [];
-                    });
-            });
-
-            const results = await Promise.all(fetches);
-            results.forEach(r => allDetections.push(...r));
-        }
-
-        async function loadApiData(errors) {
-            const apiKey = document.getElementById('apiKeyInput').value.trim();
-            if (!apiKey) { alert('Please enter your NASA FIRMS MAP_KEY'); return; }
-
+            const days = document.getElementById('dayRange').value;
             const region = REGIONS[currentRegion];
             const bbox = region.bbox.join(',');
-            const days = document.getElementById('dayRange').value;
 
             document.getElementById('loadingText').textContent = 'Querying NASA FIRMS API...';
+            document.getElementById('timeWindowLabel').textContent = days + ' day' + (days > 1 ? 's' : '');
 
-            const fetches = activeSources.map(source => {
-                const apiSource = API_SOURCES[source];
-                if (!apiSource) return Promise.resolve([]);
+            // Try API first (region-specific, custom day range), fall back to global CSV
+            const fetches = activeSources.map(async source => {
+                const apiSource = FIRMS_API_SOURCES[source];
+                if (apiSource) {
+                    try {
+                        const apiUrl = `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${FIRMS_MAP_KEY}/${apiSource}/${bbox}/${days}`;
+                        const csv = await corsFetch(apiUrl);
+                        document.getElementById('loadingText').textContent = `Parsing ${source}...`;
+                        return parseCSV(csv, source);
+                    } catch (apiErr) {
+                        console.warn(`FIRMS API failed for ${source}, falling back to CSV:`, apiErr.message);
+                    }
+                }
 
-                return corsFetch(`https://firms.modaps.eosdis.nasa.gov/api/area/csv/${apiKey}/${apiSource}/${bbox}/${days}`)
-                    .then(csv => parseCSV(csv, source))
-                    .catch(err => {
-                        console.warn(`Failed to load ${source}:`, err);
-                        errors.push(`${source}: ${err.message}`);
-                        return [];
-                    });
+                // Fallback: global CSV (7d only), filter client-side
+                const fallbackUrl = OPEN_DATA_URLS[source];
+                if (!fallbackUrl) return [];
+                try {
+                    const csv = await corsFetch(fallbackUrl);
+                    document.getElementById('loadingText').textContent = `Parsing ${source} (fallback)...`;
+                    const all = parseCSV(csv, source);
+                    return all.filter(d =>
+                        d.longitude >= ME_BBOX.w && d.longitude <= ME_BBOX.e &&
+                        d.latitude >= ME_BBOX.s && d.latitude <= ME_BBOX.n
+                    );
+                } catch (err) {
+                    console.warn(`Failed to load ${source}:`, err);
+                    errors.push(`${source}: ${err.message}`);
+                    return [];
+                }
             });
 
             const results = await Promise.all(fetches);
             results.forEach(r => allDetections.push(...r));
         }
+
 
         function parseCSV(csv, sourceName) {
             const lines = csv.trim().split('\n');
@@ -2303,15 +2189,6 @@
         // UI HANDLERS
         // ═══════════════════════════════════════════
 
-        function setMode(mode) {
-            dataMode = mode;
-            document.getElementById('modeOpen').classList.toggle('active', mode === 'open');
-            document.getElementById('modeApi').classList.toggle('active', mode === 'api');
-            document.getElementById('openControls').classList.toggle('hidden', mode !== 'open');
-            document.getElementById('apiControls').classList.toggle('hidden', mode !== 'api');
-            document.getElementById('openTimeNote').classList.toggle('hidden', mode !== 'open');
-        }
-
         function setRegion(el) {
             document.querySelectorAll('.region-btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
@@ -2319,9 +2196,6 @@
 
             const region = REGIONS[currentRegion];
             map.flyTo({ center: region.center, zoom: region.zoom, duration: 1200 });
-
-            // In API mode, reload data for new bbox
-            if (dataMode === 'api' && allDetections.length > 0) loadData();
         }
 
         function toggleSource(el) {
@@ -2424,10 +2298,6 @@
             setTimeout(() => map.resize(), 300);
         }
 
-        // Enter key triggers load in API mode
-        document.getElementById('apiKeyInput')?.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') loadData();
-        });
 
 
 
