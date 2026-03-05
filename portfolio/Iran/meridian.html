@@ -1317,7 +1317,7 @@
         <div class="panel-section">
             <div class="panel-label">Time Filter <span id="timeFilterBadge" class="time-sync-badge" style="display:none;">ACTIVE</span></div>
             <div class="time-sync-panel">
-                <div style="font-size:9px; color:var(--text-muted); font-family:var(--font-mono); margin-bottom:6px;">Sync-filters FIRMS + ACLED layers</div>
+                <div style="font-size:9px; color:var(--text-muted); font-family:var(--font-mono); margin-bottom:6px;">Sync-filters FIRMS + GDELT layers</div>
                 <div class="time-sync-row">
                     <label>From</label>
                     <input type="date" id="dateFrom" onchange="applyTimeFilter()">
@@ -2272,16 +2272,24 @@
         }
 
         function initTimeFilterDefaults() {
-            // Set date range based on loaded data (FIRMS + ACLED live or static)
+            // Set date range based on loaded data (FIRMS + GDELT)
             const firmsDates = allDetections.map(d => d.acq_date).filter(Boolean).sort();
             const acledSrc = getAcledSource();
             const acledDates = acledSrc.features.map(f => f.properties.event_date || f.properties.week).filter(Boolean).sort();
             const allDates = [...firmsDates, ...acledDates].sort();
             if (allDates.length > 0) {
-                document.getElementById('dateFrom').min = allDates[0];
-                document.getElementById('dateTo').min = allDates[0];
-                document.getElementById('dateFrom').max = allDates[allDates.length - 1];
-                document.getElementById('dateTo').max = allDates[allDates.length - 1];
+                const earliest = allDates[0];
+                const latest = allDates[allDates.length - 1];
+                const fromEl = document.getElementById('dateFrom');
+                const toEl = document.getElementById('dateTo');
+                fromEl.min = earliest;
+                toEl.min = earliest;
+                fromEl.max = latest;
+                toEl.max = latest;
+                // Populate values so the filter shows the actual date range
+                if (!fromEl.value) fromEl.value = earliest;
+                if (!toEl.value) toEl.value = latest;
+                applyTimeFilter();
             }
         }
 
