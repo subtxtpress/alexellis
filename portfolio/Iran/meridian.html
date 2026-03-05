@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>MERIDIAN — Middle East Thermal Anomaly Monitor</title>
-    <meta name="description" content="Multi-layer satellite intelligence for the Middle East theater. NASA FIRMS thermal anomalies, VIIRS nighttime lights for infrastructure damage assessment, AIS vessel tracking in the Strait of Hormuz, GDELT conflict events, and 108 known oil/gas sites. Fully client-side — no API keys, no backend, no registration.">
+    <meta name="description" content="Multi-layer satellite intelligence for the Middle East theater. NASA FIRMS thermal anomalies cross-referenced with GDELT conflict events to surface probable strikes, VIIRS nighttime lights for infrastructure damage assessment, and 108 known oil/gas sites. Fully client-side — no API keys, no backend, no registration.">
     <link rel="canonical" href="https://subtxtpress.github.io/home/portfolio/Iran/meridian.html">
     <!-- Open Graph -->
     <meta property="og:title" content="MERIDIAN – Middle East Thermal Anomaly Monitor">
@@ -904,26 +904,11 @@
 
         .nl-compare-badge { display:inline-block; font-family:var(--font-mono); font-size:8px; padding:2px 5px; border-radius:2px; background:rgba(255,214,0,0.15); color:#ffd600; letter-spacing:0.5px; margin-left:6px; }
 
-        /* AIS VESSEL LAYER */
-        .ais-switch { position:relative; width:36px; height:18px; background:var(--bg-tertiary); border:1px solid var(--border); border-radius:9px; cursor:pointer; transition:all 0.2s; display:inline-block; }
-        .ais-switch.active { background:rgba(0,229,255,0.15); border-color:#00e5ff; }
-        .ais-switch::after { content:''; position:absolute; top:2px; left:2px; width:12px; height:12px; background:var(--text-muted); border-radius:50%; transition:all 0.2s; }
-        .ais-switch.active::after { left:20px; background:#00e5ff; }
-
-        .ais-chip { font-family:var(--font-mono); font-size:9px; padding:3px 7px; border-radius:3px; cursor:pointer; transition:all 0.2s; letter-spacing:0.3px; border:1px solid; }
-        .ais-chip[data-vtype="tanker"] { background:rgba(255,145,0,0.12); border-color:rgba(255,145,0,0.3); color:#ff9100; }
-        .ais-chip[data-vtype="tanker"].off { background:var(--bg-tertiary); border-color:var(--border); color:var(--text-muted); }
-        .ais-chip[data-vtype="cargo"] { background:rgba(0,229,255,0.12); border-color:rgba(0,229,255,0.3); color:#00e5ff; }
-        .ais-chip[data-vtype="cargo"].off { background:var(--bg-tertiary); border-color:var(--border); color:var(--text-muted); }
-        .ais-chip[data-vtype="naval"] { background:rgba(255,23,68,0.12); border-color:rgba(255,23,68,0.3); color:#ff1744; }
-        .ais-chip[data-vtype="naval"].off { background:var(--bg-tertiary); border-color:var(--border); color:var(--text-muted); }
-        .ais-chip[data-vtype="other"] { background:rgba(179,136,255,0.12); border-color:rgba(179,136,255,0.3); color:#b388ff; }
-        .ais-chip[data-vtype="other"].off { background:var(--bg-tertiary); border-color:var(--border); color:var(--text-muted); }
-
-        .ais-stats { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:10px; }
-        .ais-stat { background:var(--bg-tertiary); border:1px solid var(--border); border-radius:3px; padding:6px 8px; text-align:center; }
-        .ais-stat-val { font-family:var(--font-mono); font-size:14px; font-weight:600; color:var(--text-primary); }
-        .ais-stat-label { font-family:var(--font-mono); font-size:8px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; }
+        /* STATS GRID (reused across panels) */
+        .stats-grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-top:10px; }
+        .stats-grid-3 .sg-item { background:var(--bg-tertiary); border:1px solid var(--border); border-radius:3px; padding:6px 8px; text-align:center; }
+        .stats-grid-3 .sg-val { font-family:var(--font-mono); font-size:14px; font-weight:600; color:var(--text-primary); }
+        .stats-grid-3 .sg-label { font-family:var(--font-mono); font-size:8px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; }
 
         /* SATELLITE IMAGERY SWITCHES */
         .sat-switch { position:relative; width:36px; height:18px; background:var(--bg-tertiary); border:1px solid var(--border); border-radius:9px; cursor:pointer; transition:all 0.2s; display:inline-block; }
@@ -1389,33 +1374,9 @@
                     <input type="range" id="nlOpacity" min="0" max="100" value="75" oninput="setNlOpacity(this.value)">
                     <span id="nlOpacityVal" style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);min-width:28px;text-align:right;">75%</span>
                 </div>
-                <div id="nlStats" class="ais-stats" style="margin-top:10px;"></div>
+                <div id="nlStats" class="stats-grid-3" style="margin-top:10px;"></div>
                 <div class="data-note" style="margin-top:8px;">
                     NASA VIIRS Day/Night Band (NOAA-20) via GIBS. Daily at-sensor radiance at 500m resolution. Compare dates to identify infrastructure damage from power outages, destroyed facilities, or displaced populations. Max zoom level 8.
-                </div>
-            </div>
-        </div>
-
-        <!-- AIS VESSEL LAYER -->
-        <div class="panel-section">
-            <div class="panel-label">Maritime — Strait of Hormuz AIS</div>
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-                <div id="aisSwitch" class="ais-switch" onclick="toggleAIS()"></div>
-                <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-secondary);">Vessel traffic & naval activity</span>
-            </div>
-            <div id="aisControls" style="display:none;">
-                <div style="display:flex;flex-wrap:wrap;gap:4px;">
-                    <div class="ais-chip" data-vtype="tanker" onclick="toggleAisType(this)">Tankers</div>
-                    <div class="ais-chip" data-vtype="cargo" onclick="toggleAisType(this)">Cargo</div>
-                    <div class="ais-chip" data-vtype="naval" onclick="toggleAisType(this)">Naval</div>
-                    <div class="ais-chip" data-vtype="other" onclick="toggleAisType(this)">Other</div>
-                </div>
-                <div id="aisStats" class="ais-stats"></div>
-                <div style="margin-top:8px;">
-                    <button style="width:100%;font-family:var(--font-mono);font-size:9px;padding:5px 8px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.25);color:#00e5ff;border-radius:3px;cursor:pointer;letter-spacing:0.3px;" onclick="flyToHormuz()">Zoom to Strait of Hormuz</button>
-                </div>
-                <div class="data-note" style="margin-top:8px;">
-                    Representative vessel positions based on publicly available AIS pattern data and OSINT reporting for the Strait of Hormuz corridor. Includes Traffic Separation Scheme (TSS) lanes. Not real-time — pattern analysis for naval activity assessment.
                 </div>
             </div>
         </div>
@@ -1539,7 +1500,7 @@
 
         <!-- STATS -->
         <div class="panel-section">
-            <div class="panel-label">Detection Summary</div>
+            <div class="panel-label">Conflict Briefing</div>
             <div id="statsArea">
                 <div class="empty-state">
                     <div class="empty-state-icon">◉</div>
@@ -1572,7 +1533,6 @@
             Industrial: <a href="https://eogdata.mines.edu/products/vnf/global_gas_flare.html" target="_blank">EOG/VIIRS Nightfire</a>, <a href="https://www.worldbank.org/en/programs/gasflaringreduction" target="_blank">World Bank GGFR</a><br>
             Conflict: <a href="https://www.gdeltproject.org/" target="_blank">GDELT</a> (Global Database of Events, Language &amp; Tone)<br>
             Nighttime: <a href="https://earthdata.nasa.gov/gibs" target="_blank">NASA GIBS</a> VIIRS Day/Night Band<br>
-            Maritime: AIS pattern data via <a href="https://www.marinetraffic.com" target="_blank">OSINT</a> reporting<br>
             Optical: <a href="https://earthdata.nasa.gov/gibs" target="_blank">NASA GIBS</a> MODIS, <a href="https://earth-search.aws.element84.com/v1" target="_blank">Sentinel-2 L2A</a>, <a href="https://www.maxar.com/open-data" target="_blank">Maxar Open Data</a><br>
             Orbits: <a href="https://celestrak.org" target="_blank">CelesTrak</a> TLE data + <a href="https://github.com/shashwatak/satellite-js" target="_blank">satellite.js</a> SGP4<br>
             Aircraft: <a href="https://airplanes.live" target="_blank">airplanes.live</a> / <a href="https://adsb.lol" target="_blank">adsb.lol</a> / <a href="https://opensky-network.org" target="_blank">OpenSky Network</a> ADS-B<br>
@@ -1594,6 +1554,7 @@
         <div class="legend-title" style="margin-top: 8px;">Brightness (FRP)</div>
         <div class="legend-item"><div class="legend-dot" style="background: #ff1744; width: 14px; height: 14px;"></div><span class="legend-label">High intensity</span></div>
         <div class="legend-item"><div class="legend-dot" style="background: #ff1744; width: 6px; height: 6px;"></div><span class="legend-label">Low intensity</span></div>
+        <div class="legend-item" style="margin-top:6px;"><div class="legend-dot" style="background:transparent;border:2px solid #ff1744;box-shadow:0 0 6px rgba(255,23,68,0.5);"></div><span class="legend-label">Conflict-Corroborated</span></div>
 
         <div id="indLegend" style="display:none;margin-top:8px;">
             <div class="legend-title">Industrial Sites</div>
@@ -1611,14 +1572,6 @@
             <div class="legend-title">Nighttime Lights</div>
             <div class="legend-item"><div class="legend-dot" style="background:#ffd600; box-shadow:0 0 4px rgba(255,214,0,0.5);"></div><span class="legend-label">City lights / Infrastructure</span></div>
             <div class="legend-item"><div class="legend-dot" style="background:#555; border:1px solid #333;"></div><span class="legend-label">Dark / No illumination</span></div>
-        </div>
-        <div id="aisLegend" style="display:none; margin-top:8px;">
-            <div class="legend-title">AIS Vessels</div>
-            <div class="legend-item"><div class="legend-dot" style="background:#ff9100; border:2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Tanker</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background:#00e5ff; border:2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Cargo</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background:#ff1744; border:2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Naval</span></div>
-            <div class="legend-item"><div class="legend-dot" style="background:#b388ff; border:2px solid rgba(255,255,255,0.3);"></div><span class="legend-label">Other</span></div>
-            <div class="legend-item"><div style="width:16px;height:2px;background:rgba(0,229,255,0.5);margin-right:8px;border-top:1px dashed #00e5ff;"></div><span class="legend-label">TSS Lane</span></div>
         </div>
         <div id="satLegend" style="display:none; margin-top:8px;">
             <div class="legend-title">Satellite Imagery</div>
@@ -1801,7 +1754,7 @@
                     }
                 });
 
-                // Circle layer
+                // Circle layer — three-tier opacity: conflict-corroborated > normal > industrial
                 map.addLayer({
                     id: 'detections-circle',
                     type: 'circle',
@@ -1822,11 +1775,36 @@
                         'circle-opacity': [
                             'interpolate', ['linear'], ['zoom'],
                             5, 0,
-                            7, ['case', ['get', 'near_industrial'], 0.3, 0.75]
+                            7, ['case',
+                                ['get', 'conflict_corroborated'], 0.95,
+                                ['get', 'near_industrial'], 0.25,
+                                0.6
+                            ]
                         ],
                         'circle-stroke-width': 1,
                         'circle-stroke-color': 'rgba(0,0,0,0.4)',
                         'circle-blur': 0.15
+                    }
+                });
+
+                // Conflict glow ring — red pulsing ring around corroborated detections
+                map.addLayer({
+                    id: 'detections-conflict-glow',
+                    type: 'circle',
+                    source: 'detections',
+                    minzoom: 5,
+                    filter: ['==', ['get', 'conflict_corroborated'], true],
+                    paint: {
+                        'circle-radius': [
+                            'interpolate', ['linear'], ['get', 'frp'],
+                            0, 8, 10, 12, 50, 16, 200, 24
+                        ],
+                        'circle-color': 'rgba(255,23,68,0)',
+                        'circle-opacity': ['interpolate', ['linear'], ['zoom'], 5, 0, 7, 0.7],
+                        'circle-stroke-width': 2,
+                        'circle-stroke-color': '#ff1744',
+                        'circle-stroke-opacity': ['interpolate', ['linear'], ['zoom'], 5, 0, 7, 0.6],
+                        'circle-blur': 0.4
                     }
                 });
 
@@ -1837,11 +1815,24 @@
                     const p = f.properties;
                     const coords = f.geometry.coordinates.slice();
                     const confColor = p.confidence === 'high' ? '#ff1744' : p.confidence === 'nominal' ? '#ff9100' : '#ffd600';
+                    const isCorroborated = p.conflict_corroborated === true || p.conflict_corroborated === 'true';
+
+                    let conflictRow = '';
+                    if (isCorroborated) {
+                        let events = [];
+                        try { events = typeof p.conflict_events === 'string' ? JSON.parse(p.conflict_events) : (p.conflict_events || []); } catch(e) {}
+                        const types = events.map(e => e.type).filter((v,i,a) => a.indexOf(v) === i).join(', ') || 'Conflict';
+                        const sourceUrl = events[0]?.source;
+                        conflictRow = `<div class="popup-row" style="border-top:1px solid rgba(255,23,68,0.2);padding-top:6px;margin-top:4px;background:rgba(255,23,68,0.06);margin:-0px -8px;padding:6px 8px;">
+                            <span class="popup-key" style="color:#ff1744;">CONFLICT CORROBORATED</span>
+                            <span class="popup-val" style="color:#ff1744;">${types}</span>
+                        </div>${sourceUrl ? `<div class="popup-row" style="background:rgba(255,23,68,0.06);margin:-0px -8px;padding:2px 8px 6px;"><a href="${sourceUrl}" target="_blank" style="font-family:var(--font-mono);font-size:8px;color:rgba(224,64,251,0.8);text-decoration:none;">View source report ↗</a></div>` : ''}`;
+                    }
 
                     new maplibregl.Popup({ offset: 12 })
                         .setLngLat(coords)
                         .setHTML(`
-                            <div class="popup-header">Thermal Detection</div>
+                            <div class="popup-header" ${isCorroborated ? 'style="border-left:3px solid #ff1744;padding-left:8px;"' : ''}>Thermal Detection</div>
                             <div class="popup-row"><span class="popup-key">Date/Time</span><span class="popup-val">${p.acq_date} ${p.acq_time || ''} UTC</span></div>
                             <div class="popup-row"><span class="popup-key">Lat / Lon</span><span class="popup-val">${Number(p.latitude).toFixed(4)}, ${Number(p.longitude).toFixed(4)}</span></div>
                             <div class="popup-row"><span class="popup-key">Confidence</span><span class="popup-val" style="color:${confColor}">${p.confidence.toUpperCase()}</span></div>
@@ -1850,6 +1841,7 @@
                             <div class="popup-row"><span class="popup-key">Satellite</span><span class="popup-val">${p.satellite || 'N/A'}</span></div>
                             <div class="popup-row"><span class="popup-key">Country</span><span class="popup-val">${p.country || 'Unknown'}</span></div>
                             ${p.near_industrial === true || p.near_industrial === 'true' ? `<div class="popup-row" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:6px;margin-top:4px;"><span class="popup-key" style="color:#ff9100;">Near Site</span><span class="popup-val" style="color:#ff9100;">${p.nearby_site}</span></div>` : ''}
+                            ${conflictRow}
                         `)
                         .addTo(map);
                 });
@@ -1869,8 +1861,6 @@
                 // Init Nighttime Lights layer
                 initNightlightsLayer();
 
-                // Init AIS vessel layer
-                initAISLayer();
 
                 // Init Satellite Imagery layers
                 initModisLayer();
@@ -1901,6 +1891,7 @@
                 await loadOpenData(loadErrors);
 
                 tagIndustrialProximity();
+                if (gdeltFetched) tagConflictCorroboration();
                 renderDetections();
                 updateStats();
                 initTimeFilterDefaults();
@@ -2091,6 +2082,89 @@
         }
 
         // ═══════════════════════════════════════════
+        // CONFLICT CORRELATION ENGINE
+        // ═══════════════════════════════════════════
+        // Cross-references thermal detections with GDELT conflict events
+        // to flag probable strikes vs industrial/agricultural noise
+
+        const CONFLICT_RADIUS_DEG = 0.09; // ~10km at mid-latitudes
+        const CONFLICT_TIME_WINDOW_DAYS = 1;
+        const CONFLICT_EVENT_TYPES = ['Armed Conflict', 'Terror/Explosions', 'Military'];
+
+        function tagConflictCorroboration() {
+            const src = getAcledSource();
+            if (!src || !src.features || src.features.length === 0) return;
+
+            // Build spatial grid index for GDELT conflict events (0.1-degree cells)
+            const grid = {};
+            const conflictFeatures = src.features.filter(f => {
+                const et = f.properties.event_type;
+                return CONFLICT_EVENT_TYPES.includes(et);
+            });
+
+            for (const f of conflictFeatures) {
+                const [lon, lat] = f.geometry.coordinates;
+                const gx = Math.floor(lon * 10);
+                const gy = Math.floor(lat * 10);
+                // Index into cell and 8 neighbors for border cases
+                for (let dx = -1; dx <= 1; dx++) {
+                    for (let dy = -1; dy <= 1; dy++) {
+                        const key = `${gx + dx},${gy + dy}`;
+                        if (!grid[key]) grid[key] = [];
+                        grid[key].push(f);
+                    }
+                }
+            }
+
+            // Tag each non-industrial detection
+            let corroboratedCount = 0;
+            allDetections.forEach(d => {
+                d.conflict_corroborated = false;
+                d.conflict_events = [];
+
+                if (d.near_industrial) return; // skip industrial noise
+
+                const gx = Math.floor(d.longitude * 10);
+                const gy = Math.floor(d.latitude * 10);
+                const key = `${gx},${gy}`;
+                const candidates = grid[key];
+                if (!candidates) return;
+
+                const dDate = d.acq_date; // YYYY-MM-DD
+                if (!dDate) return;
+
+                for (const f of candidates) {
+                    const [flon, flat] = f.geometry.coordinates;
+                    // Spatial check (~10km)
+                    if (Math.abs(d.longitude - flon) > CONFLICT_RADIUS_DEG) continue;
+                    if (Math.abs(d.latitude - flat) > CONFLICT_RADIUS_DEG) continue;
+
+                    // Temporal check (±1 day)
+                    const eDate = f.properties.event_date || f.properties.week;
+                    if (eDate) {
+                        const dTime = new Date(dDate).getTime();
+                        const eTime = new Date(eDate).getTime();
+                        const diffDays = Math.abs(dTime - eTime) / 86400000;
+                        if (diffDays > CONFLICT_TIME_WINDOW_DAYS) continue;
+                    }
+
+                    d.conflict_corroborated = true;
+                    d.conflict_events.push({
+                        type: f.properties.event_type,
+                        sub_type: f.properties.sub_event_type,
+                        location: f.properties.location,
+                        date: f.properties.event_date,
+                        source: f.properties.source
+                    });
+                }
+
+                if (d.conflict_corroborated) corroboratedCount++;
+            });
+
+            console.log(`Conflict correlation: ${corroboratedCount} detections corroborated out of ${allDetections.length}`);
+        }
+
+        // ═══════════════════════════════════════════
         // RENDERING
         // ═══════════════════════════════════════════
 
@@ -2111,7 +2185,9 @@
                     properties: {
                         ...d,
                         near_industrial: d.near_industrial || false,
-                        nearby_site: d.nearby_site || ''
+                        nearby_site: d.nearby_site || '',
+                        conflict_corroborated: d.conflict_corroborated || false,
+                        conflict_events: d.conflict_events ? JSON.stringify(d.conflict_events) : '[]'
                     }
                 }))
             };
@@ -2131,56 +2207,98 @@
             });
 
             const total = filtered.length;
-            const highConf = filtered.filter(d => d.confidence === 'high').length;
+            const conflictLinked = filtered.filter(d => d.conflict_corroborated).length;
+            const highConfNonInd = filtered.filter(d => d.confidence === 'high' && !d.near_industrial).length;
             const nearIndustrial = filtered.filter(d => d.near_industrial).length;
-            const nonIndustrial = total - nearIndustrial;
-            const avgFRP = total > 0 ? (filtered.reduce((s, d) => s + d.frp, 0) / total).toFixed(1) : '0';
             const dates = [...new Set(filtered.map(d => d.acq_date))].sort();
             const dateRange = dates.length > 0 ? `${dates[0]} → ${dates[dates.length - 1]}` : 'N/A';
 
-            document.getElementById('statsArea').innerHTML = `
+            // Top stats row
+            let html = `
                 <div class="stats-grid">
-                    <div class="stat-card highlight">
+                    <div class="stat-card" style="${conflictLinked > 0 ? 'border-color:rgba(255,23,68,0.4);background:rgba(255,23,68,0.08);' : ''}">
+                        <div class="stat-value" style="color:#ff1744;">${conflictLinked.toLocaleString()}</div>
+                        <div class="stat-label">Conflict-Linked</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${highConfNonInd.toLocaleString()}</div>
+                        <div class="stat-label">High-Conf Non-Ind</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" style="color:var(--text-muted);">${nearIndustrial.toLocaleString()}</div>
+                        <div class="stat-label">Industrial (noise)</div>
+                    </div>
+                    <div class="stat-card">
                         <div class="stat-value">${total.toLocaleString()}</div>
-                        <div class="stat-label">Detections</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${highConf.toLocaleString()}</div>
-                        <div class="stat-label">High Conf</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${avgFRP}</div>
-                        <div class="stat-label">Avg FRP (MW)</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">${dates.length}</div>
-                        <div class="stat-label">Days w/ Data</div>
+                        <div class="stat-label">Total</div>
                     </div>
                 </div>
-                ${nearIndustrial > 0 ? `
-                <div style="margin-top: 8px; display:flex; align-items:center; gap:8px; font-family: var(--font-mono); font-size: 9px;">
-                    <span style="color:#ff9100;" title="Detections within ~2km of known industrial sites (refineries, power plants, etc.) — likely routine flaring or industrial heat, not conflict-related">${nearIndustrial} near industrial</span>
-                    <span style="color:var(--text-muted);">|</span>
-                    <span style="color:var(--accent);" title="Detections not near any known industrial site — higher likelihood of conflict-related activity">${nonIndustrial} non-industrial</span>
-                </div>` : ''}
-                <div style="margin-top: 4px; font-family: var(--font-mono); font-size: 9px; color: var(--text-muted);">${dateRange}</div>
-            `;
+                <div style="margin-top:4px;font-family:var(--font-mono);font-size:9px;color:var(--text-muted);">${dateRange}</div>`;
 
-            // Country breakdown
+            // GDELT correlation status
+            if (!gdeltFetched) {
+                html += `<div style="margin-top:8px;padding:6px 8px;background:rgba(224,64,251,0.08);border:1px solid rgba(224,64,251,0.2);border-radius:3px;font-family:var(--font-mono);font-size:9px;color:#e040fb;">
+                    Enable GDELT layer to cross-reference thermal detections with conflict events
+                </div>`;
+            }
+
+            // Recent conflict-linked detections
+            if (conflictLinked > 0) {
+                const conflictDetections = filtered
+                    .filter(d => d.conflict_corroborated)
+                    .sort((a, b) => (b.acq_date || '').localeCompare(a.acq_date || ''))
+                    .slice(0, 5);
+
+                html += `<div style="margin-top:10px;font-family:var(--font-mono);font-size:9px;color:var(--text-secondary);letter-spacing:0.5px;text-transform:uppercase;">Recent Conflict-Linked</div>`;
+                html += `<div style="margin-top:4px;">`;
+                for (const d of conflictDetections) {
+                    const eventTypes = (d.conflict_events || []).map(e => e.type).filter((v,i,a) => a.indexOf(v) === i);
+                    const eventLabel = eventTypes.join(', ') || 'Conflict';
+                    const sourceUrl = d.conflict_events?.[0]?.source;
+                    html += `<div style="padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-family:var(--font-mono);font-size:9px;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                            <span style="color:var(--text-primary);">${d.country || 'Unknown'}</span>
+                            <span style="color:var(--text-muted);">${d.acq_date} ${d.acq_time || ''}</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px;">
+                            <span style="color:#ff1744;">${eventLabel}</span>
+                            <span style="color:var(--text-muted);">FRP ${d.frp || '?'} MW</span>
+                        </div>
+                        ${sourceUrl ? `<a href="${sourceUrl}" target="_blank" style="color:rgba(224,64,251,0.7);font-size:8px;text-decoration:none;">source ↗</a>` : ''}
+                    </div>`;
+                }
+                html += `</div>`;
+            }
+
+            document.getElementById('statsArea').innerHTML = html;
+
+            // Country breakdown — now ranked by corroborated count if available
             const byCty = {};
-            filtered.forEach(d => { byCty[d.country] = (byCty[d.country] || 0) + 1; });
-            const sorted = Object.entries(byCty).sort((a, b) => b[1] - a[1]);
+            const byCtyConflict = {};
+            filtered.forEach(d => {
+                byCty[d.country] = (byCty[d.country] || 0) + 1;
+                if (d.conflict_corroborated) byCtyConflict[d.country] = (byCtyConflict[d.country] || 0) + 1;
+            });
+
+            // Sort by conflict-corroborated count first, then total
+            const sorted = Object.entries(byCty).sort((a, b) => {
+                const ac = byCtyConflict[a[0]] || 0;
+                const bc = byCtyConflict[b[0]] || 0;
+                return bc - ac || b[1] - a[1];
+            });
             const maxCount = sorted.length > 0 ? sorted[0][1] : 1;
 
             if (sorted.length > 0) {
                 document.getElementById('countrySection').style.display = 'block';
-                document.getElementById('countryBreakdown').innerHTML = sorted.map(([name, count]) => `
+                document.getElementById('countryBreakdown').innerHTML = sorted.map(([name, count]) => {
+                    const cc = byCtyConflict[name] || 0;
+                    return `
                     <div class="country-row">
                         <span class="country-name">${name}</span>
                         <div class="country-bar"><div class="country-bar-fill" style="width: ${(count / maxCount * 100)}%"></div></div>
-                        <span class="country-count">${count.toLocaleString()}</span>
-                    </div>
-                `).join('');
+                        <span class="country-count">${cc > 0 ? `<span style="color:#ff1744;" title="${cc} conflict-linked">${cc}</span>/` : ''}${count.toLocaleString()}</span>
+                    </div>`;
+                }).join('');
             }
         }
 
@@ -2262,7 +2380,7 @@
         }
 
         function passesTimeFilter(dateStr) {
-            if (!dateStr) return true; // dateless items (vessels, live events) always pass
+            if (!dateStr) return true; // dateless items always pass
             const filterActive = timeFilterFrom || timeFilterTo;
             if (!filterActive) return true;
             if (timeFilterFrom && dateStr < timeFilterFrom) return false;
@@ -2574,6 +2692,13 @@
                 initTimeFilterDefaults();
                 if (acledVisible) renderAcled();
 
+                // Cross-reference thermal detections with conflict events
+                if (allDetections.length > 0) {
+                    tagConflictCorroboration();
+                    renderDetections();
+                    updateStats();
+                }
+
             } catch (err) {
                 setAcledStatus('GDELT error: ' + err.message, '#ff5252');
                 console.error('GDELT fetch error:', err);
@@ -2705,13 +2830,54 @@
                 paint: { 'text-color': '#fff' }
             });
 
-            // Click cluster to zoom in
+            // Click cluster — show summary popup with breakdown
             map.on('click', 'acled-clusters', (e) => {
-                const features = map.queryRenderedFeatures(e.point, { layers: ['acled-clusters'] });
-                const clusterId = features[0].properties.cluster_id;
-                map.getSource('acled').getClusterExpansionZoom(clusterId, (err, zoom) => {
-                    if (err) return;
-                    map.easeTo({ center: features[0].geometry.coordinates, zoom: zoom + 0.5 });
+                const feature = map.queryRenderedFeatures(e.point, { layers: ['acled-clusters'] })[0];
+                if (!feature) return;
+                const clusterId = feature.properties.cluster_id;
+                const count = feature.properties.point_count;
+                const coords = feature.geometry.coordinates.slice();
+                const src = map.getSource('acled');
+
+                src.getClusterLeaves(clusterId, count, 0, (err, leaves) => {
+                    if (err || !leaves) return;
+
+                    // Aggregate by type
+                    const byType = {};
+                    const countries = {};
+                    const dates = [];
+                    leaves.forEach(f => {
+                        const t = f.properties.event_type || 'Unknown';
+                        byType[t] = (byType[t] || 0) + 1;
+                        const c = f.properties.country || '';
+                        if (c) countries[c] = (countries[c] || 0) + 1;
+                        const d = f.properties.event_date;
+                        if (d) dates.push(d);
+                    });
+
+                    const typeColors = {
+                        'Armed Conflict': '#ff1744', 'Terror/Explosions': '#ff9100',
+                        'Violence': '#b388ff', 'Protests': '#ffd600', 'Military': '#888'
+                    };
+                    const typeRows = Object.entries(byType)
+                        .sort((a,b) => b[1] - a[1])
+                        .map(([t, n]) => `<div style="display:flex;justify-content:space-between;gap:12px;"><span style="color:${typeColors[t] || '#888'}">${t}</span><span style="color:var(--text-secondary)">${n}</span></div>`)
+                        .join('');
+
+                    const topCountry = Object.entries(countries).sort((a,b) => b[1] - a[1])[0];
+                    dates.sort();
+                    const dateRange = dates.length > 0 ? `${dates[0]}${dates.length > 1 && dates[dates.length-1] !== dates[0] ? ' → ' + dates[dates.length-1] : ''}` : '';
+
+                    let html = `<div class="popup-acled-header" style="color:#e040fb;">${count.toLocaleString()} GDELT Events</div>`;
+                    html += `<div style="margin:6px 0;font-size:10px;">${typeRows}</div>`;
+                    if (topCountry) html += `<div class="popup-row"><span class="popup-key">Top location</span><span class="popup-val">${topCountry[0]}</span></div>`;
+                    if (dateRange) html += `<div class="popup-row"><span class="popup-key">Date range</span><span class="popup-val">${dateRange}</span></div>`;
+                    html += `<div style="margin-top:6px;text-align:center;"><a href="#" onclick="event.preventDefault();map.getSource('acled').getClusterExpansionZoom(${clusterId},(e,z)=>{if(!e)map.easeTo({center:[${coords}],zoom:z+0.5})})" style="font-family:var(--font-mono);font-size:8px;color:#e040fb;">Zoom in →</a></div>`;
+
+                    new maplibregl.Popup({ offset: 12, maxWidth: '280px' })
+                        .setLngLat(coords)
+                        .setHTML(html)
+                        .addTo(map);
                 });
             });
             map.on('mouseenter', 'acled-clusters', () => map.getCanvas().style.cursor = 'pointer');
@@ -3061,272 +3227,21 @@
             const modeLabel = nlMode === 'compare' ? 'A/B Compare' : 'Single View';
 
             document.getElementById('nlStats').innerHTML = `
-                <div class="ais-stat">
-                    <div class="ais-stat-val" style="font-size:11px;color:#ffd600;">${currentDate || '—'}</div>
-                    <div class="ais-stat-label">Current</div>
+                <div class="sg-item">
+                    <div class="sg-val" style="font-size:11px;color:#ffd600;">${currentDate || '—'}</div>
+                    <div class="sg-label">Current</div>
                 </div>
-                <div class="ais-stat">
-                    <div class="ais-stat-val" style="font-size:11px;color:${nlMode==='compare'?'#ffd600':'var(--text-muted)'};">${nlMode==='compare' ? (beforeDate||'—') : '—'}</div>
-                    <div class="ais-stat-label">Baseline</div>
+                <div class="sg-item">
+                    <div class="sg-val" style="font-size:11px;color:${nlMode==='compare'?'#ffd600':'var(--text-muted)'};">${nlMode==='compare' ? (beforeDate||'—') : '—'}</div>
+                    <div class="sg-label">Baseline</div>
                 </div>
-                <div class="ais-stat">
-                    <div class="ais-stat-val" style="font-size:11px;">${modeLabel}</div>
-                    <div class="ais-stat-label">Mode</div>
+                <div class="sg-item">
+                    <div class="sg-val" style="font-size:11px;">${modeLabel}</div>
+                    <div class="sg-label">Mode</div>
                 </div>`;
         }
 
         // ═══════════════════════════════════════════
-        // PHASE 3: AIS VESSEL DATA — STRAIT OF HORMUZ
-        // ═══════════════════════════════════════════
-
-        let aisVisible = false;
-        let aisTypeFilter = { tanker: true, cargo: true, naval: true, other: true };
-
-        // Traffic Separation Scheme lanes + representative vessel positions
-        const HORMUZ_TSS = {
-            type: 'FeatureCollection',
-            features: [
-                // Inbound lane (NW into Gulf)
-                { type:'Feature', properties:{ name:'Inbound TSS Lane', direction:'inbound' }, geometry:{ type:'LineString', coordinates:[[56.45,25.3],[56.2,25.6],[55.9,25.95],[55.5,26.2],[55.0,26.4],[54.5,26.5]] }},
-                // Outbound lane (SE out of Gulf)
-                { type:'Feature', properties:{ name:'Outbound TSS Lane', direction:'outbound' }, geometry:{ type:'LineString', coordinates:[[54.5,26.65],[55.0,26.55],[55.5,26.38],[55.9,26.15],[56.2,25.8],[56.45,25.5]] }},
-                // Separation zone center
-                { type:'Feature', properties:{ name:'Separation Zone', direction:'separation' }, geometry:{ type:'LineString', coordinates:[[54.5,26.575],[55.0,26.475],[55.5,26.29],[55.9,26.05],[56.2,25.7],[56.45,25.4]] }}
-            ]
-        };
-
-        // Representative vessel positions — based on typical Hormuz traffic patterns
-        // Curated from publicly available AIS pattern analysis and OSINT
-        const HORMUZ_VESSELS = {
-            type: 'FeatureCollection',
-            features: [
-                // Tankers — the dominant traffic (crude oil, LNG, refined products)
-                { type:'Feature', properties:{ name:'VLCC Pacific Voyager', type:'tanker', flag:'LR', mmsi:'636092001', speed:11.2, heading:315, status:'underway', cargo:'Crude Oil' }, geometry:{ type:'Point', coordinates:[56.35,25.38] }},
-                { type:'Feature', properties:{ name:'Suezmax Gulf Pride', type:'tanker', flag:'PA', mmsi:'351456000', speed:12.4, heading:310, status:'underway', cargo:'Crude Oil' }, geometry:{ type:'Point', coordinates:[56.15,25.65] }},
-                { type:'Feature', properties:{ name:'Aframax Tehran Star', type:'tanker', flag:'IR', mmsi:'422100001', speed:10.8, heading:135, status:'underway', cargo:'Crude Oil' }, geometry:{ type:'Point', coordinates:[55.85,26.05] }},
-                { type:'Feature', properties:{ name:'LNG Doha Spirit', type:'tanker', flag:'QA', mmsi:'466200010', speed:14.1, heading:130, status:'underway', cargo:'LNG' }, geometry:{ type:'Point', coordinates:[55.45,26.25] }},
-                { type:'Feature', properties:{ name:'VLCC Ras Tanura', type:'tanker', flag:'SA', mmsi:'403001100', speed:0.0, heading:90, status:'anchored', cargo:'Crude Oil' }, geometry:{ type:'Point', coordinates:[55.0,26.35] }},
-                { type:'Feature', properties:{ name:'Product Tanker Al Jahra', type:'tanker', flag:'KW', mmsi:'447003200', speed:9.5, heading:310, status:'underway', cargo:'Refined Products' }, geometry:{ type:'Point', coordinates:[54.8,26.52] }},
-                { type:'Feature', properties:{ name:'VLCC Fujairah Dawn', type:'tanker', flag:'AE', mmsi:'470001500', speed:0.2, heading:180, status:'anchored', cargo:'Crude Oil' }, geometry:{ type:'Point', coordinates:[56.32,25.15] }},
-                { type:'Feature', properties:{ name:'Suezmax Basra Carrier', type:'tanker', flag:'IQ', mmsi:'425600100', speed:11.7, heading:140, status:'underway', cargo:'Crude Oil' }, geometry:{ type:'Point', coordinates:[55.6,26.15] }},
-                { type:'Feature', properties:{ name:'LNG Qatar Energy', type:'tanker', flag:'QA', mmsi:'466200020', speed:13.5, heading:125, status:'underway', cargo:'LNG' }, geometry:{ type:'Point', coordinates:[56.0,25.85] }},
-                { type:'Feature', properties:{ name:'VLCC Oriental Dragon', type:'tanker', flag:'SG', mmsi:'563003800', speed:10.2, heading:320, status:'underway', cargo:'Crude Oil' }, geometry:{ type:'Point', coordinates:[55.2,26.42] }},
-                { type:'Feature', properties:{ name:'Aframax Bandar Abbas', type:'tanker', flag:'IR', mmsi:'422100010', speed:0.0, heading:0, status:'at port', cargo:'Ballast' }, geometry:{ type:'Point', coordinates:[56.28,27.18] }},
-                { type:'Feature', properties:{ name:'Product Tanker Muscat Bay', type:'tanker', flag:'OM', mmsi:'461001200', speed:8.9, heading:305, status:'underway', cargo:'Refined Products' }, geometry:{ type:'Point', coordinates:[56.42,25.55] }},
-
-                // Cargo vessels
-                { type:'Feature', properties:{ name:'Container MV Dubai Express', type:'cargo', flag:'AE', mmsi:'470012000', speed:15.2, heading:310, status:'underway', cargo:'Containers' }, geometry:{ type:'Point', coordinates:[56.05,25.75] }},
-                { type:'Feature', properties:{ name:'Bulk Carrier Iron Horizon', type:'cargo', flag:'MH', mmsi:'538006500', speed:12.0, heading:315, status:'underway', cargo:'Iron Ore' }, geometry:{ type:'Point', coordinates:[55.7,26.05] }},
-                { type:'Feature', properties:{ name:'General Cargo Khalifa Port', type:'cargo', flag:'AE', mmsi:'470009800', speed:0.1, heading:270, status:'anchored', cargo:'General' }, geometry:{ type:'Point', coordinates:[54.6,26.48] }},
-                { type:'Feature', properties:{ name:'Container Jebel Ali Runner', type:'cargo', flag:'PA', mmsi:'351783000', speed:16.5, heading:140, status:'underway', cargo:'Containers' }, geometry:{ type:'Point', coordinates:[55.3,26.32] }},
-                { type:'Feature', properties:{ name:'RoRo Gulf Transporter', type:'cargo', flag:'BH', mmsi:'408001000', speed:14.0, heading:300, status:'underway', cargo:'Vehicles' }, geometry:{ type:'Point', coordinates:[55.1,26.48] }},
-
-                // Naval vessels — key strategic presence
-                { type:'Feature', properties:{ name:'IRGCN Fast Attack Craft', type:'naval', flag:'IR', mmsi:'422000001', speed:22.5, heading:180, status:'patrol', cargo:'Military', force:'IRGC Navy' }, geometry:{ type:'Point', coordinates:[55.95,26.72] }},
-                { type:'Feature', properties:{ name:'IRIN Frigate Sahand', type:'naval', flag:'IR', mmsi:'422000005', speed:14.0, heading:90, status:'patrol', cargo:'Military', force:'Iranian Navy' }, geometry:{ type:'Point', coordinates:[56.15,26.55] }},
-                { type:'Feature', properties:{ name:'USS Destroyer (DDG)', type:'naval', flag:'US', mmsi:'338000001', speed:16.0, heading:270, status:'patrol', cargo:'Military', force:'US Navy / 5th Fleet' }, geometry:{ type:'Point', coordinates:[55.5,25.85] }},
-                { type:'Feature', properties:{ name:'IRGCN Patrol Vessel', type:'naval', flag:'IR', mmsi:'422000002', speed:18.0, heading:210, status:'patrol', cargo:'Military', force:'IRGC Navy' }, geometry:{ type:'Point', coordinates:[56.3,26.95] }},
-                { type:'Feature', properties:{ name:'CMF Coalition Patrol', type:'naval', flag:'GB', mmsi:'235000100', speed:12.5, heading:45, status:'patrol', cargo:'Military', force:'CMF CTF-150' }, geometry:{ type:'Point', coordinates:[56.5,25.25] }},
-                { type:'Feature', properties:{ name:'Omani Coast Guard', type:'naval', flag:'OM', mmsi:'461000001', speed:8.0, heading:170, status:'patrol', cargo:'Military', force:'Royal Navy of Oman' }, geometry:{ type:'Point', coordinates:[56.58,26.15] }},
-
-                // Other (fishing, support, survey)
-                { type:'Feature', properties:{ name:'Dhow Fishing Cluster', type:'other', flag:'IR', mmsi:'422500100', speed:3.2, heading:90, status:'fishing', cargo:'Fish' }, geometry:{ type:'Point', coordinates:[56.4,26.85] }},
-                { type:'Feature', properties:{ name:'Survey Vessel Oceanis', type:'other', flag:'AE', mmsi:'470020000', speed:4.5, heading:60, status:'survey', cargo:'Research' }, geometry:{ type:'Point', coordinates:[56.25,25.95] }},
-                { type:'Feature', properties:{ name:'Tug Persian Gulf', type:'other', flag:'IR', mmsi:'422300050', speed:6.0, heading:330, status:'underway', cargo:'Tug/Support' }, geometry:{ type:'Point', coordinates:[56.05,27.1] }},
-                { type:'Feature', properties:{ name:'Fishing Vessel Khasab', type:'other', flag:'OM', mmsi:'461200030', speed:5.5, heading:200, status:'fishing', cargo:'Fish' }, geometry:{ type:'Point', coordinates:[56.22,26.25] }},
-                { type:'Feature', properties:{ name:'Supply Vessel Jask', type:'other', flag:'IR', mmsi:'422300080', speed:7.0, heading:150, status:'underway', cargo:'Supply' }, geometry:{ type:'Point', coordinates:[57.55,25.65] }}
-            ]
-        };
-
-        function getAisColor(vtype) {
-            if (vtype === 'tanker') return '#ff9100';
-            if (vtype === 'cargo') return '#00e5ff';
-            if (vtype === 'naval') return '#ff1744';
-            return '#b388ff';
-        }
-
-        function toggleAIS() {
-            aisVisible = !aisVisible;
-            document.getElementById('aisSwitch').classList.toggle('active', aisVisible);
-            document.getElementById('aisControls').style.display = aisVisible ? 'block' : 'none';
-            document.getElementById('aisLegend').style.display = aisVisible ? 'block' : 'none';
-
-            ['ais-vessels','ais-pulse','ais-tss-inbound','ais-tss-outbound','ais-tss-separation'].forEach(id => {
-                if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', aisVisible ? 'visible' : 'none');
-            });
-
-            if (aisVisible) renderAIS();
-        }
-
-        function toggleAisType(el) {
-            const t = el.dataset.vtype;
-            aisTypeFilter[t] = !aisTypeFilter[t];
-            el.classList.toggle('off', !aisTypeFilter[t]);
-            renderAIS();
-        }
-
-        function renderAIS() {
-            const filtered = {
-                type: 'FeatureCollection',
-                features: HORMUZ_VESSELS.features.filter(f => aisTypeFilter[f.properties.type])
-            };
-
-            if (map.getSource('ais-vessels')) map.getSource('ais-vessels').setData(filtered);
-
-            // Stats
-            const byType = {};
-            let totalSpeed = 0, moving = 0;
-            filtered.features.forEach(f => {
-                byType[f.properties.type] = (byType[f.properties.type] || 0) + 1;
-                if (f.properties.speed > 0.5) { totalSpeed += f.properties.speed; moving++; }
-            });
-
-            const navalCount = byType.naval || 0;
-            const tankerCount = byType.tanker || 0;
-
-            document.getElementById('aisStats').innerHTML = `
-                <div class="ais-stat">
-                    <div class="ais-stat-val" style="color:#00e5ff;">${filtered.features.length}</div>
-                    <div class="ais-stat-label">Vessels</div>
-                </div>
-                <div class="ais-stat">
-                    <div class="ais-stat-val" style="color:#ff9100;">${tankerCount}</div>
-                    <div class="ais-stat-label">Tankers</div>
-                </div>
-                <div class="ais-stat">
-                    <div class="ais-stat-val" style="color:#ff1744;">${navalCount}</div>
-                    <div class="ais-stat-label">Naval</div>
-                </div>`;
-        }
-
-        function flyToHormuz() {
-            map.flyTo({ center: [56, 26.2], zoom: 7.5, duration: 2000 });
-        }
-
-        function initAISLayer() {
-            // TSS lanes source
-            map.addSource('ais-tss', {
-                type: 'geojson',
-                data: HORMUZ_TSS
-            });
-
-            // Inbound lane
-            map.addLayer({
-                id: 'ais-tss-inbound',
-                type: 'line',
-                source: 'ais-tss',
-                filter: ['==', ['get', 'direction'], 'inbound'],
-                layout: { visibility: 'none', 'line-cap': 'round' },
-                paint: {
-                    'line-color': 'rgba(0,229,255,0.3)',
-                    'line-width': ['interpolate', ['linear'], ['zoom'], 5, 2, 9, 10],
-                    'line-dasharray': [3, 2]
-                }
-            });
-
-            // Outbound lane
-            map.addLayer({
-                id: 'ais-tss-outbound',
-                type: 'line',
-                source: 'ais-tss',
-                filter: ['==', ['get', 'direction'], 'outbound'],
-                layout: { visibility: 'none', 'line-cap': 'round' },
-                paint: {
-                    'line-color': 'rgba(0,229,255,0.3)',
-                    'line-width': ['interpolate', ['linear'], ['zoom'], 5, 2, 9, 10],
-                    'line-dasharray': [3, 2]
-                }
-            });
-
-            // Separation zone
-            map.addLayer({
-                id: 'ais-tss-separation',
-                type: 'line',
-                source: 'ais-tss',
-                filter: ['==', ['get', 'direction'], 'separation'],
-                layout: { visibility: 'none', 'line-cap': 'round' },
-                paint: {
-                    'line-color': 'rgba(255,23,68,0.2)',
-                    'line-width': 1,
-                    'line-dasharray': [2, 4]
-                }
-            });
-
-            // Vessel positions source
-            map.addSource('ais-vessels', {
-                type: 'geojson',
-                data: { type: 'FeatureCollection', features: [] }
-            });
-
-            // Vessel pulse/halo
-            map.addLayer({
-                id: 'ais-pulse',
-                type: 'circle',
-                source: 'ais-vessels',
-                layout: { visibility: 'none' },
-                paint: {
-                    'circle-radius': ['interpolate', ['linear'], ['zoom'], 5, 8, 10, 18],
-                    'circle-color': ['match', ['get', 'type'], 'tanker','#ff9100', 'cargo','#00e5ff', 'naval','#ff1744', '#b388ff'],
-                    'circle-opacity': 0.1,
-                    'circle-stroke-width': 0
-                }
-            });
-
-            // Vessel dots
-            map.addLayer({
-                id: 'ais-vessels',
-                type: 'symbol',
-                source: 'ais-vessels',
-                layout: {
-                    visibility: 'none',
-                    'icon-image': 'vessel-icon',
-                    'icon-size': ['interpolate', ['linear'], ['zoom'],
-                        5, ['match', ['get', 'type'], 'naval', 0.45, 'tanker', 0.45, 0.35],
-                        10, ['match', ['get', 'type'], 'naval', 0.8, 'tanker', 0.75, 0.6]
-                    ],
-                    'icon-rotate': ['coalesce', ['get', 'heading'], 0],
-                    'icon-rotation-alignment': 'map',
-                    'icon-allow-overlap': true,
-                    'icon-ignore-placement': true
-                },
-                paint: {
-                    'icon-color': ['match', ['get', 'type'], 'tanker','#ff9100', 'cargo','#00e5ff', 'naval','#ff1744', '#b388ff'],
-                    'icon-opacity': 0.9
-                }
-            });
-
-            // Click handler
-            map.on('click', 'ais-vessels', (e) => {
-                if (!e.features.length) return;
-                const f = e.features[0];
-                const p = f.properties;
-                const coords = f.geometry.coordinates.slice();
-                const color = getAisColor(p.type);
-
-                let forceRow = '';
-                if (p.force) {
-                    forceRow = `<div class="popup-row"><span class="popup-key">Force</span><span class="popup-val" style="color:${color}">${p.force}</span></div>`;
-                }
-
-                new maplibregl.Popup({ offset: 12 })
-                    .setLngLat(coords)
-                    .setHTML(`
-                        <div class="popup-header" style="border-left:3px solid ${color}; padding-left:8px;">${p.name}</div>
-                        <div class="popup-row"><span class="popup-key">Type</span><span class="popup-val" style="color:${color}">${p.type.toUpperCase()}</span></div>
-                        <div class="popup-row"><span class="popup-key">Flag</span><span class="popup-val">${p.flag}</span></div>
-                        <div class="popup-row"><span class="popup-key">MMSI</span><span class="popup-val">${p.mmsi}</span></div>
-                        <div class="popup-row"><span class="popup-key">Speed</span><span class="popup-val">${p.speed} kn</span></div>
-                        <div class="popup-row"><span class="popup-key">Heading</span><span class="popup-val">${p.heading}°</span></div>
-                        <div class="popup-row"><span class="popup-key">Status</span><span class="popup-val">${p.status}</span></div>
-                        <div class="popup-row"><span class="popup-key">Cargo</span><span class="popup-val">${p.cargo}</span></div>
-                        ${forceRow}
-                    `)
-                    .addTo(map);
-            });
-
-            map.on('mouseenter', 'ais-vessels', () => map.getCanvas().style.cursor = 'pointer');
-            map.on('mouseleave', 'ais-vessels', () => map.getCanvas().style.cursor = '');
-        }
 
         // ═══════════════════════════════════════════
         // PHASE 4: SATELLITE IMAGERY LAYERS
@@ -4014,8 +3929,6 @@
             const svgIcons = {
                 // Aircraft — plane silhouette pointing north (for heading rotation)
                 'aircraft-icon': `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="#fff" d="M16 2L18 10L18 14L29 18L29 20L18 18L18 24L23 28L23 30L18 27L16 30L14 27L9 30L9 28L14 24L14 18L3 20L3 18L14 14L14 10Z"/></svg>`,
-                // Vessel — ship silhouette pointing north (for heading rotation)
-                'vessel-icon': `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="#fff" d="M16 3L21 12L22 14L22 24L20 28L12 28L10 24L10 14L11 12Z"/><rect fill="#fff" x="13" y="14" width="6" height="5"/></svg>`,
                 // Satellite — diamond body + rectangular solar panels, ONE connected path for reliable SDF
                 'satellite-icon': `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="#fff" d="M16 5 L21 11 L26 11 L26 8 L32 8 L32 24 L26 24 L26 21 L21 21 L16 27 L11 21 L6 21 L6 24 L0 24 L0 8 L6 8 L6 11 L11 11 Z"/></svg>`,
                 // Industrial — factory with smokestack
@@ -4475,7 +4388,6 @@
                 ind: indVisible ? 1 : 0,
                 acl: acledVisible ? 1 : 0,
                 nl: nlVisible ? 1 : 0,
-                ais: aisVisible ? 1 : 0,
                 sp: satpassVisible ? 1 : 0,
                 ac: aircraftVisible ? 1 : 0
             };
@@ -4546,7 +4458,6 @@
                 if (state.ind && !indVisible) toggleIndustrial();
                 if (state.acl && !acledVisible) toggleAcled();
                 if (state.nl && !nlVisible) toggleNightlights();
-                if (state.ais && !aisVisible) toggleAIS();
                 if (state.sp && !satpassVisible) toggleSatPass();
                 if (state.ac && !aircraftVisible) toggleAircraft();
             }, 500);
@@ -4612,7 +4523,6 @@
             if (indVisible) activeLayers.push({ color: '#00e5ff', label: 'Industrial Site' });
             if (acledVisible) activeLayers.push({ color: '#e040fb', label: 'Conflict Event' });
             if (nlVisible) activeLayers.push({ color: '#b388ff', label: 'Nighttime Lights' });
-            if (aisVisible) activeLayers.push({ color: '#ff9100', label: 'AIS Vessel' });
 
             if (activeLayers.length > 0) {
                 const legendPad = 12;
@@ -4659,9 +4569,10 @@
                 return true;
             });
             if (filtered.length > 0) {
+                const conflictC = filtered.filter(d => d.conflict_corroborated).length;
                 const highC = filtered.filter(d => d.confidence === 'high').length;
                 const nearInd = filtered.filter(d => d.near_industrial).length;
-                const statsText = `${filtered.length} detections  |  ${highC} high-conf  |  ${nearInd} near industrial`;
+                const statsText = `${filtered.length} detections  |  ${conflictC} conflict-linked  |  ${highC} high-conf  |  ${nearInd} industrial`;
                 const statsFont = Math.round(w * 0.009);
                 ctx.font = `${statsFont}px "IBM Plex Mono", monospace`;
                 const sw = ctx.measureText(statsText).width;
