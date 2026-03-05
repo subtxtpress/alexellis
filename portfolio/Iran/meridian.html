@@ -1526,6 +1526,12 @@
             </button>
         </div>
 
+        <div style="padding:8px 16px;border-top:1px solid var(--border);">
+            <a href="https://subtxtpress.github.io/home/portfolio/Iran/README.md#user-guide" target="_blank" style="font-family:var(--font-mono);font-size:10px;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:6px;">
+                <span style="font-size:13px;">📖</span> User Guide
+            </a>
+        </div>
+
         <div class="attribution">
             Data: <a href="https://firms.modaps.eosdis.nasa.gov/" target="_blank">NASA FIRMS</a> (VIIRS/MODIS NRT)<br>
             Satellite: NOAA-20, NOAA-21, Suomi-NPP, Aqua/Terra<br>
@@ -3200,7 +3206,7 @@
 
         function setNlPreset(preset) {
             let daysAgo;
-            if (preset === 'pre-conflict') daysAgo = 365; // ~1 year before
+            if (preset === 'pre-conflict') daysAgo = 730; // ~2 years before
             else if (preset === '6mo') daysAgo = 180;
             else if (preset === '1yr') daysAgo = 365;
             else daysAgo = 90;
@@ -3473,7 +3479,7 @@
                 const coords = e.lngLat;
 
                 const cogUrl = p.cog_href || '';
-                const loadBtn = cogUrl ? `<div style="margin-top:6px;"><button onclick="loadMaxarCog('${encodeURIComponent(cogUrl)}')" style="font-family:var(--font-mono);font-size:9px;padding:4px 8px;background:rgba(255,152,0,0.15);border:1px solid rgba(255,152,0,0.3);color:#ff9800;border-radius:3px;cursor:pointer;">Load Imagery</button></div>` : '';
+                const loadBtn = cogUrl ? `<div style="margin-top:6px;"><button onclick="loadMaxarCog('${encodeURIComponent(cogUrl)}')" style="font-family:var(--font-mono);font-size:9px;padding:4px 8px;background:rgba(255,152,0,0.15);border:1px solid rgba(255,152,0,0.3);color:#ff9800;border-radius:3px;cursor:pointer;">Open Imagery</button></div>` : '';
 
                 new maplibregl.Popup({ offset: 12 })
                     .setLngLat(coords)
@@ -3619,32 +3625,11 @@
         }
 
         function loadMaxarCog(encodedUrl) {
+            // titiler.xyz tile service is unreliable — direct COG loading removed.
+            // Open the COG URL directly so the user can download or view in Copernicus Browser.
             const cogUrl = decodeURIComponent(encodedUrl);
-            try {
-                if (map.getLayer('maxar-raster-layer')) map.removeLayer('maxar-raster-layer');
-                if (map.getSource('maxar-raster')) map.removeSource('maxar-raster');
-
-                const tileUrl = TITILER_BASE + '?url=' + encodeURIComponent(cogUrl);
-                map.addSource('maxar-raster', {
-                    type: 'raster',
-                    tiles: [tileUrl],
-                    tileSize: 256,
-                    maxzoom: 18
-                });
-                map.addLayer({
-                    id: 'maxar-raster-layer',
-                    type: 'raster',
-                    source: 'maxar-raster',
-                    layout: { visibility: 'visible' },
-                    paint: { 'raster-opacity': 0.8 }
-                }, 'detections-heat');
-
-                document.getElementById('maxarStatus').textContent = 'Maxar imagery loaded.';
-                updateSatLegend();
-            } catch (err) {
-                console.warn('Failed to load Maxar COG:', err);
-                document.getElementById('maxarStatus').textContent = 'COG load failed. Image may require direct download.';
-            }
+            window.open(cogUrl, '_blank');
+            document.getElementById('maxarStatus').textContent = 'Opened imagery URL in new tab.';
         }
 
         // Satellite legend visibility helper
@@ -4303,7 +4288,7 @@
         }
 
         function zoomToAircraftBbox() {
-            map.fitBounds([[OPENSKY_BBOX.lomin, OPENSKY_BBOX.lamin], [OPENSKY_BBOX.lomax, OPENSKY_BBOX.lamax]], { padding: 20, duration: 2000 });
+            map.fitBounds([[AC_BBOX.lomin, AC_BBOX.lamin], [AC_BBOX.lomax, AC_BBOX.lamax]], { padding: 20, duration: 2000 });
         }
 
         function initAircraftLayer() {
@@ -4438,12 +4423,12 @@
             // Time filter
             if (state.tf) {
                 timeFilterFrom = state.tf;
-                const fromEl = document.getElementById('timeFrom');
+                const fromEl = document.getElementById('dateFrom');
                 if (fromEl) fromEl.value = state.tf;
             }
             if (state.tt) {
                 timeFilterTo = state.tt;
-                const toEl = document.getElementById('timeTo');
+                const toEl = document.getElementById('dateTo');
                 if (toEl) toEl.value = state.tt;
             }
 

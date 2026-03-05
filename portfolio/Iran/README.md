@@ -2,19 +2,18 @@
 
 **Middle East Regional Intelligence Dashboard for Infrared Anomaly Notification**
 
-A zero-dependency, single-file OSINT tool for monitoring thermal anomalies, infrastructure impact, conflict events, maritime activity, satellite imagery, orbital passes, and live aircraft tracking across the Middle East theater. Built for investigative journalists, OSINT analysts, and GIS researchers.
+A zero-dependency, single-file OSINT tool for monitoring thermal anomalies, infrastructure impact, conflict events, satellite imagery, orbital passes, and live aircraft tracking across the Middle East theater. Built for investigative journalists, OSINT analysts, and GIS researchers.
 
 ![MERIDIAN](img/meridian.png)
 
 ## What It Does
 
-MERIDIAN fuses ten open-source intelligence layers into a single interactive map:
+MERIDIAN fuses nine open-source intelligence layers into a single interactive map:
 
 - **Thermal Anomalies** — Near real-time fire and heat detections from NASA FIRMS across four satellite sensors (VIIRS NOAA-20, NOAA-21, Suomi-NPP, MODIS Aqua/Terra). Filterable by confidence level, satellite source, time range, and geographic region.
 - **Industrial Sites** — 108 known refineries, power plants, gas processing facilities, and petrochemical complexes. Detections within ~2km of these sites are automatically tagged and visually de-emphasized to separate routine industrial flaring from conflict-relevant activity.
 - **Conflict Events** — Live GDELT Global Knowledge Graph data (armed conflict, terror/explosions, violence, protests, military activity) with event-type filtering and temporal alignment to thermal detections. Auto-fetched from GDELT's free API — no registration required.
 - **Nighttime Lights** — NASA GIBS VIIRS Day/Night Band imagery with before/after comparison mode for assessing infrastructure damage and power grid disruption.
-- **Maritime Traffic** — AIS vessel pattern data for the Strait of Hormuz, showing tanker, cargo, naval, and other vessel activity along Traffic Separation Scheme lanes.
 - **MODIS True-Color** — NASA GIBS MODIS Terra Corrected Reflectance daily imagery with date picker and opacity controls for visual corroboration of thermal detections.
 - **Sentinel-2 Optical** — On-demand 10m true-color imagery via AWS Earth Search STAC API. Queries recent cloud-free scenes for the current map view, with clickable footprints and COG tile rendering.
 - **Maxar Crisis Imagery** — High-resolution event-driven imagery from the Maxar Open Data Program (CC-BY-NC 4.0). Displays available crisis imagery footprints with metadata and optional COG overlay loading.
@@ -36,7 +35,7 @@ MERIDIAN fuses ten open-source intelligence layers into a single interactive map
 
 ## Architecture
 
-The entire application is a single HTML file (~4,600 lines). No build step, no backend, no dependencies to install. Open it in a browser and it works.
+The entire application is a single HTML file (~4,650 lines). No build step, no backend, no dependencies to install. Open it in a browser and it works.
 
 **Stack:** MapLibre GL JS v4.1.2 / Turf.js v7 / satellite.js v5 / IBM Plex typography / CartoDB + Esri basemaps
 
@@ -47,7 +46,6 @@ The entire application is a single HTML file (~4,600 lines). No build step, no b
 | Industrial | [EOG/VIIRS Nightfire](https://eogdata.mines.edu/products/vnf/global_gas_flare.html), [World Bank GGFR](https://www.worldbank.org/en/programs/gasflaringreduction) | Static catalog |
 | Conflict | [GDELT](https://www.gdeltproject.org/) GKG | Live, 24-hour rolling window |
 | Nighttime | [NASA GIBS](https://earthdata.nasa.gov/gibs) VIIRS DNB | Daily composites |
-| Maritime | OSINT AIS reporting | Representative patterns |
 | MODIS True-Color | [NASA GIBS](https://earthdata.nasa.gov/gibs) MODIS Terra | Daily composites |
 | Sentinel-2 | [AWS Earth Search](https://earth-search.aws.element84.com/v1) STAC | On-demand query |
 | Maxar Crisis | [Maxar Open Data](https://www.maxar.com/open-data) | Event-driven |
@@ -63,9 +61,42 @@ open meridian.html
 
 1. Click **Load Satellite Data** to pull the latest detections from NASA FIRMS
 2. Use the confidence, satellite, and time filters to narrow the signal
-3. Toggle overlay layers (Industrial Sites, Conflict Events, Nighttime Lights, AIS Vessels, Satellite Imagery, Satellite Passes, Aircraft Tracking) for multi-source analysis
+3. Toggle overlay layers (Industrial Sites, Conflict Events, Nighttime Lights, Satellite Imagery, Satellite Passes, Aircraft Tracking) for multi-source analysis
 4. Click any detection for full metadata including satellite, FRP, brightness temperature, and industrial proximity
 5. Use **Share View** to copy a stateful URL or **Export** to save a publication-ready screenshot
+
+## User Guide
+
+### 1. Load the data
+Click **Load Satellite Data** in the sidebar. This pulls the latest thermal anomaly detections from NASA FIRMS. It takes a few seconds.
+
+### 2. Explore the map
+Heat detections appear as colored dots across the Middle East. Red/orange = high confidence, yellow = nominal. Click any dot for details like satellite source, fire radiative power, and whether it's near known infrastructure.
+
+### 3. Filter what you see
+Use the sidebar panels to narrow results:
+- **Region** — Focus on a specific country (Iran, Iraq, Syria, etc.)
+- **Confidence** — Default is "high" only. Lower it to see more detections (includes agricultural burns and noise)
+- **Satellite** — Toggle individual sensors on/off
+- **Time Window** — Adjust the date range
+
+### 4. Add overlay layers
+Toggle these in the sidebar for multi-source analysis:
+- **Industrial Sites** — Shows refineries and plants so you can distinguish routine flaring from unusual activity
+- **Conflict Events** — GDELT data showing armed conflict, protests, and military activity
+- **Nighttime Lights** — Before/after satellite imagery to spot power grid disruption
+- **MODIS / Sentinel-2 / Maxar** — Optical satellite imagery for visual confirmation
+- **Satellite Passes** — See when imaging satellites will next fly over your area
+- **Aircraft Tracking** — Live air traffic with callsigns and altitude
+
+### 5. Share or export
+- **Share View** (utility bar) — Copies a URL that preserves your exact map state, filters, and layers
+- **Export** (utility bar) — Saves a publication-ready PNG screenshot with stats and attribution
+
+### Tips
+- Use the **Timeline Player** at the bottom to animate detections day-by-day
+- Switch basemaps (bottom of sidebar) between dark, satellite, and terrain views
+- The sidebar auto-collapses on mobile — tap the toggle to reopen it
 
 ## License
 
