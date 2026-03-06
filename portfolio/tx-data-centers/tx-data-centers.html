@@ -690,6 +690,10 @@
       box-shadow: var(--shadow-sm);
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1.5rem;
     }
 
     .intro-body::before {
@@ -707,7 +711,7 @@
       font-size: 1rem;
       font-weight: 600;
       color: var(--text);
-      margin-bottom: 1rem;
+      margin-bottom: 0;
       letter-spacing: -0.01em;
     }
 
@@ -719,6 +723,16 @@
     }
 
     .intro-body p:last-child { margin-bottom: 0; }
+
+    .intro-body h4 {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.4rem;
+    }
 
     .intro-sidebar {
       display: flex;
@@ -1138,17 +1152,26 @@
 
     <div class="intro-grid">
       <div class="intro-body">
-        <h2>What this is</h2>
-        <p>
-          Texas offers a sales tax exemption on electricity, equipment, and other qualifying costs for registered "Large Data Center Projects" and "Qualifying Data Centers" under the Texas Comptroller's STAR program. 
-          The program was designed to attract cloud infrastructure investment. Instead it's become a tax shelter for an increasingly diverse set of operators — including cryptocurrency miners, foreign sovereign wealth vehicles, and companies whose beneficial owner is deliberately obscured behind a chain of LLCs.
-        </p>
-        <p>
-          This database tracks all 112 unique facilities registered as of early 2026 (114 Comptroller entries, including 2 expired+renewal pairs for Giga Texas and Hockley). The goal is to answer questions the Comptroller's registry doesn't: Who actually controls these facilities? How much power are they drawing from ERCOT? What water are they consuming in already water-stressed counties? What did local governments give away in additional abatements to land them?
-        </p>
-        <p>
-          This is an active investigation. 106 of 112 unique facility addresses have been confirmed at the street level — 5 remain at road or county level only (no street number), and 1 (Lancium Turkey 1) has no address on file with the Comptroller. FOIA requests are pending. If you have documents, tips, or corrections — especially on West Texas facilities and ERCOT curtailment agreements — reach out.
-        </p>
+        <h2>Overview</h2>
+        <div>
+          <h4>The Program</h4>
+          <p>
+            Texas offers a sales tax exemption on electricity, equipment, and other qualifying costs for registered "Large Data Center Projects" and "Qualifying Data Centers" under the Texas Comptroller's STAR program.
+            The program was designed to attract cloud infrastructure investment. Instead it's become a tax shelter for an increasingly diverse set of operators — including cryptocurrency miners, foreign sovereign wealth vehicles, and companies whose beneficial owner is deliberately obscured behind a chain of LLCs.
+          </p>
+        </div>
+        <div>
+          <h4>The Database</h4>
+          <p>
+            This database tracks all 112 unique facilities registered as of early 2026 (114 Comptroller entries, including 2 expired+renewal pairs for Giga Texas and Hockley). The goal is to answer questions the Comptroller's registry doesn't: Who actually controls these facilities? How much power are they drawing from ERCOT? What water are they consuming in already water-stressed counties? What did local governments give away in additional abatements to land them?
+          </p>
+        </div>
+        <div>
+          <h4>Status</h4>
+          <p>
+            This is an active investigation. 106 of 112 unique facility addresses have been confirmed at the street level — 5 remain at road or county level only (no street number), and 1 (Lancium Turkey 1) has no address on file with the Comptroller. FOIA requests are pending. If you have documents, tips, or corrections — especially on West Texas facilities and ERCOT curtailment agreements — reach out.
+          </p>
+        </div>
       </div>
 
       <div class="intro-sidebar">
