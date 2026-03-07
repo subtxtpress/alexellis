@@ -1937,7 +1937,7 @@
 
         // CORS-safe fetch: try direct, fall back to proxy if blocked
         // Domains known to block CORS from GitHub Pages — skip direct fetch
-        const CORS_BLOCKED_DOMAINS = ['api.gdeltproject.org'];
+        const CORS_BLOCKED_DOMAINS = [];
 
         async function corsFetch(url) {
             const skipDirect = CORS_BLOCKED_DOMAINS.some(d => url.includes(d));
@@ -2641,17 +2641,20 @@
                 const allFeatures = [];
                 const seenKeys = new Set();
 
-                for (const theme of GDELT_THEMES) {
-                    try {
+                // Fire all theme queries in parallel (GDELT GKG API is CORS-enabled)
+                const results = await Promise.allSettled(
+                    GDELT_THEMES.map(async theme => {
                         const url = `${GDELT_GKG_BASE}?QUERY=${theme}&TIMESPAN=1440&MAXROWS=5000`;
                         const text = await corsFetch(url);
-                        const json = JSON.parse(text);
-                        if (json.features) allFeatures.push(...json.features);
-                    } catch (e) {
-                        console.warn(`GDELT ${theme} fetch failed:`, e.message);
+                        return { theme, json: JSON.parse(text) };
+                    })
+                );
+                for (const r of results) {
+                    if (r.status === 'fulfilled' && r.value.json.features) {
+                        allFeatures.push(...r.value.json.features);
+                    } else if (r.status === 'rejected') {
+                        console.warn('GDELT fetch failed:', r.reason?.message);
                     }
-                    // Rate limit: 1 req per 5 seconds
-                    await new Promise(r => setTimeout(r, 5500));
                 }
 
                 // Filter to Middle East bbox + deduplicate by url+location
