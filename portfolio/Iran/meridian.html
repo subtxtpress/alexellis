@@ -2951,11 +2951,10 @@
                 if (zoomLink) {
                     zoomLink.addEventListener('click', (evt) => {
                         evt.preventDefault();
-                        src.getClusterExpansionZoom(clusterId, (err, zoom) => {
-                            if (!err) {
-                                popup.remove();
-                                map.easeTo({ center: coords, zoom: zoom + 0.5 });
-                            }
+                        const cid = Number(clusterId);
+                        src.getClusterExpansionZoom(cid, (err, zoom) => {
+                            popup.remove();
+                            map.easeTo({ center: coords, zoom: err ? map.getZoom() + 2 : zoom + 0.5 });
                         });
                     });
                 }
