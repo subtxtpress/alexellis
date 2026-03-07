@@ -2626,8 +2626,8 @@
         function isAcledLive() { return acledLiveData !== null; }
         function getAcledSource() { return acledLiveData || ACLED_DATA; }
 
-        // GDELT GKG GeoJSON API — free, no auth, CORS-enabled, updates every 15 min
-        const GDELT_GKG_BASE = 'https://api.gdeltproject.org/api/v1/gkg_geojson';
+        // GDELT GKG via Supabase Edge Function proxy (GDELT v1 has no CORS)
+        const GDELT_PROXY = 'https://ovxsolwdzxewxgggdfow.supabase.co/functions/v1/gdelt-proxy';
         // Conflict-related GKG themes to query
         const GDELT_THEMES = ['ARMEDCONFLICT', 'KILL', 'PROTEST', 'TERROR', 'MILITARY'];
         // Middle East bounding box: lon 25-65, lat 12-42
@@ -2642,12 +2642,14 @@
                 const allFeatures = [];
                 const seenKeys = new Set();
 
-                // Fire all theme queries in parallel (GDELT GKG API is CORS-enabled)
+                // Fire all theme queries in parallel via Supabase proxy
                 const results = await Promise.allSettled(
                     GDELT_THEMES.map(async theme => {
-                        const url = `${GDELT_GKG_BASE}?QUERY=${theme}&TIMESPAN=1440&MAXROWS=5000`;
-                        const text = await corsFetch(url);
-                        return { theme, json: JSON.parse(text) };
+                        const url = `${GDELT_PROXY}?query=${theme}&timespan=1440&maxrows=5000`;
+                        const r = await fetch(url);
+                        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                        const json = await r.json();
+                        return { theme, json };
                     })
                 );
                 for (const r of results) {
