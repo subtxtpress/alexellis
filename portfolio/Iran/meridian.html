@@ -1953,8 +1953,9 @@
 
         // Direct proxy fetch — tries multiple CORS proxies in sequence
         const CORS_PROXIES = [
-            'https://api.codetabs.com/v1/proxy/?quest=',
-            'https://api.allorigins.win/raw?url='
+            'https://corsproxy.io/?url=',
+            'https://api.allorigins.win/raw?url=',
+            'https://api.codetabs.com/v1/proxy/?quest='
         ];
         async function proxyFetch(url) {
             let lastErr;
