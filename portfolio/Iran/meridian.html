@@ -2807,10 +2807,61 @@
                 data: { type: 'FeatureCollection', features: [] },
                 cluster: true,
                 clusterMaxZoom: 11,
-                clusterRadius: 45
+                clusterRadius: 45,
+                clusterProperties: {
+                    'cnt_battles':   ['+', ['case', ['==', ['get', 'event_type'], 'Armed Conflict'],    1, 0]],
+                    'cnt_explosions':['+', ['case', ['==', ['get', 'event_type'], 'Terror/Explosions'], 1, 0]],
+                    'cnt_violence':  ['+', ['case', ['==', ['get', 'event_type'], 'Violence'],          1, 0]],
+                    'cnt_protests':  ['+', ['case', ['==', ['get', 'event_type'], 'Protests'],          1, 0]],
+                    'cnt_strategic': ['+', ['case', ['==', ['get', 'event_type'], 'Military'],          1, 0]]
+                }
             });
 
-            // Cluster bubbles
+            // Expression: color by dominant event type in cluster
+            const clusterDominantColor = [
+                'case',
+                ['all',
+                    ['>=', ['get', 'cnt_battles'], ['get', 'cnt_explosions']],
+                    ['>=', ['get', 'cnt_battles'], ['get', 'cnt_violence']],
+                    ['>=', ['get', 'cnt_battles'], ['get', 'cnt_protests']],
+                    ['>=', ['get', 'cnt_battles'], ['get', 'cnt_strategic']]
+                ], '#ff1744',
+                ['all',
+                    ['>=', ['get', 'cnt_explosions'], ['get', 'cnt_violence']],
+                    ['>=', ['get', 'cnt_explosions'], ['get', 'cnt_protests']],
+                    ['>=', ['get', 'cnt_explosions'], ['get', 'cnt_strategic']]
+                ], '#ff9100',
+                ['all',
+                    ['>=', ['get', 'cnt_violence'], ['get', 'cnt_protests']],
+                    ['>=', ['get', 'cnt_violence'], ['get', 'cnt_strategic']]
+                ], '#b388ff',
+                ['>=', ['get', 'cnt_protests'], ['get', 'cnt_strategic']], '#ffd600',
+                '#888'
+            ];
+
+            // Expression: short label for dominant event type
+            const clusterDominantLabel = [
+                'case',
+                ['all',
+                    ['>=', ['get', 'cnt_battles'], ['get', 'cnt_explosions']],
+                    ['>=', ['get', 'cnt_battles'], ['get', 'cnt_violence']],
+                    ['>=', ['get', 'cnt_battles'], ['get', 'cnt_protests']],
+                    ['>=', ['get', 'cnt_battles'], ['get', 'cnt_strategic']]
+                ], 'CONFLICT',
+                ['all',
+                    ['>=', ['get', 'cnt_explosions'], ['get', 'cnt_violence']],
+                    ['>=', ['get', 'cnt_explosions'], ['get', 'cnt_protests']],
+                    ['>=', ['get', 'cnt_explosions'], ['get', 'cnt_strategic']]
+                ], 'TERROR',
+                ['all',
+                    ['>=', ['get', 'cnt_violence'], ['get', 'cnt_protests']],
+                    ['>=', ['get', 'cnt_violence'], ['get', 'cnt_strategic']]
+                ], 'VIOLENCE',
+                ['>=', ['get', 'cnt_protests'], ['get', 'cnt_strategic']], 'PROTEST',
+                'MILITARY'
+            ];
+
+            // Cluster bubbles — colored by dominant event type
             map.addLayer({
                 id: 'acled-clusters',
                 type: 'circle',
@@ -2818,11 +2869,12 @@
                 filter: ['has', 'point_count'],
                 layout: { visibility: 'none' },
                 paint: {
-                    'circle-radius': ['step', ['get', 'point_count'], 12, 50, 16, 200, 22, 500, 28],
-                    'circle-color': '#e040fb',
-                    'circle-opacity': 0.5,
-                    'circle-stroke-width': 1,
-                    'circle-stroke-color': 'rgba(224,64,251,0.3)'
+                    'circle-radius': ['step', ['get', 'point_count'], 14, 50, 18, 200, 24, 500, 30],
+                    'circle-color': clusterDominantColor,
+                    'circle-opacity': 0.55,
+                    'circle-stroke-width': 1.5,
+                    'circle-stroke-color': clusterDominantColor,
+                    'circle-stroke-opacity': 0.3
                 }
             });
             map.addLayer({
@@ -2832,11 +2884,21 @@
                 filter: ['has', 'point_count'],
                 layout: {
                     visibility: 'none',
-                    'text-field': '{point_count_abbreviated}',
-                    'text-size': 10,
-                    'text-font': ['Open Sans Semibold']
+                    'text-field': [
+                        'concat',
+                        ['get', 'point_count_abbreviated'],
+                        '\n',
+                        clusterDominantLabel
+                    ],
+                    'text-size': ['step', ['get', 'point_count'], 9, 100, 10, 500, 11],
+                    'text-font': ['Open Sans Semibold'],
+                    'text-line-height': 1.3
                 },
-                paint: { 'text-color': '#fff' }
+                paint: {
+                    'text-color': '#fff',
+                    'text-halo-color': 'rgba(0,0,0,0.5)',
+                    'text-halo-width': 0.5
+                }
             });
 
             // Click cluster — show summary popup with breakdown
