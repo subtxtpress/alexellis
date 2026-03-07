@@ -2946,48 +2946,51 @@
                 // Use popup's own DOM to find elements
                 const popupEl = popup.getElement();
 
-                // Attach zoom handler
+                // Attach zoom handler (MapLibre v4 uses Promises, not callbacks)
                 const zoomLink = popupEl.querySelector('[data-role="zoom"]');
                 if (zoomLink) {
-                    zoomLink.addEventListener('click', (evt) => {
+                    zoomLink.addEventListener('click', async (evt) => {
                         evt.preventDefault();
-                        const cid = Number(clusterId);
-                        src.getClusterExpansionZoom(cid, (err, zoom) => {
+                        try {
+                            const zoom = await src.getClusterExpansionZoom(Number(clusterId));
                             popup.remove();
-                            map.easeTo({ center: coords, zoom: err ? map.getZoom() + 2 : zoom + 0.5 });
-                        });
+                            map.easeTo({ center: coords, zoom: zoom + 0.5 });
+                        } catch {
+                            popup.remove();
+                            map.easeTo({ center: coords, zoom: map.getZoom() + 2 });
+                        }
                     });
                 }
 
-                // Fetch only 20 leaves for the recent events list (fast even for huge clusters)
-                src.getClusterLeaves(clusterId, 20, 0, (err, leaves) => {
+                // Fetch only 20 leaves for the recent events list
+                (async () => {
                     const el = popupEl.querySelector('[data-role="recent"]');
                     if (!el) return;
-                    if (err || !leaves || leaves.length === 0) {
-                        el.textContent = '';
-                        return;
-                    }
-                    const recent = leaves.filter(f => f.properties.source).slice(0, 8);
-                    if (recent.length === 0) { el.textContent = ''; return; }
+                    try {
+                        const leaves = await src.getClusterLeaves(Number(clusterId), 20, 0);
+                        if (!leaves || leaves.length === 0) { el.textContent = ''; return; }
+                        const recent = leaves.filter(f => f.properties.source).slice(0, 8);
+                        if (recent.length === 0) { el.textContent = ''; return; }
 
-                    let listHtml = `<div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:6px;">Recent events</div>`;
-                    listHtml += `<div style="max-height:140px;overflow-y:auto;margin-top:4px;">`;
-                    for (const r of recent) {
-                        const rp = r.properties;
-                        const tc = typeColors[rp.event_type] || '#888';
-                        const domain = rp.source.replace(/^https?:\/\//, '').split('/')[0];
-                        const shortDomain = domain.length > 28 ? domain.substring(0, 28) + '…' : domain;
-                        const loc = rp.location || rp.country || '';
-                        const shortLoc = loc.length > 20 ? loc.substring(0, 20) + '…' : loc;
-                        listHtml += `<div style="display:flex;align-items:baseline;gap:4px;padding:2px 0;font-size:9px;border-bottom:1px solid rgba(255,255,255,0.05);">`;
-                        listHtml += `<span style="color:${tc};flex-shrink:0;">●</span>`;
-                        listHtml += `<span style="color:var(--text-secondary);flex-shrink:0;">${shortLoc}</span>`;
-                        listHtml += `<a href="${rp.source}" target="_blank" style="color:#e040fb;margin-left:auto;flex-shrink:0;">${shortDomain}</a>`;
+                        let listHtml = `<div style="border-top:1px solid rgba(255,255,255,0.1);padding-top:6px;">Recent events</div>`;
+                        listHtml += `<div style="max-height:140px;overflow-y:auto;margin-top:4px;">`;
+                        for (const r of recent) {
+                            const rp = r.properties;
+                            const tc = typeColors[rp.event_type] || '#888';
+                            const domain = rp.source.replace(/^https?:\/\//, '').split('/')[0];
+                            const shortDomain = domain.length > 28 ? domain.substring(0, 28) + '…' : domain;
+                            const loc = rp.location || rp.country || '';
+                            const shortLoc = loc.length > 20 ? loc.substring(0, 20) + '…' : loc;
+                            listHtml += `<div style="display:flex;align-items:baseline;gap:4px;padding:2px 0;font-size:9px;border-bottom:1px solid rgba(255,255,255,0.05);">`;
+                            listHtml += `<span style="color:${tc};flex-shrink:0;">●</span>`;
+                            listHtml += `<span style="color:var(--text-secondary);flex-shrink:0;">${shortLoc}</span>`;
+                            listHtml += `<a href="${rp.source}" target="_blank" style="color:#e040fb;margin-left:auto;flex-shrink:0;">${shortDomain}</a>`;
+                            listHtml += `</div>`;
+                        }
                         listHtml += `</div>`;
-                    }
-                    listHtml += `</div>`;
-                    el.innerHTML = listHtml;
-                });
+                        el.innerHTML = listHtml;
+                    } catch { el.textContent = ''; }
+                })();
             });
             map.on('mouseenter', 'acled-clusters', () => map.getCanvas().style.cursor = 'pointer');
             map.on('mouseleave', 'acled-clusters', () => map.getCanvas().style.cursor = '');
