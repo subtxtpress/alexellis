@@ -2937,12 +2937,27 @@
                 // Placeholder for recent events (loaded async with small limit)
                 const popupId = 'cluster-popup-' + clusterId;
                 html += `<div id="${popupId}" style="font-size:9px;color:var(--text-secondary);margin-top:6px;">Loading recent events…</div>`;
-                html += `<div style="margin-top:6px;text-align:center;"><a href="#" onclick="event.preventDefault();map.getSource('acled').getClusterExpansionZoom(${clusterId},(e,z)=>{if(!e)map.easeTo({center:[${coords}],zoom:z+0.5})})" style="font-family:var(--font-mono);font-size:8px;color:#e040fb;">Zoom in →</a></div>`;
+                const zoomLinkId = 'cluster-zoom-' + clusterId;
+                html += `<div style="margin-top:6px;text-align:center;"><a href="#" id="${zoomLinkId}" style="font-family:var(--font-mono);font-size:8px;color:#e040fb;">Zoom in →</a></div>`;
 
-                new maplibregl.Popup({ offset: 12, maxWidth: '280px' })
+                const popup = new maplibregl.Popup({ offset: 12, maxWidth: '280px' })
                     .setLngLat(coords)
                     .setHTML(html)
                     .addTo(map);
+
+                // Attach zoom handler after popup is in the DOM
+                const zoomLink = document.getElementById(zoomLinkId);
+                if (zoomLink) {
+                    zoomLink.addEventListener('click', (evt) => {
+                        evt.preventDefault();
+                        src.getClusterExpansionZoom(clusterId, (err, zoom) => {
+                            if (!err) {
+                                popup.remove();
+                                map.easeTo({ center: coords, zoom: zoom + 0.5 });
+                            }
+                        });
+                    });
+                }
 
                 // Fetch only 20 leaves for the recent events list (fast even for huge clusters)
                 src.getClusterLeaves(clusterId, 20, 0, (err, leaves) => {
