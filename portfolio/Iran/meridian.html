@@ -1031,7 +1031,7 @@
             background: rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 4px;
-            color: var(--text-dim);
+            color: var(--text-secondary);
             font-family: var(--font-mono);
             font-size: 10px;
             padding: 4px 6px;
@@ -1067,7 +1067,7 @@
             transition: all 0.2s;
         }
         .time-sync-reset:hover {
-            color: var(--text-dim);
+            color: var(--text-secondary);
             border-color: rgba(255,255,255,0.2);
         }
 
@@ -2297,6 +2297,7 @@
             if (sorted.length > 0) {
                 document.getElementById('countrySection').style.display = 'block';
                 document.getElementById('countryBreakdown').innerHTML = sorted.map(([name, count]) => {
+
                     const cc = byCtyConflict[name] || 0;
                     return `
                     <div class="country-row">
@@ -2305,6 +2306,8 @@
                         <span class="country-count">${cc > 0 ? `<span style="color:#ff1744;" title="${cc} conflict-linked">${cc}</span>/` : ''}${count.toLocaleString()}</span>
                     </div>`;
                 }).join('');
+            } else {
+                document.getElementById('countrySection').style.display = 'none';
             }
         }
 
@@ -2693,7 +2696,7 @@
                 gdeltFetched = true;
 
                 const dateStr = new Date().toISOString().slice(0, 10);
-                setAcledStatus(`${meFeatures.toLocaleString().length > 0 ? meFeatures.length.toLocaleString() : '0'} events (${dateStr}, 24h window)`, '#00e676');
+                setAcledStatus(`${meFeatures.length.toLocaleString()} events (${dateStr}, 24h window)`, '#00e676');
 
                 initTimeFilterDefaults();
                 if (acledVisible) renderAcled();
@@ -3021,7 +3024,13 @@
                 features: dayDetections.map(d => ({
                     type: 'Feature',
                     geometry: { type: 'Point', coordinates: [d.longitude, d.latitude] },
-                    properties: d
+                    properties: {
+                        ...d,
+                        near_industrial: d.near_industrial || false,
+                        nearby_site: d.nearby_site || '',
+                        conflict_corroborated: d.conflict_corroborated || false,
+                        conflict_events: d.conflict_events ? JSON.stringify(d.conflict_events) : '[]'
+                    }
                 }))
             };
 
@@ -4505,7 +4514,7 @@
             // Legend box — bottom left
             const activeLayers = [];
             if (allDetections.length > 0) activeLayers.push({ color: '#ff1744', label: 'High Confidence' }, { color: '#ff9100', label: 'Nominal' }, { color: '#ffd600', label: 'Low Confidence' });
-            if (indVisible) activeLayers.push({ color: '#00e5ff', label: 'Industrial Site' });
+            if (indVisible) activeLayers.push({ color: '#00e676', label: 'Industrial Site' });
             if (acledVisible) activeLayers.push({ color: '#e040fb', label: 'Conflict Event' });
             if (nlVisible) activeLayers.push({ color: '#b388ff', label: 'Nighttime Lights' });
 
