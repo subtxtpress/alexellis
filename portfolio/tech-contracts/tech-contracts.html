@@ -344,6 +344,139 @@
         .back-btn {
             margin-bottom: 15px;
         }
+
+        /* ===== Responsive ===== */
+
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
+            header, .search-box, .quick-searches, .results {
+                padding: 18px;
+                border-radius: 8px;
+                margin-bottom: 14px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+                line-height: 1.3;
+            }
+
+            h2 {
+                font-size: 1.15rem;
+            }
+
+            .subtitle {
+                font-size: 12px;
+                line-height: 1.5;
+            }
+
+            label {
+                font-size: 14px;
+            }
+
+            input[type="text"] {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .filter-group {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .checkbox-label span {
+                font-size: 14px;
+            }
+
+            button {
+                padding: 10px 18px;
+                font-size: 14px;
+            }
+
+            .button-group {
+                gap: 8px;
+            }
+
+            .vendor-card {
+                padding: 14px;
+                margin-bottom: 12px;
+            }
+
+            .vendor-name {
+                font-size: 16px;
+            }
+
+            .vendor-ref {
+                font-size: 12px;
+            }
+
+            .vendor-category {
+                font-size: 13px;
+            }
+
+            .vendor-links {
+                gap: 6px;
+            }
+
+            .link-btn {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 14px;
+            }
+
+            .stat-number {
+                font-size: 24px;
+            }
+
+            .stat-label {
+                font-size: 12px;
+            }
+
+            .contract-item {
+                padding: 8px 0;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            body {
+                padding: 8px;
+            }
+
+            header, .search-box, .quick-searches, .results {
+                padding: 14px;
+            }
+
+            h1 {
+                font-size: 1.2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stat-number {
+                font-size: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .button-group button {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
