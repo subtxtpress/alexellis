@@ -197,7 +197,7 @@ async def get_vendor_detail(ref_id: str):
         "uses_ai_ml": pd.notna(row['AI/ML in Marketing']),
         "is_prime_contractor": pd.notna(row['DHS Prime Contractor']),
         "border_expo_participation": row['Border Security Expo Exhibitor/Sponsor(2022-2025)'] if pd.notna(row['Border Security Expo Exhibitor/Sponsor(2022-2025)']) else None,
-        "border_tech_summit": row['Border Technology Summit 2024-2025'] if pd.notna(row['Border Technology Summit 2024-2025)']) else None,
+        "border_tech_summit": row['Border Technology Summit 2024-2025'] if pd.notna(row['Border Technology Summit 2024-2025']) else None,
         "consortium_member": pd.notna(row['Homeland Security Technology Consortium Member']),
         "notes": row['Additional notes'] if pd.notna(row['Additional notes']) else None,
         "parent_company": row['Parent Company/Alternative Name/DBA'] if pd.notna(row['Parent Company/Alternative Name/DBA']) else None,
