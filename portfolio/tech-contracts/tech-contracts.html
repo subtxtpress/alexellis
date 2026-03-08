@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DHS Procurement Research Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: #2d2d2d;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #b0b0b0;
+            font-size: 14px;
+        }
+
+        .search-box {
+            background: #2d2d2d;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #e0e0e0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #404040;
+            border-radius: 6px;
+            font-size: 16px;
+            background: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #4a90e2;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: #e0e0e0;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #4a90e2;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #357abd;
+        }
+
+        .btn-secondary {
+            background: #505050;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #606060;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .quick-searches {
+            background: #2d2d2d;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .quick-searches h2 {
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .results {
+            background: #2d2d2d;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #b0b0b0;
+        }
+
+        .vendor-card {
+            border: 1px solid #404040;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.2s;
+            background: #252525;
+        }
+
+        .vendor-card:hover {
+            border-color: #4a90e2;
+            box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+        }
+
+        .vendor-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .vendor-ref {
+            color: #b0b0b0;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .vendor-category {
+            color: #d0d0d0;
+            margin-bottom: 8px;
+        }
+
+        .vendor-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .tag {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .tag-prime {
+            background: #1e3a5f;
+            color: #64b5f6;
+        }
+
+        .tag-ai {
+            background: #3d1f4d;
+            color: #ba68c8;
+        }
+
+        .vendor-links {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .link-btn {
+            padding: 6px 12px;
+            background: #404040;
+            border-radius: 4px;
+            text-decoration: none;
+            color: #4a90e2;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .link-btn:hover {
+            background: #505050;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: #252525;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #404040;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #4a90e2;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #b0b0b0;
+            font-size: 14px;
+        }
+
+        .export-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #404040;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 DHS Procurement Research Dashboard</h1>
+            <p class="subtitle">Search 310 vendors • Track contracts • Export data</p>
+        </header>
+
+        <div class="search-box">
+            <div class="input-group">
+                <label for="searchInput">Search for vendors, technologies, or programs:</label>
+                <input type="text" id="searchInput" placeholder="e.g., surveillance, facial recognition, Palantir">
+            </div>
+
+            <div class="filter-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="aiOnly">
+                    <span>AI/ML vendors only</span>
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="primeOnly">
+                    <span>Prime contractors only</span>
+                </label>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-primary" onclick="searchVendors()">🔍 Search</button>
+                <button class="btn-secondary" onclick="clearSearch()">Clear</button>
+            </div>
+        </div>
+
+        <div class="quick-searches">
+            <h2>Quick Searches</h2>
+            <div class="button-group">
+                <button class="btn-secondary" onclick="quickSearch('surveillance')">Surveillance Tech</button>
+                <button class="btn-secondary" onclick="quickSearch('facial recognition')">Facial Recognition</button>
+                <button class="btn-secondary" onclick="quickSearch('drone')">Drones</button>
+                <button class="btn-secondary" onclick="quickSearch('biometric')">Biometric Systems</button>
+                <button class="btn-secondary" onclick="quickSearch('AI', true)">AI Vendors</button>
+                <button class="btn-secondary" onclick="quickSearch('', false, true)">Prime Contractors</button>
+                <button class="btn-success" onclick="showStats()">📊 Show Statistics</button>
+            </div>
+        </div>
+
+        <div id="results" class="results">
+            <h2 id="resultsTitle">Search Results</h2>
+            <div id="resultsContent"></div>
+            <div class="export-section">
+                <button class="btn-success" onclick="exportResults()">📥 Export to CSV</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentResults = [];
+        const API_BASE = 'http://localhost:8000';
+
+        async function searchVendors() {
+            const query = document.getElementById('searchInput').value;
+            const aiOnly = document.getElementById('aiOnly').checked;
+            const primeOnly = document.getElementById('primeOnly').checked;
+
+            showLoading();
+
+            try {
+                let url = `${API_BASE}/vendors?limit=100`;
+                if (query) url += `&q=${encodeURIComponent(query)}`;
+                if (aiOnly) url += '&ai_only=true';
+                if (primeOnly) url += '&prime_only=true';
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                currentResults = data.vendors;
+                displayResults(data.vendors, query);
+            } catch (error) {
+                showError('Could not connect to API. Make sure you ran: python3 main.py');
+            }
+        }
+
+        function quickSearch(keyword, aiOnly = false, primeOnly = false) {
+            document.getElementById('searchInput').value = keyword;
+            document.getElementById('aiOnly').checked = aiOnly;
+            document.getElementById('primeOnly').checked = primeOnly;
+            searchVendors();
+        }
+
+        function displayResults(vendors, query) {
+            const resultsDiv = document.getElementById('results');
+            const contentDiv = document.getElementById('resultsContent');
+            const titleDiv = document.getElementById('resultsTitle');
+
+            if (vendors.length === 0) {
+                titleDiv.textContent = 'No results found';
+                contentDiv.innerHTML = '<p>Try a different search term or remove filters.</p>';
+                resultsDiv.classList.add('show');
+                return;
+            }
+
+            titleDiv.textContent = `Found ${vendors.length} vendor${vendors.length > 1 ? 's' : ''}`;
+
+            let html = '';
+            vendors.forEach(vendor => {
+                html += `
+                    <div class="vendor-card">
+                        <div class="vendor-name">${vendor.name}</div>
+                        <div class="vendor-ref">${vendor.ref}</div>
+                        ${vendor.categories ? `<div class="vendor-category">📦 ${vendor.categories}</div>` : ''}
+                        ${vendor.summary ? `<div style="color: #666; font-size: 14px; margin-top: 8px;">${vendor.summary}</div>` : ''}
+                        <div class="vendor-tags">
+                            ${vendor.is_prime_contractor ? '<span class="tag tag-prime">Prime Contractor</span>' : ''}
+                            ${vendor.uses_ai_ml ? '<span class="tag tag-ai">AI/ML</span>' : ''}
+                        </div>
+                        ${vendor.usaspending_link ? `
+                            <div class="vendor-links">
+                                <a href="${vendor.usaspending_link}" target="_blank" class="link-btn">💰 View Contracts</a>
+                                <button class="link-btn" onclick="getVendorDetail('${vendor.ref}')">📄 Full Profile</button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            contentDiv.innerHTML = html;
+            resultsDiv.classList.add('show');
+        }
+
+        async function getVendorDetail(refId) {
+            showLoading();
+
+            try {
+                const response = await fetch(`${API_BASE}/vendors/${refId}`);
+                const vendor = await response.json();
+
+                let html = `
+                    <div class="vendor-card" style="background: #1a1a1a; border: 2px solid #404040;">
+                        <div class="vendor-name">${vendor.name}</div>
+                        <div class="vendor-ref">${vendor.ref}</div>
+                        ${vendor.categories ? `<div class="vendor-category">📦 ${vendor.categories}</div>` : ''}
+                        ${vendor.parent_company ? `<div style="margin-top: 10px; color: #d0d0d0;"><strong>Parent Company:</strong> ${vendor.parent_company}</div>` : ''}
+                        ${vendor.related_companies ? `<div style="margin-top: 10px; color: #d0d0d0;"><strong>Related Companies:</strong> ${vendor.related_companies}</div>` : ''}
+                        ${vendor.dhs_programs ? `<div style="margin-top: 10px; color: #d0d0d0;"><strong>DHS Programs:</strong> ${vendor.dhs_programs}</div>` : ''}
+                        ${vendor.agency_contracts ? `<div style="margin-top: 10px; color: #d0d0d0;"><strong>Agency Contracts:</strong> ${vendor.agency_contracts}</div>` : ''}
+                        ${vendor.corporate_summary ? `<div style="margin-top: 15px; padding: 15px; background: #2d2d2d; border-radius: 6px; color: #d0d0d0;"><strong>About:</strong><br>${vendor.corporate_summary}</div>` : ''}
+                        <div class="vendor-tags" style="margin-top: 15px;">
+                            ${vendor.is_prime_contractor ? '<span class="tag tag-prime">Prime Contractor</span>' : ''}
+                            ${vendor.uses_ai_ml ? '<span class="tag tag-ai">AI/ML</span>' : ''}
+                            ${vendor.consortium_member ? '<span class="tag" style="background: #4d3319; color: #ff9800;">Consortium Member</span>' : ''}
+                        </div>
+                        <div class="vendor-links" style="margin-top: 15px;">
+                            ${vendor.links.usaspending ? `<a href="${vendor.links.usaspending}" target="_blank" class="link-btn">💰 USASpending.gov</a>` : ''}
+                            ${vendor.links.fpds ? `<a href="${vendor.links.fpds}" target="_blank" class="link-btn">📋 FPDS.gov</a>` : ''}
+                            ${vendor.website ? `<a href="${vendor.website}" target="_blank" class="link-btn">🌐 Website</a>` : ''}
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('resultsTitle').textContent = `Vendor Profile: ${vendor.name}`;
+                document.getElementById('resultsContent').innerHTML = html;
+                document.getElementById('results').classList.add('show');
+            } catch (error) {
+                showError('Could not load vendor details');
+            }
+        }
+
+        async function showStats() {
+            showLoading();
+
+            try {
+                const response = await fetch(`${API_BASE}/stats`);
+                const stats = await response.json();
+
+                const html = `
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number">${stats.total_vendors}</div>
+                            <div class="stat-label">Total Vendors</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${stats.prime_contractors}</div>
+                            <div class="stat-label">Prime Contractors</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${stats.ai_ml_vendors}</div>
+                            <div class="stat-label">AI/ML Vendors</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${stats.border_expo_exhibitors}</div>
+                            <div class="stat-label">Border Expo Exhibitors</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${stats.consortium_members}</div>
+                            <div class="stat-label">Consortium Members</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${stats.vendors_with_contracts}</div>
+                            <div class="stat-label">With Federal Contracts</div>
+                        </div>
+                    </div>
+                    <p style="margin-top: 20px; color: #b0b0b0;">Data updated: ${stats.data_updated}</p>
+                `;
+
+                document.getElementById('resultsTitle').textContent = '📊 Dataset Statistics';
+                document.getElementById('resultsContent').innerHTML = html;
+                document.getElementById('results').classList.add('show');
+            } catch (error) {
+                showError('Could not load statistics');
+            }
+        }
+
+        function exportResults() {
+            if (currentResults.length === 0) {
+                alert('No results to export. Search for something first!');
+                return;
+            }
+
+            // Convert to CSV
+            const headers = ['Ref', 'Name', 'Category', 'Prime Contractor', 'AI/ML', 'Parent Company', 'USASpending Link'];
+            const rows = currentResults.map(v => [
+                v.ref,
+                v.name,
+                v.categories || '',
+                v.is_prime_contractor ? 'Yes' : 'No',
+                v.uses_ai_ml ? 'Yes' : 'No',
+                v.parent_company || '',
+                v.usaspending_link || ''
+            ]);
+
+            let csv = headers.join(',') + '\n';
+            rows.forEach(row => {
+                csv += row.map(cell => `"${cell}"`).join(',') + '\n';
+            });
+
+            // Download
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dhs_vendors_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        }
+
+        function showLoading() {
+            const resultsDiv = document.getElementById('results');
+            const contentDiv = document.getElementById('resultsContent');
+            contentDiv.innerHTML = '<div class="loading">⏳ Loading...</div>';
+            resultsDiv.classList.add('show');
+        }
+
+        function showError(message) {
+            const resultsDiv = document.getElementById('results');
+            const contentDiv = document.getElementById('resultsContent');
+            document.getElementById('resultsTitle').textContent = '⚠️ Error';
+            contentDiv.innerHTML = `<p style="color: #ef5350;">${message}</p>`;
+            resultsDiv.classList.add('show');
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('aiOnly').checked = false;
+            document.getElementById('primeOnly').checked = false;
+            document.getElementById('results').classList.remove('show');
+            currentResults = [];
+        }
+
+        // Check if API is running on page load
+        window.addEventListener('load', async () => {
+            try {
+                await fetch(`${API_BASE}/stats`);
+            } catch {
+                alert('⚠️ API not running!\n\nOpen Terminal and run:\ncd ~/Documents/sites/tech-contracts\npython3 main.py\n\nThen refresh this page.');
+            }
+        });
+    </script>
+</body>
+</html>
