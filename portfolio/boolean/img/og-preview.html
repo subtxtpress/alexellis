@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --peach:   #E8956A;
+    --cream:   #F4EDE3;
+    --sand:    #DDD0BC;
+    --plum:    #3E2436;
+    --carmine: #7A5063;
+    --ink:     #241620;
+    --surface-page:     #F4EDE3;
+    --surface-card:     #FFFFFF;
+    --surface-elevated: #EDE5D8;
+    --text-heading:     #241620;
+    --text-body:        #44373C;
+    --text-label:       #7A5063;
+    --text-muted:       rgba(68, 55, 60, 0.45);
+    --accent:           #E8956A;
+    --accent-border:    rgba(232, 149, 106, 0.40);
+    --border-light:     rgba(221, 208, 188, 0.55);
+  }
+
+  html { font-size: 14px; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--surface-page);
+    color: var(--text-body);
+    line-height: 1.7;
+    width: 1200px;
+    height: 675px;
+    overflow: hidden;
+  }
+
+  /* Nav */
+  .navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 5vw;
+    background: var(--surface-page);
+  }
+  .nav-brand {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px; font-weight: 500;
+    color: var(--ink);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .nav-links { display: flex; gap: 36px; }
+  .nav-links span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; font-weight: 500;
+    color: var(--text-label);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 12px 5vw 20px;
+  }
+  .hero-kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 2.4rem;
+    text-transform: uppercase;
+    color: var(--text-heading);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .hero p {
+    max-width: 520px;
+    color: var(--text-body);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* Main grid */
+  .app {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0 5vw;
+  }
+  .panel { padding: 16px 0; }
+  .panel-build { padding-right: 40px; }
+  .panel-output { padding-left: 40px; }
+
+  /* Section labels */
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-label);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1; height: 1px;
+    background: var(--border-light);
+  }
+
+  /* Field label */
+  .field-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  /* Fake select */
+  .fake-select {
+    width: 100%;
+    padding: 7px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--text-heading);
+    background: var(--surface-card);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .fake-select .chevron {
+    color: var(--text-label);
+    font-size: 10px;
+  }
+
+  /* Term groups */
+  .term-group {
+    background: var(--surface-card);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+  .term-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .term-group-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--text-label);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .btn-clear {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-label);
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    padding: 2px 8px;
+    background: none;
+  }
+
+  .term-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    min-height: 28px;
+    padding: 5px;
+    background: var(--surface-elevated);
+    border-radius: 6px;
+    margin-bottom: 6px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-family: 'IBM Plex Mono', monospace;
+    background: var(--surface-card);
+    border: 1px solid var(--border-light);
+    border-radius: 4px;
+    color: var(--text-heading);
+  }
+  .pill.exact { border-color: var(--accent-border); color: var(--accent); }
+  .pill .remove { color: var(--text-muted); font-size: 12px; margin-left: 2px; }
+
+  .term-input-row {
+    display: flex; gap: 5px;
+  }
+  .fake-input {
+    flex: 1;
+    padding: 6px 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--surface-card);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+  }
+  .btn-add {
+    flex-shrink: 0;
+    width: 28px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    color: var(--text-label);
+    background: var(--surface-card);
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+  }
+
+  /* Output */
+  .query-display {
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: 8px;
+    padding: 16px 18px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    line-height: 1.9;
+    margin-bottom: 12px;
+  }
+  .query-display .op { color: var(--cream); font-weight: 500; }
+  .query-display .quoted { color: var(--accent); }
+  .query-display .excluded { color: var(--carmine); }
+  .query-display .paren { color: var(--sand); }
+
+  /* Buttons */
+  .action-row { display: flex; gap: 8px; margin-bottom: 14px; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    background: var(--surface-card);
+    color: var(--text-label);
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .btn-danger {
+    color: #c0392b;
+    border-color: rgba(192, 57, 43, 0.25);
+  }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 24px; margin-bottom: 10px; }
+  .tab {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding-bottom: 4px;
+  }
+  .tab.active {
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+  }
+
+  /* Platform note */
+  .platform-note {
+    font-size: 11px;
+    color: var(--text-body);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .platform-note strong { color: var(--text-heading); }
+
+  /* Ref grid */
+  .ref-grid { display: grid; gap: 4px; }
+  .ref-item {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 10px;
+    padding: 5px 10px;
+    background: var(--surface-elevated);
+    border-radius: 5px;
+    font-size: 11px;
+    align-items: center;
+  }
+  .ref-op {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+    color: var(--accent);
+    font-size: 11px;
+  }
+
+  /* Bottom accent */
+  .bottom-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+</style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <span class="nav-brand">Subtxt Press</span>
+    <div class="nav-links">
+      <span>Home</span>
+      <span>Portfolio</span>
+      <span>Policies</span>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-kicker">Tool</div>
+    <h1>Boolean Search Generator</h1>
+    <!-- <p>Build powerful search queries without memorizing any syntax. Just fill in the boxes, pick from dropdowns, and copy or search.</p>-->
+  </section>
+
+  <div class="app">
+    <!-- LEFT: Build -->
+    <div class="panel panel-build">
+      <div class="section-label">Where are you searching?</div>
+      <div class="field-label">Pick a platform</div>
+      <div class="fake-select">
+        <span>Google</span>
+        <span class="chevron">▾</span>
+      </div>
+
+      <div style="margin-top:14px">
+        <div class="section-label">What are you looking for?</div>
+
+        <div class="term-group">
+          <div class="term-group-header">
+            <span class="term-group-title">Results must contain all of these</span>
+            <button class="btn-clear">Clear</button>
+          </div>
+          <div class="term-pills">
+            <span class="pill">police shooting <span class="remove">×</span></span>
+            <span class="pill exact">use of force <span class="remove">×</span></span>
+          </div>
+          <div class="term-input-row">
+            <div class="fake-input">Type a word or phrase, then press Enter</div>
+            <div class="btn-add">+</div>
+          </div>
+        </div>
+
+        <div class="term-group">
+          <div class="term-group-header">
+            <span class="term-group-title">Results must contain at least one of these</span>
+            <button class="btn-clear">Clear</button>
+          </div>
+          <div class="term-pills">
+            <span class="pill">officer involved <span class="remove">×</span></span>
+          </div>
+        </div>
+
+        <div class="term-group">
+          <div class="term-group-header">
+            <span class="term-group-title">Hide results containing these</span>
+            <button class="btn-clear">Clear</button>
+          </div>
+          <div class="term-pills">
+            <span class="pill">training exercise <span class="remove">×</span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Output -->
+    <div class="panel panel-output">
+      <div class="section-label">Your search query</div>
+
+      <div class="query-display">
+        <span class="paren">(</span><span class="quoted">"police shooting"</span> <span class="op">AND</span> <span class="quoted">"use of force"</span><span class="paren">)</span><br>
+        <span class="op">OR</span> <span class="quoted">"officer involved"</span><br>
+        <span class="op">AND NOT</span> <span class="excluded">"training exercise"</span>
+      </div>
+
+      <div class="action-row">
+        <button class="btn btn-primary">Copy</button>
+        <button class="btn">Search Google</button>
+        <button class="btn">Save</button>
+        <button class="btn btn-danger">Reset All</button>
+      </div>
+
+      <div class="tabs">
+        <span class="tab active">Cheat Sheet</span>
+        <span class="tab">Saved Searches</span>
+      </div>
+
+      <div class="platform-note">
+        <strong>Google:</strong> Supports all major operators. Use AROUND(n) for proximity. Combine with site: to search within specific domains.
+      </div>
+
+      <div class="ref-grid">
+        <div class="ref-item"><span class="ref-op">"exact phrase"</span><span>Match exact phrase</span></div>
+        <div class="ref-item"><span class="ref-op">term1 AND term2</span><span>Both terms required (default)</span></div>
+        <div class="ref-item"><span class="ref-op">term1 OR term2</span><span>Either term matches</span></div>
+        <div class="ref-item"><span class="ref-op">-term</span><span>Exclude a term</span></div>
+        <div class="ref-item"><span class="ref-op">site:domain.com</span><span>Search within a site</span></div>
+        <div class="ref-item"><span class="ref-op">filetype:pdf</span><span>Filter by file type</span></div>
+        <div class="ref-item"><span class="ref-op">intitle:term</span><span>Term must appear in title</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-bar"></div>
+
+</body>
+</html>
