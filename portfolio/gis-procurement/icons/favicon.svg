@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Dark warm background -->
+  <rect width="64" height="64" rx="12" fill="#1a1714"/>
+  
+  <!-- Outer ring — subtle border -->
+  <circle cx="32" cy="28" r="20" fill="none" stroke="#3d3630" stroke-width="1.5"/>
+  
+  <!-- Compass rose / pin hybrid -->
+  <!-- North pointer (accent gold) -->
+  <polygon points="32,10 28,28 32,24 36,28" fill="#b8926a" opacity="0.95"/>
+  <!-- South pointer (muted) -->
+  <polygon points="32,46 28,28 32,32 36,28" fill="#7a6e60" opacity="0.7"/>
+  <!-- East pointer (muted) -->
+  <polygon points="50,28 32,24 36,28 32,32" fill="#7a6e60" opacity="0.5"/>
+  <!-- West pointer (muted) -->
+  <polygon points="14,28 32,24 28,28 32,32" fill="#7a6e60" opacity="0.5"/>
+  
+  <!-- Center dot -->
+  <circle cx="32" cy="28" r="3.5" fill="#b8926a"/>
+  <circle cx="32" cy="28" r="1.8" fill="#1a1714"/>
+  
+  <!-- Pin drop tail -->
+  <path d="M32,48 L29,54 Q32,58 35,54 Z" fill="#b8926a" opacity="0.8"/>
+  
+  <!-- Tick marks — N/S/E/W -->
+  <line x1="32" y1="8" x2="32" y2="11" stroke="#b8926a" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="32" y1="45" x2="32" y2="48" stroke="#7a6e60" stroke-width="1" stroke-linecap="round"/>
+  <line x1="52" y1="28" x2="49" y2="28" stroke="#7a6e60" stroke-width="1" stroke-linecap="round"/>
+  <line x1="12" y1="28" x2="15" y2="28" stroke="#7a6e60" stroke-width="1" stroke-linecap="round"/>
+</svg>
