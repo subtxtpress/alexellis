@@ -748,15 +748,15 @@
         .ind-chip { font-family:var(--font-mono); font-size:9px; padding:3px 7px; border-radius:3px; cursor:pointer; transition:all 0.2s; letter-spacing:0.3px; background:rgba(0,230,118,0.1); border:1px solid rgba(0,230,118,0.25); color:var(--accent-nominal); }
         .ind-chip.off { background:var(--bg-tertiary); border-color:var(--border); color:var(--text-muted); }
 
-        /* ACLED LAYER */
-        .acled-toggle {
+        /* CONFLICT LAYER */
+        .conflict-toggle {
             display: flex;
             align-items: center;
             gap: 10px;
             margin-bottom: 10px;
         }
 
-        .acled-switch {
+        .conflict-switch {
             position: relative;
             width: 36px;
             height: 18px;
@@ -767,12 +767,12 @@
             transition: all 0.2s;
         }
 
-        .acled-switch.active {
+        .conflict-switch.active {
             background: rgba(64, 196, 255, 0.2);
             border-color: var(--accent-info);
         }
 
-        .acled-switch::after {
+        .conflict-switch::after {
             content: '';
             position: absolute;
             top: 2px;
@@ -784,26 +784,26 @@
             transition: all 0.2s;
         }
 
-        .acled-switch.active::after {
+        .conflict-switch.active::after {
             left: 20px;
             background: var(--accent-info);
         }
 
-        .acled-label {
+        .conflict-label {
             font-family: var(--font-mono);
             font-size: 10px;
             color: var(--text-secondary);
             letter-spacing: 0.3px;
         }
 
-        .acled-filter-chips {
+        .conflict-filter-chips {
             display: flex;
             flex-wrap: wrap;
             gap: 4px;
             margin-top: 8px;
         }
 
-        .acled-chip {
+        .conflict-chip {
             font-family: var(--font-mono);
             font-size: 9px;
             padding: 3px 7px;
@@ -814,47 +814,47 @@
             border: 1px solid;
         }
 
-        .acled-chip[data-type="battles"] {
+        .conflict-chip[data-type="battles"] {
             background: rgba(255, 23, 68, 0.12);
             border-color: rgba(255, 23, 68, 0.3);
             color: #ff1744;
         }
-        .acled-chip[data-type="battles"].off {
+        .conflict-chip[data-type="battles"].off {
             background: var(--bg-tertiary);
             border-color: var(--border);
             color: var(--text-muted);
         }
 
-        .acled-chip[data-type="explosions"] {
+        .conflict-chip[data-type="explosions"] {
             background: rgba(255, 145, 0, 0.12);
             border-color: rgba(255, 145, 0, 0.3);
             color: #ff9100;
         }
-        .acled-chip[data-type="explosions"].off {
+        .conflict-chip[data-type="explosions"].off {
             background: var(--bg-tertiary);
             border-color: var(--border);
             color: var(--text-muted);
         }
 
-        .acled-chip[data-type="violence"] {
+        .conflict-chip[data-type="violence"] {
             background: rgba(179, 136, 255, 0.12);
             border-color: rgba(179, 136, 255, 0.3);
             color: #b388ff;
         }
-        .acled-chip[data-type="violence"].off {
+        .conflict-chip[data-type="violence"].off {
             background: var(--bg-tertiary);
             border-color: var(--border);
             color: var(--text-muted);
         }
 
-        .acled-stats {
+        .conflict-stats {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 6px;
             margin-top: 10px;
         }
 
-        .acled-stat {
+        .conflict-stat {
             background: var(--bg-tertiary);
             border: 1px solid var(--border);
             border-radius: 3px;
@@ -862,14 +862,14 @@
             text-align: center;
         }
 
-        .acled-stat-val {
+        .conflict-stat-val {
             font-family: var(--font-mono);
             font-size: 14px;
             font-weight: 600;
             color: var(--text-primary);
         }
 
-        .acled-stat-label {
+        .conflict-stat-label {
             font-family: var(--font-mono);
             font-size: 8px;
             color: var(--text-muted);
@@ -877,10 +877,10 @@
             letter-spacing: 0.5px;
         }
 
-        .acled-chip[data-type="protests"] { border-color: rgba(255,214,0,0.3); color: #ffd600; }
-        .acled-chip[data-type="protests"].off { opacity: 0.3; border-color: var(--border); color: var(--text-muted); }
-        .acled-chip[data-type="strategic"] { border-color: rgba(255,255,255,0.15); color: var(--text-muted); }
-        .acled-chip[data-type="strategic"].off { opacity: 0.3; border-color: var(--border); color: var(--text-muted); }
+        .conflict-chip[data-type="protests"] { border-color: rgba(255,214,0,0.3); color: #ffd600; }
+        .conflict-chip[data-type="protests"].off { opacity: 0.3; border-color: var(--border); color: var(--text-muted); }
+        .conflict-chip[data-type="strategic"] { border-color: rgba(255,255,255,0.15); color: var(--text-muted); }
+        .conflict-chip[data-type="strategic"].off { opacity: 0.3; border-color: var(--border); color: var(--text-muted); }
 
         /* NIGHTTIME LIGHTS LAYER */
         .nl-switch { position:relative; width:36px; height:18px; background:var(--bg-tertiary); border:1px solid var(--border); border-radius:9px; cursor:pointer; transition:all 0.2s; display:inline-block; }
@@ -1071,8 +1071,8 @@
             border-color: rgba(255,255,255,0.2);
         }
 
-        /* ACLED popup styling */
-        .popup-acled-header {
+        /* Conflict popup styling */
+        .popup-conflict-header {
             font-size: 10px;
             font-weight: 600;
             text-transform: uppercase;
@@ -1082,9 +1082,9 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .popup-acled-battles { color: #ff1744; }
-        .popup-acled-explosions { color: #ff9100; }
-        .popup-acled-violence { color: #b388ff; }
+        .popup-conflict-battles { color: #ff1744; }
+        .popup-conflict-explosions { color: #ff9100; }
+        .popup-conflict-violence { color: #b388ff; }
 
         /* ═══════════════════════════════════════════
            RESPONSIVE — TABLET (≤768px)
@@ -1166,7 +1166,7 @@
             .basemap-chip { padding: 10px 12px; }
             .sidebar-toggle { min-height: 44px; min-width: 44px; display: flex; align-items: center; justify-content: center; }
             .ind-chip { padding: 8px 10px; }
-            .acled-chip { padding: 8px 10px; }
+            .conflict-chip { padding: 8px 10px; }
             select, input[type="date"] { min-height: 44px; width: 100%; }
             .time-sync-reset { padding: 8px 12px; }
             .range-slider::-webkit-slider-thumb { width: 24px; height: 24px; }
@@ -1322,21 +1322,21 @@
         <!-- CONFLICT EVENT LAYER (GDELT) -->
         <div class="panel-section">
             <div class="panel-label">Conflict Events — GDELT</div>
-            <div class="acled-toggle">
-                <div id="acledSwitch" class="acled-switch" onclick="toggleAcled()"></div>
-                <span id="acledLabel" class="acled-label">Live conflict & protest events (24h)</span>
+            <div class="conflict-toggle">
+                <div id="conflictSwitch" class="conflict-switch" onclick="toggleConflict()"></div>
+                <span id="conflictLabel" class="conflict-label">Live conflict & protest events (24h)</span>
             </div>
-            <div id="acledControls" style="display:none;">
-                <div class="acled-filter-chips" id="acledChips">
-                    <div class="acled-chip" data-type="battles" onclick="toggleAcledType(this)">Armed Conflict</div>
-                    <div class="acled-chip" data-type="explosions" onclick="toggleAcledType(this)">Terror/Explosions</div>
-                    <div class="acled-chip" data-type="violence" onclick="toggleAcledType(this)">Violence</div>
-                    <div class="acled-chip" data-type="protests" onclick="toggleAcledType(this)">Protests</div>
-                    <div class="acled-chip" data-type="strategic" onclick="toggleAcledType(this)">Military</div>
+            <div id="conflictControls" style="display:none;">
+                <div class="conflict-filter-chips" id="conflictChips">
+                    <div class="conflict-chip" data-type="battles" onclick="toggleConflictType(this)">Armed Conflict</div>
+                    <div class="conflict-chip" data-type="explosions" onclick="toggleConflictType(this)">Terror/Explosions</div>
+                    <div class="conflict-chip" data-type="violence" onclick="toggleConflictType(this)">Violence</div>
+                    <div class="conflict-chip" data-type="protests" onclick="toggleConflictType(this)">Protests</div>
+                    <div class="conflict-chip" data-type="strategic" onclick="toggleConflictType(this)">Military</div>
                 </div>
-                <div id="acledStats" class="acled-stats"></div>
-                <div id="acledFetchStatus" style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);margin-top:4px;display:none;"></div>
-                <div id="acledDataNote" class="data-note" style="margin-top: 8px;">
+                <div id="conflictStats" class="conflict-stats"></div>
+                <div id="conflictFetchStatus" style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);margin-top:4px;display:none;"></div>
+                <div id="conflictDataNote" class="data-note" style="margin-top: 8px;">
                     Live from <a href="https://www.gdeltproject.org/" target="_blank" style="color:#e040fb;">GDELT</a> Global Knowledge Graph — updates every 15 min. Events extracted from worldwide news coverage, geolocated to mentioned places. No API key needed.
                 </div>
             </div>
@@ -1566,7 +1566,7 @@
             <div class="legend-title">Industrial Sites</div>
             <div class="legend-item"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#00e676" d="M4 28L4 18L10 18L10 12L16 18L16 12L22 18L22 10L26 10L26 4L28 4L28 28Z"/></svg><span class="legend-label">Oil/Gas/Refinery</span></div>
         </div>
-        <div id="acledLegend" style="display:none; margin-top:8px;">
+        <div id="conflictLegend" style="display:none; margin-top:8px;">
             <div class="legend-title">GDELT Conflict</div>
             <div class="legend-item"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#ff1744" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Armed Conflict</span></div>
             <div class="legend-item"><svg width="12" height="12" viewBox="0 0 32 32" style="margin-right:8px;flex-shrink:0;"><path fill="#ff9100" d="M16 2L18 12L28 8L20 16L28 24L18 20L16 30L14 20L4 24L12 16L4 8L14 12Z"/></svg><span class="legend-label">Terror/Explosions</span></div>
@@ -2099,7 +2099,7 @@
         const CONFLICT_EVENT_TYPES = ['Armed Conflict', 'Terror/Explosions', 'Military'];
 
         function tagConflictCorroboration() {
-            const src = getAcledSource();
+            const src = getConflictSource();
             if (!src || !src.features || src.features.length === 0) return;
 
             // Build spatial grid index for GDELT conflict events (0.1-degree cells)
@@ -2380,7 +2380,7 @@
 
             renderDetections();
             updateStats();
-            if (acledVisible) renderAcled();
+            if (conflictVisible) renderConflict();
         }
 
         function resetTimeFilter() {
@@ -2401,9 +2401,9 @@
         function initTimeFilterDefaults() {
             // Set date range based on loaded data (FIRMS + GDELT)
             const firmsDates = allDetections.map(d => d.acq_date).filter(Boolean).sort();
-            const acledSrc = getAcledSource();
-            const acledDates = acledSrc.features.map(f => f.properties.event_date || f.properties.week).filter(Boolean).sort();
-            const allDates = [...firmsDates, ...acledDates].sort();
+            const conflictSrc = getConflictSource();
+            const conflictDates = conflictSrc.features.map(f => f.properties.event_date || f.properties.week).filter(Boolean).sort();
+            const allDates = [...firmsDates, ...conflictDates].sort();
             if (allDates.length > 0) {
                 const earliest = allDates[0];
                 const latest = allDates[allDates.length - 1];
@@ -2579,14 +2579,14 @@
         }
 
         // ═══════════════════════════════════════════
-        // ACLED CONFLICT LAYER
+        // CONFLICT LAYER
         // ═══════════════════════════════════════════
 
-        const ACLED_DATA = {"type": "FeatureCollection", "features": []};
+        const CONFLICT_DATA = {"type": "FeatureCollection", "features": []};
 
-        let acledVisible = false;
-        let acledTypeFilter = { battles: true, explosions: true, violence: true, protests: true, strategic: true };
-        let acledLiveData = null;
+        let conflictVisible = false;
+        let conflictTypeFilter = { battles: true, explosions: true, violence: true, protests: true, strategic: true };
+        let conflictLiveData = null;
         let gdeltFetched = false;
 
         // Map GDELT GKG themes to conflict categories
@@ -2623,8 +2623,8 @@
             violence: 'Violence', protests: 'Protests', strategic: 'Military'
         };
 
-        function isAcledLive() { return acledLiveData !== null; }
-        function getAcledSource() { return acledLiveData || ACLED_DATA; }
+        function isConflictLive() { return conflictLiveData !== null; }
+        function getConflictSource() { return conflictLiveData || CONFLICT_DATA; }
 
         // GDELT GKG via Supabase Edge Function proxy (GDELT v1 has no CORS)
         const GDELT_PROXY = 'https://ovxsolwdzxewxgggdfow.supabase.co/functions/v1/gdelt-proxy';
@@ -2634,9 +2634,9 @@
         const ME_BBOX_CONFLICT = { w: 25, e: 65, s: 12, n: 42 };
 
         async function fetchGdeltConflict() {
-            if (gdeltFetched) { renderAcled(); return; }
+            if (gdeltFetched) { renderConflict(); return; }
 
-            setAcledStatus('Fetching GDELT conflict data…', '#e040fb');
+            setConflictStatus('Fetching GDELT conflict data…', '#e040fb');
 
             try {
                 const allFeatures = [];
@@ -2698,14 +2698,14 @@
                     });
                 }
 
-                acledLiveData = { type: 'FeatureCollection', features: meFeatures };
+                conflictLiveData = { type: 'FeatureCollection', features: meFeatures };
                 gdeltFetched = true;
 
                 const dateStr = new Date().toISOString().slice(0, 10);
-                setAcledStatus(`${meFeatures.length.toLocaleString()} events (${dateStr}, 24h window)`, '#00e676');
+                setConflictStatus(`${meFeatures.length.toLocaleString()} events (${dateStr}, 24h window)`, '#00e676');
 
                 initTimeFilterDefaults();
-                if (acledVisible) renderAcled();
+                if (conflictVisible) renderConflict();
 
                 // Cross-reference thermal detections with conflict events
                 if (allDetections.length > 0) {
@@ -2715,13 +2715,13 @@
                 }
 
             } catch (err) {
-                setAcledStatus('GDELT error: ' + err.message, '#ff5252');
+                setConflictStatus('GDELT error: ' + err.message, '#ff5252');
                 console.error('GDELT fetch error:', err);
             }
         }
 
-        function setAcledStatus(msg, color) {
-            const el = document.getElementById('acledFetchStatus');
+        function setConflictStatus(msg, color) {
+            const el = document.getElementById('conflictFetchStatus');
             if (!el) return;
             el.style.display = 'block';
             el.style.color = color || 'var(--text-muted)';
@@ -2730,49 +2730,49 @@
 
 
 
-        function toggleAcled() {
-            acledVisible = !acledVisible;
-            const sw = document.getElementById('acledSwitch');
-            const controls = document.getElementById('acledControls');
-            const legend = document.getElementById('acledLegend');
+        function toggleConflict() {
+            conflictVisible = !conflictVisible;
+            const sw = document.getElementById('conflictSwitch');
+            const controls = document.getElementById('conflictControls');
+            const legend = document.getElementById('conflictLegend');
 
-            sw.classList.toggle('active', acledVisible);
-            controls.style.display = acledVisible ? 'block' : 'none';
-            legend.style.display = acledVisible ? 'block' : 'none';
+            sw.classList.toggle('active', conflictVisible);
+            controls.style.display = conflictVisible ? 'block' : 'none';
+            legend.style.display = conflictVisible ? 'block' : 'none';
 
-            if (map.getLayer('acled-circles')) {
-                const vis = acledVisible ? 'visible' : 'none';
-                map.setLayoutProperty('acled-circles', 'visibility', vis);
-                map.setLayoutProperty('acled-pulse', 'visibility', vis);
-                map.setLayoutProperty('acled-clusters', 'visibility', vis);
-                map.setLayoutProperty('acled-cluster-count', 'visibility', vis);
+            if (map.getLayer('conflict-circles')) {
+                const vis = conflictVisible ? 'visible' : 'none';
+                map.setLayoutProperty('conflict-circles', 'visibility', vis);
+                map.setLayoutProperty('conflict-pulse', 'visibility', vis);
+                map.setLayoutProperty('conflict-clusters', 'visibility', vis);
+                map.setLayoutProperty('conflict-cluster-count', 'visibility', vis);
             }
 
-            if (acledVisible) fetchGdeltConflict();
+            if (conflictVisible) fetchGdeltConflict();
         }
 
-        function toggleAcledType(el) {
+        function toggleConflictType(el) {
             const type = el.dataset.type;
-            acledTypeFilter[type] = !acledTypeFilter[type];
-            el.classList.toggle('off', !acledTypeFilter[type]);
-            renderAcled();
+            conflictTypeFilter[type] = !conflictTypeFilter[type];
+            el.classList.toggle('off', !conflictTypeFilter[type]);
+            renderConflict();
         }
 
-        function renderAcled() {
-            const src = getAcledSource();
+        function renderConflict() {
+            const src = getConflictSource();
             const filtered = {
                 type: 'FeatureCollection',
                 features: src.features.filter(f => {
                     const key = getAcledTypeKey(f.properties.event_type);
-                    if (!key || !acledTypeFilter[key]) return false;
+                    if (!key || !conflictTypeFilter[key]) return false;
                     const dateField = f.properties.event_date || f.properties.week;
                     if (dateField && !passesTimeFilter(dateField)) return false;
                     return true;
                 })
             };
 
-            if (map.getSource('acled')) {
-                map.getSource('acled').setData(filtered);
+            if (map.getSource('conflict')) {
+                map.getSource('conflict').setData(filtered);
             }
 
             // Update stats
@@ -2791,24 +2791,24 @@
             const avgTone = totalEvents > 0 ? (toneSum / totalEvents).toFixed(1) : '—';
             const toneColor = avgTone < -3 ? '#ff5252' : avgTone < 0 ? '#ff9100' : '#00e676';
 
-            document.getElementById('acledStats').innerHTML = `
-                <div class="acled-stat">
-                    <div class="acled-stat-val">${totalEvents.toLocaleString()}</div>
-                    <div class="acled-stat-label">Events</div>
+            document.getElementById('conflictStats').innerHTML = `
+                <div class="conflict-stat">
+                    <div class="conflict-stat-val">${totalEvents.toLocaleString()}</div>
+                    <div class="conflict-stat-label">Events</div>
                 </div>
-                <div class="acled-stat">
-                    <div class="acled-stat-val" style="color: ${toneColor};">${avgTone}</div>
-                    <div class="acled-stat-label">Avg Tone</div>
+                <div class="conflict-stat">
+                    <div class="conflict-stat-val" style="color: ${toneColor};">${avgTone}</div>
+                    <div class="conflict-stat-label">Avg Tone</div>
                 </div>
-                <div class="acled-stat">
-                    <div class="acled-stat-val">${topCountry ? topCountry[0] : '—'}</div>
-                    <div class="acled-stat-label">Most Active</div>
+                <div class="conflict-stat">
+                    <div class="conflict-stat-val">${topCountry ? topCountry[0] : '—'}</div>
+                    <div class="conflict-stat-label">Most Active</div>
                 </div>
             `;
         }
 
         function initAcledLayer() {
-            map.addSource('acled', {
+            map.addSource('conflict', {
                 type: 'geojson',
                 data: { type: 'FeatureCollection', features: [] },
                 cluster: true,
@@ -2869,9 +2869,9 @@
 
             // Cluster bubbles — colored by dominant event type
             map.addLayer({
-                id: 'acled-clusters',
+                id: 'conflict-clusters',
                 type: 'circle',
-                source: 'acled',
+                source: 'conflict',
                 filter: ['has', 'point_count'],
                 layout: { visibility: 'none' },
                 paint: {
@@ -2884,9 +2884,9 @@
                 }
             });
             map.addLayer({
-                id: 'acled-cluster-count',
+                id: 'conflict-cluster-count',
                 type: 'symbol',
-                source: 'acled',
+                source: 'conflict',
                 filter: ['has', 'point_count'],
                 layout: {
                     visibility: 'none',
@@ -2908,13 +2908,13 @@
             });
 
             // Click cluster — show summary popup with breakdown
-            map.on('click', 'acled-clusters', (e) => {
-                const feature = map.queryRenderedFeatures(e.point, { layers: ['acled-clusters'] })[0];
+            map.on('click', 'conflict-clusters', (e) => {
+                const feature = map.queryRenderedFeatures(e.point, { layers: ['conflict-clusters'] })[0];
                 if (!feature) return;
                 const clusterId = feature.properties.cluster_id;
                 const count = feature.properties.point_count;
                 const coords = feature.geometry.coordinates.slice();
-                const src = map.getSource('acled');
+                const src = map.getSource('conflict');
                 const p = feature.properties;
 
                 // Build type breakdown from clusterProperties (instant, no async needed)
@@ -2934,7 +2934,7 @@
                     .map(([t, n]) => `<div style="display:flex;justify-content:space-between;gap:12px;"><span style="color:${typeColors[t]}">${t}</span><span style="color:var(--text-secondary)">${n}</span></div>`)
                     .join('');
 
-                let html = `<div class="popup-acled-header" style="color:#e040fb;">${count.toLocaleString()} GDELT Events</div>`;
+                let html = `<div class="popup-conflict-header" style="color:#e040fb;">${count.toLocaleString()} GDELT Events</div>`;
                 html += `<div style="margin:6px 0;font-size:10px;">${typeRows}</div>`;
 
                 // Placeholder for recent events (loaded async with small limit)
@@ -2995,14 +2995,14 @@
                     } catch { el.textContent = ''; }
                 })();
             });
-            map.on('mouseenter', 'acled-clusters', () => map.getCanvas().style.cursor = 'pointer');
-            map.on('mouseleave', 'acled-clusters', () => map.getCanvas().style.cursor = '');
+            map.on('mouseenter', 'conflict-clusters', () => map.getCanvas().style.cursor = 'pointer');
+            map.on('mouseleave', 'conflict-clusters', () => map.getCanvas().style.cursor = '');
 
             // Subtle pulse ring (unclustered only)
             map.addLayer({
-                id: 'acled-pulse',
+                id: 'conflict-pulse',
                 type: 'circle',
-                source: 'acled',
+                source: 'conflict',
                 filter: ['!', ['has', 'point_count']],
                 layout: { visibility: 'none' },
                 paint: {
@@ -3023,9 +3023,9 @@
 
             // Core conflict icons — unclustered points only
             map.addLayer({
-                id: 'acled-circles',
+                id: 'conflict-circles',
                 type: 'symbol',
-                source: 'acled',
+                source: 'conflict',
                 filter: ['!', ['has', 'point_count']],
                 layout: {
                     visibility: 'none',
@@ -3049,21 +3049,21 @@
             });
 
             // Click handler (unclustered points)
-            map.on('click', 'acled-circles', (e) => {
+            map.on('click', 'conflict-circles', (e) => {
                 if (!e.features.length) return;
                 const f = e.features[0];
                 const p = f.properties;
                 const coords = f.geometry.coordinates.slice();
                 const typeKey = getAcledTypeKey(p.event_type);
-                const colorClass = typeKey === 'battles' ? 'popup-acled-battles' :
-                                   typeKey === 'explosions' ? 'popup-acled-explosions' :
-                                   typeKey === 'protests' ? 'popup-acled-explosions' : 'popup-acled-violence';
+                const colorClass = typeKey === 'battles' ? 'popup-conflict-battles' :
+                                   typeKey === 'explosions' ? 'popup-conflict-explosions' :
+                                   typeKey === 'protests' ? 'popup-conflict-explosions' : 'popup-conflict-violence';
 
                 const tone = parseFloat(p.urltone) || 0;
                 const toneLabel = tone <= -5 ? 'Very negative' : tone <= -2 ? 'Negative' : tone <= 0 ? 'Slightly negative' : 'Neutral/positive';
                 const toneColor = tone <= -5 ? '#ff1744' : tone <= -2 ? '#ff9100' : tone <= 0 ? '#ffd600' : '#00e676';
 
-                let html = `<div class="popup-acled-header ${colorClass}">GDELT — ${p.event_type}</div>`;
+                let html = `<div class="popup-conflict-header ${colorClass}">GDELT — ${p.event_type}</div>`;
                 html += `<div class="popup-row"><span class="popup-key">Date</span><span class="popup-val">${p.event_date || '—'}</span></div>`;
                 html += `<div class="popup-row"><span class="popup-key">Location</span><span class="popup-val">${p.location || p.country}</span></div>`;
                 html += `<div class="popup-row"><span class="popup-key">Category</span><span class="popup-val">${p.sub_event_type}</span></div>`;
@@ -3079,8 +3079,8 @@
                     .addTo(map);
             });
 
-            map.on('mouseenter', 'acled-circles', () => map.getCanvas().style.cursor = 'pointer');
-            map.on('mouseleave', 'acled-circles', () => map.getCanvas().style.cursor = '');
+            map.on('mouseenter', 'conflict-circles', () => map.getCanvas().style.cursor = 'pointer');
+            map.on('mouseleave', 'conflict-circles', () => map.getCanvas().style.cursor = '');
         }
 
         // ═══════════════════════════════════════════
@@ -4486,7 +4486,7 @@
                 cn: confidenceFilter.n ? 1 : 0,
                 cl: confidenceFilter.l ? 1 : 0,
                 ind: indVisible ? 1 : 0,
-                acl: acledVisible ? 1 : 0,
+                acl: conflictVisible ? 1 : 0,
                 nl: nlVisible ? 1 : 0,
                 sp: satpassVisible ? 1 : 0,
                 ac: aircraftVisible ? 1 : 0
@@ -4556,7 +4556,7 @@
             // Toggle layers (defer to after map load)
             setTimeout(() => {
                 if (state.ind && !indVisible) toggleIndustrial();
-                if (state.acl && !acledVisible) toggleAcled();
+                if (state.acl && !conflictVisible) toggleConflict();
                 if (state.nl && !nlVisible) toggleNightlights();
                 if (state.sp && !satpassVisible) toggleSatPass();
                 if (state.ac && !aircraftVisible) toggleAircraft();
@@ -4621,7 +4621,7 @@
             const activeLayers = [];
             if (allDetections.length > 0) activeLayers.push({ color: '#ff1744', label: 'High Confidence' }, { color: '#ff9100', label: 'Nominal' }, { color: '#ffd600', label: 'Low Confidence' });
             if (indVisible) activeLayers.push({ color: '#00e676', label: 'Industrial Site' });
-            if (acledVisible) activeLayers.push({ color: '#e040fb', label: 'Conflict Event' });
+            if (conflictVisible) activeLayers.push({ color: '#e040fb', label: 'Conflict Event' });
             if (nlVisible) activeLayers.push({ color: '#b388ff', label: 'Nighttime Lights' });
 
             if (activeLayers.length > 0) {
